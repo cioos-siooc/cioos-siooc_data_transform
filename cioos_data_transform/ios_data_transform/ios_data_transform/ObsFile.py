@@ -296,7 +296,7 @@ class CtdFile(ObsFile):
     """
     def import_data(self):
         dateobj, self.date = self.get_date()
-        print self.date
+        # print self.date
         self.location = self.get_location()
         self.channels = self.get_channels()
         self.COMMENTS = self.get_comments_like('COMMENTS')
