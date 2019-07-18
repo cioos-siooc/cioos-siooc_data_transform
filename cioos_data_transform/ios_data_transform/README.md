@@ -1,6 +1,6 @@
 # IOS Data Conversion
 
-One Paragraph of project description goes here
+<One Paragraph of project description goes here>
 
 ## Getting Started / Installing
 
@@ -16,7 +16,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
+<Explain how to run the automated tests for this system>
 
 ## Authors
 
@@ -26,7 +26,7 @@ See also the list of [contributors](https://github.com/your/project/contributors
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is free and open to use by public - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
 
