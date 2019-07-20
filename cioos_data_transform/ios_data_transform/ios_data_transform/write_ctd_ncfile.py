@@ -79,6 +79,8 @@ def __add_var(ncfile, vartype, varname, varunits, varmin, varmax, varval):
     output:
         NONE
     """
+    # print vartype, __get_bodc_code(vartype, varname, varunits)
+    # print ncfile.variables.keys() #list of existing variables in ncfile
     if vartype == 'profile':
         var = ncfile.createVariable('profile', 'int32', ())
         setattr(var, 'cf_role', 'profile_id')
@@ -111,7 +113,7 @@ def __add_var(ncfile, vartype, varname, varunits, varmin, varmax, varval):
         setattr(var, 'Maximum', float(varmax))
         setattr(var, 'Minimum', float(varmin))
         var[:] = np.asarray(varval, dtype=float)
-    elif vartype == 'pressure':
+    elif vartype == 'PRESPR01':
         var = ncfile.createVariable('pressure', 'float32', ('z'))
         setattr(var, 'ios_name', varname.strip())
         setattr(var, 'long_name', 'Pressure')
@@ -121,34 +123,69 @@ def __add_var(ncfile, vartype, varname, varunits, varmin, varmax, varval):
         setattr(var, 'Minimum', float(varmin))
         var[:] = np.asarray(varval, dtype=float)
     elif vartype == 'temperature':
-        var = ncfile.createVariable('temperature', 'float32', ('z'))
+        # print varname.strip(), varunits
+        for i in range(4):
+            bodc_code, bodc_units = __get_bodc_code(vartype, varname, varunits, i)
+            # print bodc_code
+            if bodc_code not in ncfile.variables.keys():
+                var = ncfile.createVariable(bodc_code, 'float32', ('z'))
+                break
         setattr(var, 'ios_name', varname.strip())
         setattr(var, 'long_name', 'Sea Water Temperature')
         setattr(var, 'standard_name', 'sea_water_temperature')
-        setattr(var, 'units', varunits.strip())
+        setattr(var, 'units', bodc_units)
         setattr(var, 'Maximum', float(varmax))
         setattr(var, 'Minimum', float(varmin))
         var[:] = np.asarray(varval, dtype=float)
     elif vartype == 'salinity':
-        var = ncfile.createVariable('salinity', 'float32', ('z'))
+        # print varname, varunits
+        for i in range(4): # will try to get a unique variable name at least 4 times
+            bodc_code, bodc_units = __get_bodc_code(vartype, varname, varunits, i)
+            if bodc_code not in ncfile.variables.keys():
+                var = ncfile.createVariable(bodc_code, 'float32', ('z'))
+                break
         setattr(var, 'ios_name', varname.strip())
         setattr(var, 'long_name', 'Sea Water Practical Salinity')
         setattr(var, 'standard_name', 'sea_water_practical_salinity')
-        setattr(var, 'units', varunits.strip())
+        setattr(var, 'units', bodc_units)
         setattr(var, 'Maximum', float(varmax))
         setattr(var, 'Minimum', float(varmin))
         var[:] = np.asarray(varval, dtype=float)
 
 
-def __get_bodc_code():
+def __get_bodc_code(vartype, ios_varname, varunits, iter):
     """
     return the correct BODC code based on variable type, units and ios variable name
     author: Pramod Thupaki pramod.thupaki@hakai.org
     inputs:
         varname:
-        vartype:
+        vartype: list. [0] = vartype, [1]=instance details (primary/secondary etc)
         varunits:
     output:
         BODC code
     """
-    pass
+    bodc_code = ''
+
+    def is_in(keywords, string):
+        # simple function to check if any keyword is in string
+        # convert string and keywords to lower case before checking
+        return any([string.lower().find(z.lower()) != -1 for z in keywords])
+
+    if vartype == 'temperature':
+        if is_in(['ITS90', 'ITS-90'], varunits):
+            bodc_code = 'TEMPS9'; bodc_units = 'deg C'
+        elif is_in(['IPTS-68', 'IPTS68'], varunits):
+            bodc_code = 'TEMPS6'; bodc_units = 'deg C'
+        else: # if varunits does not specify type of temperature
+            print("Temperature type not defined", ios_varname, varunits)
+            bodc_code = 'TEMPS'; bodc_units = 'deg C'
+        bodc_code = '{}{:02d}'.format(bodc_code, iter+1)
+    elif vartype == 'salinity':
+        if is_in(['PSS-78'], varunits):
+            bodc_code = "PSALST"; bodc_units = 'PSS-78'
+        elif is_in(['ppt'], varunits):
+            bodc_code = "PSALSTPPT"; bodc_units = 'PPT'
+        else:
+            raise Exception("Salinity type not defined", ios_varname, varunits, vartype)
+        bodc_code = '{}{:02d}'.format(bodc_code, iter+1)
+    return bodc_code, bodc_units

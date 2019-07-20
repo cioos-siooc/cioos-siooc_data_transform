@@ -4,7 +4,7 @@
 
 ## Getting Started / Installing
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
 
 * Install a working Python 2X distribution see below for more details
 * Clone this github repo to a local folder. Open a terminal and change into that folder. Find setup.py and run "python setup.py install" to install the package.
