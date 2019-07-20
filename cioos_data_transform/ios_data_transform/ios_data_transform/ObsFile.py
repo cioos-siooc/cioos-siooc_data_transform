@@ -116,7 +116,7 @@ class ObsFile(object):
     def get_date(self):
         # reads datetime string in "START TIME" and converts to datetime object
         # return datetime object and as standard string format
-        import datetime
+        import datetime, pytz
         from dateutil import tz
 
         date_string = self.FILE['START TIME'].strip().upper()
@@ -134,10 +134,13 @@ class ObsFile(object):
             date_obj = date_obj.replace(tzinfo=tz.gettz('Canada/Atlantic'))
         else: # default assume UTC
             print("Using default timezone !!")
+            raise Exception(" ERROR !!")
             date_obj = datetime.datetime.strptime(date_string, '%Y/%m/%d %H:%M:%S.%f')
             date_obj = date_obj.replace(tzinfo=tz.gettz('UTC'))
         if self.debug:
             print date_obj
+        date_obj = date_obj.astimezone(pytz.utc)
+        # utc_dt = local_dt.astimezone(pytz.utc)
         return date_obj, date_obj.strftime('%Y/%m/%d %H:%M:%S.%f %Z')
 
     def fmt_len(self, fmt):
@@ -286,6 +289,17 @@ class ObsFile(object):
                 info.append(l)
         return ''.join(info)
 
+    def get_list_of_sections(self):
+        # parse the entire header and returns list of sections available
+        # skip first 2 lines of file (that has date and ios_header_version)
+        sections_list = []
+        for i, line in enumerate(self.lines[2:]):
+            if line[0] == '*' and line[0:4] != '*END':
+                sections_list.append(line.strip())
+            else:
+                continue
+        return sections_list
+
 
 class CtdFile(ObsFile):
     """
@@ -297,6 +311,7 @@ class CtdFile(ObsFile):
     def import_data(self):
         dateobj, self.date = self.get_date()
         # print self.date
+        # print self.get_list_of_sections()
         self.location = self.get_location()
         self.channels = self.get_channels()
         self.COMMENTS = self.get_comments_like('COMMENTS')
