@@ -166,12 +166,15 @@ class ObsFile(object):
         data = []
         if formatline is None:
             if self.debug:
-                print ("Reading data using format", self.channel_details['fmt_struct'])
+                print("Reading data using format", self.channel_details['fmt_struct'])
             fmt_len = self.fmt_len(self.channel_details['fmt_struct'])
-
+            fmt_struct = self.get_channel_detail()['fmt_struct']
+            print(fmt_struct)
             for i in range(len(lines)):
                 if len(lines[i]) > 0:
-                    data.append(struct.unpack(self.channel_details['fmt_struct'], lines[i].rstrip().ljust(fmt_len)))
+                    # py2-3 migration...
+                    # data.append(struct.unpack(self.channel_details['fmt_struct'], lines[i].rstrip().ljust(fmt_len)))
+                    data.append(struct.unpack(fmt_struct, lines[i].rstrip().ljust(fmt_len).encode('utf-8')))
                     # data.append([r for r in lines[i].split()])
         else:
             ffline = ff.FortranRecordReader(formatline)

@@ -54,7 +54,6 @@ def write_ctd_ncfile(filename, ctdcls):
 # go through CHANNELS and add each variable depending on type
     for i, channel in enumerate(ctdcls.CHANNELS['Name']):
         if is_in(['depth'], channel):
-            print channel, 'found depth'
             __add_var(ncfile, 'depth', 'depth',
             ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
             ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i])
