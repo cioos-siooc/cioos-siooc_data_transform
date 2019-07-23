@@ -29,38 +29,38 @@ def write_ctd_ncfile(filename, ctdcls):
 # add variable profile_id (dummy variable)
     ncfile_var_list = []
     profile_id = random.randint(1, 100000)
-    ncfile_var_list.append(OceanNcVar('profile', 'profile', '', '', '', profile_id))
+    ncfile_var_list.append(OceanNcVar('profile', 'profile', None, None, None, profile_id))
 # add administration variables
     if 'COUNTRY' in ctdcls.ADMINISTRATION:
-        ncfile_var_list.append(OceanNcVar('str_id', 'country', '', '', '', ctdcls.ADMINISTRATION['COUNTRY'].strip()))
+        ncfile_var_list.append(OceanNcVar('str_id', 'country', None, None, None, ctdcls.ADMINISTRATION['COUNTRY'].strip()))
     if 'MISSION' in ctdcls.ADMINISTRATION:
-        ncfile_var_list.append(OceanNcVar('str_id', 'mission_id', '', '', '', ctdcls.ADMINISTRATION['MISSION'].strip()))
+        ncfile_var_list.append(OceanNcVar('str_id', 'mission_id', None, None, None, ctdcls.ADMINISTRATION['MISSION'].strip()))
     else:
-        ncfile_var_list.append(OceanNcVar('str_id', 'mission_id', '', '', '', ctdcls.ADMINISTRATION['CRUISE'].strip()))
+        ncfile_var_list.append(OceanNcVar('str_id', 'mission_id', None, None, None, ctdcls.ADMINISTRATION['CRUISE'].strip()))
     if 'SCIENTIST' in ctdcls.ADMINISTRATION:
-        ncfile_var_list.append(OceanNcVar('str_id', 'scientist', '', '', '', ctdcls.ADMINISTRATION['SCIENTIST'].strip()))
+        ncfile_var_list.append(OceanNcVar('str_id', 'scientist', None, None, None, ctdcls.ADMINISTRATION['SCIENTIST'].strip()))
     if 'PROJECT' in ctdcls.ADMINISTRATION:
-        ncfile_var_list.append(OceanNcVar('str_id', 'project', '', '', '', ctdcls.ADMINISTRATION['PROJECT'].strip()))
+        ncfile_var_list.append(OceanNcVar('str_id', 'project', None, None, None, ctdcls.ADMINISTRATION['PROJECT'].strip()))
     if 'AGENCY' in ctdcls.ADMINISTRATION:
-        ncfile_var_list.append(OceanNcVar('str_id', 'agency', '', '', '', ctdcls.ADMINISTRATION['AGENCY'].strip()))
+        ncfile_var_list.append(OceanNcVar('str_id', 'agency', None, None, None, ctdcls.ADMINISTRATION['AGENCY'].strip()))
     if 'PLATFORM' in ctdcls.ADMINISTRATION:
-        ncfile_var_list.append(OceanNcVar('str_id', 'platform', '', '', '', ctdcls.ADMINISTRATION['PLATFORM'].strip()))
+        ncfile_var_list.append(OceanNcVar('str_id', 'platform', None, None, None, ctdcls.ADMINISTRATION['PLATFORM'].strip()))
 # add instrument type
     if 'TYPE' in ctdcls.INSTRUMENT:
-        ncfile_var_list.append(OceanNcVar('str_id', 'instrument_type', '', '', '', ctdcls.INSTRUMENT['TYPE'].strip()))
+        ncfile_var_list.append(OceanNcVar('str_id', 'instrument_type', None, None, None, ctdcls.INSTRUMENT['TYPE'].strip()))
     if 'MODEL' in ctdcls.INSTRUMENT:
-        ncfile_var_list.append(OceanNcVar('str_id', 'instrument_model', '', '', '', ctdcls.INSTRUMENT['MODEL'].strip()))
+        ncfile_var_list.append(OceanNcVar('str_id', 'instrument_model', None, None, None, ctdcls.INSTRUMENT['MODEL'].strip()))
     if 'SERIAL NUMBER' in ctdcls.INSTRUMENT:
-        ncfile_var_list.append(OceanNcVar('str_id', 'instrument_serial_number', '', '', '', ctdcls.INSTRUMENT['SERIAL NUMBER'].strip()))
+        ncfile_var_list.append(OceanNcVar('str_id', 'instrument_serial_number', None, None, None, ctdcls.INSTRUMENT['SERIAL NUMBER'].strip()))
 # add locations variables
-    ncfile_var_list.append(OceanNcVar('lat', 'latitude', 'degrees_north', '', '', ctdcls.LOCATION['LATITUDE']))
-    ncfile_var_list.append(OceanNcVar('lon', 'longitude', 'degrees_east', '', '', ctdcls.LOCATION['LONGITUDE']))
+    ncfile_var_list.append(OceanNcVar('lat', 'latitude', 'degrees_north', None, None, ctdcls.LOCATION['LATITUDE']))
+    ncfile_var_list.append(OceanNcVar('lon', 'longitude', 'degrees_east', None, None, ctdcls.LOCATION['LONGITUDE']))
     if 'GEOGRAPHIC AREA' in ctdcls.LOCATION:
-        ncfile_var_list.append(OceanNcVar('str_id', 'geographic_area', '', '', '', ctdcls.LOCATION['GEOGRAPHIC AREA'].strip()))
+        ncfile_var_list.append(OceanNcVar('str_id', 'geographic_area', None, None, None, ctdcls.LOCATION['GEOGRAPHIC AREA'].strip()))
     if 'EVENT NUMBER' in ctdcls.LOCATION:
-        ncfile_var_list.append(OceanNcVar('str_id', 'event_number', '', '', '', ctdcls.LOCATION['EVENT NUMBER'].strip()))
+        ncfile_var_list.append(OceanNcVar('str_id', 'event_number', None, None, None, ctdcls.LOCATION['EVENT NUMBER'].strip()))
 # add time variable
-    ncfile_var_list.append(OceanNcVar('time', 'time', '', '', '', ctdcls.date))
+    ncfile_var_list.append(OceanNcVar('time', 'time', None, None, None, ctdcls.date))
 # go through CHANNELS and add each variable depending on type
     for i, channel in enumerate(ctdcls.CHANNELS['Name']):
         if is_in(['depth'], channel):
@@ -79,8 +79,12 @@ def write_ctd_ncfile(filename, ctdcls):
             ncfile_var_list.append(OceanNcVar('salinity', ctdcls.CHANNELS['Name'][i],
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
                 ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i]))
-        else:
-            print(channel, 'not transferred to netcdf file !')
+        elif is_in(['oxygen'], channel):
+            ncfile_var_list.append(OceanNcVar('oxygen', ctdcls.CHANNELS['Name'][i],
+                ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
+                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i]))
+        # else:
+        #     print(channel, 'not transferred to netcdf file !')
             # raise Exception('not found !!')
 
     # attach variables to ncfileclass and call method to write netcdf file

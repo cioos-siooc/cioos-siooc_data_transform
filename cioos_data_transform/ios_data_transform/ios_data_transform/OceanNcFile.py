@@ -43,9 +43,13 @@ class OceanNcFile(object):
         # var.type is  a string
         # print('writing', var.name, var.datatype, var.dimensions)
         ncvar = self.ncfile.createVariable(var.name, var.datatype, var.dimensions)
-        setattr(ncvar, 'long_name', var.long_name)
-        setattr(ncvar, 'standard_name', var.standard_name)
-        setattr(ncvar, 'units', var.units)
+        for key, value in zip(['long_name', 'standard_name', 'units'],
+                                [var.long_name, var.standard_name, var.units]):
+            if value is not None:
+                setattr(ncvar, key, value)
+        # setattr(ncvar, 'long_name', var.long_name)
+        # setattr(ncvar, 'standard_name', var.standard_name)
+        # setattr(ncvar, 'units', var.units)
         if var.datatype == str:
             ncvar[0] = var.data
         else:
