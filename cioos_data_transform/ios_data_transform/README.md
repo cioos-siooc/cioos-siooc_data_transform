@@ -6,13 +6,13 @@
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
 
-* Install a working Python 2X distribution see below for more details
+* Install a working Python 3X distribution see below for more details
 * Clone this github repo to a local folder. Open a terminal and change into that folder. Find setup.py and run "python setup.py install" to install the package.
 
 ### Prerequisites
 
 * Linux (or Unix-like) environment
-* Python 2X environment. See (https://docs.conda.io/en/latest/miniconda.html) for recommended installation instructions
+* Python 3X environment. See (https://docs.conda.io/en/latest/miniconda.html) for recommended installation instructions
 
 ## Running the tests
 

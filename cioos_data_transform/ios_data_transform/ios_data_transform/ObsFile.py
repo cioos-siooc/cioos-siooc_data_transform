@@ -37,11 +37,16 @@ class ObsFile(object):
             print("Index not found", string)
         return -1
 
-    def get_header(self):
-        # [deprec] returns just the lines that make up the header
-        # use find_index instead
-        idx = self.find_index('*END OF HEADER')
-        header = self.lines[0:idx+1]
+    def get_complete_header(self):
+        # return all sections in header as a dict
+        sections = self.get_list_of_sections()
+        header = {}
+        for sec in sections:
+            # print ("getting section:", sec)
+            if sec in ['COMMENTS', 'REMARKS', 'HISTORY']:
+                header[sec] = self.get_comments_like(sec)
+            else:
+                header[sec] = self.get_section(sec)
         return header
 
     def get_section(self, section_name):
@@ -82,7 +87,7 @@ class ObsFile(object):
                         info[record_name].append(l)
             else:
                 if self.debug:
-                    print l,
+                    print(l)
                 info[l.split(':', 1)[0].strip()] = l.split(':', 1)[1].rstrip()
         return info
 
@@ -100,7 +105,7 @@ class ObsFile(object):
         elif name == '$TABLE: CHANNEL DETAIL':
             info = self.FILE[name]
         else:
-            print self.FILE.keys()
+            print(self.FILE.keys())
             raise Exception("Did not find subsection:{} in {}".format(name, self.filename))
         return info
 
@@ -138,9 +143,8 @@ class ObsFile(object):
             date_obj = datetime.datetime.strptime(date_string, '%Y/%m/%d %H:%M:%S.%f')
             date_obj = date_obj.replace(tzinfo=tz.gettz('UTC'))
         if self.debug:
-            print date_obj
+            print(date_obj)
         date_obj = date_obj.astimezone(pytz.utc)
-        # utc_dt = local_dt.astimezone(pytz.utc)
         return date_obj, date_obj.strftime('%Y/%m/%d %H:%M:%S.%f %Z')
 
     def fmt_len(self, fmt):
@@ -161,12 +165,14 @@ class ObsFile(object):
         data = []
         if formatline is None:
             if self.debug:
-                print ("Reading data using format", self.channel_details['fmt_struct'])
+                print("Reading data using format", self.channel_details['fmt_struct'])
             fmt_len = self.fmt_len(self.channel_details['fmt_struct'])
-
+            fmt_struct = self.channel_details['fmt_struct']
             for i in range(len(lines)):
                 if len(lines[i]) > 0:
-                    data.append(struct.unpack(self.channel_details['fmt_struct'], lines[i].rstrip().ljust(fmt_len)))
+                    # py2-3 migration...
+                    # data.append(struct.unpack(self.channel_details['fmt_struct'], lines[i].rstrip().ljust(fmt_len)))
+                    data.append(struct.unpack(fmt_struct, lines[i].rstrip().ljust(fmt_len).encode('utf-8')))
                     # data.append([r for r in lines[i].split()])
         else:
             ffline = ff.FortranRecordReader(formatline)
@@ -177,26 +183,29 @@ class ObsFile(object):
         return data
 
     def get_location(self):
-        # read latitude and longitude from ios header
-        # use information in section 'LOCATION'
-        sec = self.get_section('LOCATION')
+        # read 'LOCATION' section from ios header
+        # convert lat and lon to standard format (float, -180 to +180)
+        # initialize some other standard section variables if possible
+        info = self.get_section('LOCATION')
         if self.debug:
-            print("Location details", sec.keys())
-        info = {}
-        c = sec['LATITUDE'].split()
+            print("Location details", info.keys())
+    # handle lat conversion
+        c = info['LATITUDE'].split()
         buf = float(c[0]) + float(c[1]) / 60.0
         if c[2] == 'S':
             info['LATITUDE'] = -1.0 * buf
         else:
             info['LATITUDE'] = buf
-
-        c = sec['LONGITUDE'].split()
+        c = info['LONGITUDE'].split()
+    # handle lon conversion
         buf = float(c[0]) + float(c[1]) / 60.0
         if c[2] == 'W':
             info['LONGITUDE'] = -1.0 * buf
         else:
             info['LONGITUDE'] = buf
-        # info['water_depth'] = sec['WATER DEPTH'].split()[0]
+    # initialize some dict items if not available
+        if 'EVENT NUMBER' not in info.keys():
+            info['EVENT NUMBER'] = ''
         return info
 
     def get_channel_detail(self):
@@ -249,7 +258,7 @@ class ObsFile(object):
         # apply mask to string (data) to get columns
         # return list of columns
         if self.debug:
-            print data, mask
+            print(data, mask)
         data = data.rstrip().ljust(len(mask))
         a = [d == '-' for d in mask]
         ret = []
@@ -266,16 +275,18 @@ class ObsFile(object):
     def get_comments_like(self, section_name):
         # to read sections like comments/remarks etc that are at 'root' level 
         # and contain a lot of information that must be kept together
-        # return information as a long string
+        # return information as a dictionary with identifier being line number
         if section_name[0] != '*':
             section_name = '*'+section_name.strip()
         idx = self.find_index(section_name)
         if idx == -1:
             return ''
-        info = []
+        info = {}
         # EOS = False # end of section logical
+        count = 0
         while True:
             idx += 1
+            count += 1
             l = self.lines[idx]
             if len(l.strip()) == 0: # skip line if blank
                 continue
@@ -285,17 +296,18 @@ class ObsFile(object):
                 break
             else:
                 if self.debug:
-                    print l,
-                info.append(l)
-        return ''.join(info)
+                    print(l)
+                info['{:d}'.format(count)] = l.rstrip()
+        return info
 
     def get_list_of_sections(self):
         # parse the entire header and returns list of sections available
         # skip first 2 lines of file (that has date and ios_header_version)
+        # skip * in beginning of section name
         sections_list = []
         for i, line in enumerate(self.lines[2:]):
-            if line[0] == '*' and line[0:4] != '*END':
-                sections_list.append(line.strip())
+            if line[0] == '*' and line[0:4] != '*END' and line[1] != '*':
+                sections_list.append(line.strip()[1:])
             else:
                 continue
         return sections_list
@@ -310,19 +322,19 @@ class CtdFile(ObsFile):
     """
     def import_data(self):
         dateobj, self.date = self.get_date()
-        # print self.date
-        # print self.get_list_of_sections()
-        self.location = self.get_location()
-        self.channels = self.get_channels()
+        self.LOCATION = self.get_location()
+        self.CHANNELS = self.get_channels()
         self.COMMENTS = self.get_comments_like('COMMENTS')
         self.REMARKS = self.get_comments_like('REMARKS')
+        self.ADMINISTRATION = self.get_section('ADMINISTRATION')
+        self.INSTRUMENT = self.get_section('INSTRUMENT')
         try:
             self.data = self.get_data(formatline=self.FILE['FORMAT'])
         except Exception as e:
             self.channel_details = self.get_channel_detail()
             self.data = self.get_data(formatline=None)
         if self.data is None:
-            raise Exception("Error: Could not read data from format specified or could not decipher format")
+            raise Exception("Error: Could not read data from format specified and could not decipher format")
             sys.exit()
         return 1
 

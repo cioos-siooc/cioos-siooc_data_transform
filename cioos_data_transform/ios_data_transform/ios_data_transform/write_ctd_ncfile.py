@@ -1,8 +1,8 @@
 from netCDF4 import Dataset as ncdata
-import numpy as np 
+import numpy as np
 import datetime
 import random
-#   print random.randint(1,101)
+import json
 
 def write_ctd_ncfile(filename, ctdcls):
     '''
@@ -17,50 +17,60 @@ def write_ctd_ncfile(filename, ctdcls):
     ncfile = ncdata(filename, 'w', format='NETCDF3_CLASSIC')
     setattr(ncfile, 'featureType', 'profile')
     setattr(ncfile, 'summary', 'IOS CTD datafile')
-    setattr(ncfile, 'title', ctdcls.filename)
+    setattr(ncfile, 'title', 'IOS CTD profile')
     setattr(ncfile, 'institution', 'Institute of Ocean Sciences, 9860 West Saanich Road, Sidney, B.C., Canada')
     setattr(ncfile, 'history', '')
     setattr(ncfile, 'infoUrl', '')
-    setattr(ncfile, 'cdm_profile_variables', 'temperature, salinity')
+    setattr(ncfile, 'cdm_profile_variables', 'TEMPS901, TEMPS902, TEMPS601, TEMPS602, PSALST01, PSALST02, PSALSTPPT01, PRESPR01')
 # write location information
-    setattr(ncfile, 'latitude', ctdcls.location['LATITUDE'])
-    setattr(ncfile, 'longitude', ctdcls.location['LONGITUDE'])
-    setattr(ncfile, 'start_time', ctdcls.date)
-# write global attributed from IOS 'FILE' section
-    for key in ctdcls.FILE.keys():
-        if key[0] != '$':
-            setattr(ncfile, key, ctdcls.FILE[key])
+    # setattr(ncfile, 'LOCATION', json.dumps(ctdcls.LOCATION, indent=True))
+    setattr(ncfile, 'IOS_HEADER', json.dumps(ctdcls.get_complete_header(), ensure_ascii=False, indent=4))
+# write global attributed from IOS 'FILE' section and 'ADMINISTRATION' section
+    # setattr(ncfile, 'ADMINISTRATION', json.dumps(ctdcls.ADMINISTRATION, indent=True))
+    # for key in ctdcls.FILE.keys():
+    #     if key[0] != '$':
+    #         setattr(ncfile, key, ctdcls.FILE[key])
 # write comments and remarks to global attributes. this comes at the end for aesthetics
-    setattr(ncfile, 'ios_comments', ctdcls.COMMENTS)
-    setattr(ncfile, 'ios_remarks', ctdcls.REMARKS)
+    # setattr(ncfile, 'COMMENTS', json.dumps(ctdcls.COMMENTS, indent=True))
+    # setattr(ncfile, 'REMARKS', json.dumps(ctdcls.REMARKS, indent=True))
 # create dimensions
     ncfile.createDimension('z', int(ctdcls.FILE['NUMBER OF RECORDS']))
+    ncfile.createDimension('nchar', 10)
 # add variable profile_id (dummy variable)
     profile_id = random.randint(1, 100000)
     __add_var(ncfile, 'profile', 'profile', '', '', '', profile_id)
+    var = ncfile.createVariable('mission_id', 'S1', ('nchar',))
+    if 'MISSION' in ctdcls.ADMINISTRATION.keys():
+        mission_id = ctdcls.ADMINISTRATION['MISSION'].strip()
+    else:
+        mission_id = ctdcls.ADMINISTRATION['CRUISE'].strip()
+    var[0:len(mission_id)] = [c for c in mission_id]
 # add locations variables
-    __add_var(ncfile, 'lat', 'latitude', 'degrees_north', '', '', ctdcls.location['LATITUDE'])
-    __add_var(ncfile, 'lon', 'longitude', 'degrees_east', '', '', ctdcls.location['LONGITUDE'])
+    __add_var(ncfile, 'lat', 'latitude', 'degrees_north', '', '', ctdcls.LOCATION['LATITUDE'])
+    __add_var(ncfile, 'lon', 'longitude', 'degrees_east', '', '', ctdcls.LOCATION['LONGITUDE'])
 # add time variable
     __add_var(ncfile, 'time', 'time', '', '', '', ctdcls.date)
-# go through channels and add each variable depending on type
-    for i, channel in enumerate(ctdcls.channels['Name']):
-        if channel.upper().find('DEPTH') >= 0:
+# go through CHANNELS and add each variable depending on type
+    for i, channel in enumerate(ctdcls.CHANNELS['Name']):
+        if is_in(['depth'], channel):
             __add_var(ncfile, 'depth', 'depth',
-            ctdcls.channels['Units'][i], ctdcls.channels['Minimum'][i],
-            ctdcls.channels['Maximum'][i], ctdcls.data[:, i])
-        elif channel.upper().find('PRESSURE') >= 0:
+            ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
+            ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i])
+        elif is_in(['pressure'], channel):
             __add_var(ncfile, 'pressure', 'pressure',
-            ctdcls.channels['Units'][i], ctdcls.channels['Minimum'][i],
-            ctdcls.channels['Maximum'][i], ctdcls.data[:, i])
-        elif channel.upper().find('TEMPERATURE') >= 0:
-            __add_var(ncfile, 'temperature', ctdcls.channels['Name'][i],
-            ctdcls.channels['Units'][i], ctdcls.channels['Minimum'][i],
-            ctdcls.channels['Maximum'][i], ctdcls.data[:, i])
-        elif channel.upper().find('SALINITY') >= 0:
-            __add_var(ncfile, 'salinity', ctdcls.channels['Name'][i],
-            ctdcls.channels['Units'][i], ctdcls.channels['Minimum'][i],
-            ctdcls.channels['Maximum'][i], ctdcls.data[:, i])
+            ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
+            ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i])
+        elif is_in(['temperature'], channel):
+            __add_var(ncfile, 'temperature', ctdcls.CHANNELS['Name'][i],
+            ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
+            ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i])
+        elif is_in(['salinity'], channel):
+            __add_var(ncfile, 'salinity', ctdcls.CHANNELS['Name'][i],
+            ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
+            ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i])
+        else:
+            print(channel, 'not transferred to netcdf file !')
+            # raise Exception('not found !!')
     ncfile.close()
 
 
@@ -113,8 +123,8 @@ def __add_var(ncfile, vartype, varname, varunits, varmin, varmax, varval):
         setattr(var, 'Maximum', float(varmax))
         setattr(var, 'Minimum', float(varmin))
         var[:] = np.asarray(varval, dtype=float)
-    elif vartype == 'PRESPR01':
-        var = ncfile.createVariable('pressure', 'float32', ('z'))
+    elif vartype == 'pressure':
+        var = ncfile.createVariable('PRESPR01', 'float32', ('z'))
         setattr(var, 'ios_name', varname.strip())
         setattr(var, 'long_name', 'Pressure')
         setattr(var, 'standard_name', 'sea_water_pressure')
@@ -153,6 +163,12 @@ def __add_var(ncfile, vartype, varname, varunits, varmin, varmax, varval):
         var[:] = np.asarray(varval, dtype=float)
 
 
+def is_in(keywords, string):
+    # simple function to check if any keyword is in string
+    # convert string and keywords to upper case before checking
+    return any([string.upper().find(z.upper()) >= 0 for z in keywords])
+
+
 def __get_bodc_code(vartype, ios_varname, varunits, iter):
     """
     return the correct BODC code based on variable type, units and ios variable name
@@ -165,12 +181,6 @@ def __get_bodc_code(vartype, ios_varname, varunits, iter):
         BODC code
     """
     bodc_code = ''
-
-    def is_in(keywords, string):
-        # simple function to check if any keyword is in string
-        # convert string and keywords to lower case before checking
-        return any([string.lower().find(z.lower()) != -1 for z in keywords])
-
     if vartype == 'temperature':
         if is_in(['ITS90', 'ITS-90'], varunits):
             bodc_code = 'TEMPS9'; bodc_units = 'deg C'

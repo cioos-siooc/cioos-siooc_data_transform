@@ -8,11 +8,11 @@ setuptools.setup(
     version="0.0.1",
     author="Pramod Thupaki",
     author_email="pramod.thupaki@hakai.org",
-    description="toolbox with utilities to read data in IOS format and convert to netCDF format",
+    description="Toolbox to read data in IOS format and convert to netCDF format",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="",
     packages=setuptools.find_packages(),
-    classifiers=["Programming Language :: Python :: 2",
+    classifiers=["Programming Language :: Python :: 3",
         "Operating System :: OS Independent"],
 )
