@@ -145,7 +145,6 @@ class ObsFile(object):
         if self.debug:
             print(date_obj)
         date_obj = date_obj.astimezone(pytz.utc)
-        # utc_dt = local_dt.astimezone(pytz.utc)
         return date_obj, date_obj.strftime('%Y/%m/%d %H:%M:%S.%f %Z')
 
     def fmt_len(self, fmt):
@@ -168,8 +167,7 @@ class ObsFile(object):
             if self.debug:
                 print("Reading data using format", self.channel_details['fmt_struct'])
             fmt_len = self.fmt_len(self.channel_details['fmt_struct'])
-            fmt_struct = self.get_channel_detail()['fmt_struct']
-            print(fmt_struct)
+            fmt_struct = self.channel_details['fmt_struct']
             for i in range(len(lines)):
                 if len(lines[i]) > 0:
                     # py2-3 migration...
@@ -329,6 +327,7 @@ class CtdFile(ObsFile):
         self.COMMENTS = self.get_comments_like('COMMENTS')
         self.REMARKS = self.get_comments_like('REMARKS')
         self.ADMINISTRATION = self.get_section('ADMINISTRATION')
+        self.INSTRUMENT = self.get_section('INSTRUMENT')
         try:
             self.data = self.get_data(formatline=self.FILE['FORMAT'])
         except Exception as e:

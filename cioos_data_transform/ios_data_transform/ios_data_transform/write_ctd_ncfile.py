@@ -1,9 +1,8 @@
 from netCDF4 import Dataset as ncdata
-import numpy as np 
+import numpy as np
 import datetime
 import random
 import json
-#   print random.randint(1,101)
 
 def write_ctd_ncfile(filename, ctdcls):
     '''
@@ -22,7 +21,7 @@ def write_ctd_ncfile(filename, ctdcls):
     setattr(ncfile, 'institution', 'Institute of Ocean Sciences, 9860 West Saanich Road, Sidney, B.C., Canada')
     setattr(ncfile, 'history', '')
     setattr(ncfile, 'infoUrl', '')
-    setattr(ncfile, 'cdm_profile_variables', 'temperature, salinity')
+    setattr(ncfile, 'cdm_profile_variables', 'TEMPS901, TEMPS902, TEMPS601, TEMPS602, PSALST01, PSALST02, PSALSTPPT01, PRESPR01')
 # write location information
     # setattr(ncfile, 'LOCATION', json.dumps(ctdcls.LOCATION, indent=True))
     setattr(ncfile, 'IOS_HEADER', json.dumps(ctdcls.get_complete_header(), ensure_ascii=False, indent=4))
@@ -124,8 +123,8 @@ def __add_var(ncfile, vartype, varname, varunits, varmin, varmax, varval):
         setattr(var, 'Maximum', float(varmax))
         setattr(var, 'Minimum', float(varmin))
         var[:] = np.asarray(varval, dtype=float)
-    elif vartype == 'PRESPR01':
-        var = ncfile.createVariable('pressure', 'float32', ('z'))
+    elif vartype == 'pressure':
+        var = ncfile.createVariable('PRESPR01', 'float32', ('z'))
         setattr(var, 'ios_name', varname.strip())
         setattr(var, 'long_name', 'Pressure')
         setattr(var, 'standard_name', 'sea_water_pressure')
