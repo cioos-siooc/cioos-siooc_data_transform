@@ -8,8 +8,8 @@ class OceanNcVar(object):
         self.cf_role = None
         self.name = varname
         self.type = vartype
-        self.standard_name = ''
-        self.long_name = ''
+        self.standard_name = None
+        self.long_name = None
         self.units = varunits
         self.maximum = varmin
         self.minimum = varmax
@@ -71,6 +71,7 @@ class OceanNcVar(object):
             self.datatype = 'float32'
             self.dimensions = ('z')
             self.long_name = 'Pressure'
+            self.units = self.units.strip()
             self.standard_name = 'sea_water_pressure'
         elif self.type == 'temperature':
             self.datatype = 'float32'
