@@ -1,0 +1,1 @@
+# script runs automated tests on files in test_files
