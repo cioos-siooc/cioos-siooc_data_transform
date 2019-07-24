@@ -4,7 +4,7 @@ from write_ctd_ncfile_cls import write_ctd_ncfile
 import glob
 import os
 
-def read_ctd_files(path=None):
+def convert_ctd_files(path=None):
     # find all ctd files in the path provided
     if path is None:
         flist = glob.glob('/home/pramod/data/ios_mooring_data/ctd/*.ctd')
@@ -21,12 +21,12 @@ def read_ctd_files(path=None):
             yy = fdata.date[0:4]
             if not os.path.exists(out_path+yy):
                 os.mkdir(out_path+yy)
-            write_ctd_ncfile(out_path+yy+'/'+f.split('/')[-1][0:-4]+'.nc', fdata)
+            write_ctd_ncfile(out_path+yy+'/'+f.split('/')[-1][0:-4]+'.ctd.nc', fdata)
         else:
             print(" <- Failed to read file")
 
 
-read_ctd_files(path=None)
-# read_ctd_files(path='test_files/')
+convert_ctd_files(path=None)
+# convert_ctd_files(path='test_files/')
 # f = ObsFile.CtdFile(filename='/home/pramod/data/ios_mooring_data/ctd/1997-11-0131.CTD', debug=True)
 # f = CurFile(filename='A1_19921028_19930504_0035m.CUR')
