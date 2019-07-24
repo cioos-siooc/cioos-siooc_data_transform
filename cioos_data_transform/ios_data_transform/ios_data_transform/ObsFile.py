@@ -18,7 +18,7 @@ class ObsFile(object):
         # inputs are filename and debug state
         self.debug = debug
         self.filename = filename
-        with open(self.filename, 'r') as fid:
+        with open(self.filename, 'r', encoding='ASCII', errors='ignore') as fid:
             self.lines = [l for l in fid.readlines()]
         self.ios_header_version = self.get_header_version()
         self.FILE = self.get_section('FILE')
