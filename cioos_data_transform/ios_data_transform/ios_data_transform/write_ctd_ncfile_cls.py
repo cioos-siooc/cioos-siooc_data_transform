@@ -21,7 +21,7 @@ def write_ctd_ncfile(filename, ctdcls):
     out.summary = 'IOS CTD datafile'
     out.title = 'IOS CTD profile'
     out.institution = 'Institute of Ocean Sciences, 9860 West Saanich Road, Sidney, B.C., Canada'
-    out.cdm_profile_variables = ''
+    out.cdm_profile_variables = 'TEMPS901, TEMPS902, TEMPS601, TEMPS602, PSALST01, PSALST02, PSALSTPPT01, PRESPR01'
 # write full original header, as json dictionary
     out.HEADER = json.dumps(ctdcls.get_complete_header(), ensure_ascii=False, indent=False)
 # initcreate dimension variable
@@ -30,6 +30,7 @@ def write_ctd_ncfile(filename, ctdcls):
     ncfile_var_list = []
     profile_id = random.randint(1, 100000)
     ncfile_var_list.append(OceanNcVar('profile', 'profile', None, None, None, profile_id))
+    ncfile_var_list.append(OceanNcVar('str_id', 'filename', None, None, None, ctdcls.filename.split('/')[-1]))
 # add administration variables
     if 'COUNTRY' in ctdcls.ADMINISTRATION:
         ncfile_var_list.append(OceanNcVar('str_id', 'country', None, None, None, ctdcls.ADMINISTRATION['COUNTRY'].strip()))
@@ -66,23 +67,23 @@ def write_ctd_ncfile(filename, ctdcls):
         if is_in(['depth'], channel):
             ncfile_var_list.append(OceanNcVar('depth', 'depth',
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
-                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i]))
+                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list))
         elif is_in(['pressure'], channel):
             ncfile_var_list.append(OceanNcVar('pressure', 'pressure',
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
-                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i]))
+                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list))
         elif is_in(['temperature'], channel):
             ncfile_var_list.append(OceanNcVar('temperature', ctdcls.CHANNELS['Name'][i],
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
-                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i]))
+                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list))
         elif is_in(['salinity'], channel):
             ncfile_var_list.append(OceanNcVar('salinity', ctdcls.CHANNELS['Name'][i],
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
-                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i]))
+                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list))
         elif is_in(['oxygen'], channel):
             ncfile_var_list.append(OceanNcVar('oxygen', ctdcls.CHANNELS['Name'][i],
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
-                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i]))
+                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list))
         # else:
         #     print(channel, 'not transferred to netcdf file !')
             # raise Exception('not found !!')
