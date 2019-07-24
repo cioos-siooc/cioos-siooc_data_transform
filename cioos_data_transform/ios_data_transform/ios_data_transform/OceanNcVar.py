@@ -20,7 +20,7 @@ class OceanNcVar(object):
         # this will be checked to make sure new variable name does not conflict with existing ones
         varlist = []
         for v in varclslist:
-            varlist.append(varclslist.name)
+            varlist.append(v.name)
         self.add_var(varlist)
 
     def add_var(self, varlist):
@@ -142,7 +142,7 @@ class OceanNcVar(object):
             bodc_code = '{}{:02d}'.format(bodc_code, iter+1)
         elif vartype == 'oxygen':
             if is_in(['mL/L'], varunits):
-                bodc_code = "O2MGpL"; bodc_units = 'mg/l'
+                bodc_code = "O2mLpL"; bodc_units = 'mg/l'
             elif is_in(['umol/kg'], varunits):
                 bodc_code = 'O2UMOLpKG'; bodc_units = 'umol/kg'
             else:
