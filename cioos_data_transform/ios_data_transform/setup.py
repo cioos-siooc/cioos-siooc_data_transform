@@ -13,6 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="",
     packages=setuptools.find_packages(),
+    install_requires=['numpy', 'fortranformat', 'netCDF4'],
     classifiers=["Programming Language :: Python :: 3",
         "Operating System :: OS Independent"],
 )
