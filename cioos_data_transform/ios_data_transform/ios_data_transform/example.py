@@ -11,9 +11,9 @@ def convert_ctd_files(path=None):
     else:
         flist = glob.glob(path+'/*.ctd')
     print("Total number of files =", len(flist))
-    out_path = '/home/pramod/temp/'
+    out_path = '/home/pramod/ctd_temp/'
     # loop through files in list, read the data and write netcdf file if data read is successful
-    for i, f in enumerate(flist[:2]):
+    for i, f in enumerate(flist[:10000]):
         print(i, f)
         fdata = CtdFile(filename=f, debug=False)
         if fdata.import_data():
