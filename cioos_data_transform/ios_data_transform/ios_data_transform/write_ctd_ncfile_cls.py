@@ -21,6 +21,7 @@ def write_ctd_ncfile(filename, ctdcls):
     out.summary = 'IOS CTD datafile'
     out.title = 'IOS CTD profile'
     out.institution = 'Institute of Ocean Sciences, 9860 West Saanich Road, Sidney, B.C., Canada'
+    out.infoUrl = 'http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html'
     out.cdm_profile_variables = 'TEMPS901, TEMPS902, TEMPS601, TEMPS602, TEMPS01, PSALST01, PSALST02, PSALSTPPT01, PRESPR01'
 # write full original header, as json dictionary
     out.HEADER = json.dumps(ctdcls.get_complete_header(), ensure_ascii=False, indent=False)
@@ -28,16 +29,19 @@ def write_ctd_ncfile(filename, ctdcls):
     out.nrec = int(ctdcls.FILE['NUMBER OF RECORDS'])
 # add variable profile_id (dummy variable)
     ncfile_var_list = []
-    profile_id = random.randint(1, 100000)
-    ncfile_var_list.append(OceanNcVar('profile', 'profile', None, None, None, profile_id))
+    # profile_id = random.randint(1, 100000)
     ncfile_var_list.append(OceanNcVar('str_id', 'filename', None, None, None, ctdcls.filename.split('/')[-1]))
 # add administration variables
     if 'COUNTRY' in ctdcls.ADMINISTRATION:
         ncfile_var_list.append(OceanNcVar('str_id', 'country', None, None, None, ctdcls.ADMINISTRATION['COUNTRY'].strip()))
     if 'MISSION' in ctdcls.ADMINISTRATION:
-        ncfile_var_list.append(OceanNcVar('str_id', 'mission_id', None, None, None, ctdcls.ADMINISTRATION['MISSION'].strip()))
+        mission_id = ctdcls.ADMINISTRATION['MISSION'].strip()
     else:
-        ncfile_var_list.append(OceanNcVar('str_id', 'mission_id', None, None, None, ctdcls.ADMINISTRATION['CRUISE'].strip()))
+        mission_id = ctdcls.ADMINISTRATION['CRUISE'].strip()
+    buf = mission_id.split('-')
+    mission_id = '{:4d}-{:03d}'.format(int(buf[0]), int(buf[1]))
+    print(mission_id)
+    ncfile_var_list.append(OceanNcVar('str_id', 'mission_id', None, None, None, mission_id))
     if 'SCIENTIST' in ctdcls.ADMINISTRATION:
         ncfile_var_list.append(OceanNcVar('str_id', 'scientist', None, None, None, ctdcls.ADMINISTRATION['SCIENTIST'].strip()))
     if 'PROJECT' in ctdcls.ADMINISTRATION:
@@ -59,8 +63,12 @@ def write_ctd_ncfile(filename, ctdcls):
     if 'GEOGRAPHIC AREA' in ctdcls.LOCATION:
         ncfile_var_list.append(OceanNcVar('str_id', 'geographic_area', None, None, None, ctdcls.LOCATION['GEOGRAPHIC AREA'].strip()))
     if 'EVENT NUMBER' in ctdcls.LOCATION:
-        ncfile_var_list.append(OceanNcVar('str_id', 'event_number', None, None, None, ctdcls.LOCATION['EVENT NUMBER'].strip()))
+        event_id = ctdcls.LOCATION['EVENT NUMBER'].strip()
+        ncfile_var_list.append(OceanNcVar('str_id', 'event_number', None, None, None, event_id))
 # add time variable
+    profile_id = int('{:04d}{:03d}{:03d}'.format(int(buf[0]), int(buf[1]), int(event_id)))
+    # print(profile_id)
+    ncfile_var_list.append(OceanNcVar('profile', 'profile', None, None, None, profile_id))
     ncfile_var_list.append(OceanNcVar('time', 'time', None, None, None, ctdcls.date))
 # go through CHANNELS and add each variable depending on type
     for i, channel in enumerate(ctdcls.CHANNELS['Name']):
@@ -72,11 +80,11 @@ def write_ctd_ncfile(filename, ctdcls):
             ncfile_var_list.append(OceanNcVar('pressure', 'pressure',
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
                 ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list))
-        elif is_in(['temperature'], channel):
+        elif is_in(['temperature'], channel) and not is_in(['flag', 'bottle'], channel):
             ncfile_var_list.append(OceanNcVar('temperature', ctdcls.CHANNELS['Name'][i],
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
                 ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list))
-        elif is_in(['salinity'], channel):
+        elif is_in(['salinity'], channel) and not is_in(['flag', 'bottle'], channel):
             ncfile_var_list.append(OceanNcVar('salinity', ctdcls.CHANNELS['Name'][i],
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
                 ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list))
