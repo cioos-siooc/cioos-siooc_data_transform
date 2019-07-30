@@ -1,11 +1,13 @@
 # IOS Data Conversion
 
-<One Paragraph of project description goes here>
+This python package was created to aid in the conversion of data from an IOS (Institute of Ocean Sciences) specific format to netCDF files.
+The netCDF files are compatible with the CF conventions and 
+
 
 ## Description of tools
-* Ocean data class:
-* netCDF4 file class:
-* netCDF4 variable class:
+* Ocean data class: This contains the methods (functions) to read different sections from a data file in the IOS format. Data is stored in state variables that describe the class.
+* netCDF4 file class: This has all the methods required to write a netCDF file in the standard format. Data is held in object untill write_file function is executed.
+* netCDF4 variable class: Hold variable data and definition. List of these objects are passed to netCDF file class to write out in a standard format.
 
 ## Getting Started / Installing
 
@@ -22,9 +24,9 @@ These instructions will get you a copy of the project up and running on your loc
 * Python 3X environment. See (https://docs.conda.io/en/latest/miniconda.html) for recommended installation instructions
 * Optional: Create a new python environment ($ conda create -n my-environment-name)
 
-## Running the tests
+## Examples
 
-<Explain how to run the automated tests for this system>
+See example.py for sample on how to use the package to convert IOS CTD datafiles to netCDF format.
 
 ## Authors
 
