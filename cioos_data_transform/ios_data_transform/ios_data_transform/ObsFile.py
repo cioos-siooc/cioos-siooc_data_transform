@@ -58,7 +58,8 @@ class ObsFile(object):
             section_name = '*' + section_name
         idx = self.find_index(section_name)
         if idx == -1:
-            raise Exception('Section not found'+section_name+self.filename)
+            print('Section not found'+section_name+self.filename)
+            return {}
         info = {}
         # EOS = False # end of section logical
         while True:
