@@ -24,7 +24,7 @@ def convert_ctd_files(in_path, out_path):
 
 env_var = import_env_variables('./.env')
 print(env_var)
-convert_ctd_files(in_path=env_var['ctd_raw_files'], out_path=env_var['ctd_nc_files'])
+convert_ctd_files(in_path=env_var['ctd_raw_folder'], out_path=env_var['ctd_nc_folder'])
 # convert_ctd_files(path='test_files/')
 # f = ObsFile.CtdFile(filename='/home/pramod/data/ios_mooring_data/ctd/1997-11-0131.CTD', debug=True)
 # f = CurFile(filename='A1_19921028_19930504_0035m.CUR')
