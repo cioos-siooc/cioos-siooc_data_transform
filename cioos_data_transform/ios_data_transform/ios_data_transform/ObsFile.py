@@ -204,8 +204,8 @@ class ObsFile(object):
         else:
             info['LONGITUDE'] = buf
     # initialize some dict items if not available
-        if 'EVENT NUMBER' not in info.keys():
-            info['EVENT NUMBER'] = ''
+        # if 'EVENT NUMBER' not in info.keys():
+            # info['EVENT NUMBER'] = ''
         return info
 
     def get_channel_detail(self):
