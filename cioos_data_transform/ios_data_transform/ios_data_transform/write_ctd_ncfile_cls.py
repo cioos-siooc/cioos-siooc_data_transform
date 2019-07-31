@@ -1,4 +1,4 @@
-import random
+# import random
 import json
 from OceanNcFile import CtdNcFile
 from OceanNcVar import OceanNcVar
@@ -101,4 +101,4 @@ def write_ctd_ncfile(filename, ctdcls):
     # attach variables to ncfileclass and call method to write netcdf file
     out.varlist = ncfile_var_list
     out.write_ncfile(filename)
-    print(filename)
+    # print(filename)

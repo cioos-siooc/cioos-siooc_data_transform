@@ -3,18 +3,14 @@ from write_ctd_ncfile_cls import write_ctd_ncfile
 # import ios_data_transform as iod
 import glob
 import os
+from utils import import_env_variables
 
-def convert_ctd_files(path=None):
-    # find all ctd files in the path provided
-    if path is None:
-        flist = glob.glob('/home/pramod/data/ios_mooring_data/ctd/*.ctd')
-    else:
-        flist = glob.glob(path+'/*.ctd')
+def convert_ctd_files(in_path, out_path):
+    flist = glob.glob(in_path+'/*.[Cc][Tt][Dd]')
     print("Total number of files =", len(flist))
-    out_path = '/home/pramod/ctd_temp/'
     # loop through files in list, read the data and write netcdf file if data read is successful
-    for i, f in enumerate(flist[:10000]):
-        print(i, f)
+    for i, f in enumerate(flist[52+410:]):
+        # print(i, f)
         fdata = CtdFile(filename=f, debug=False)
         if fdata.import_data():
             # print " <- Read data successfully !"
@@ -26,7 +22,9 @@ def convert_ctd_files(path=None):
             print(" <- Failed to read file")
 
 
-convert_ctd_files(path=None)
+env_var = import_env_variables('./.env')
+print(env_var)
+convert_ctd_files(in_path=env_var['ctd_raw_files'], out_path=env_var['ctd_nc_files'])
 # convert_ctd_files(path='test_files/')
 # f = ObsFile.CtdFile(filename='/home/pramod/data/ios_mooring_data/ctd/1997-11-0131.CTD', debug=True)
 # f = CurFile(filename='A1_19921028_19930504_0035m.CUR')

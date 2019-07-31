@@ -1,7 +1,7 @@
 # IOS Data Conversion
 
 This python package was created to aid in the conversion of data from an IOS (Institute of Ocean Sciences) specific format to netCDF files.
-The netCDF files are compatible with the CF conventions and 
+The netCDF files are compatible with the CF conventions and ERDDAP requirements. 
 
 
 ## Description of tools
