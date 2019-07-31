@@ -64,7 +64,9 @@ def write_ctd_ncfile(filename, ctdcls):
         ncfile_var_list.append(OceanNcVar('str_id', 'geographic_area', None, None, None, ctdcls.LOCATION['GEOGRAPHIC AREA'].strip()))
     if 'EVENT NUMBER' in ctdcls.LOCATION:
         event_id = ctdcls.LOCATION['EVENT NUMBER'].strip()
-        ncfile_var_list.append(OceanNcVar('str_id', 'event_number', None, None, None, event_id))
+    else:
+        event_id = '00'
+    ncfile_var_list.append(OceanNcVar('str_id', 'event_number', None, None, None, event_id))
 # add time variable
     profile_id = int('{:04d}{:03d}{:03d}'.format(int(buf[0]), int(buf[1]), int(event_id)))
     # print(profile_id)
