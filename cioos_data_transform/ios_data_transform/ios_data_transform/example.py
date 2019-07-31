@@ -3,14 +3,18 @@ from write_ctd_ncfile_cls import write_ctd_ncfile
 # import ios_data_transform as iod
 import glob
 import os
-from utils import import_env_variables
+from utils import import_env_variables, file_mod_time
 
 def convert_ctd_files(in_path, out_path):
     flist = glob.glob(in_path+'/*.[Cc][Tt][Dd]')
     print("Total number of files =", len(flist))
     # loop through files in list, read the data and write netcdf file if data read is successful
-    for i, f in enumerate(flist[52+410:]):
-        # print(i, f)
+    for i, f in enumerate(flist[:]):
+        # skip processing file if its newer than 24 hours old
+        if file_mod_time(f) > 24.:
+            continue
+        else:
+            print(i, f)
         fdata = CtdFile(filename=f, debug=False)
         if fdata.import_data():
             # print " <- Read data successfully !"
