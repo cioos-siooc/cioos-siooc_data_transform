@@ -22,7 +22,7 @@ def write_ctd_ncfile(filename, ctdcls):
     out.title = 'IOS CTD profile'
     out.institution = 'Institute of Ocean Sciences, 9860 West Saanich Road, Sidney, B.C., Canada'
     out.infoUrl = 'http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html'
-    out.cdm_profile_variables = 'TEMPS901, TEMPS902, TEMPS601, TEMPS602, TEMPS01, PSALST01, PSALST02, PSALSTPPT01, PRESPR01'
+    out.cdm_profile_variables = 'time' # TEMPS901, TEMPS902, TEMPS601, TEMPS602, TEMPS01, PSALST01, PSALST02, PSALSTPPT01, PRESPR01
 # write full original header, as json dictionary
     out.HEADER = json.dumps(ctdcls.get_complete_header(), ensure_ascii=False, indent=False)
 # initcreate dimension variable
