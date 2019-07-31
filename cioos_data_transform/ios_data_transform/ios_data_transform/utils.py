@@ -16,3 +16,11 @@ def import_env_variables(filename='./.env'):
         for line in lines:
             info[line.split(':')[0].strip()] = line.split(':')[1].strip()
     return info
+
+def file_mod_time(filename):
+    # returns how old the file is based on timestamp
+    # returns the time in hours
+    import time
+    import os
+    dthrs = (os.path.getmtime(filename) - time.time())/3600.
+    return dthrs
