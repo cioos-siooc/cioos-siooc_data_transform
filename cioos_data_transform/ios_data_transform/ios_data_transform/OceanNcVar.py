@@ -1,7 +1,7 @@
 # class to describe any variable that goes into a netcdf file
 # will include bodc code generation
-from utils import is_in
 import datetime
+from .utils import is_in
 
 class OceanNcVar(object):
     def __init__(self, vartype, varname, varunits, varmin, varmax, varval, varclslist=[]):

@@ -6,7 +6,7 @@ import os
 from utils import import_env_variables, file_mod_time
 
 def convert_ctd_files(in_path, out_path):
-    flist = glob.glob(in_path+'/*.[Cc][Tt][Dd]')
+    flist = glob.glob(in_path+'*.[Cc][Tt][Dd]')
     print("Total number of files =", len(flist))
     # loop through files in list, read the data and write netcdf file if data read is successful
     for i, f in enumerate(flist[:]):
