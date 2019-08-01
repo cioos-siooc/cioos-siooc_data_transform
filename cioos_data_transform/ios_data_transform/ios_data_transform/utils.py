@@ -7,8 +7,7 @@ def is_in(keywords, string):
 
 def import_env_variables(filename='./.env'):
     # import information in file to a dictionary
-    # this file makes the implementation independent of local folder
-    # structure
+    # this file makes the implementation independent of local folder structure
     # data in file should be key:value pairs. Key should be unique
     info = {}
     with open(filename, 'r') as fid:
