@@ -64,10 +64,10 @@ def write_ctd_ncfile(filename, ctdcls):
     if 'EVENT NUMBER' in ctdcls.LOCATION:
         event_id = ctdcls.LOCATION['EVENT NUMBER'].strip()
     else:
-        event_id = '00'
+        raise Exception("Event number not found!"+ctdcls.filename)
     ncfile_var_list.append(OceanNcVar('str_id', 'event_number', None, None, None, event_id))
 # add time variable
-    profile_id = int('{:04d}{:03d}{:03d}'.format(int(buf[0]), int(buf[1]), int(event_id)))
+    profile_id = '{:04d}-{:03d}-{:04d}'.format(int(buf[0]), int(buf[1]), int(event_id))
     # print(profile_id)
     ncfile_var_list.append(OceanNcVar('profile', 'profile', None, None, None, profile_id))
     ncfile_var_list.append(OceanNcVar('time', 'time', None, None, None, ctdcls.date))
@@ -100,4 +100,4 @@ def write_ctd_ncfile(filename, ctdcls):
     # attach variables to ncfileclass and call method to write netcdf file
     out.varlist = ncfile_var_list
     out.write_ncfile(filename)
-    # print(filename)
+    print(filename)
