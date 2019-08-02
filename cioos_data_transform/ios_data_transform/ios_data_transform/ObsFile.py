@@ -124,14 +124,12 @@ class ObsFile(object):
         # return datetime object and as standard string format
         from datetime import datetime
         from pytz import timezone
-        # from dateutil import tz
 
         date_string = self.FILE['START TIME'].strip().upper()
         if self.debug:
-            print("Date string:", date_string)
+            print("Raw date string:", date_string)
 # get the naive (timezone unaware) datetime obj
         date_obj = datetime.strptime(date_string[4:], '%Y/%m/%d %H:%M:%S.%f')
-        print(date_obj)
 # make datetime object, aware of its timezone
 # for GMT, UTC
         if any([date_string.find(z) == 0 for z in ['GMT', 'UTC']]):
@@ -148,11 +146,9 @@ class ObsFile(object):
         else:
             raise Exception("Problem finding the timezone information->", self.filename)
         if self.debug:
-            print(date_obj)
-        print(date_obj)
+            print('Date obj with timezone info:',date_obj)
         # convert all datetime to utc before writing to netcdf file
         date_obj = date_obj.astimezone(timezone('UTC'))
-        print(date_obj)
         return date_obj, date_obj.strftime('%Y/%m/%d %H:%M:%S.%f %Z')
 
     def fmt_len(self, fmt):
