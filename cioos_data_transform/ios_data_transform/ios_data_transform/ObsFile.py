@@ -122,30 +122,37 @@ class ObsFile(object):
     def get_date(self):
         # reads datetime string in "START TIME" and converts to datetime object
         # return datetime object and as standard string format
-        import datetime, pytz
-        from dateutil import tz
+        from datetime import datetime
+        from pytz import timezone
+        # from dateutil import tz
 
         date_string = self.FILE['START TIME'].strip().upper()
         if self.debug:
             print("Date string:", date_string)
-
-        if any([date_string.find(z) == 0 for z in ['PST', 'PDT', 'GMT', 'UTC']]):
-            date_obj = datetime.datetime.strptime(date_string[4:], '%Y/%m/%d %H:%M:%S.%f')
-            date_obj = date_obj.replace(tzinfo=tz.gettz(date_string[0:3]))
-        elif any([date_string.find(z) == 0 for z in ['MDT', 'MST']]): # Canada/Mountain
-            date_obj = datetime.datetime.strptime(date_string[4:], '%Y/%m/%d %H:%M:%S.%f')
-            date_obj = date_obj.replace(tzinfo=tz.gettz('Canada/Mountain'))
-        elif any([date_string.find(z) == 0 for z in ['ADT', 'AST']]): #Canada/Atlantic
-            date_obj = datetime.datetime.strptime(date_string[4:], '%Y/%m/%d %H:%M:%S.%f')
-            date_obj = date_obj.replace(tzinfo=tz.gettz('Canada/Atlantic'))
-        else: # default assume UTC
-            print("Using default timezone !!")
-            raise Exception(" ERROR !!")
-            date_obj = datetime.datetime.strptime(date_string, '%Y/%m/%d %H:%M:%S.%f')
-            date_obj = date_obj.replace(tzinfo=tz.gettz('UTC'))
+# get the naive (timezone unaware) datetime obj
+        date_obj = datetime.strptime(date_string[4:], '%Y/%m/%d %H:%M:%S.%f')
+        print(date_obj)
+# make datetime object, aware of its timezone
+# for GMT, UTC
+        if any([date_string.find(z) == 0 for z in ['GMT', 'UTC']]):
+            date_obj = timezone(date_string[0:3]).localize(date_obj)
+# for Canada/Pacific
+        elif any([date_string.find(z) == 0 for z in ['PDT', 'PST']]):
+            date_obj = timezone('Canada/Pacific').localize(date_obj)
+# Canada/Mountain
+        elif any([date_string.find(z) == 0 for z in ['MDT', 'MST']]):
+            date_obj = timezone('Canada/Mountain').localize(date_obj)
+# Canada/Atlantic
+        elif any([date_string.find(z) == 0 for z in ['ADT', 'AST']]):
+            date_obj = timezone('Canada/Atlantic').localize(date_obj)
+        else:
+            raise Exception("Problem finding the timezone information->", self.filename)
         if self.debug:
             print(date_obj)
-        date_obj = date_obj.astimezone(pytz.utc)
+        print(date_obj)
+        # convert all datetime to utc before writing to netcdf file
+        date_obj = date_obj.astimezone(timezone('UTC'))
+        print(date_obj)
         return date_obj, date_obj.strftime('%Y/%m/%d %H:%M:%S.%f %Z')
 
     def fmt_len(self, fmt):
