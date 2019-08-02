@@ -41,7 +41,7 @@ class OceanNcVar(object):
         if self.type == 'str_id':
             self.datatype = str
         elif self.type == 'profile':
-            self.datatype = 'int32'
+            self.datatype = str
             self.cf_role = 'profile_id'
             self.dimensions = ()
         elif self.type == 'lat':
