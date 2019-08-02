@@ -71,7 +71,10 @@ class OceanNcVar(object):
             self.datatype = 'float32'
             self.dimensions = ('z')
             self.long_name = 'Pressure'
-            self.units = self.units.strip()
+            if self.units.lower() in ['dbar', 'decibar']:
+                self.units = 'decibar'
+            else:
+                raise Exception('Unclear units for pressure!')
             self.standard_name = 'sea_water_pressure'
         elif self.type == 'temperature':
             self.datatype = 'float32'
@@ -136,7 +139,7 @@ class OceanNcVar(object):
             if is_in(['PSS-78'], varunits):
                 bodc_code = "PSALST"; bodc_units = 'PSS-78'
             elif is_in(['ppt'], varunits):
-                bodc_code = "PSALSTPPT"; bodc_units = 'PPT'
+                bodc_code = "SSALST"; bodc_units = 'PPT'
             else:
                 raise Exception("Salinity type not defined", ios_varname, varunits, vartype)
             bodc_code = '{}{:02d}'.format(bodc_code, iter+1)
