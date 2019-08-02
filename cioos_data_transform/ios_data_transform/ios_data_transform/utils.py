@@ -13,6 +13,8 @@ def import_env_variables(filename='./.env'):
     with open(filename, 'r') as fid:
         lines = fid.readlines()
         for line in lines:
+            if line.strip() == '':
+                break
             info[line.split(':')[0].strip()] = line.split(':')[1].strip()
     return info
 
