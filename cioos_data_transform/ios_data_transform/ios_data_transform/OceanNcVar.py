@@ -71,7 +71,7 @@ class OceanNcVar(object):
             self.datatype = 'float32'
             self.dimensions = ('z')
             self.long_name = 'Pressure'
-            if self.units.lower() in ['dbar', 'decibar']:
+            if self.units.strip().lower() in ['dbar', 'decibar']:
                 self.units = 'decibar'
             else:
                 raise Exception('Unclear units for pressure!')
