@@ -1,6 +1,9 @@
+import sys
+import os
+sys.path.insert(0, os.getcwd()+'/../../')
 import ios_data_transform as iod
 import glob
-import os
+
 
 
 def convert_ctd_files(in_path, out_path):
