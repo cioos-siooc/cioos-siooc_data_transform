@@ -146,7 +146,7 @@ class ObsFile(object):
         else:
             raise Exception("Problem finding the timezone information->", self.filename)
         if self.debug:
-            print('Date obj with timezone info:',date_obj)
+            print('Date obj with timezone info:', date_obj)
         # convert all datetime to utc before writing to netcdf file
         date_obj = date_obj.astimezone(timezone('UTC'))
         return date_obj, date_obj.strftime('%Y/%m/%d %H:%M:%S.%f %Z')

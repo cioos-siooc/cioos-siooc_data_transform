@@ -110,6 +110,17 @@ class OceanNcVar(object):
             self.long_name = 'Oxygen concentration'
             self.standard_name = 'dissolved_oxygen_concentration'
             self.units = bodc_units
+        elif self.type == 'conductivity':
+            self.datatype = 'float32'
+            self.dimensions = ('z')
+            for i in range(4): # will try to get a unique variable name at least 4 times
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.long_name = 'Sea Water Electrical Conductivity'
+            self.standard_name = 'sea_water_electrical_conductivity'
+            self.units = bodc_units
         else:
             print("Do not know how to define this variable..")
             raise Exception("Fatal Error")
@@ -131,9 +142,10 @@ class OceanNcVar(object):
                 bodc_code = 'TEMPS9'; bodc_units = 'deg C'
             elif is_in(['IPTS-68', 'IPTS68'], varunits):
                 bodc_code = 'TEMPS6'; bodc_units = 'deg C'
+            elif is_in(['deg c', 'degc'], varunits):
+                bodc_code = 'TEMPST'; bodc_units = 'deg C'
             else: # if varunits does not specify type of temperature
-                print("Temperature type not defined", ios_varname, varunits)
-                bodc_code = 'TEMPS'; bodc_units = 'deg C'
+                raise Exception("Temperature type not defined", ios_varname, varunits, vartype)
             bodc_code = '{}{:02d}'.format(bodc_code, iter+1)
         elif vartype == 'salinity':
             if is_in(['PSS-78'], varunits):
@@ -144,11 +156,19 @@ class OceanNcVar(object):
                 raise Exception("Salinity type not defined", ios_varname, varunits, vartype)
             bodc_code = '{}{:02d}'.format(bodc_code, iter+1)
         elif vartype == 'oxygen':
-            if is_in(['mL/L'], varunits):
-                bodc_code = "O2mL"; bodc_units = 'mg/l'
+            if is_in(['ml/l'], varunits):
+                bodc_code = "O2mL"; bodc_units = 'mL/L'
             elif is_in(['umol/kg'], varunits):
                 bodc_code = 'O2umol'; bodc_units = 'umol/kg'
             else:
                 raise Exception("Oxygen units not found")
             bodc_code = '{}{:02d}'.format(bodc_code, iter+1)
+        elif vartype == 'conductivity':
+            if is_in(['s/m'], varunits):
+                bodc_code = 'CNDCST'; bodc_units = 'S/m'
+            else:
+                raise Exception("Conductivity units not compatible with BODC code", ios_varname, varunits, vartype)
+            bodc_code = '{}{:02d}'.format(bodc_code, iter+1)
+        else:
+            raise Exception('Cannot find BODC code for this variable', ios_varname, varunits, vartype)
         return bodc_code, bodc_units

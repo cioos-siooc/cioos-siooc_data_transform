@@ -93,8 +93,12 @@ def write_ctd_ncfile(filename, ctdcls):
             ncfile_var_list.append(OceanNcVar('oxygen', ctdcls.CHANNELS['Name'][i],
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
                 ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list))
-        # else:
-        #     print(channel, 'not transferred to netcdf file !')
+        elif is_in(['conductivity'], channel):
+            ncfile_var_list.append(OceanNcVar('conductivity', ctdcls.CHANNELS['Name'][i],
+                ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
+                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list))
+        else:
+            print(channel, 'not transferred to netcdf file !')
             # raise Exception('not found !!')
 
     # attach variables to ncfileclass and call method to write netcdf file
