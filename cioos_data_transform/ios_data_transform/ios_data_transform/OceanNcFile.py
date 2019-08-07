@@ -29,14 +29,21 @@ class OceanNcFile(object):
         setattr(self.ncfile, 'institution', self.institution)
         setattr(self.ncfile, 'history', self.history)
         setattr(self.ncfile, 'infoUrl', self.infoUrl)
-        setattr(self.ncfile, 'cdm_profile_variables', '')
         setattr(self.ncfile, 'HEADER', self.HEADER)
         # setup dimensions
         self.setup_dimensions()
+        # setup attributes unique to the datatype
+        self.setup_filetype()
         # write variables
         for var in self.varlist:
             self.__write_var(var)
         self.ncfile.close()
+
+    def setup_dimensions(self):
+        pass
+
+    def setup_filetype(self):
+        setattr(self.ncfile, 'cdm_profile_variables', '')
 
     def __write_var(self, var):
         # var.dimensions is a tuple
@@ -59,3 +66,6 @@ class OceanNcFile(object):
 class CtdNcFile(OceanNcFile):
     def setup_dimensions(self):
         self.ncfile.createDimension('z', self.nrec)
+
+    def setup_filetype(self):
+        setattr(self.ncfile, 'cdm_profile_variables', 'time, profile')
