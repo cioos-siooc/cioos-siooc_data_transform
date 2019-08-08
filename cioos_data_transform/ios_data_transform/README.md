@@ -4,10 +4,10 @@ This python package was created to aid in the conversion of data from an IOS (In
 The netCDF files are compatible with the CF conventions and ERDDAP requirements. 
 
 
-## Description of tools
-* Ocean data class: This contains the methods (functions) to read different sections from a data file in the IOS format. Data is stored in state variables that describe the class.
-* netCDF4 file class: This has all the methods required to write a netCDF file in the standard format. Data is held in object untill write_file function is executed.
-* netCDF4 variable class: Hold variable data and definition. List of these objects are passed to netCDF file class to write out in a standard format.
+## Description of classes and important methods
+* ObsFile (extensions: CtdFile, BotFile, etc.): Includes variables and methods to read data in the IOS format. Information is processed and stored in state variables used by OceanNcFile (or similar).
+* OceanNcFile (extensions: CtdNcFile etc.): Includes methods required to write a netCDF file in the standard format. Data is held in object untill write_file function is executed.
+* OceanNcVar: Holds variable data and definition. List of these objects are passed to OceanNcFile to write out in a standard format.
 
 ## Getting Started / Installing
 
@@ -26,7 +26,10 @@ These instructions will get you a copy of the project up and running on your loc
 
 ## Examples
 
-See example.py for sample on how to use the package to convert IOS CTD datafiles to netCDF format.
+See ios_data_transform/samples/example.py for sample on how to use the package to convert IOS CTD datafiles to netCDF format.
+Script used to injest IOS data into CIOOS are also in ./ios_data_transform/samples/
+
+Codes used to test the data conversion are in ./ios_data_transform/tests/
 
 ## Authors
 
