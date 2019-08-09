@@ -157,9 +157,9 @@ class OceanNcVar(object):
             bodc_code = '{}{:02d}'.format(bodc_code, iter+1)
         elif vartype == 'oxygen':
             if is_in(['ml/l'], varunits):
-                bodc_code = "O2mL"; bodc_units = 'mL/L'
+                bodc_code = "DOXYZZ"; bodc_units = 'mL/L'
             elif is_in(['umol/kg'], varunits):
-                bodc_code = 'O2umol'; bodc_units = 'umol/kg'
+                bodc_code = "DOXMZZ"; bodc_units = 'umol/kg'
             else:
                 raise Exception("Oxygen units not found")
             bodc_code = '{}{:02d}'.format(bodc_code, iter+1)
