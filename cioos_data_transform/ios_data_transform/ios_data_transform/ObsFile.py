@@ -89,7 +89,8 @@ class ObsFile(object):
             else:
                 if self.debug:
                     print(l)
-                info[l.split(':', 1)[0].strip()] = l.split(':', 1)[1].rstrip()
+                if len(l.split(':', 1)) > 1:
+                    info[l.split(':', 1)[0].strip()] = l.split(':', 1)[1]
         return info
 
     def get_subsection(self, name, section):
@@ -119,13 +120,19 @@ class ObsFile(object):
         dt = sum(dt*[24.*3600., 3600., 60., 1., 0.001])  # in seconds
         return dt
 
-    def get_date(self):
+    def get_date(self, opt='start'):
         # reads datetime string in "START TIME" and converts to datetime object
         # return datetime object and as standard string format
+        # read 'END TIME' if opt is 'end'
         from datetime import datetime
         from pytz import timezone
 
-        date_string = self.FILE['START TIME'].strip().upper()
+        if opt.lower() == 'start':
+            date_string = self.FILE['START TIME'].strip().upper()
+        elif opt.lower() == 'end':
+            date_string = self.FILE['END TIME'].strip().upper()
+        else:
+            raise Exception("Invalid option for get_date function !")
         if self.debug:
             print("Raw date string:", date_string)
 # get the naive (timezone unaware) datetime obj
@@ -325,7 +332,7 @@ class CtdFile(ObsFile):
     Author: Pramod Thupaki pramod.thupaki@hakai.org
     """
     def import_data(self):
-        dateobj, self.date = self.get_date()
+        self.start_dateobj, self.start_date = self.get_date(opt='start')
         self.LOCATION = self.get_location()
         self.CHANNELS = self.get_channels()
         self.COMMENTS = self.get_comments_like('COMMENTS')
@@ -349,11 +356,34 @@ class CurFile(ObsFile):
     """
     pass
 
-class MctdFile(ObsFile):
+class MCtdFile(ObsFile):
     """
-    Read mooring ctd file in IOS format
+    Read Mooring CTD file in IOS format
+    inherits methods from ObsFile class creates a new method called import_data
+    this method processes files in manner that is specific to CTD dataset
+    Author: Pramod Thupaki pramod.thupaki@hakai.org
     """
-    pass
+    def import_data(self):
+        from datetime import timedelta
+        startdateobj, self.start_date = self.get_date(opt='start')
+        self.LOCATION = self.get_location()
+        self.CHANNELS = self.get_channels()
+        self.COMMENTS = self.get_comments_like('COMMENTS')
+        self.REMARKS = self.get_comments_like('REMARKS')
+        self.ADMINISTRATION = self.get_section('ADMINISTRATION')
+        self.INSTRUMENT = self.get_section('INSTRUMENT')
+        dt = self.get_dt()
+        self.obs_time = [startdateobj+timedelta(seconds=dt*(i))
+                        for i in range(int(self.FILE['NUMBER OF RECORDS']))]
+        try:
+            self.data = self.get_data(formatline=self.FILE['FORMAT'])
+        except Exception as e:
+            self.channel_details = self.get_channel_detail()
+            self.data = self.get_data(formatline=None)
+        if self.data is None:
+            raise Exception("Error: Could not read data from format specified and could not decipher format")
+            sys.exit()
+        return 1
 
 
 class BotFile(ObsFile):

@@ -23,7 +23,7 @@ def convert_ctd_files(in_path, out_path, opt='all'):
         try:
             fdata = iod.CtdFile(filename=f, debug=False)
             fdata.import_data()
-            yy = fdata.date[0:4]
+            yy = fdata.start_date[0:4]
             if not os.path.exists(out_path+yy):
                 os.mkdir(out_path+yy)
             iod.write_ctd_ncfile(out_path+yy+'/'+f.split('/')[-1][0:-4]+'.ctd.nc', fdata)

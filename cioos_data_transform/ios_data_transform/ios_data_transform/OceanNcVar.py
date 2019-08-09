@@ -4,7 +4,7 @@ import datetime
 from .utils import is_in
 
 class OceanNcVar(object):
-    def __init__(self, vartype, varname, varunits, varmin, varmax, varval, varclslist=[]):
+    def __init__(self, vartype, varname, varunits, varmin, varmax, varval, varclslist=[], vardim=()):
         self.cf_role = None
         self.name = varname
         self.type = vartype
@@ -14,7 +14,7 @@ class OceanNcVar(object):
         self.maximum = varmin
         self.minimum = varmax
         self.datatype = ''
-        self.dimensions = ()
+        self.dimensions = vardim
         self.data = varval
         # from existing varlist. get all variables that are going to be written into the ncfile
         # this will be checked to make sure new variable name does not conflict with existing ones
@@ -24,6 +24,8 @@ class OceanNcVar(object):
         self.add_var(varlist)
 
     def add_var(self, varlist):
+        from pytz import timezone
+        import numpy as np
         """
         add variable to netcdf file using variables passed as inputs
         author: Pramod Thupaki pramod.thupaki@hakai.org
@@ -43,7 +45,6 @@ class OceanNcVar(object):
         elif self.type == 'profile':
             self.datatype = str
             self.cf_role = 'profile_id'
-            self.dimensions = ()
         elif self.type == 'lat':
             self.datatype = 'float32'
             self.long_name = 'Latitude'
@@ -58,18 +59,21 @@ class OceanNcVar(object):
             self.datatype = 'double'
             self.standard_name = 'time'
             self.long_name = 'time'
-            self.units = 'seconds since 1970-01-01 00:00:00'
-            dt = datetime.datetime.strptime(self.data, '%Y/%m/%d %H:%M:%S.%f %Z')
-            self.data = (dt - datetime.datetime(1970, 1, 1)).total_seconds()
+            self.units = 'seconds since 1970-01-01 00:00:00 UTC'
+            dt = np.asarray(self.data) # datetime.datetime.strptime(self.data, '%Y/%m/%d %H:%M:%S.%f %Z')
+            # print(dt - datetime.datetime(1970, 1, 1).astimezone(timezone('UTC')))
+            buf = dt - datetime.datetime(1970, 1, 1).astimezone(timezone('UTC'))
+            self.data = [i.total_seconds() for i in buf]
+            # self.data = (dt - datetime.datetime(1970, 1, 1).astimezone(timezone('UTC'))).total_seconds()
         elif self.type == 'depth':
             self.datatype = 'float32'
-            self.dimensions = ('z')
+            # self.dimensions = ('z')
             self.long_name = 'Depth in meters'
             self.standard_name = 'depth_below_sea_level_in_meters'
         elif self.type == 'pressure':
             self.name = 'PRESPR01'
             self.datatype = 'float32'
-            self.dimensions = ('z')
+            # self.dimensions = ('z')
             self.long_name = 'Pressure'
             if self.units.strip().lower() in ['dbar', 'decibar']:
                 self.units = 'decibar'
@@ -78,7 +82,7 @@ class OceanNcVar(object):
             self.standard_name = 'sea_water_pressure'
         elif self.type == 'temperature':
             self.datatype = 'float32'
-            self.dimensions = ('z')
+            # self.dimensions = ('z')
             for i in range(4):
                 bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
                 if bodc_code not in varlist:
@@ -89,7 +93,7 @@ class OceanNcVar(object):
             self.units = bodc_units
         elif self.type == 'salinity':
             self.datatype = 'float32'
-            self.dimensions = ('z')
+            # self.dimensions = ('z')
             for i in range(4): # will try to get a unique variable name at least 4 times
                 bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
                 if bodc_code not in varlist:
@@ -101,7 +105,7 @@ class OceanNcVar(object):
             self.units = bodc_units
         elif self.type == 'oxygen':
             self.datatype = 'float32'
-            self.dimensions = ('z')
+            # self.dimensions = ('z')
             for i in range(4): # will try to get a unique variable name at least 4 times
                 bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
                 if bodc_code not in varlist:
@@ -112,7 +116,7 @@ class OceanNcVar(object):
             self.units = bodc_units
         elif self.type == 'conductivity':
             self.datatype = 'float32'
-            self.dimensions = ('z')
+            # self.dimensions = ('z')
             for i in range(4): # will try to get a unique variable name at least 4 times
                 bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
                 if bodc_code not in varlist:
