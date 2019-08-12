@@ -59,10 +59,9 @@ class OceanNcVar(object):
             self.datatype = 'double'
             self.standard_name = 'time'
             self.long_name = 'time'
-            self.units = 'seconds since 1970-01-01 00:00:00 UTC'
+            self.units = 'seconds since 1970-01-01 00:00:00+0000'
             dt = np.asarray(self.data) # datetime.datetime.strptime(self.data, '%Y/%m/%d %H:%M:%S.%f %Z')
-            # print(dt - datetime.datetime(1970, 1, 1).astimezone(timezone('UTC')))
-            buf = dt - datetime.datetime(1970, 1, 1).astimezone(timezone('UTC'))
+            buf = dt - timezone('UTC').localize(datetime.datetime(1970, 1, 1, 0, 0, 0))
             self.data = [i.total_seconds() for i in buf]
             # self.data = (dt - datetime.datetime(1970, 1, 1).astimezone(timezone('UTC'))).total_seconds()
         elif self.type == 'depth':
