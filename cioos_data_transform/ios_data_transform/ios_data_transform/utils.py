@@ -15,6 +15,8 @@ def import_env_variables(filename='./.env'):
         for line in lines:
             if line.strip() == '':
                 break
+            elif line.strip()[0] == '#':
+                continue
             info[line.split(':')[0].strip()] = line.split(':')[1].strip()
     return info
 
