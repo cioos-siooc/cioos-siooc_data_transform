@@ -317,10 +317,11 @@ class ObsFile(object):
         # skip * in beginning of section name
         sections_list = []
         for i, line in enumerate(self.lines[2:]):
-            if line[0] == '*' and line[0:4] != '*END' and line[1] != '*':
+            if line[0] == '*' and line[0:4] != '*END' and line[1] not in ['*', ' ', '\n']:
                 sections_list.append(line.strip()[1:])
             else:
                 continue
+        print(sections_list)
         return sections_list
 
 
@@ -372,9 +373,13 @@ class MCtdFile(ObsFile):
         self.REMARKS = self.get_comments_like('REMARKS')
         self.ADMINISTRATION = self.get_section('ADMINISTRATION')
         self.INSTRUMENT = self.get_section('INSTRUMENT')
+        self.DEPLOYMENT = self.get_section('DEPLOYMENT')
+        self.RECOVERY = self.get_section('RECOVERY')
         dt = self.get_dt()
         self.obs_time = [startdateobj+timedelta(seconds=dt*(i))
                         for i in range(int(self.FILE['NUMBER OF RECORDS']))]
+        if self.debug:
+            print(self.obs_time[0], self.obs_time[-1])
         try:
             self.data = self.get_data(formatline=self.FILE['FORMAT'])
         except Exception as e:

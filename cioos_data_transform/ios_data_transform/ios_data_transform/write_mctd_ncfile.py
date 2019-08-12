@@ -34,13 +34,13 @@ def write_mctd_ncfile(filename, ctdcls):
 # add administration variables
     if 'COUNTRY' in ctdcls.ADMINISTRATION:
         ncfile_var_list.append(OceanNcVar('str_id', 'country', None, None, None, ctdcls.ADMINISTRATION['COUNTRY'].strip()))
-    if 'MISSION' in ctdcls.ADMINISTRATION:
-        mission_id = ctdcls.ADMINISTRATION['MISSION'].strip()
-    else:
-        mission_id = ctdcls.ADMINISTRATION['CRUISE'].strip()
+    if 'MISSION' in ctdcls.DEPLOYMENT:
+        mission_id = ctdcls.DEPLOYMENT['MISSION'].strip()
+    # else:
+    #     mission_id = ctdcls.ADMINISTRATION['CRUISE'].strip()
     buf = mission_id.split('-')
     mission_id = '{:4d}-{:03d}'.format(int(buf[0]), int(buf[1]))
-    ncfile_var_list.append(OceanNcVar('str_id', 'mission_id', None, None, None, mission_id))
+    ncfile_var_list.append(OceanNcVar('str_id', 'deployment_mission_id', None, None, None, mission_id))
     if 'SCIENTIST' in ctdcls.ADMINISTRATION:
         ncfile_var_list.append(OceanNcVar('str_id', 'scientist', None, None, None, ctdcls.ADMINISTRATION['SCIENTIST'].strip()))
     if 'PROJECT' in ctdcls.ADMINISTRATION:
