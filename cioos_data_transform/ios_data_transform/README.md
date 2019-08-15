@@ -22,7 +22,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 * Linux (or Unix-like) environment
 * Python 3X environment. See (https://docs.conda.io/en/latest/miniconda.html) for recommended installation instructions
-* Optional: Create a new python environment ($ conda create -n my-environment-name)
+* Optional: Create a new python environment ($ conda create -n my-environment-name) 
+* Recommended: Use conda-forge channel (https://conda-forge.org/) for packages where available
 
 ## Examples
 
