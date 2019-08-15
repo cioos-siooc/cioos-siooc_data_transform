@@ -16,13 +16,13 @@ def convert_files(env_vars, opt='all', ftype=None):
     if ftype == 'ctd':
         in_path = env_vars['ctd_raw_folder']
         out_path = env_vars['ctd_nc_folder']
-        flist = glob.glob(in_path+'**.[Cc][Tt][Dd]')
+        flist = glob.glob(in_path+'**/*.[Cc][Tt][Dd]', recursive=True)
     elif ftype == 'mctd':
         in_path = env_vars['mctd_raw_folder']
         out_path = env_vars['mctd_nc_folder']
-        flist = glob.glob(in_path+'**.[Cc][Tt][Dd]')
+        flist = glob.glob(in_path+'**/*.[Cc][Tt][Dd]', recursive=True)
     elif ftype in ['cur']:
-        flist = glob.glob(in_path+'**.[Cc][Uu][Rr]')
+        flist = glob.glob(in_path+'**/*.[Cc][Uu][Rr]', recursive=True)
     else:
         print("Filetype not understood ...")
         sys.exit()
