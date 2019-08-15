@@ -3,7 +3,7 @@
     Changelog Version 0.1: July 15 2019 - convert python scripts and functions into a python class
     Author: Pramod Thupaki (pramod.thupaki@hakai.org)
 """
-import sys
+# import sys
 class ObsFile(object):
     """
     Class template for all observed data.
@@ -18,10 +18,16 @@ class ObsFile(object):
         # inputs are filename and debug state
         self.debug = debug
         self.filename = filename
-        with open(self.filename, 'r', encoding='ASCII', errors='ignore') as fid:
-            self.lines = [l for l in fid.readlines()]
-        self.ios_header_version = self.get_header_version()
-        self.FILE = self.get_section('FILE')
+        # try opening and reading the file. if error. soft-exit.
+        try:
+            with open(self.filename, 'r', encoding='ASCII', errors='ignore') as fid:
+                self.lines = [l for l in fid.readlines()]
+            self.ios_header_version = self.get_header_version()
+            self.FILE = self.get_section('FILE')
+            self.status = 1
+        except Exception as e:
+            print(e)
+            self.status = 0
 
     def get_header_version(self):
         # reads header version
@@ -340,14 +346,15 @@ class CtdFile(ObsFile):
         self.REMARKS = self.get_comments_like('REMARKS')
         self.ADMINISTRATION = self.get_section('ADMINISTRATION')
         self.INSTRUMENT = self.get_section('INSTRUMENT')
+        # try reading file using format specified in 'FORMAT'
         try:
             self.data = self.get_data(formatline=self.FILE['FORMAT'])
         except Exception as e:
             self.channel_details = self.get_channel_detail()
             self.data = self.get_data(formatline=None)
         if self.data is None:
-            raise Exception("Error: Could not read data from format specified and could not decipher format")
-            sys.exit()
+            print("Error: Could not read data from format specified and could not decipher format")
+            return 0
         return 1
 
 
@@ -380,14 +387,15 @@ class MCtdFile(ObsFile):
                         for i in range(int(self.FILE['NUMBER OF RECORDS']))]
         if self.debug:
             print(self.obs_time[0], self.obs_time[-1])
+        # try reading file using format specified in 'FORMAT'
         try:
             self.data = self.get_data(formatline=self.FILE['FORMAT'])
         except Exception as e:
             self.channel_details = self.get_channel_detail()
             self.data = self.get_data(formatline=None)
         if self.data is None:
-            raise Exception("Error: Could not read data from format specified and could not decipher format")
-            sys.exit()
+            print("Error: Could not read data from format specified and could not decipher format")
+            return 0
         return 1
 
 
