@@ -64,7 +64,8 @@ def write_ctd_ncfile(filename, ctdcls):
     if 'EVENT NUMBER' in ctdcls.LOCATION:
         event_id = ctdcls.LOCATION['EVENT NUMBER'].strip()
     else:
-        raise Exception("Event number not found!"+ctdcls.filename)
+        print("Event number not found!"+ctdcls.filename)
+        return 0
     ncfile_var_list.append(OceanNcVar('str_id', 'event_number', None, None, None, event_id))
 # add time variable
     profile_id = '{:04d}-{:03d}-{:04d}'.format(int(buf[0]), int(buf[1]), int(event_id))
@@ -105,3 +106,4 @@ def write_ctd_ncfile(filename, ctdcls):
     out.varlist = ncfile_var_list
     out.write_ncfile(filename)
     print(filename)
+    return 1

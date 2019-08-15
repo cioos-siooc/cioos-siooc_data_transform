@@ -49,9 +49,11 @@ def convert_files(env_vars, opt='all', ftype=None):
             if not os.path.exists(out_path+yy):
                 os.mkdir(out_path+yy)
             if ftype == 'ctd':
-                iod.write_ctd_ncfile(out_path+yy+'/'+fname.split('/')[-1][0:-4]+'.ctd.nc', fdata)
+                if not iod.write_ctd_ncfile(out_path+yy+'/'+fname.split('/')[-1][0:-4]+'.ctd.nc', fdata):
+                    print("Error writing netcdf file:", fname)
             elif ftype == 'mctd':
-                iod.write_mctd_ncfile(out_path+yy+'/'+fname.split('/')[-1][0:-4]+'.mctd.nc', fdata)
+                if not iod.write_mctd_ncfile(out_path+yy+'/'+fname.split('/')[-1][0:-4]+'.mctd.nc', fdata):
+                    print("Error writing netcdf file:", fname)
         else:
             print("failed to import data from file", fname)
             continue
