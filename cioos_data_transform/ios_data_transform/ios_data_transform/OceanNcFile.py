@@ -4,9 +4,9 @@
 #
 # AIM:  this will be the common entry point for data from different sources that go into CIOOS
 #       ensuring common ncfile metadata standards. File has to conform to CF conventions and CIOOS variable standards
-from netCDF4 import Dataset as ncdata
-
 class OceanNcFile(object):
+    from netCDF4 import Dataset as ncdata
+    
     def __init__(self):
         self.featureType = ''
         self.summary = ''
@@ -21,7 +21,7 @@ class OceanNcFile(object):
 
     def write_ncfile(self, ncfilename):
         # create ncfile
-        self.ncfile = ncdata(ncfilename, 'w', 'NETCDF4_CLASSIC')
+        self.ncfile = ncdata(filename=ncfilename, mode='w', format='NETCDF4', clobber=True)
         # setup global attributes of netcdf file based class data
         setattr(self.ncfile, 'featureType', self.featureType)
         setattr(self.ncfile, 'summary', self.summary)

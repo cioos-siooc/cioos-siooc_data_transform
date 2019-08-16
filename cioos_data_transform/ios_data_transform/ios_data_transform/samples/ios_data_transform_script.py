@@ -3,6 +3,7 @@ import os
 sys.path.insert(0, os.getcwd()+'/../../')
 import ios_data_transform as iod
 import glob
+# from pympler import summary, muppy
 
 
 def convert_files(env_vars, opt='all', ftype=None):
@@ -49,15 +50,22 @@ def convert_files(env_vars, opt='all', ftype=None):
             if not os.path.exists(out_path+yy):
                 os.mkdir(out_path+yy)
             if ftype == 'ctd':
-                if not iod.write_ctd_ncfile(out_path+yy+'/'+fname.split('/')[-1][0:-4]+'.ctd.nc', fdata):
-                    print("Error writing netcdf file:", fname)
+                try:
+                    iod.write_ctd_ncfile(out_path+yy+'/'+fname.split('/')[-1][0:-4]+'.ctd.nc', fdata)
+                except Exception as e:
+                    print("Error: Unable to create netcdf file:", fname, e)
             elif ftype == 'mctd':
-                if not iod.write_mctd_ncfile(out_path+yy+'/'+fname.split('/')[-1][0:-4]+'.mctd.nc', fdata):
-                    print("Error writing netcdf file:", fname)
+                try:
+                    iod.write_mctd_ncfile(out_path+yy+'/'+fname.split('/')[-1][0:-4]+'.mctd.nc', fdata)
+                except Exception as e:
+                    print("Error: Unable to create netcdf file:", fname, e)
         else:
             print("failed to import data from file", fname)
             continue
-
+        del fdata
+    # all_objects = muppy.get_objects()
+    # sum1 = summary.summarize(all_objects)
+    # summary.print_(sum1)
 
 # read inputs if any from the command line
 # first input is 'all' or 'new' for processing all files or just files newer than 24 hours

@@ -396,7 +396,8 @@ class MCtdFile(ObsFile):
         if self.data is None:
             print("Error: Could not read data from format specified and could not decipher format")
             return 0
-        return 1
+        else:
+            return 1
 
 
 class BotFile(ObsFile):
