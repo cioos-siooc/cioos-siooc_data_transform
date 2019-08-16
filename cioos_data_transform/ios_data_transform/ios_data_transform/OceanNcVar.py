@@ -2,8 +2,6 @@
 # will include bodc code generation
 
 class OceanNcVar(object):
-    import datetime
-    from .utils import is_in
     
     def __init__(self, vartype, varname, varunits, varmin, varmax, varval, varclslist=[], vardim=()):
         self.cf_role = None
@@ -25,6 +23,7 @@ class OceanNcVar(object):
         self.add_var(varlist)
 
     def add_var(self, varlist):
+        from datetime import datetime
         from pytz import timezone
         import numpy as np
         """
@@ -62,7 +61,7 @@ class OceanNcVar(object):
             self.long_name = 'time'
             self.units = 'seconds since 1970-01-01 00:00:00+0000'
             dt = np.asarray(self.data) # datetime.datetime.strptime(self.data, '%Y/%m/%d %H:%M:%S.%f %Z')
-            buf = dt - timezone('UTC').localize(datetime.datetime(1970, 1, 1, 0, 0, 0))
+            buf = dt - timezone('UTC').localize(datetime(1970, 1, 1, 0, 0, 0))
             self.data = [i.total_seconds() for i in buf]
             # self.data = (dt - datetime.datetime(1970, 1, 1).astimezone(timezone('UTC'))).total_seconds()
         elif self.type == 'depth':
@@ -140,6 +139,7 @@ class OceanNcVar(object):
         output:
             BODC code
         """
+        from .utils import is_in
         bodc_code = ''
         if vartype == 'temperature':
             if is_in(['ITS90', 'ITS-90'], varunits):
