@@ -27,3 +27,10 @@ def file_mod_time(filename):
     import os
     dthrs = (os.path.getmtime(filename) - time.time())/3600.
     return dthrs
+
+
+def release_memory(outfile):
+    # release memory from file and variable class created.
+    for c in outfile.varlist:
+        del c
+    del outfile

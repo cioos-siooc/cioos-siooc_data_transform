@@ -2,7 +2,7 @@
 import json
 from .OceanNcFile import MCtdNcFile
 from .OceanNcVar import OceanNcVar
-from .utils import is_in
+from .utils import is_in, release_memory
 
 
 def write_mctd_ncfile(filename, ctdcls):
@@ -106,5 +106,6 @@ def write_mctd_ncfile(filename, ctdcls):
     out.varlist = ncfile_var_list
     out.write_ncfile(filename)
     print(filename)
+    release_memory(out)
     return 1
 
