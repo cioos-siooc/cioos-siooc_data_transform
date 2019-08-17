@@ -3,7 +3,7 @@ import os
 sys.path.insert(0, os.getcwd()+'/../../')
 import ios_data_transform as iod
 import glob
-# from pympler import summary, muppy
+from multiprocessing import Process
 
 
 def convert_files(env_vars, opt='all', ftype=None):
@@ -29,43 +29,48 @@ def convert_files(env_vars, opt='all', ftype=None):
         sys.exit()
     print("Total number of files =", len(flist))
     # loop through files in list, read the data and write netcdf file if data read is successful
-    for i, fname in enumerate(flist[:]):
-        # skip processing file if its older than 24 hours old
-        if iod.file_mod_time(fname) < -24. and opt == 'new':
-            continue
+    for i, fname in enumerate(flist[:1000]):
         print('\nProcessing -> {} {}'.format(i, fname))
-        # read file based on file type
+        p = Process(target=(convert_files_threads), args=(ftype, fname, out_path))
+        p.start()
+        # p.join()
+
+
+def convert_files_threads(ftype, fname, out_path):
+    # skip processing file if its older than 24 hours old
+    if iod.file_mod_time(fname) < -24. and opt == 'new':
+        return 0
+    
+    # read file based on file type
+    if ftype == 'ctd':
+        fdata = iod.CtdFile(filename=fname, debug=False)
+    elif ftype == 'mctd':
+        fdata = iod.MCtdFile(filename=fname, debug=False)
+    else:
+        print("Filetype not understood!")
+        sys.exit()
+# if file class was created properly, try to import data
+    if fdata.import_data():
+        print("Imported data successfully!")
+        # now try to write the file...
+        yy = fdata.start_date[0:4]
+        if not os.path.exists(out_path+yy):
+            os.mkdir(out_path+yy)
         if ftype == 'ctd':
-            fdata = iod.CtdFile(filename=fname, debug=False)
+            try:
+                iod.write_ctd_ncfile(out_path+yy+'/'+fname.split('/')[-1][0:-4]+'.ctd.nc', fdata)
+            except Exception as e:
+                print("Error: Unable to create netcdf file:", fname, e)
         elif ftype == 'mctd':
-            fdata = iod.MCtdFile(filename=fname, debug=False)
-        else:
-            print("Filetype not understood!")
-            sys.exit()
-    # if file class was created properly, try to import data
-        if fdata.import_data():
-            print("Imported data successfully!")
-            # now try to write the file...
-            yy = fdata.start_date[0:4]
-            if not os.path.exists(out_path+yy):
-                os.mkdir(out_path+yy)
-            if ftype == 'ctd':
-                try:
-                    iod.write_ctd_ncfile(out_path+yy+'/'+fname.split('/')[-1][0:-4]+'.ctd.nc', fdata)
-                except Exception as e:
-                    print("Error: Unable to create netcdf file:", fname, e)
-            elif ftype == 'mctd':
-                try:
-                    iod.write_mctd_ncfile(out_path+yy+'/'+fname.split('/')[-1][0:-4]+'.mctd.nc', fdata)
-                except Exception as e:
-                    print("Error: Unable to create netcdf file:", fname, e)
-        else:
-            print("failed to import data from file", fname)
-            continue
-        del fdata
-    # all_objects = muppy.get_objects()
-    # sum1 = summary.summarize(all_objects)
-    # summary.print_(sum1)
+            try:
+                iod.write_mctd_ncfile(out_path+yy+'/'+fname.split('/')[-1][0:-4]+'.mctd.nc', fdata)
+            except Exception as e:
+                print("Error: Unable to create netcdf file:", fname, e)
+    else:
+        print("failed to import data from file", fname)
+        return 0
+    fdata = None
+
 
 # read inputs if any from the command line
 # first input is 'all' or 'new' for processing all files or just files newer than 24 hours
