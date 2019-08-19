@@ -3,6 +3,8 @@ import json
 from .OceanNcFile import CtdNcFile
 from .OceanNcVar import OceanNcVar
 from .utils import is_in, release_memory
+from datetime import datetime
+from netCDF4 import Dataset as ncdata 
 
 
 def write_ctd_ncfile(filename, ctdcls):

@@ -3,7 +3,12 @@
     Changelog Version 0.1: July 15 2019 - convert python scripts and functions into a python class
     Author: Pramod Thupaki (pramod.thupaki@hakai.org)
 """
-# import sys
+import numpy as np
+from datetime import datetime
+from pytz import timezone
+import fortranformat as ff
+import struct
+
 class ObsFile(object):
     """
     Class template for all observed data.
@@ -28,6 +33,9 @@ class ObsFile(object):
         except Exception as e:
             print(e)
             self.status = 0
+    
+    def import_data(self):
+        pass
 
     def get_header_version(self):
         # reads header version
@@ -120,7 +128,6 @@ class ObsFile(object):
     def get_dt(self):
         # converts time increment from ios format to seconds
         # float32 accurate (seconds are not rounded to integers)
-        import numpy as np
         line = self.FILE['TIME INCREMENT']
         dt = np.asarray(line.split('!')[0].split(), dtype=float)
         dt = sum(dt*[24.*3600., 3600., 60., 1., 0.001])  # in seconds
@@ -130,9 +137,6 @@ class ObsFile(object):
         # reads datetime string in "START TIME" and converts to datetime object
         # return datetime object and as standard string format
         # read 'END TIME' if opt is 'end'
-        from datetime import datetime
-        from pytz import timezone
-
         if opt.lower() == 'start':
             date_string = self.FILE['START TIME'].strip().upper()
         elif opt.lower() == 'end':
@@ -167,16 +171,12 @@ class ObsFile(object):
     def fmt_len(self, fmt):
         # deprecated: calculated length of string from 'struct' format specification
         # assumes on 's' data fromat
-        import numpy as np
         return np.asarray(fmt[0:-1].split('s'), dtype='int').sum()
 
     def get_data(self, formatline=None):
         # reads data using the information in FORMAT
         # if FORMAT information in file header is missing or does not work
         # then create 'struct' data format based on channel details information
-        import fortranformat as ff
-        import numpy as np
-        import struct
         idx = self.find_index('*END OF HEADER')
         lines = self.lines[idx+1:]
         data = []
@@ -255,7 +255,7 @@ class ObsFile(object):
 
             info['fmt_struct'] = fmt
         if self.debug:
-            print ("Python compatible data format:", fmt)
+            print("Python compatible data format:", fmt)
         return info
 
     def get_channels(self):

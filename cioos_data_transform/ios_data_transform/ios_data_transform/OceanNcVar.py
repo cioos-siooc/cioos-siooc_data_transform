@@ -1,8 +1,10 @@
 # class to describe any variable that goes into a netcdf file
 # will include bodc code generation
+from datetime import datetime
+from pytz import timezone
+import numpy as np
 
 class OceanNcVar(object):
-    
     def __init__(self, vartype, varname, varunits, varmin, varmax, varval, varclslist=[], vardim=()):
         self.cf_role = None
         self.name = varname
@@ -23,9 +25,6 @@ class OceanNcVar(object):
         self.add_var(varlist)
 
     def add_var(self, varlist):
-        from datetime import datetime
-        from pytz import timezone
-        import numpy as np
         """
         add variable to netcdf file using variables passed as inputs
         author: Pramod Thupaki pramod.thupaki@hakai.org
@@ -140,7 +139,7 @@ class OceanNcVar(object):
             BODC code
         """
         from .utils import is_in
-        bodc_code = ''
+        bodc_code = ''; bodc_units = ''
         if vartype == 'temperature':
             if is_in(['ITS90', 'ITS-90'], varunits):
                 bodc_code = 'TEMPS9'; bodc_units = 'deg C'

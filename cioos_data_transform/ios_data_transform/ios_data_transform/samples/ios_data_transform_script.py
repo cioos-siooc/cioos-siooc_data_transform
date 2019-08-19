@@ -33,14 +33,15 @@ def convert_files(env_vars, opt='all', ftype=None):
         print('\nProcessing -> {} {}'.format(i, fname))
         p = Process(target=(convert_files_threads), args=(ftype, fname, out_path))
         p.start()
-        # p.join()
+        p.join()
 
 
 def convert_files_threads(ftype, fname, out_path):
     # skip processing file if its older than 24 hours old
     if iod.file_mod_time(fname) < -24. and opt == 'new':
+        print("Not converting file: ", fname)
         return 0
-    
+
     # read file based on file type
     if ftype == 'ctd':
         fdata = iod.CtdFile(filename=fname, debug=False)
