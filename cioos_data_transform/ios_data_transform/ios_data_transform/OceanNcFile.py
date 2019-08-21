@@ -6,6 +6,7 @@
 #       ensuring common ncfile metadata standards. File has to conform to CF conventions and CIOOS variable standards
 from netCDF4 import Dataset as ncdata
 
+
 class OceanNcFile(object):
     def __init__(self):
         self.featureType = ''
@@ -76,4 +77,4 @@ class MCtdNcFile(OceanNcFile):
         self.ncfile.createDimension('time', self.nrec)
 
     def setup_filetype(self):
-        setattr(self.ncfile, 'cdm_profile_variables', 'profile')
+        setattr(self.ncfile, 'cdm_timeseries_variables', 'profile')
