@@ -1,9 +1,11 @@
-import sys
 import os
-sys.path.insert(0, os.getcwd()+'/../../')
-import ios_data_transform as iod
+import sys
 import glob
 from multiprocessing import Process
+from time import time
+# from importlib import import_module
+sys.path.insert(0, os.getcwd() + '/../../')
+import ios_data_transform as iod
 
 
 def convert_files(env_vars, opt='all', ftype=None):
@@ -17,13 +19,15 @@ def convert_files(env_vars, opt='all', ftype=None):
     if ftype == 'ctd':
         in_path = env_vars['ctd_raw_folder']
         out_path = env_vars['ctd_nc_folder']
-        flist = glob.glob(in_path+'**/*.[Cc][Tt][Dd]', recursive=True)
+        flist = glob.glob(in_path + '**/*.[Cc][Tt][Dd]', recursive=True)
     elif ftype == 'mctd':
         in_path = env_vars['mctd_raw_folder']
         out_path = env_vars['mctd_nc_folder']
-        flist = glob.glob(in_path+'**/*.[Cc][Tt][Dd]', recursive=True)
-    elif ftype in ['cur']:
-        flist = glob.glob(in_path+'**/*.[Cc][Uu][Rr]', recursive=True)
+        flist = glob.glob(in_path + '**/*.[Cc][Tt][Dd]', recursive=True)
+    elif ftype == 'cur':
+        in_path = env_vars['cur_raw_folder']
+        out_path = env_vars['cur_nc_folder']
+        flist = glob.glob(in_path + '**/*.[Cc][Uu][Rr]', recursive=True)
     else:
         print("Filetype not understood ...")
         sys.exit()
@@ -39,7 +43,7 @@ def convert_files(env_vars, opt='all', ftype=None):
 def convert_files_threads(ftype, fname, out_path):
     # skip processing file if its older than 24 hours old
     if iod.file_mod_time(fname) < -24. and opt == 'new':
-        print("Not converting file: ", fname)
+        # print("Not converting file: ", fname)
         return 0
 
     # read file based on file type
@@ -50,27 +54,26 @@ def convert_files_threads(ftype, fname, out_path):
     else:
         print("Filetype not understood!")
         sys.exit()
-# if file class was created properly, try to import data
+    # if file class was created properly, try to import data
     if fdata.import_data():
         print("Imported data successfully!")
         # now try to write the file...
         yy = fdata.start_date[0:4]
-        if not os.path.exists(out_path+yy):
-            os.mkdir(out_path+yy)
+        if not os.path.exists(out_path + yy):
+            os.mkdir(out_path + yy)
         if ftype == 'ctd':
             try:
-                iod.write_ctd_ncfile(out_path+yy+'/'+fname.split('/')[-1][0:-4]+'.ctd.nc', fdata)
+                iod.write_ctd_ncfile(out_path + yy + '/' + fname.split('/')[-1][0:-4] + '.ctd.nc', fdata)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
         elif ftype == 'mctd':
             try:
-                iod.write_mctd_ncfile(out_path+yy+'/'+fname.split('/')[-1][0:-4]+'.mctd.nc', fdata)
+                iod.write_mctd_ncfile(out_path + yy + '/' + fname.split('/')[-1][0:-4] + '.mctd.nc', fdata)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
     else:
         print("failed to import data from file", fname)
         return 0
-    fdata = None
 
 
 # read inputs if any from the command line
@@ -79,9 +82,12 @@ def convert_files_threads(ftype, fname, out_path):
 if len(sys.argv) > 1:
     opt = sys.argv[1].strip().lower()
     ftype = sys.argv[2].strip().lower()
-else: # default option. process all files !
+else:  # default option. process all files !
     opt = 'all'
+    ftype = 'ctd'
 env_vars = iod.import_env_variables('./.env')
 print('Inputs from .env file: ', env_vars)
 
+start = time()
 convert_files(env_vars=env_vars, opt=opt, ftype=ftype)
+print("Time taken:", time() - start)
