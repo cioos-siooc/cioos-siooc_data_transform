@@ -3,11 +3,13 @@
     Changelog Version 0.1: July 15 2019 - convert python scripts and functions into a python class
     Author: Pramod Thupaki (pramod.thupaki@hakai.org)
 """
-import numpy as np
-from datetime import datetime
-from pytz import timezone
-import fortranformat as ff
 import struct
+from datetime import datetime
+
+import fortranformat as ff
+import numpy as np
+from pytz import timezone
+
 
 class ObsFile(object):
     """
@@ -17,6 +19,7 @@ class ObsFile(object):
     Author: Pramod Thupaki pramod.thupaki@hakai.org
     Incorporates functions from earlier versions of this toolbox
     """
+
     def __init__(self, filename, debug):
         # initializes object by reading *FILE and ios_header_version
         # reads entire file to memory for all subsequent processing
@@ -33,7 +36,7 @@ class ObsFile(object):
         except Exception as e:
             print(e)
             self.status = 0
-    
+
     def import_data(self):
         pass
 
@@ -72,14 +75,14 @@ class ObsFile(object):
             section_name = '*' + section_name
         idx = self.find_index(section_name)
         if idx == -1:
-            print('Section not found'+section_name+self.filename)
+            print('Section not found' + section_name + self.filename)
             return {}
         info = {}
         # EOS = False # end of section logical
         while True:
             idx += 1
             l = self.lines[idx]
-            if len(l.strip()) == 0: # skip line if blank
+            if len(l.strip()) == 0:  # skip line if blank
                 continue
             elif l[0] == '!':
                 continue
@@ -130,7 +133,7 @@ class ObsFile(object):
         # float32 accurate (seconds are not rounded to integers)
         line = self.FILE['TIME INCREMENT']
         dt = np.asarray(line.split('!')[0].split(), dtype=float)
-        dt = sum(dt*[24.*3600., 3600., 60., 1., 0.001])  # in seconds
+        dt = sum(dt * [24. * 3600., 3600., 60., 1., 0.001])  # in seconds
         return dt
 
     def get_date(self, opt='start'):
@@ -145,19 +148,19 @@ class ObsFile(object):
             raise Exception("Invalid option for get_date function !")
         if self.debug:
             print("Raw date string:", date_string)
-# get the naive (timezone unaware) datetime obj
+        # get the naive (timezone unaware) datetime obj
         date_obj = datetime.strptime(date_string[4:], '%Y/%m/%d %H:%M:%S.%f')
-# make datetime object, aware of its timezone
-# for GMT, UTC
+        # make datetime object, aware of its timezone
+        # for GMT, UTC
         if any([date_string.find(z) == 0 for z in ['GMT', 'UTC']]):
             date_obj = timezone(date_string[0:3]).localize(date_obj)
-# for Canada/Pacific
+        # for Canada/Pacific
         elif any([date_string.find(z) == 0 for z in ['PDT', 'PST']]):
             date_obj = timezone('Canada/Pacific').localize(date_obj)
-# Canada/Mountain
+        # Canada/Mountain
         elif any([date_string.find(z) == 0 for z in ['MDT', 'MST']]):
             date_obj = timezone('Canada/Mountain').localize(date_obj)
-# Canada/Atlantic
+        # Canada/Atlantic
         elif any([date_string.find(z) == 0 for z in ['ADT', 'AST']]):
             date_obj = timezone('Canada/Atlantic').localize(date_obj)
         else:
@@ -178,7 +181,7 @@ class ObsFile(object):
         # if FORMAT information in file header is missing or does not work
         # then create 'struct' data format based on channel details information
         idx = self.find_index('*END OF HEADER')
-        lines = self.lines[idx+1:]
+        lines = self.lines[idx + 1:]
         data = []
         if formatline is None:
             if self.debug:
@@ -206,7 +209,7 @@ class ObsFile(object):
         info = self.get_section('LOCATION')
         if self.debug:
             print("Location details", info.keys())
-    # handle lat conversion
+        # handle lat conversion
         c = info['LATITUDE'].split()
         buf = float(c[0]) + float(c[1]) / 60.0
         if c[2] == 'S':
@@ -214,15 +217,15 @@ class ObsFile(object):
         else:
             info['LATITUDE'] = buf
         c = info['LONGITUDE'].split()
-    # handle lon conversion
+        # handle lon conversion
         buf = float(c[0]) + float(c[1]) / 60.0
         if c[2] == 'W':
             info['LONGITUDE'] = -1.0 * buf
         else:
             info['LONGITUDE'] = buf
-    # initialize some dict items if not available
+        # initialize some dict items if not available
         # if 'EVENT NUMBER' not in info.keys():
-            # info['EVENT NUMBER'] = ''
+        # info['EVENT NUMBER'] = ''
         return info
 
     def get_channel_detail(self):
@@ -247,11 +250,11 @@ class ObsFile(object):
             fmt = ''
             for i in range(len(info['Pad'])):
                 if info['Type'][i].strip() == 'D':
-                    fmt = fmt+'11s'
+                    fmt = fmt + '11s'
                 elif info['Type'][i].strip() == 'T':
-                    fmt = fmt+'9s'
+                    fmt = fmt + '9s'
                 else:
-                    fmt = fmt + info['Width'][i].strip()+'s'
+                    fmt = fmt + info['Width'][i].strip() + 's'
 
             info['fmt_struct'] = fmt
         if self.debug:
@@ -285,7 +288,7 @@ class ObsFile(object):
             else:
                 ret.append(data[i])
         buf = ''.join(ret).split('*')
-        while("" in buf):
+        while ("" in buf):
             buf.remove("")
         return buf
 
@@ -294,7 +297,7 @@ class ObsFile(object):
         # and contain a lot of information that must be kept together
         # return information as a dictionary with identifier being line number
         if section_name[0] != '*':
-            section_name = '*'+section_name.strip()
+            section_name = '*' + section_name.strip()
         idx = self.find_index(section_name)
         if idx == -1:
             return ''
@@ -305,7 +308,7 @@ class ObsFile(object):
             idx += 1
             count += 1
             l = self.lines[idx]
-            if len(l.strip()) == 0: # skip line if blank
+            if len(l.strip()) == 0:  # skip line if blank
                 continue
             elif l[0] == '!':
                 continue
@@ -338,6 +341,7 @@ class CtdFile(ObsFile):
     this method processes files in manner that is specific to CTD dataset
     Author: Pramod Thupaki pramod.thupaki@hakai.org
     """
+
     def import_data(self):
         self.start_dateobj, self.start_date = self.get_date(opt='start')
         self.LOCATION = self.get_location()
@@ -364,6 +368,7 @@ class CurFile(ObsFile):
     """
     pass
 
+
 class MCtdFile(ObsFile):
     """
     Read Mooring CTD file in IOS format
@@ -371,6 +376,7 @@ class MCtdFile(ObsFile):
     this method processes files in manner that is specific to CTD dataset
     Author: Pramod Thupaki pramod.thupaki@hakai.org
     """
+
     def import_data(self):
         from datetime import timedelta
         startdateobj, self.start_date = self.get_date(opt='start')
@@ -383,8 +389,8 @@ class MCtdFile(ObsFile):
         self.DEPLOYMENT = self.get_section('DEPLOYMENT')
         self.RECOVERY = self.get_section('RECOVERY')
         dt = self.get_dt()
-        self.obs_time = [startdateobj+timedelta(seconds=dt*(i))
-                        for i in range(int(self.FILE['NUMBER OF RECORDS']))]
+        self.obs_time = [startdateobj + timedelta(seconds=dt * (i))
+                         for i in range(int(self.FILE['NUMBER OF RECORDS']))]
         if self.debug:
             print(self.obs_time[0], self.obs_time[-1])
         # try reading file using format specified in 'FORMAT'
