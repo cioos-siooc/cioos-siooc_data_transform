@@ -4,6 +4,7 @@ from datetime import datetime
 from pytz import timezone
 import numpy as np
 
+
 class OceanNcVar(object):
     def __init__(self, vartype, varname, varunits, varmin, varmax, varval, varclslist=[], vardim=()):
         self.cf_role = None

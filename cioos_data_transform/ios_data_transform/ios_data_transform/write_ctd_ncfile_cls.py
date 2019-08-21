@@ -108,5 +108,5 @@ def write_ctd_ncfile(filename, ctdcls):
     out.varlist = ncfile_var_list
     out.write_ncfile(filename)
     print(filename)
-    release_memory(out)
+    # release_memory(out)
     return 1
