@@ -6,6 +6,7 @@ from time import time
 # from importlib import import_module
 sys.path.insert(0, os.getcwd() + '/../../')
 import ios_data_transform as iod
+import subprocess
 
 
 def convert_files(env_vars, opt='all', ftype=None):
@@ -23,7 +24,9 @@ def convert_files(env_vars, opt='all', ftype=None):
     elif ftype == 'mctd':
         in_path = env_vars['mctd_raw_folder']
         out_path = env_vars['mctd_nc_folder']
-        flist = glob.glob(in_path + '**/*.[Cc][Tt][Dd]', recursive=True)
+        flist = []
+        flist.extend(glob.glob(in_path + '**/*.[Cc][Tt][Dd]', recursive=True))
+        flist.extend(glob.glob(in_path + '**/*.mctd', recursive=True))
     elif ftype == 'cur':
         in_path = env_vars['cur_raw_folder']
         out_path = env_vars['cur_nc_folder']
@@ -63,14 +66,16 @@ def convert_files_threads(ftype, fname, out_path):
             os.mkdir(out_path + yy)
         if ftype == 'ctd':
             try:
-                iod.write_ctd_ncfile(out_path + yy + '/' + fname.split('/')[-1][0:-4] + '.ctd.nc', fdata)
+                iod.write_ctd_ncfile(out_path + yy + '/' + fname.split('/')[-1] + '.nc', fdata)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
+                subprocess.call(['rm', '-f', out_path + yy + '/' + fname.split('/')[-1] + '.nc'])
         elif ftype == 'mctd':
             try:
-                iod.write_mctd_ncfile(out_path + yy + '/' + fname.split('/')[-1][0:-4] + '.mctd.nc', fdata)
+                iod.write_mctd_ncfile(out_path + yy + '/' + fname.split('/')[-1] + '.nc', fdata)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
+                subprocess.call(['rm', '-f', out_path + yy + '/' + fname.split('/')[-1] + '.nc'])
     else:
         print("failed to import data from file", fname)
         return 0
