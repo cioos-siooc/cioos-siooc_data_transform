@@ -4,7 +4,7 @@
     Author: Pramod Thupaki (pramod.thupaki@hakai.org)
 """
 import struct
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import fortranformat as ff
 import numpy as np
@@ -154,15 +154,21 @@ class ObsFile(object):
         # for GMT, UTC
         if any([date_string.find(z) == 0 for z in ['GMT', 'UTC']]):
             date_obj = timezone(date_string[0:3]).localize(date_obj)
-        # for Canada/Pacific
-        elif any([date_string.find(z) == 0 for z in ['PDT', 'PST']]):
-            date_obj = timezone('Canada/Pacific').localize(date_obj)
+        # for PST/PDT
+        elif 'PST' in date_string.upper():
+            date_obj = timezone('UTC').localize(date_obj + timedelta(hours=8))
+        elif 'PDT' in date_string.upper():
+            date_obj = timezone('UTC').localize(date_obj + timedelta(hours=7))
         # Canada/Mountain
-        elif any([date_string.find(z) == 0 for z in ['MDT', 'MST']]):
-            date_obj = timezone('Canada/Mountain').localize(date_obj)
+        elif 'MST' in date_string.upper():
+            date_obj = timezone('UTC').localize(date_obj + timedelta(hours=7))
+        elif 'MDT' in date_string.upper():
+            date_obj = timezone('UTC').localize(date_obj + timedelta(hours=6))
         # Canada/Atlantic
-        elif any([date_string.find(z) == 0 for z in ['ADT', 'AST']]):
-            date_obj = timezone('Canada/Atlantic').localize(date_obj)
+        elif 'AST' in date_string.upper():
+            date_obj = timezone('UTC').localize(date_obj + timedelta(hours=4))
+        elif 'ADT' in date_string.upper():
+            date_obj = timezone('UTC').localize(date_obj + timedelta(hours=3))
         else:
             raise Exception("Problem finding the timezone information->", self.filename)
         if self.debug:
