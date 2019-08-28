@@ -5,7 +5,6 @@
 """
 import struct
 from datetime import datetime, timedelta
-
 import fortranformat as ff
 import numpy as np
 from pytz import timezone
@@ -125,21 +124,27 @@ class ObsFile(object):
             info = self.FILE[name]
         else:
             print(self.FILE.keys())
-            raise Exception("Did not find subsection:{} in {}".format(name, self.filename))
+            raise Exception("Error: Did not find subsection:{} in {}".format(name, self.filename))
         return info
 
     def get_dt(self):
         # converts time increment from ios format to seconds
         # float32 accurate (seconds are not rounded to integers)
-        line = self.FILE['TIME INCREMENT']
-        dt = np.asarray(line.split('!')[0].split(), dtype=float)
-        dt = sum(dt * [24. * 3600., 3600., 60., 1., 0.001])  # in seconds
+        if 'TIME INCREMENT' in self.FILE:
+            line = self.FILE['TIME INCREMENT']
+            dt = np.asarray(line.split('!')[0].split(), dtype=float)
+            dt = sum(dt * [24. * 3600., 3600., 60., 1., 0.001])  # in seconds
+        else:
+            raise Exception("Error: Time Increment not found in Section:FILE", self.filename)
         return dt
 
     def get_date(self, opt='start'):
         # reads datetime string in "START TIME" and converts to datetime object
         # return datetime object and as standard string format
         # read 'END TIME' if opt is 'end'
+        if 'START TIME' not in self.FILE:
+            raise Exception("START TIME: not available in file", self.filename)
+
         if opt.lower() == 'start':
             date_string = self.FILE['START TIME'].strip().upper()
         elif opt.lower() == 'end':
@@ -195,7 +200,7 @@ class ObsFile(object):
             fmt_len = self.fmt_len(self.channel_details['fmt_struct'])
             fmt_struct = self.channel_details['fmt_struct']
             for i in range(len(lines)):
-                if len(lines[i]) > 0:
+                if len(lines[i].strip()) > 1:
                     # py2-3 migration...
                     # data.append(struct.unpack(self.channel_details['fmt_struct'], lines[i].rstrip().ljust(fmt_len)))
                     data.append(struct.unpack(fmt_struct, lines[i].rstrip().ljust(fmt_len).encode('utf-8')))
@@ -206,6 +211,8 @@ class ObsFile(object):
                 if len(lines[i]) > 0:
                     data.append([float(r) for r in ffline.read(lines[i])])
         data = np.asarray(data)
+        if self.debug:
+            print(data)
         return data
 
     def get_location(self):
@@ -338,7 +345,8 @@ class ObsFile(object):
                 sections_list.append(line.strip()[1:])
             else:
                 continue
-        print(sections_list)
+        if self.debug:
+            print(sections_list)
         return sections_list
 
 
@@ -384,7 +392,6 @@ class MCtdFile(ObsFile):
     this method processes files in manner that is specific to CTD dataset
     Author: Pramod Thupaki pramod.thupaki@hakai.org
     """
-
     def import_data(self):
         from datetime import timedelta
         startdateobj, self.start_date = self.get_date(opt='start')
