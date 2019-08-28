@@ -58,6 +58,8 @@ def write_mctd_ncfile(filename, ctdcls):
         ncfile_var_list.append(OceanNcVar('str_id', 'instrument_model', None, None, None, ctdcls.INSTRUMENT['MODEL'].strip()))
     if 'SERIAL NUMBER' in ctdcls.INSTRUMENT:
         ncfile_var_list.append(OceanNcVar('str_id', 'instrument_serial_number', None, None, None, ctdcls.INSTRUMENT['SERIAL NUMBER'].strip()))
+    if 'DEPTH' in ctdcls.INSTRUMENT:
+        ncfile_var_list.append(OceanNcVar('instr_depth', 'instrument_depth', None, None, None, float(ctdcls.INSTRUMENT['DEPTH'])))
 # add locations variables
     ncfile_var_list.append(OceanNcVar('lat', 'latitude', 'degrees_north', None, None, ctdcls.LOCATION['LATITUDE']))
     ncfile_var_list.append(OceanNcVar('lon', 'longitude', 'degrees_east', None, None, ctdcls.LOCATION['LONGITUDE']))

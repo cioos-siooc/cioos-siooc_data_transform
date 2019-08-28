@@ -45,6 +45,11 @@ class OceanNcVar(object):
         elif self.type == 'profile':
             self.datatype = str
             self.cf_role = 'profile_id'
+        elif self.type == 'instr_depth':
+            self.datatype = 'float32'
+            self.long_name = 'Instrument Depth'
+            self.standard_name = 'instrument_depth'
+            self.units = 'm'
         elif self.type == 'lat':
             self.datatype = 'float32'
             self.long_name = 'Latitude'
