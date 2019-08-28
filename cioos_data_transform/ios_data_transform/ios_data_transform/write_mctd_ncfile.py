@@ -1,4 +1,3 @@
-# import random
 import json
 from .OceanNcFile import MCtdNcFile
 from .OceanNcVar import OceanNcVar
@@ -36,8 +35,11 @@ def write_mctd_ncfile(filename, ctdcls):
         ncfile_var_list.append(OceanNcVar('str_id', 'country', None, None, None, ctdcls.ADMINISTRATION['COUNTRY'].strip()))
     if 'MISSION' in ctdcls.DEPLOYMENT:
         mission_id = ctdcls.DEPLOYMENT['MISSION'].strip()
-    # else:
-    #     mission_id = ctdcls.ADMINISTRATION['CRUISE'].strip()
+    else:
+        mission_id = 'n/a'
+    if mission_id.lower() == 'n/a':
+        raise Exception("Error: Mission ID not available", ctdcls.filename)
+
     buf = mission_id.split('-')
     mission_id = '{:4d}-{:03d}'.format(int(buf[0]), int(buf[1]))
     ncfile_var_list.append(OceanNcVar('str_id', 'deployment_mission_id', None, None, None, mission_id))
