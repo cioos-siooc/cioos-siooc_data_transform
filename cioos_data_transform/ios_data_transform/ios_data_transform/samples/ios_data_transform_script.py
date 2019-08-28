@@ -32,12 +32,12 @@ def convert_files(env_vars, opt='all', ftype=None):
         out_path = env_vars['cur_nc_folder']
         flist = glob.glob(in_path + '**/*.[Cc][Uu][Rr]', recursive=True)
     else:
-        print("Filetype not understood ...")
+        print("ERROR: Filetype not understood ...")
         sys.exit()
     print("Total number of files =", len(flist))
     # loop through files in list, read the data and write netcdf file if data read is successful
-    for i, fname in enumerate(flist[:1000]):
-        print('\nProcessing -> {} {}'.format(i, fname))
+    for i, fname in enumerate(flist[:]):
+        # print('\nProcessing -> {} {}'.format(i, fname))
         p = Process(target=(convert_files_threads), args=(ftype, fname, out_path))
         p.start()
         p.join()
@@ -50,6 +50,7 @@ def convert_files_threads(ftype, fname, out_path):
         return 0
 
     # read file based on file type
+    print("Converting file:", fname)
     if ftype == 'ctd':
         fdata = iod.CtdFile(filename=fname, debug=False)
     elif ftype == 'mctd':
