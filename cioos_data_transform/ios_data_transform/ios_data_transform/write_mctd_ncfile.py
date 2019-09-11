@@ -64,9 +64,7 @@ def write_mctd_ncfile(filename, ctdcls):
 # add locations variables
     ncfile_var_list.append(OceanNcVar('lat', 'latitude', 'degrees_north', None, None, ctdcls.LOCATION['LATITUDE']))
     ncfile_var_list.append(OceanNcVar('lon', 'longitude', 'degrees_east', None, None, ctdcls.LOCATION['LONGITUDE']))
-    if 'GEOGRAPHIC AREA' in ctdcls.LOCATION:
-        ctdcls.assign_geo_code('../tests/test_files/ios_polygons.geojson')
-        ncfile_var_list.append(OceanNcVar('str_id', 'geographic_area', None, None, None, ctdcls.geo_code))
+    ncfile_var_list.append(OceanNcVar('str_id', 'geographic_area', None, None, None, ctdcls.geo_code))
 
     if 'EVENT NUMBER' in ctdcls.LOCATION:
         event_id = ctdcls.LOCATION['EVENT NUMBER'].strip()

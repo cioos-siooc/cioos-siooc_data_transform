@@ -20,10 +20,12 @@ def convert_files(env_vars, opt='all', ftype=None):
     if ftype == 'ctd':
         in_path = env_vars['ctd_raw_folder']
         out_path = env_vars['ctd_nc_folder']
+        fgeo = env_vars['geojson_file']
         flist = glob.glob(in_path + '**/*.[Cc][Tt][Dd]', recursive=True)
     elif ftype == 'mctd':
         in_path = env_vars['mctd_raw_folder']
         out_path = env_vars['mctd_nc_folder']
+        fgeo = env_vars['geojson_file']
         flist = []
         flist.extend(glob.glob(in_path + '**/*.[Cc][Tt][Dd]', recursive=True))
         flist.extend(glob.glob(in_path + '**/*.mctd', recursive=True))
@@ -38,12 +40,12 @@ def convert_files(env_vars, opt='all', ftype=None):
     # loop through files in list, read the data and write netcdf file if data read is successful
     for i, fname in enumerate(flist[:]):
         # print('\nProcessing -> {} {}'.format(i, fname))
-        p = Process(target=(convert_files_threads), args=(ftype, fname, out_path))
+        p = Process(target=(convert_files_threads), args=(ftype, fname, fgeo, out_path))
         p.start()
         p.join()
 
 
-def convert_files_threads(ftype, fname, out_path):
+def convert_files_threads(ftype, fname, fgeo, out_path):
     # skip processing file if its older than 24 hours old
     if iod.file_mod_time(fname) < -24. and opt == 'new':
         # print("Not converting file: ", fname)
@@ -61,6 +63,7 @@ def convert_files_threads(ftype, fname, out_path):
     # if file class was created properly, try to import data
     if fdata.import_data():
         print("Imported data successfully!")
+        fdata.assign_geo_code(fgeo)
         # now try to write the file...
         yy = fdata.start_date[0:4]
         if not os.path.exists(out_path + yy):
