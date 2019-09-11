@@ -8,6 +8,8 @@ from datetime import datetime, timedelta
 import fortranformat as ff
 import numpy as np
 from pytz import timezone
+from .utils import find_geographic_area, read_geojson
+from shapely.geometry import Point
 
 
 class ObsFile(object):
@@ -348,6 +350,14 @@ class ObsFile(object):
         if self.debug:
             print(sections_list)
         return sections_list
+
+    def assign_geo_code(self, geojson_file):
+        # read geojson file
+        polygons_dict = read_geojson(geojson_file)
+        geo_code = find_geographic_area(polygons_dict, Point(self.LOCATION['LONGITUDE'], self.LOCATION['LATITUDE']))
+        if geo_code == '':
+            geo_code = self.LOCATION['GEOGRAPHIC AREA'].strip()
+        self.geo_code = geo_code
 
 
 class CtdFile(ObsFile):

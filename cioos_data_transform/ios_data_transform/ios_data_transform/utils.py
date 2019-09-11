@@ -62,5 +62,6 @@ def find_geographic_area(poly_dict, point):
     name_str = ''
     for key in poly_dict:
         if is_in_polygon(poly_dict[key], point):
-            name_str = '{}{} '.format(name_str, key)
+            name_str = '{}{} '.format(name_str, key.replace(' ', '-'))
+            # print(name_str)
     return name_str

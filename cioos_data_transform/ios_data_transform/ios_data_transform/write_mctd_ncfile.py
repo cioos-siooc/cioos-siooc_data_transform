@@ -1,7 +1,8 @@
 import json
 from .OceanNcFile import MCtdNcFile
 from .OceanNcVar import OceanNcVar
-from .utils import is_in, release_memory
+from .utils import is_in, release_memory, find_geographic_area, read_geojson
+from shapely.geometry import Point
 
 
 def write_mctd_ncfile(filename, ctdcls):
@@ -64,7 +65,9 @@ def write_mctd_ncfile(filename, ctdcls):
     ncfile_var_list.append(OceanNcVar('lat', 'latitude', 'degrees_north', None, None, ctdcls.LOCATION['LATITUDE']))
     ncfile_var_list.append(OceanNcVar('lon', 'longitude', 'degrees_east', None, None, ctdcls.LOCATION['LONGITUDE']))
     if 'GEOGRAPHIC AREA' in ctdcls.LOCATION:
-        ncfile_var_list.append(OceanNcVar('str_id', 'geographic_area', None, None, None, ctdcls.LOCATION['GEOGRAPHIC AREA'].strip()))
+        ctdcls.assign_geo_code('../tests/test_files/ios_polygons.geojson')
+        ncfile_var_list.append(OceanNcVar('str_id', 'geographic_area', None, None, None, ctdcls.geo_code))
+
     if 'EVENT NUMBER' in ctdcls.LOCATION:
         event_id = ctdcls.LOCATION['EVENT NUMBER'].strip()
     else:
@@ -109,7 +112,7 @@ def write_mctd_ncfile(filename, ctdcls):
     # attach variables to ncfileclass and call method to write netcdf file
     out.varlist = ncfile_var_list
     out.write_ncfile(filename)
-    print(filename)
+    print("Finished writing file:", filename, "\n")
     # release_memory(out)
     return 1
 
