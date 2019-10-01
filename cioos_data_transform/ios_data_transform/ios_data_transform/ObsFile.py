@@ -435,4 +435,21 @@ class BotFile(ObsFile):
     """
     Read bottle files in IOS format
     """
-    pass
+    def import_data(self):
+        self.start_dateobj, self.start_date = self.get_date(opt='start')
+        self.LOCATION = self.get_location()
+        self.CHANNELS = self.get_channels()
+        self.COMMENTS = self.get_comments_like('COMMENTS')
+        self.REMARKS = self.get_comments_like('REMARKS')
+        self.ADMINISTRATION = self.get_section('ADMINISTRATION')
+        self.INSTRUMENT = self.get_section('INSTRUMENT')
+        # try reading file using format specified in 'FORMAT'
+        try:
+            self.data = self.get_data(formatline=self.FILE['FORMAT'])
+        except Exception as e:
+            self.channel_details = self.get_channel_detail()
+            self.data = self.get_data(formatline=None)
+        if self.data is None:
+            print("Error: Could not read data from format specified and could not decipher format")
+            return 0
+        return 1
