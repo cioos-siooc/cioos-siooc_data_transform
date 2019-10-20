@@ -29,10 +29,11 @@ def convert_files(env_vars, opt='all', ftype=None):
         flist = []
         flist.extend(glob.glob(in_path + '**/*.[Cc][Tt][Dd]', recursive=True))
         flist.extend(glob.glob(in_path + '**/*.mctd', recursive=True))
-    elif ftype == 'cur':
-        in_path = env_vars['cur_raw_folder']
-        out_path = env_vars['cur_nc_folder']
-        flist = glob.glob(in_path + '**/*.[Cc][Uu][Rr]', recursive=True)
+    elif ftype == 'bot':
+        in_path = env_vars['bot_raw_folder']
+        out_path = env_vars['bot_nc_folder']
+        fgeo = env_vars['geojson_file']
+        flist = glob.glob(in_path + '**/*.BOT', recursive=True)
     else:
         print("ERROR: Filetype not understood ...")
         sys.exit()
@@ -57,6 +58,8 @@ def convert_files_threads(ftype, fname, fgeo, out_path):
         fdata = iod.CtdFile(filename=fname, debug=False)
     elif ftype == 'mctd':
         fdata = iod.MCtdFile(filename=fname, debug=False)
+    elif ftype == 'bot':
+        fdata = iod.CtdFile(filename=fname, debug=False)
     else:
         print("Filetype not understood!")
         sys.exit()
@@ -77,6 +80,12 @@ def convert_files_threads(ftype, fname, fgeo, out_path):
         elif ftype == 'mctd':
             try:
                 iod.write_mctd_ncfile(out_path + yy + '/' + fname.split('/')[-1] + '.nc', fdata)
+            except Exception as e:
+                print("Error: Unable to create netcdf file:", fname, e)
+                subprocess.call(['rm', '-f', out_path + yy + '/' + fname.split('/')[-1] + '.nc'])
+        elif ftype == 'bot':
+            try:
+                iod.write_ctd_ncfile(out_path + yy + '/' + fname.split('/')[-1] + '.nc', fdata)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
                 subprocess.call(['rm', '-f', out_path + yy + '/' + fname.split('/')[-1] + '.nc'])
