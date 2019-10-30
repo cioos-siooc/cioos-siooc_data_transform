@@ -33,7 +33,9 @@ def convert_files(env_vars, opt='all', ftype=None):
         in_path = env_vars['bot_raw_folder']
         out_path = env_vars['bot_nc_folder']
         fgeo = env_vars['geojson_file']
-        flist = glob.glob(in_path + '**/*.BOT', recursive=True)
+        flist = []
+        flist.extend(glob.glob(in_path + '**/*.[Bb][Oo][Tt]', recursive=True))
+        flist.extend(glob.glob(in_path + '**/*.[Cc][Hh][Ee]', recursive=True)) 
     else:
         print("ERROR: Filetype not understood ...")
         sys.exit()
@@ -51,7 +53,7 @@ def convert_files_threads(ftype, fname, fgeo, out_path):
     if iod.file_mod_time(fname) < -24. and opt == 'new':
         # print("Not converting file: ", fname)
         return 0
-
+    print('Processing {} {}'.format(ftype, fname))
     # read file based on file type
     print("Converting file:", fname)
     if ftype == 'ctd':
