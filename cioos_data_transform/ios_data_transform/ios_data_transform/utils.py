@@ -1,11 +1,14 @@
 from shapely.geometry import Polygon, Point
 import json
+
+
 # general utility functions common to multiple classes
 
 def is_in(keywords, string):
     # simple function to check if any keyword is in string
     # convert string and keywords to upper case before checking
     return any([string.upper().find(z.upper()) >= 0 for z in keywords])
+
 
 def import_env_variables(filename='./.env'):
     # import information in file to a dictionary
@@ -22,12 +25,13 @@ def import_env_variables(filename='./.env'):
             info[line.split(':')[0].strip()] = line.split(':')[1].strip()
     return info
 
+
 def file_mod_time(filename):
     # returns how old the file is based on timestamp
     # returns the time in hours
     import time
     import os
-    dthrs = (os.path.getmtime(filename) - time.time())/3600.
+    dthrs = (os.path.getmtime(filename) - time.time()) / 3600.
     return dthrs
 
 
@@ -54,9 +58,11 @@ def read_geojson(filename):
             poly_dict[name] = p
     return poly_dict
 
+
 def is_in_polygon(polygon, point):
     # identify if point is inside polygon
     return polygon.contains(point)
+
 
 def find_geographic_area(poly_dict, point):
     name_str = ''
