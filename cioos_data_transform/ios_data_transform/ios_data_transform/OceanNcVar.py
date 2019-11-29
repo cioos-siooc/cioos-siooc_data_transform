@@ -157,10 +157,14 @@ class OceanNcVar(object):
                 raise Exception("Temperature type not defined", ios_varname, varunits, vartype)
             bodc_code = '{}{:02d}'.format(bodc_code, iter+1)
         elif vartype == 'salinity':
-            if is_in(['PSS-78'], varunits):
+            if not is_in(['bottle'], ios_varname) and is_in(['PSS-78'], varunits):
                 bodc_code = "PSALST"; bodc_units = 'PSS-78'
-            elif is_in(['ppt'], varunits):
+            elif not is_in(['bottle'], ios_varname) and is_in(['ppt'], varunits):
                 bodc_code = "SSALST"; bodc_units = 'PPT'
+            elif is_in(['bottle'], ios_varname) and is_in(['PSS-78'], varunits):
+                bodc_code = "PSALBST"; bodc_units = 'PSS-78'
+            elif is_in(['bottle'], ios_varname) and is_in(['ppt'], varunits):
+                bodc_code = "SSALBST"; bodc_units = 'PPT'
             else:
                 raise Exception("Salinity type not defined", ios_varname, varunits, vartype)
             bodc_code = '{}{:02d}'.format(bodc_code, iter+1)
