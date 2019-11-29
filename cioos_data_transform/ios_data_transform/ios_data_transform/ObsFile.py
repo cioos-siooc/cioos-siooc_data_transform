@@ -10,6 +10,7 @@ import numpy as np
 from pytz import timezone
 from .utils import find_geographic_area, read_geojson
 from shapely.geometry import Point
+from io import StringIO
 
 
 class ObsFile(object):
@@ -35,8 +36,10 @@ class ObsFile(object):
             self.FILE = self.get_section('FILE')
             self.status = 1
         except Exception as e:
+            print("Unable to open file", filename)
             print(e)
             self.status = 0
+            exit(0)
 
     def import_data(self):
         pass
@@ -196,17 +199,25 @@ class ObsFile(object):
         idx = self.find_index('*END OF HEADER')
         lines = self.lines[idx + 1:]
         data = []
+        # if formatline is None, try reading without any format (assume columns are space limited;
+        #       if space limited strategy does not work, try to create format line)
         if formatline is None:
-            if self.debug:
+            try:
+                data = np.genfromtxt(StringIO(''.join(lines)), delimiter='', dtype=str)
+                print("Reading data using delimiter was successful !")
+            except Exception as e:
+                print("Delimiter error reading file:", self.filename)
+                print(e)
+                print("Trying to read file using format created using column width")
                 print("Reading data using format", self.channel_details['fmt_struct'])
-            fmt_len = self.fmt_len(self.channel_details['fmt_struct'])
-            fmt_struct = self.channel_details['fmt_struct']
-            for i in range(len(lines)):
-                if len(lines[i].strip()) > 1:
-                    # py2-3 migration...
-                    # data.append(struct.unpack(self.channel_details['fmt_struct'], lines[i].rstrip().ljust(fmt_len)))
-                    data.append(struct.unpack(fmt_struct, lines[i].rstrip().ljust(fmt_len).encode('utf-8')))
-                    # data.append([r for r in lines[i].split()])
+                fmt_len = self.fmt_len(self.channel_details['fmt_struct'])
+                fmt_struct = self.channel_details['fmt_struct']
+                for i in range(len(lines)):
+                    if len(lines[i].strip()) > 1:
+                        # py2-3 migration...
+                        # data.append(struct.unpack(self.channel_details['fmt_struct'], lines[i].rstrip().ljust(fmt_len)))
+                        data.append(struct.unpack(fmt_struct, lines[i].rstrip().ljust(fmt_len).encode('utf-8')))
+                        # data.append([r for r in lines[i].split()])
         else:
             ffline = ff.FortranRecordReader(formatline)
             for i in range(len(lines)):
