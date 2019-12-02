@@ -367,7 +367,8 @@ class ObsFile(object):
         polygons_dict = read_geojson(geojson_file)
         geo_code = find_geographic_area(polygons_dict, Point(self.LOCATION['LONGITUDE'], self.LOCATION['LATITUDE']))
         if geo_code == '':
-            geo_code = self.LOCATION['GEOGRAPHIC AREA'].strip()
+            # geo_code = self.LOCATION['GEOGRAPHIC AREA'].strip()
+            geo_code = 'None'
         self.geo_code = geo_code
 
 
