@@ -74,6 +74,7 @@ class OceanNcVar(object):
             # self.dimensions = ('z')
             self.long_name = 'Depth in meters'
             self.standard_name = 'depth_below_sea_level_in_meters'
+            self.units = 'm'
         elif self.type == 'pressure':
             self.name = 'PRESPR01'
             self.datatype = 'float32'
