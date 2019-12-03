@@ -226,6 +226,9 @@ class ObsFile(object):
         data = np.asarray(data)
         if self.debug:
             print(data)
+        # if data is at only one, convert list to 2D matrix
+        if len(data.shape) == 1:
+            data = data.reshape((1, -1))
         return data
 
     def get_location(self):
