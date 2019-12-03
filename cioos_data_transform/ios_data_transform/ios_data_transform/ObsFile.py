@@ -159,7 +159,12 @@ class ObsFile(object):
         if self.debug:
             print("Raw date string:", date_string)
         # get the naive (timezone unaware) datetime obj
-        date_obj = datetime.strptime(date_string[4:], '%Y/%m/%d %H:%M:%S.%f')
+        try:
+            date_obj = datetime.strptime(date_string[4:], '%Y/%m/%d %H:%M:%S.%f')
+        except Exception as e:
+            print(e)
+            date_obj = datetime.strptime(date_string[4:], '%Y/%m/%d')
+            print(date_obj)
         # make datetime object, aware of its timezone
         # for GMT, UTC
         if any([date_string.find(z) == 0 for z in ['GMT', 'UTC']]):
