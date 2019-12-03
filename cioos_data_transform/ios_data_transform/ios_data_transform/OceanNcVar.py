@@ -80,7 +80,7 @@ class OceanNcVar(object):
             self.datatype = 'float32'
             # self.dimensions = ('z')
             self.long_name = 'Pressure'
-            if self.units.strip().lower() in ['dbar', 'decibar']:
+            if self.units.strip().lower() in ['dbar', 'dbars', 'decibar']:
                 self.units = 'decibar'
             else:
                 raise Exception('Unclear units for pressure!')
@@ -160,26 +160,34 @@ class OceanNcVar(object):
         elif vartype == 'salinity':
             if not is_in(['bottle'], ios_varname) and is_in(['PSS-78'], varunits):
                 bodc_code = "PSALST"; bodc_units = 'PSS-78'
+                bodc_code = '{}{:02d}'.format(bodc_code, iter + 1)
             elif not is_in(['bottle'], ios_varname) and is_in(['ppt'], varunits):
                 bodc_code = "SSALST"; bodc_units = 'PPT'
+                bodc_code = '{}{:02d}'.format(bodc_code, iter + 1)
             elif is_in(['bottle'], ios_varname) and is_in(['PSS-78'], varunits):
                 bodc_code = "PSALBST"; bodc_units = 'PSS-78'
+                bodc_code = '{}{:01d}'.format(bodc_code, iter + 1)
             elif is_in(['bottle'], ios_varname) and is_in(['ppt'], varunits):
-                bodc_code = "SSALBST"; bodc_units = 'PPT'
+                bodc_code = "ODSDM021"; bodc_units = 'PPT'
+
             else:
                 raise Exception("Salinity type not defined", ios_varname, varunits, vartype)
-            bodc_code = '{}{:02d}'.format(bodc_code, iter+1)
+
         elif vartype == 'oxygen':
             if is_in(['ml/l'], varunits):
                 bodc_code = "DOXYZZ"; bodc_units = 'mL/L'
             elif is_in(['umol/kg'], varunits):
                 bodc_code = "DOXMZZ"; bodc_units = 'umol/kg'
+            elif is_in(['umol/L'], varunits):
+                bodc_code = "DOXY"; bodc_units = 'umol/L'
             else:
                 raise Exception("Oxygen units not found")
             bodc_code = '{}{:02d}'.format(bodc_code, iter+1)
         elif vartype == 'conductivity':
             if is_in(['s/m'], varunits):
                 bodc_code = 'CNDCST'; bodc_units = 'S/m'
+            elif is_in(['ms/cm'], varunits):
+                bodc_code = 'CNDCSTX'; bodc_units = 'mS/cm'
             else:
                 raise Exception("Conductivity units not compatible with BODC code", ios_varname, varunits, vartype)
             bodc_code = '{}{:02d}'.format(bodc_code, iter+1)
