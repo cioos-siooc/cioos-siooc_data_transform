@@ -208,11 +208,6 @@ class ObsFile(object):
         #       if space limited strategy does not work, try to create format line)
         if formatline is None:
             try:
-                data = np.genfromtxt(StringIO(''.join(lines)), delimiter='', dtype=str)
-                print("Reading data using delimiter was successful !")
-            except Exception as e:
-                print("Delimiter error reading file:", self.filename)
-                print(e)
                 print("Trying to read file using format created using column width")
                 print("Reading data using format", self.channel_details['fmt_struct'])
                 fmt_len = self.fmt_len(self.channel_details['fmt_struct'])
@@ -223,6 +218,11 @@ class ObsFile(object):
                         # data.append(struct.unpack(self.channel_details['fmt_struct'], lines[i].rstrip().ljust(fmt_len)))
                         data.append(struct.unpack(fmt_struct, lines[i].rstrip().ljust(fmt_len).encode('utf-8')))
                         # data.append([r for r in lines[i].split()])
+            except Exception as e:
+                print(e)
+                data = np.genfromtxt(StringIO(''.join(lines)), delimiter='', dtype=str, comments=None)
+                print("Reading data using delimiter was successful !")
+
         else:
             ffline = ff.FortranRecordReader(formatline)
             for i in range(len(lines)):
