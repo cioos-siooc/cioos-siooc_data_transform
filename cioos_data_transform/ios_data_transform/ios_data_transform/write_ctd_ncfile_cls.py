@@ -92,7 +92,7 @@ def write_ctd_ncfile(filename, ctdcls):
             ncfile_var_list.append(OceanNcVar('salinity', ctdcls.CHANNELS['Name'][i],
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
                 ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('z')))
-        elif is_in(['oxygen'], channel) and not is_in(['flag', 'bottle', 'rinko', 'temperature', 'current'], channel):
+        elif is_in(['oxygen'], channel) and not is_in(['flag', 'bottle', 'rinko', 'temperature', 'current', 'isotope'], channel):
             ncfile_var_list.append(OceanNcVar('oxygen', ctdcls.CHANNELS['Name'][i],
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
                 ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('z')))
