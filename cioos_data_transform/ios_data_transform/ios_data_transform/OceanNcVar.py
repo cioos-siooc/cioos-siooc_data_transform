@@ -148,7 +148,9 @@ class OceanNcVar(object):
         from .utils import is_in
         bodc_code = ''; bodc_units = ''
         if vartype == 'temperature':
-            if is_in(['ITS90', 'ITS-90'], varunits):
+            if is_in(['reversing'], ios_varname) and is_in(['deg c', varunits]):
+                bodc_code = 'TEMPRTN'; bodc_units = 'deg C'
+            elif is_in(['ITS90', 'ITS-90'], varunits):
                 bodc_code = 'TEMPS9'; bodc_units = 'deg C'
             elif is_in(['IPTS-68', 'IPTS68'], varunits):
                 bodc_code = 'TEMPS6'; bodc_units = 'deg C'
