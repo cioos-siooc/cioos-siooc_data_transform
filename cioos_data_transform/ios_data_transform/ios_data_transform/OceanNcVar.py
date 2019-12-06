@@ -150,15 +150,19 @@ class OceanNcVar(object):
         if vartype == 'temperature':
             if is_in(['reversing'], ios_varname) and is_in(['deg c'], varunits):
                 bodc_code = 'TEMPRTN'; bodc_units = 'deg C'
+                bodc_code = '{}{:01d}'.format(bodc_code, iter + 1)
             elif is_in(['ITS90', 'ITS-90'], varunits):
                 bodc_code = 'TEMPS9'; bodc_units = 'deg C'
+                bodc_code = '{}{:02d}'.format(bodc_code, iter + 1)
             elif is_in(['IPTS-68', 'IPTS68'], varunits):
                 bodc_code = 'TEMPS6'; bodc_units = 'deg C'
+                bodc_code = '{}{:02d}'.format(bodc_code, iter + 1)
             elif is_in(['deg c', 'degc'], varunits):
                 bodc_code = 'TEMPST'; bodc_units = 'deg C'
+                bodc_code = '{}{:02d}'.format(bodc_code, iter + 1)
             else: # if varunits does not specify type of temperature
                 raise Exception("Temperature type not defined", ios_varname, varunits, vartype)
-            bodc_code = '{}{:02d}'.format(bodc_code, iter+1)
+
         elif vartype == 'salinity':
             if not is_in(['bottle'], ios_varname) and is_in(['PSS-78'], varunits):
                 bodc_code = "PSALST"; bodc_units = 'PSS-78'
