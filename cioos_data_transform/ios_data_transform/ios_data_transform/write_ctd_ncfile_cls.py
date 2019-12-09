@@ -38,7 +38,6 @@ def write_ctd_ncfile(filename, ctdcls):
     out.nrec = int(ctdcls.FILE['NUMBER OF RECORDS'])
 # add variable profile_id (dummy variable)
     ncfile_var_list = []
-    # profile_id = random.randint(1, 100000)
     ncfile_var_list.append(OceanNcVar('str_id', 'filename', None, None, None, ctdcls.filename.split('/')[-1]))
 # add administration variables
     if 'COUNTRY' in ctdcls.ADMINISTRATION:
@@ -110,8 +109,13 @@ def write_ctd_ncfile(filename, ctdcls):
             ncfile_var_list.append(OceanNcVar('conductivity', ctdcls.CHANNELS['Name'][i],
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
                 ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('z')))
+        #     Nutrients in bottle files
+        elif is_in(['nitrate_plus_nitrite', 'silicate', 'phosphate'], channel) and not is_in(['flag'], channel):
+            ncfile_var_list.append(OceanNcVar('nutrient', ctdcls.CHANNELS['Name'][i],
+                ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
+                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('z')))
         else:
-            print(channel, 'not transferred to netcdf file !')
+            print(channel, ctdcls.CHANNELS['Units'][i], 'not transferred to netcdf file !')
             # raise Exception('not found !!')
 
     # attach variables to ncfileclass and call method to write netcdf file
