@@ -219,7 +219,7 @@ class OceanNcVar(object):
                 self.standard_name = 'mole_concentration_of_silicate_in_sea_water'
                 self.long_name = 'Mole Concentration of Silicate in Sea Water'
             else:
-                raise Exception("Conductivity units not compatible with BODC code", ios_varname, varunits, vartype)
+                raise Exception("Nutrient units not compatible with BODC code", ios_varname, varunits, vartype)
             bodc_code = '{}{:01d}'.format(bodc_code, iter + 1)
         else:
             raise Exception('Cannot find BODC code for this variable', ios_varname, varunits, vartype)
