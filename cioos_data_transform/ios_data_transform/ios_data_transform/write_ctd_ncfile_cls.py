@@ -111,9 +111,12 @@ def write_ctd_ncfile(filename, ctdcls):
                 ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('z')))
         #     Nutrients in bottle files
         elif is_in(['nitrate_plus_nitrite', 'silicate', 'phosphate'], channel) and not is_in(['flag'], channel):
-            ncfile_var_list.append(OceanNcVar('nutrient', ctdcls.CHANNELS['Name'][i],
-                ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
-                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('z')))
+            try:
+                ncfile_var_list.append(OceanNcVar('nutrient', ctdcls.CHANNELS['Name'][i],
+                    ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
+                    ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('z')))
+            except Exception as e:
+                print(e)
         else:
             print(channel, ctdcls.CHANNELS['Units'][i], 'not transferred to netcdf file !')
             # raise Exception('not found !!')
