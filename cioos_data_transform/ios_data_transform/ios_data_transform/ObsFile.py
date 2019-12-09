@@ -401,11 +401,15 @@ class CtdFile(ObsFile):
         try:
             self.data = self.get_data(formatline=self.FILE['FORMAT'])
         except Exception as e:
-            self.channel_details = self.get_channel_detail()
-            self.data = self.get_data(formatline=None)
+            self.data = None
+            print("Could not read file using 'FORMAT' description ...", self.filename)
         if self.data is None:
-            print("Error: Could not read data from format specified and could not decipher format")
-            return 0
+            try:
+                self.channel_details = self.get_channel_detail()
+                self.data = self.get_data(formatline=None)
+            except Exception as e:
+                return 0
+
         return 1
 
 
@@ -444,13 +448,16 @@ class MCtdFile(ObsFile):
         try:
             self.data = self.get_data(formatline=self.FILE['FORMAT'])
         except Exception as e:
-            self.channel_details = self.get_channel_detail()
-            self.data = self.get_data(formatline=None)
+            print("Could not read file using 'FORMAT' description...")
+            self.data = None
+
         if self.data is None:
-            print("Error: Could not read data from format specified and could not decipher format")
-            return 0
-        else:
-            return 1
+            try:
+                self.channel_details = self.get_channel_detail()
+                self.data = self.get_data(formatline=None)
+            except Exception as e:
+                return 0
+        return 1
 
 
 class BotFile(ObsFile):
@@ -478,7 +485,6 @@ class BotFile(ObsFile):
                 self.channel_details = self.get_channel_detail()
                 self.data = self.get_data(formatline=None)
             except Exception as e:
-                print("Unable to import data from file", self.filename)
                 return 0
 
         return 1
