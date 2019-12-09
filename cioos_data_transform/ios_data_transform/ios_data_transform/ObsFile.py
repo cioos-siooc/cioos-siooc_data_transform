@@ -389,6 +389,7 @@ class CtdFile(ObsFile):
     """
 
     def import_data(self):
+        self.type = 'ctd'
         self.start_dateobj, self.start_date = self.get_date(opt='start')
         self.LOCATION = self.get_location()
         self.CHANNELS = self.get_channels()
@@ -424,6 +425,7 @@ class MCtdFile(ObsFile):
     """
     def import_data(self):
         from datetime import timedelta
+        self.type = 'mctd'
         startdateobj, self.start_date = self.get_date(opt='start')
         self.LOCATION = self.get_location()
         self.CHANNELS = self.get_channels()
@@ -456,6 +458,7 @@ class BotFile(ObsFile):
     Read bottle files in IOS format
     """
     def import_data(self):
+        self.type = 'bot'
         self.start_dateobj, self.start_date = self.get_date(opt='start')
         self.LOCATION = self.get_location()
         self.CHANNELS = self.get_channels()
