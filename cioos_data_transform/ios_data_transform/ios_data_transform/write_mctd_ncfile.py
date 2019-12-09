@@ -18,8 +18,8 @@ def write_mctd_ncfile(filename, ctdcls):
     out = MCtdNcFile()
 # write global attributes
     out.featureType = 'timeSeries'
-    out.summary = 'IOS mooring CTD datafile'
-    out.title = 'IOS mooring CTD profile'
+    out.summary = 'This dataset contains observations made by the Institute of Ocean Sciences of Fisheries and Oceans (DFO) using CTDs mounted on moorings.'
+    out.title = 'This dataset contains observations made by the Institute of Ocean Sciences of Fisheries and Oceans (DFO) using CTDs mounted on moorings.'
     out.institution = 'Institute of Ocean Sciences, 9860 West Saanich Road, Sidney, B.C., Canada'
     out.infoUrl = 'http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html'
     out.cdm_profile_variables = 'time' # TEMPS901, TEMPS902, TEMPS601, TEMPS602, TEMPS01, PSALST01, PSALST02, PSALSTPPT01, PRESPR01
