@@ -55,7 +55,6 @@ def convert_files_threads(ftype, fname, fgeo, out_path):
         return 0
     print('Processing {} {}'.format(ftype, fname))
     # read file based on file type
-    print("Converting file:", fname)
     if ftype == 'ctd':
         fdata = iod.CtdFile(filename=fname, debug=False)
     elif ftype == 'mctd':
@@ -92,7 +91,7 @@ def convert_files_threads(ftype, fname, fgeo, out_path):
                 print("Error: Unable to create netcdf file:", fname, e)
                 subprocess.call(['rm', '-f', out_path + yy + '/' + fname.split('/')[-1] + '.nc'])
     else:
-        print("failed to import data from file", fname)
+        print("Error: Unable to import data from file", fname)
         return 0
 
 

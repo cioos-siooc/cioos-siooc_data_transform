@@ -6,7 +6,8 @@ import numpy as np
 
 
 class OceanNcVar(object):
-    def __init__(self, vartype, varname, varunits, varmin, varmax, varval, varclslist=[], vardim=()):
+    def __init__(self, vartype, varname, varunits, varmin, varmax, varval, varclslist=[], vardim=(),
+                 varnull=float("nan")):
         self.cf_role = None
         self.name = varname
         self.type = vartype
@@ -16,6 +17,7 @@ class OceanNcVar(object):
         self.maximum = varmin
         self.minimum = varmax
         self.datatype = ''
+        self.null_value = varnull
         self.dimensions = vardim
         self.data = varval
         # from existing varlist. get all variables that are going to be written into the ncfile
@@ -75,6 +77,7 @@ class OceanNcVar(object):
             self.long_name = 'Depth in meters'
             self.standard_name = 'depth_below_sea_level_in_meters'
             self.units = 'm'
+            self.__set_null_val()
         elif self.type == 'pressure':
             self.name = 'PRESPR01'
             self.datatype = 'float32'
@@ -85,6 +88,7 @@ class OceanNcVar(object):
             else:
                 raise Exception('Unclear units for pressure!')
             self.standard_name = 'sea_water_pressure'
+            self.__set_null_val()
         elif self.type == 'temperature':
             self.datatype = 'float32'
             # self.dimensions = ('z')
@@ -96,18 +100,19 @@ class OceanNcVar(object):
             self.long_name = 'Sea Water Temperature'
             self.standard_name = 'sea_water_temperature'
             self.units = bodc_units
+            self.__set_null_val()
         elif self.type == 'salinity':
             self.datatype = 'float32'
             # self.dimensions = ('z')
             for i in range(4): # will try to get a unique variable name at least 4 times
                 bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
                 if bodc_code not in varlist:
-                    # var = ncfile.createVariable(bodc_code, 'float32', ('z'))
                     break
             self.name = bodc_code
             self.long_name = 'Sea Water Practical Salinity'
             self.standard_name = 'sea_water_practical_salinity'
             self.units = bodc_units
+            self.__set_null_val()
         elif self.type == 'oxygen':
             self.datatype = 'float32'
             # self.dimensions = ('z')
@@ -119,6 +124,7 @@ class OceanNcVar(object):
             self.long_name = 'Oxygen concentration'
             self.standard_name = 'dissolved_oxygen_concentration'
             self.units = bodc_units
+            self.__set_null_val()
         elif self.type == 'conductivity':
             self.datatype = 'float32'
             # self.dimensions = ('z')
@@ -130,6 +136,7 @@ class OceanNcVar(object):
             self.long_name = 'Sea Water Electrical Conductivity'
             self.standard_name = 'sea_water_electrical_conductivity'
             self.units = bodc_units
+            self.__set_null_val()
         elif self.type == 'nutrient':
             self.datatype = 'float32'
             for i in range(4):
@@ -138,9 +145,14 @@ class OceanNcVar(object):
                     break
             self.name = bodc_code
             self.units = bodc_units
+            self.__set_null_val()
         else:
             print("Do not know how to define this variable..")
             raise Exception("Fatal Error")
+
+    def __set_null_val(self):
+        self.data = np.asarray(self.data, dtype=float)
+        self.data[self.data == float(self.null_value)] = float("nan")
 
     def __get_bodc_code(self, vartype, ios_varname, varunits, iter):
         """
