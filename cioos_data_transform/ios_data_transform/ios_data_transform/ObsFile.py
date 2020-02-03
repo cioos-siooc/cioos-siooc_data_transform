@@ -286,6 +286,8 @@ class ObsFile(object):
             for i in range(len(info['Pad'])):
                 if info['Type'][i].strip() == 'D':
                     fmt = fmt + '11s'
+                elif info['Type'][i].strip() == 'DT':
+                    fmt = fmt + '17s'
                 elif info['Format'][i].strip().upper() == 'HH:MM:SS':
                     fmt = fmt + '9s'
                 elif info['Format'][i].strip().upper() == 'HH:MM':
