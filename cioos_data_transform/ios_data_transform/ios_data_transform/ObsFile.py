@@ -123,13 +123,13 @@ class ObsFile(object):
             if self.debug:
                 print("Finding subsection", name)
             name = '$' + name
+        if name not in self.FILE.keys():
+            print(self.FILE.keys())
+            raise Exception("Did not find subsection:{} in {}".format(name, self.filename))
         if name == '$TABLE: CHANNELS':
             info = self.FILE[name]
         elif name == '$TABLE: CHANNEL DETAIL':
             info = self.FILE[name]
-        else:
-            print(self.FILE.keys())
-            raise Exception("Error: Did not find subsection:{} in {}".format(name, self.filename))
         return info
 
     def get_dt(self):
@@ -484,7 +484,10 @@ class BotFile(ObsFile):
         self.REMARKS = self.get_comments_like('REMARKS')
         self.ADMINISTRATION = self.get_section('ADMINISTRATION')
         self.INSTRUMENT = self.get_section('INSTRUMENT')
-        self.channel_details = self.get_channel_detail()
+        try:
+            self.channel_details = self.get_channel_detail()
+        except Exception as e:
+            print(e)
         # try reading file using format specified in 'FORMAT'
         try:
             self.data = self.get_data(formatline=self.FILE['FORMAT'])
