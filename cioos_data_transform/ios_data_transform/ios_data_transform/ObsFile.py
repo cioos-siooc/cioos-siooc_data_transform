@@ -140,7 +140,8 @@ class ObsFile(object):
             dt = np.asarray(line.split('!')[0].split(), dtype=float)
             dt = sum(dt * [24. * 3600., 3600., 60., 1., 0.001])  # in seconds
         else:
-            raise Exception("Error: Time Increment not found in Section:FILE", self.filename)
+            print("Error: Time Increment not found in Section:FILE", self.filename)
+            dt = None
         return dt
 
     def get_date(self, opt='start'):
@@ -397,6 +398,7 @@ class CtdFile(ObsFile):
         self.REMARKS = self.get_comments_like('REMARKS')
         self.ADMINISTRATION = self.get_section('ADMINISTRATION')
         self.INSTRUMENT = self.get_section('INSTRUMENT')
+        self.channel_details = self.get_channel_detail()
         # try reading file using format specified in 'FORMAT'
         try:
             self.data = self.get_data(formatline=self.FILE['FORMAT'])
@@ -405,7 +407,7 @@ class CtdFile(ObsFile):
             print("Could not read file using 'FORMAT' description ...", self.filename)
         if self.data is None:
             try:
-                self.channel_details = self.get_channel_detail()
+                # self.channel_details = self.get_channel_detail()
                 self.data = self.get_data(formatline=None)
             except Exception as e:
                 return 0
@@ -439,8 +441,15 @@ class MCtdFile(ObsFile):
         self.INSTRUMENT = self.get_section('INSTRUMENT')
         self.DEPLOYMENT = self.get_section('DEPLOYMENT')
         self.RECOVERY = self.get_section('RECOVERY')
-        dt = self.get_dt()
-        self.obs_time = [startdateobj + timedelta(seconds=dt * (i))
+        time_increment = self.get_dt()
+        self.channel_details = self.get_channel_detail()
+        if time_increment is None:
+            print("Did not find 'TIME INCREMENT'. Trying to calculate it from endtime and nrecs ...")
+            enddateobj, _ = self.get_date(opt='end')
+            time_increment = (enddateobj - startdateobj).total_seconds()/(int(self.FILE['NUMBER OF RECORDS'])-1)
+            print('New time increment =', time_increment)
+
+        self.obs_time = [startdateobj + timedelta(seconds=time_increment * (i))
                          for i in range(int(self.FILE['NUMBER OF RECORDS']))]
         if self.debug:
             print(self.obs_time[0], self.obs_time[-1])
@@ -453,7 +462,7 @@ class MCtdFile(ObsFile):
 
         if self.data is None:
             try:
-                self.channel_details = self.get_channel_detail()
+                # self.channel_details = self.get_channel_detail()
                 self.data = self.get_data(formatline=None)
             except Exception as e:
                 return 0
@@ -473,6 +482,7 @@ class BotFile(ObsFile):
         self.REMARKS = self.get_comments_like('REMARKS')
         self.ADMINISTRATION = self.get_section('ADMINISTRATION')
         self.INSTRUMENT = self.get_section('INSTRUMENT')
+        self.channel_details = self.get_channel_detail()
         # try reading file using format specified in 'FORMAT'
         try:
             self.data = self.get_data(formatline=self.FILE['FORMAT'])
@@ -482,7 +492,7 @@ class BotFile(ObsFile):
 
         if self.data is None:
             try:
-                self.channel_details = self.get_channel_detail()
+                # self.channel_details = self.get_channel_detail()
                 self.data = self.get_data(formatline=None)
             except Exception as e:
                 return 0

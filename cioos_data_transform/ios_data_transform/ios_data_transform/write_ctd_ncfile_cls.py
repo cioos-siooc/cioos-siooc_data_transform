@@ -47,7 +47,7 @@ def write_ctd_ncfile(filename, ctdcls):
     else:
         mission_id = ctdcls.ADMINISTRATION['CRUISE'].strip()
     buf = mission_id.split('-')
-    mission_id = '{:4d}-{:03d}'.format(int(buf[0]), int(buf[1]))
+    mission_id = '{:04d}-{:03d}'.format(int(buf[0]), int(buf[1]))
     ncfile_var_list.append(OceanNcVar('str_id', 'mission_id', None, None, None, mission_id))
     if 'SCIENTIST' in ctdcls.ADMINISTRATION:
         ncfile_var_list.append(OceanNcVar('str_id', 'scientist', None, None, None, ctdcls.ADMINISTRATION['SCIENTIST'].strip()))

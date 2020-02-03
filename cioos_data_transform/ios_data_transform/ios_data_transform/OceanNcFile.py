@@ -49,7 +49,7 @@ class OceanNcFile(object):
     def __write_var(self, var):
         # var.dimensions is a tuple
         # var.type is  a string
-        # print('writing', var.name, var.datatype, var.dimensions)
+        # print('Writing', var.name, var.datatype, var.dimensions, var.data)
         ncvar = self.ncfile.createVariable(var.name, var.datatype, var.dimensions)
         for key, value in zip(['long_name', 'standard_name', 'units'],
                                 [var.long_name, var.standard_name, var.units]):
@@ -61,6 +61,7 @@ class OceanNcFile(object):
         if var.datatype == str:
             ncvar[0] = var.data
         else:
+            setattr(ncvar, 'FillValue', float('NaN'))
             ncvar[:] = var.data
 
 
