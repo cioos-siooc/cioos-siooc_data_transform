@@ -402,9 +402,8 @@ class CtdFile(ObsFile):
         self.REMARKS = self.get_comments_like('REMARKS')
         self.ADMINISTRATION = self.get_section('ADMINISTRATION')
         self.INSTRUMENT = self.get_section('INSTRUMENT')
-        try:
-            self.channel_details = self.get_channel_detail()
-        except Exception as e:
+        self.channel_details = self.get_channel_detail()
+        if self.channel_details is None:
             print("Unable to get channel details from header...")
 
         # try reading file using format specified in 'FORMAT'
@@ -450,9 +449,8 @@ class MCtdFile(ObsFile):
         self.DEPLOYMENT = self.get_section('DEPLOYMENT')
         self.RECOVERY = self.get_section('RECOVERY')
         time_increment = self.get_dt()
-        try:
-            self.channel_details = self.get_channel_detail()
-        except Exception as e:
+        self.channel_details = self.get_channel_detail()
+        if self.channel_details is None:
             print("Unable to get channel details from header...")
 
         if time_increment is None:
