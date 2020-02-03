@@ -487,7 +487,7 @@ class BotFile(ObsFile):
         try:
             self.channel_details = self.get_channel_detail()
         except Exception as e:
-            print(e)
+            print("Unable to get channel details from header...")
         # try reading file using format specified in 'FORMAT'
         try:
             self.data = self.get_data(formatline=self.FILE['FORMAT'])
