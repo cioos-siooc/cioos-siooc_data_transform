@@ -85,8 +85,12 @@ def write_ctd_ncfile(filename, ctdcls):
         try:
             null_value = ctdcls.channel_details['Pad'][i]
         except Exception as e:
-            print("Channel Details missing. Setting Pad value to ' ' ...")
-            null_value = "' '"
+            if 'PAD' in ctdcls.FILE.keys():
+                null_value = ctdcls.FILE['PAD'].strip()
+                print("Channel Details missing. Setting Pad value to: ", null_value.strip())
+            else:
+                print("Channel Details missing. Setting Pad value to ' ' ...")
+                null_value = "' '"
         if is_in(['depth'], channel) and not is_in(['nominal'], channel):
             ncfile_var_list.append(OceanNcVar('depth', 'depth',
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
