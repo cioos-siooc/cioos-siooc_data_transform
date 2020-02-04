@@ -82,7 +82,11 @@ def write_ctd_ncfile(filename, ctdcls):
     ncfile_var_list.append(OceanNcVar('time', 'time', None, None, None, [ctdcls.start_dateobj]))
 # go through CHANNELS and add each variable depending on type
     for i, channel in enumerate(ctdcls.CHANNELS['Name']):
-        null_value = ctdcls.channel_details['Pad'][i]
+        try:
+            null_value = ctdcls.channel_details['Pad'][i]
+        except Exception as e:
+            print("Channel Details missing. Setting Pad value to ' ' ...")
+            null_value = "' '"
         if is_in(['depth'], channel) and not is_in(['nominal'], channel):
             ncfile_var_list.append(OceanNcVar('depth', 'depth',
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],

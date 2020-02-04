@@ -123,13 +123,13 @@ class ObsFile(object):
             if self.debug:
                 print("Finding subsection", name)
             name = '$' + name
-        if name == '$TABLE: CHANNELS':
+        if name not in self.FILE.keys():
+            print("Did not find subsection:{} in {}".format(name, self.filename))
+            info = None
+        elif name == '$TABLE: CHANNELS':
             info = self.FILE[name]
         elif name == '$TABLE: CHANNEL DETAIL':
             info = self.FILE[name]
-        else:
-            print(self.FILE.keys())
-            raise Exception("Error: Did not find subsection:{} in {}".format(name, self.filename))
         return info
 
     def get_dt(self):
@@ -272,6 +272,8 @@ class ObsFile(object):
         # is not a fortran compatible description
         # CHANGELOG July 2019: decipher python 'struct' format from channel details
         lines = self.get_subsection('TABLE: CHANNEL DETAIL', self.FILE)
+        if lines is None:
+            return None
         mask = lines[1].rstrip()
         info = {}
         ch_det = [self.apply_col_mask(l, mask) for l in lines[2:]]
@@ -286,6 +288,8 @@ class ObsFile(object):
             for i in range(len(info['Pad'])):
                 if info['Type'][i].strip() == 'D':
                     fmt = fmt + '11s'
+                elif info['Type'][i].strip() == 'DT':
+                    fmt = fmt + '17s'
                 elif info['Format'][i].strip().upper() == 'HH:MM:SS':
                     fmt = fmt + '9s'
                 elif info['Format'][i].strip().upper() == 'HH:MM':
@@ -399,6 +403,9 @@ class CtdFile(ObsFile):
         self.ADMINISTRATION = self.get_section('ADMINISTRATION')
         self.INSTRUMENT = self.get_section('INSTRUMENT')
         self.channel_details = self.get_channel_detail()
+        if self.channel_details is None:
+            print("Unable to get channel details from header...")
+
         # try reading file using format specified in 'FORMAT'
         try:
             self.data = self.get_data(formatline=self.FILE['FORMAT'])
@@ -443,6 +450,9 @@ class MCtdFile(ObsFile):
         self.RECOVERY = self.get_section('RECOVERY')
         time_increment = self.get_dt()
         self.channel_details = self.get_channel_detail()
+        if self.channel_details is None:
+            print("Unable to get channel details from header...")
+
         if time_increment is None:
             print("Did not find 'TIME INCREMENT'. Trying to calculate it from endtime and nrecs ...")
             enddateobj, _ = self.get_date(opt='end')
@@ -483,6 +493,8 @@ class BotFile(ObsFile):
         self.ADMINISTRATION = self.get_section('ADMINISTRATION')
         self.INSTRUMENT = self.get_section('INSTRUMENT')
         self.channel_details = self.get_channel_detail()
+        if self.channel_details is None:
+            print("Unable to get channel details from header...")
         # try reading file using format specified in 'FORMAT'
         try:
             self.data = self.get_data(formatline=self.FILE['FORMAT'])
