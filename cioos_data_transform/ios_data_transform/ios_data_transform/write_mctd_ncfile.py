@@ -79,30 +79,39 @@ def write_mctd_ncfile(filename, ctdcls):
     ncfile_var_list.append(OceanNcVar('time', 'time', None, None, None, ctdcls.obs_time, vardim=('time')))
 # go through CHANNELS and add each variable depending on type
     for i, channel in enumerate(ctdcls.CHANNELS['Name']):
+        try:
+            null_value = ctdcls.channel_details['Pad'][i]
+        except Exception as e:
+            if 'PAD' in ctdcls.FILE.keys():
+                null_value = ctdcls.FILE['PAD'].strip()
+                print("Channel Details missing. Setting Pad value to: ", null_value.strip())
+            else:
+                print("Channel Details missing. Setting Pad value to ' ' ...")
+                null_value = "' '"
         if is_in(['depth'], channel):
             ncfile_var_list.append(OceanNcVar('depth', 'depth',
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
-                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('time')))
+                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('time'), null_value))
         elif is_in(['pressure'], channel):
             ncfile_var_list.append(OceanNcVar('pressure', 'pressure',
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
-                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('time')))
+                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('time'), null_value))
         elif is_in(['temperature'], channel) and not is_in(['flag', 'bottle'], channel):
             ncfile_var_list.append(OceanNcVar('temperature', ctdcls.CHANNELS['Name'][i],
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
-                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('time')))
+                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('time'), null_value))
         elif is_in(['salinity'], channel) and not is_in(['flag', 'bottle'], channel):
             ncfile_var_list.append(OceanNcVar('salinity', ctdcls.CHANNELS['Name'][i],
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
-                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('time')))
+                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('time'), null_value))
         elif is_in(['oxygen'], channel) and not is_in(['flag', 'bottle', 'rinko', 'temperature', 'current'], channel):
             ncfile_var_list.append(OceanNcVar('oxygen', ctdcls.CHANNELS['Name'][i],
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
-                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('time')))
+                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('time'), null_value))
         elif is_in(['conductivity'], channel):
             ncfile_var_list.append(OceanNcVar('conductivity', ctdcls.CHANNELS['Name'][i],
                 ctdcls.CHANNELS['Units'][i], ctdcls.CHANNELS['Minimum'][i],
-                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('time')))
+                ctdcls.CHANNELS['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('time'), null_value))
         else:
             print(channel, 'not transferred to netcdf file !')
             # raise Exception('not found !!')

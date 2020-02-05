@@ -6,7 +6,7 @@ The netCDF files are compatible with the CF conventions and ERDDAP requirements.
 
 ## Description of classes and important methods
 * ObsFile (extensions: CtdFile, BotFile, etc.): Includes variables and methods to read data in the IOS format. Information is processed and stored in state variables used by OceanNcFile (or similar).
-* OceanNcFile (extensions: CtdNcFile etc.): Includes methods required to write a netCDF file in the standard format. Data is held in object untill write_file function is executed.
+* OceanNcFile (extensions: CtdNcFile etc.): Includes methods required to write a netCDF file in the standard format. Data is held in object until write_file function is executed.
 * OceanNcVar: Holds variable data and definition. List of these objects are passed to OceanNcFile to write out in a standard format.
 
 ## Getting Started / Installing
@@ -16,12 +16,13 @@ These instructions will get you a copy of the project up and running on your loc
 * Install a working Python 3X distribution (see below for more details). Or create a new env (recommended)
 * Clone this github repo to a local folder
 * Open a terminal and change into folder with README.md
-* Run "$ python setup.py install" to install the package. Dependencies should be automatically installed as required.
+* cd into GSW-Python folder and install toolbox using '$ pip install .'
+* Run "$ pip install ." to install the ios_data_transform and dependencies automatically
 
 ### Prerequisites
 
 * Linux (or Unix-like) environment
-* Python 3X environment. See (https://docs.conda.io/en/latest/miniconda.html) for recommended installation instructions
+* Python >= 3.5 environment. See (https://docs.conda.io/en/latest/miniconda.html) for recommended installation instructions
 * Optional: Create a new python environment ($ conda create -n my-environment-name) 
 * Recommended: Use conda-forge channel (https://conda-forge.org/) for packages where available
 
@@ -44,7 +45,5 @@ This project is free and open to use by public - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
-
+## References
+https://teos-10.github.io/GSW-Python/index.html
