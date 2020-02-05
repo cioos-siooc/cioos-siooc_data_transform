@@ -16,12 +16,13 @@ These instructions will get you a copy of the project up and running on your loc
 * Install a working Python 3X distribution (see below for more details). Or create a new env (recommended)
 * Clone this github repo to a local folder
 * Open a terminal and change into folder with README.md
+* cd into GSW-Python folder and install toolbox using '$ pip install .'
 * Run "$ python setup.py install" to install the package. Dependencies should be automatically installed as required.
 
 ### Prerequisites
 
 * Linux (or Unix-like) environment
-* Python 3X environment. See (https://docs.conda.io/en/latest/miniconda.html) for recommended installation instructions
+* Python >= 3.5 environment. See (https://docs.conda.io/en/latest/miniconda.html) for recommended installation instructions
 * Optional: Create a new python environment ($ conda create -n my-environment-name) 
 * Recommended: Use conda-forge channel (https://conda-forge.org/) for packages where available
 
