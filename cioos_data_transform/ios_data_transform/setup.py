@@ -11,7 +11,7 @@ setuptools.setup(
     description="Toolbox to read data in IOS format and convert to netCDF format",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="",
+    url="https://github.com/cioos-siooc/cioos-siooc_data_transform",
     packages=setuptools.find_packages(),
     install_requires=['numpy', 'fortranformat', 'netCDF4', 'pytz', 'shapely', 'gsw'],
     classifiers=["Programming Language :: Python :: 3",
