@@ -38,7 +38,7 @@ def convert_files(env_vars, opt='all', ftype=None):
         flist.extend(glob.glob(in_path + '**/*.[Cc][Hh][Ee]', recursive=True)) 
     else:
         print("ERROR: Filetype not understood ...")
-        sys.exit()
+        return None
     print("Total number of files =", len(flist))
     # loop through files in list, read the data and write netcdf file if data read is successful
     for i, fname in enumerate(flist[:]):
@@ -46,6 +46,7 @@ def convert_files(env_vars, opt='all', ftype=None):
         p = Process(target=(convert_files_threads), args=(ftype, fname, fgeo, out_path))
         p.start()
         p.join()
+    return flist
 
 
 def convert_files_threads(ftype, fname, fgeo, out_path):
@@ -108,5 +109,13 @@ env_vars = iod.import_env_variables('./.env')
 print('Inputs from .env file: ', env_vars)
 
 start = time()
-convert_files(env_vars=env_vars, opt=opt, ftype=ftype)
-print("Time taken:", time() - start)
+flist = convert_files(env_vars=env_vars, opt=opt, ftype=ftype)
+print("Time taken to convert files: {:0.2f}".format(time() - start))
+# if any raw files have been removed, delete corresponding netCDF files
+if flist is not None:
+    print("Checking if any netCDF files should be removed...")
+    ncfilelist = [f.split('/')[-1] for f in glob.glob(env_vars[ftype+'_nc_folder'] + '**/*.nc', recursive=True)]
+    flist = [f.split('/')[-1] for f in flist]
+    for i, e in enumerate(iod.utils.compare_file_list(sub_set=flist, global_set=ncfilelist)):
+        print('delete file:', e)
+print("Total time taken:{:0.2f}".format(time() - start))
