@@ -71,3 +71,18 @@ def find_geographic_area(poly_dict, point):
             name_str = '{}{} '.format(name_str, key.replace(' ', '-'))
             # print(name_str)
     return name_str
+
+
+def compare_file_list(sub_set, global_set, opt='not-in'):
+    from itertools import compress
+    # compares files in sub_set and global_set to find strings from global_set that are 'not-in' or 'in' sub_set
+    # inputs are two lists: sub_set and global_set
+    # options: 'not-in' [default] and 'in'
+    # extensions are removed if present in the lists provided as inputs
+    ss = [i.split('.')[0] for i in sub_set]
+    gs = [i.split('.')[0] for i in global_set]
+    if opt == 'not-in':
+        list_ = [a not in ss for a in gs]
+    elif opt == 'in':
+        list_ = [a in ss for a in gs]
+    return [i for i in compress(global_set, list_)]
