@@ -3,7 +3,6 @@ import sys
 import glob
 from multiprocessing import Process
 from time import time
-# from importlib import import_module
 sys.path.insert(0, os.getcwd() + '/../../')
 import ios_data_transform as iod
 import subprocess
