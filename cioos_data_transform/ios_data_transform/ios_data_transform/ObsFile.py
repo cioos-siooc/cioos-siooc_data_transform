@@ -15,7 +15,7 @@ from io import StringIO
 
 class ObsFile(object):
     """
-    Class template for all observed data.
+    Class template for all the different data file types
     Contains data from the IOS file and methods to read the IOS format
     Specific improvements/modifications required to read filetypes will be make in derived classes
     Author: Pramod Thupaki pramod.thupaki@hakai.org
@@ -378,7 +378,7 @@ class ObsFile(object):
     def assign_geo_code(self, geojson_file):
         # read geojson file
         polygons_dict = read_geojson(geojson_file)
-        geo_code = find_geographic_area(polygons_dict, Point(self.LOCATION['LONGITUDE'], self.LOCATION['LATITUDE']))
+        geo_code = find_geographic_area(polygons_dict, Point(self.location['LONGITUDE'], self.location['LATITUDE']))
         if geo_code == '':
             # geo_code = self.LOCATION['GEOGRAPHIC AREA'].strip()
             geo_code = 'None'
@@ -396,12 +396,12 @@ class CtdFile(ObsFile):
     def import_data(self):
         self.type = 'ctd'
         self.start_dateobj, self.start_date = self.get_date(opt='start')
-        self.LOCATION = self.get_location()
-        self.CHANNELS = self.get_channels()
-        self.COMMENTS = self.get_comments_like('COMMENTS')
-        self.REMARKS = self.get_comments_like('REMARKS')
-        self.ADMINISTRATION = self.get_section('ADMINISTRATION')
-        self.INSTRUMENT = self.get_section('INSTRUMENT')
+        self.location = self.get_location()
+        self.channels = self.get_channels()
+        self.comments = self.get_comments_like('COMMENTS')
+        self.remarks = self.get_comments_like('REMARKS')
+        self.administration = self.get_section('ADMINISTRATION')
+        self.instrument = self.get_section('INSTRUMENT')
         self.channel_details = self.get_channel_detail()
         if self.channel_details is None:
             print("Unable to get channel details from header...")
@@ -440,14 +440,14 @@ class MCtdFile(ObsFile):
         from datetime import timedelta
         self.type = 'mctd'
         startdateobj, self.start_date = self.get_date(opt='start')
-        self.LOCATION = self.get_location()
-        self.CHANNELS = self.get_channels()
-        self.COMMENTS = self.get_comments_like('COMMENTS')
-        self.REMARKS = self.get_comments_like('REMARKS')
-        self.ADMINISTRATION = self.get_section('ADMINISTRATION')
-        self.INSTRUMENT = self.get_section('INSTRUMENT')
-        self.DEPLOYMENT = self.get_section('DEPLOYMENT')
-        self.RECOVERY = self.get_section('RECOVERY')
+        self.location = self.get_location()
+        self.channels = self.get_channels()
+        self.comments = self.get_comments_like('COMMENTS')
+        self.remarks = self.get_comments_like('REMARKS')
+        self.administration = self.get_section('ADMINISTRATION')
+        self.instrument = self.get_section('INSTRUMENT')
+        self.deployment = self.get_section('DEPLOYMENT')
+        self.recovery = self.get_section('RECOVERY')
         time_increment = self.get_dt()
         self.channel_details = self.get_channel_detail()
         if self.channel_details is None:
@@ -486,12 +486,12 @@ class BotFile(ObsFile):
     def import_data(self):
         self.type = 'bot'
         self.start_dateobj, self.start_date = self.get_date(opt='start')
-        self.LOCATION = self.get_location()
-        self.CHANNELS = self.get_channels()
-        self.COMMENTS = self.get_comments_like('COMMENTS')
-        self.REMARKS = self.get_comments_like('REMARKS')
-        self.ADMINISTRATION = self.get_section('ADMINISTRATION')
-        self.INSTRUMENT = self.get_section('INSTRUMENT')
+        self.location = self.get_location()
+        self.channels = self.get_channels()
+        self.comments = self.get_comments_like('COMMENTS')
+        self.remarks = self.get_comments_like('REMARKS')
+        self.administration = self.get_section('ADMINISTRATION')
+        self.instrument = self.get_section('INSTRUMENT')
         self.channel_details = self.get_channel_detail()
         if self.channel_details is None:
             print("Unable to get channel details from header...")
