@@ -3,7 +3,7 @@ import sys
 import glob
 from multiprocessing import Process
 from time import time
-# from importlib import import_module
+
 sys.path.insert(0, os.getcwd() + '/../../')
 import ios_data_transform as iod
 import subprocess
@@ -35,7 +35,7 @@ def convert_files(env_vars, opt='all', ftype=None):
         fgeo = env_vars['geojson_file']
         flist = []
         flist.extend(glob.glob(in_path + '**/*.[Bb][Oo][Tt]', recursive=True))
-        flist.extend(glob.glob(in_path + '**/*.[Cc][Hh][Ee]', recursive=True)) 
+        flist.extend(glob.glob(in_path + '**/*.[Cc][Hh][Ee]', recursive=True))
     else:
         print("ERROR: Filetype not understood ...")
         return None
@@ -114,7 +114,7 @@ print("Time taken to convert files: {:0.2f}".format(time() - start))
 # if any raw files have been removed, delete corresponding netCDF files
 if flist is not None:
     print("Checking if any netCDF files should be removed...")
-    ncfilelist = [f.split('/')[-1] for f in glob.glob(env_vars[ftype+'_nc_folder'] + '**/*.nc', recursive=True)]
+    ncfilelist = [f.split('/')[-1] for f in glob.glob(env_vars[ftype + '_nc_folder'] + '**/*.nc', recursive=True)]
     flist = [f.split('/')[-1] for f in flist]
     for i, e in enumerate(iod.utils.compare_file_list(sub_set=flist, global_set=ncfilelist)):
         print('delete file:', e)

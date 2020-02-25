@@ -52,7 +52,7 @@ class OceanNcFile(object):
         # print('Writing', var.name, var.datatype, var.dimensions, var.data)
         ncvar = self.ncfile.createVariable(var.name, var.datatype, var.dimensions)
         for key, value in zip(['long_name', 'standard_name', 'units'],
-                                [var.long_name, var.standard_name, var.units]):
+                              [var.long_name, var.standard_name, var.units]):
             if value is not None:
                 setattr(ncvar, key, value)
         # setattr(ncvar, 'long_name', var.long_name)
