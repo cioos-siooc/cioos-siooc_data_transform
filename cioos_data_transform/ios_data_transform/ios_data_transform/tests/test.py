@@ -3,7 +3,7 @@ import sys
 import os
 sys.path.insert(0, os.getcwd()+'/../../')
 import ios_data_transform as iod
-
+from glob import glob
 
 def convert_mctd_files(f, out_path):
     fdata = iod.MCtdFile(filename=f, debug=False)
@@ -35,9 +35,14 @@ def convert_ctd_files(f, out_path):
     else:
         print("Unable to import data from file", fdata.filename)
 
-convert_mctd_files(f='./test_files/ctd_mooring/a1_20140627_20150801_0100m.ctd', out_path='./temp/')
 
-convert_ctd_files(f='./test_files/ctd_profile/2017-42-1021.ctd', out_path='./temp/')
-# convert_bot_files(f='./test_files/bot/1950-001-0044.bot', out_path='./temp/')
+for fn in glob('./test_files/ctd_mooring/*.*', recursive=True):
+    convert_mctd_files(f=fn, out_path='./temp/')
+
+for fn in glob('./test_files/ctd_profile/*.*', recursive=True):
+    convert_ctd_files(f=fn, out_path='./temp/')
+
+for fn in glob('./test_files/bot/*.*', recursive=True):
+    convert_bot_files(f=fn, out_path='./temp/')
 
 # print(iod.utils.compare_file_list(['a.bot', 'c.bkas.asd'], ['a.nc', 'b.nc', 'c.nc', 'd.nc']))
