@@ -26,7 +26,7 @@ def write_mctd_ncfile(filename, ctdcls):
     # write full original header, as json dictionary
     out.HEADER = json.dumps(ctdcls.get_complete_header(), ensure_ascii=False, indent=False)
     # initcreate dimension variable
-    out.nrec = int(ctdcls.FILE['NUMBER OF RECORDS'])
+    out.nrec = int(ctdcls.file['NUMBER OF RECORDS'])
     # add variable profile_id (dummy variable)
     ncfile_var_list = []
     # profile_id = random.randint(1, 100000)
@@ -91,8 +91,8 @@ def write_mctd_ncfile(filename, ctdcls):
         try:
             null_value = ctdcls.channel_details['Pad'][i]
         except Exception as e:
-            if 'PAD' in ctdcls.FILE.keys():
-                null_value = ctdcls.FILE['PAD'].strip()
+            if 'PAD' in ctdcls.file.keys():
+                null_value = ctdcls.file['PAD'].strip()
                 print("Channel Details missing. Setting Pad value to: ", null_value.strip())
             else:
                 print("Channel Details missing. Setting Pad value to ' ' ...")
