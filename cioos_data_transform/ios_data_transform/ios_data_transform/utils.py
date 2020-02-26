@@ -1,8 +1,16 @@
 from shapely.geometry import Polygon, Point
 import json
+import os
 
 
 # general utility functions common to multiple classes
+def fix_path(path):
+    # converts path from posix to nt if system is nt
+    # input is string with path in posix format '/' file sep
+    if os.name == 'nt':
+        path = os.path.sep.join(path.split('/'))
+    return path
+
 
 def is_in(keywords, string):
     # simple function to check if any keyword is in string
