@@ -18,7 +18,7 @@ def convert_mctd_files(f, out_path):
     fdata = iod.MCtdFile(filename=f, debug=False)
     if fdata.import_data():
         fdata.assign_geo_code(fix_path('test_files/ios_polygons.geojson'))
-        iod.write_mctd_ncfile(fix_path(out_path+f.split('/')[-1]+'.nc'), fdata)
+        iod.write_mctd_ncfile(fix_path(out_path+f.split(os.path.sep)[-1]+'.nc'), fdata)
     else:
         print("Unable to import data from file", fdata.filename)
 
@@ -29,7 +29,7 @@ def convert_bot_files(f, out_path):
     if fdata.import_data():
         # print(fdata.data)
         fdata.assign_geo_code(fix_path('test_files/ios_polygons.geojson'))
-        iod.write_ctd_ncfile(fix_path(out_path+f.split('/')[-1]+'.nc'), fdata)
+        iod.write_ctd_ncfile(fix_path(out_path+f.split(os.path.sep)[-1]+'.nc'), fdata)
     else:
         print("Unable to import data from file", fdata.filename)
 
@@ -40,7 +40,7 @@ def convert_ctd_files(f, out_path):
     if fdata.import_data():
         # print(fdata.data)
         fdata.assign_geo_code(fix_path('test_files/ios_polygons.geojson'))
-        iod.write_ctd_ncfile(fix_path(out_path+f.split('/')[-1]+'.nc'), fdata)
+        iod.write_ctd_ncfile(fix_path(out_path+f.split(os.path.sep)[-1]+'.nc'), fdata)
     else:
         print("Unable to import data from file", fdata.filename)
 
