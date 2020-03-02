@@ -87,8 +87,9 @@ def compare_file_list(sub_set, global_set, opt='not-in'):
     # inputs are two lists: sub_set and global_set
     # options: 'not-in' [default] and 'in'
     # extensions are removed if present in the lists provided as inputs
-    ss = [i.split('.')[0] for i in sub_set]
-    gs = [i.split('.')[0] for i in global_set]
+    # mar 02 2020 edit: Pramod Thupaki - automatically get the file name from path using os aware method
+    ss = [os.path.basename(i).split('.')[0] for i in sub_set]
+    gs = [os.path.basename(i).split('.')[0] for i in global_set]
     if opt == 'not-in':
         list_ = [a not in ss for a in gs]
     elif opt == 'in':
