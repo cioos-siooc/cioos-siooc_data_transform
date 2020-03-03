@@ -1,7 +1,6 @@
 # script runs automated tests on data conversions
 import sys
 import os
-sys.path.insert(0, os.getcwd()+'/../../')
 import ios_data_transform as iod
 from glob import glob
 
@@ -55,4 +54,4 @@ for fn in glob(fix_path('./test_files/ctd_profile/*.*'), recursive=True):
 for fn in glob(fix_path('./test_files/bot/*.*'), recursive=True):
     convert_bot_files(f=fn, out_path=fix_path('temp/'))
 
-# print(iod.utils.compare_file_list(['a.bot', 'c.bkas.asd'], ['a.nc', 'b.nc', 'c.nc', 'd.nc']))
+# print(iod.utils.compare_file_list(['a.bot', 'c.bkas.asd'], ['nc2/a.nc', 'nc3/nc1/b.nc', 'nc1/nc/c.nc', 'd.nc']))

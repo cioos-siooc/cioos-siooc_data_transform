@@ -13,25 +13,24 @@ The netCDF files are compatible with the CF conventions and ERDDAP requirements.
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
 
-* Install a working Python 3X distribution (see below for more details). Or create a new env (recommended)
+* Install a working Python 3X distribution (see **Prerequisites** for more details)
+  * Recommended: Create a new env using command 'conda create -n myenv python=3.X'
 * Clone this github repo to a local folder
 * Open a terminal and change into folder with README.md
-* cd into GSW-Python folder and install toolbox using '$ pip install .'
-* Run "$ pip install ." to install the ios_data_transform and dependencies automatically
+* cd into GSW-Python folder and install toolbox using command 'pip install .' or 'conda install gsw=3.3.1'
+* Run command 'pip install -e .' to install the ios_data_transform and dependencies automatically 
+  * Note: -e flag installs package in 'editable' mode
 
 ### Prerequisites
 
-* Linux (or Unix-like) environment
+* Linux (or Unix-like) environment 
+  * Currently in testing for Windows environment (March 02, 2020)
 * Python >= 3.5 environment. See (https://docs.conda.io/en/latest/miniconda.html) for recommended installation instructions
-* Optional: Create a new python environment ($ conda create -n my-environment-name) 
 * Recommended: Use conda-forge channel (https://conda-forge.org/) for packages where available
 
 ## Examples
 
-See ios_data_transform/samples/example.py for sample on how to use the package to convert IOS CTD datafiles to netCDF format.
-Script used to injest IOS data into CIOOS are also in ./ios_data_transform/samples/
-
-Codes used to test the data conversion are in ./ios_data_transform/tests/
+See ios_data_transform/tests/test.py for example on how to use the package to read and convert IOS datafiles 
 
 ## Authors
 

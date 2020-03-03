@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ios_data_transform",
-    version="0.0.1",
+    version="1.0.0",
     author="Pramod Thupaki",
     author_email="pramod.thupaki@hakai.org",
     description="Toolbox to read data in IOS format and convert to netCDF format",

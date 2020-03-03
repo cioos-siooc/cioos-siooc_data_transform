@@ -3,8 +3,6 @@ import sys
 import glob
 from multiprocessing import Process
 from time import time
-
-sys.path.insert(0, os.getcwd() + '/../../')
 import ios_data_transform as iod
 import subprocess
 
@@ -114,8 +112,9 @@ print("Time taken to convert files: {:0.2f}".format(time() - start))
 # if any raw files have been removed, delete corresponding netCDF files
 if flist is not None:
     print("Checking if any netCDF files should be removed...")
-    ncfilelist = [f.split('/')[-1] for f in glob.glob(env_vars[ftype + '_nc_folder'] + '**/*.nc', recursive=True)]
-    flist = [f.split('/')[-1] for f in flist]
+    ncfilelist = glob.glob(env_vars[ftype + '_nc_folder'] + '**/*.nc', recursive=True)
     for i, e in enumerate(iod.utils.compare_file_list(sub_set=flist, global_set=ncfilelist)):
-        print('delete file:', e)
+        filename = glob.glob(env_vars[ftype + '_nc_folder'] + '**/{}.nc')
+        print('deleting file:', e)
+        subprocess.call(['rm', '-f', e])
 print("Total time taken:{:0.2f}".format(time() - start))
