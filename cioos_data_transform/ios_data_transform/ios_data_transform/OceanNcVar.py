@@ -168,7 +168,7 @@ class OceanNcVar(object):
         output:
             BODC code
         """
-        from .utils import is_in
+        from .utils.utils import is_in
         bodc_code = '';
         bodc_units = ''
         if vartype == 'temperature':
