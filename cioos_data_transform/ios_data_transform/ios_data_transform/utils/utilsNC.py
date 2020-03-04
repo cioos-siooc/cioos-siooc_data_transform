@@ -31,7 +31,7 @@ def add_standard_variables(filename):
         
         # Make sure that all variable to merge are consistent if there's multiple in one data set
         for x in similar_variables:
-            if _has_variable(x,  dset.variables.keys()):
+            if x in dset.variables.keys():
                 # Find matching variable and create temporary variable based on the first match
                 if multiple_variables != 1:
                     temp_var = dset[x]
@@ -49,7 +49,7 @@ def add_standard_variables(filename):
             variable_dimensions = temp_var.dimensions
             variable_type = temp_var.dtype
             
-            if not _has_variable(new_variable_name,  dset.variables.keys()):
+            if not new_variable_name in dset.variables.keys():
                 dset.createVariable(new_variable_name, variable_type, variable_dimensions)
             
             dset[new_variable_name].long_name = long_name
@@ -69,25 +69,25 @@ def add_standard_variables(filename):
 
         if variable_name_convention == 'BODC':  # If use BODC convention for variable names
             # Data already in ITS-90 Convention
-            if _has_variable('TEMPS901', variable_list):
+            if 'TEMPS901' in variable_list:
                 _fill_nan(var, dset.variables['TEMPS901'])
-            if _has_variable('TEMPS902', variable_list):
+            if 'TEMPS902' in variable_list:
                 _fill_nan(var, dset.variables['TEMPS902'])
             
             # Convert IPTS-68 to ITS-90
-            if _has_variable('TEMPS601', variable_list):
+            if 'TEMPS601' in variable_list:
                 # Convert Primary Temperature Sensor Data from IPTS-68 to ITS-90
                 _fill_nan(var, gsw.t90_from_t68(dset.variables['TEMPS601'][:]))
-            if _has_variable('TEMPS602', variable_list):
+            if 'TEMPS602' in variable_list:
                 # Convert Secondary Temperature Sensor Data from IPTS-68 to ITS-90
                 _fill_nan(var, gsw.t90_from_t68(dset.variables['TEMPS602'][:]))
             
             # Older Standards which still needs to be defined
-            # if _has_variable('TEMPRTN',variable_list):
+            # if 'TEMPRTN' in variable_list:
             #     _fill_nan(var, dset.variables['TEMPRTN'])
-            # if _has_variable('TEMPST1',variable_list):
+            # if 'TEMPST1' in variable_list:
             #     _fill_nan(var, dset.variables['TEMPST1'])
-            # if _has_variable('TEMPST2',variable_list):
+            # if 'TEMPST2' in variable_list:
             #     _fill_nan(var, dset.variables['TEMPST2'])
     
     # Combine Salinity (sea_water_practical_salinity)
@@ -101,25 +101,25 @@ def add_standard_variables(filename):
 
         if variable_name_convention == 'BODC':  # If use BODC convention for variable names
             # Data already in Practical Salinity unit
-            if _has_variable('PSALST01', variable_list):
+            if 'PSALST01' in variable_list:
                 _fill_nan(var, dset.variables['PSALST01'])
-            if _has_variable('PSALST02', variable_list):
+            if 'PSALST02' in variable_list:
                 _fill_nan(var, dset.variables['PSALST02'])
-            if _has_variable('PSALBST01', variable_list):
+            if 'PSALBST01' in variable_list:
                 _fill_nan(var, dset.variables['PSALBST01'])
-            if _has_variable('PSALBST02', variable_list):
+            if 'PSALBST02' in variable_list:
                 _fill_nan(var, dset.variables['PSALBST02'])
-            if _has_variable('PSALBST1', variable_list):
+            if 'PSALBST1' in variable_list:
                 _fill_nan(var, dset.variables['PSALBST1'])
-            if _has_variable('PSALBST2', variable_list):
+            if 'PSALBST2' in variable_list:
                 _fill_nan(var, dset.variables['PSALBST2'])
                 
             # Data with Salinity in PPT convert to Practical Salinity
-            if _has_variable('SSALST01', variable_list):  # Convert Primary Salinity Data from IPTS-68 to ITS-90
+            if 'SSALST01' in variable_list:  # Convert Primary Salinity Data from IPTS-68 to ITS-90
                 _fill_nan(var, gsw.SP_from_SK(dset.variables['SSALST01'][:]))
-            if _has_variable('SSALST02', variable_list):  # Convert Seconday Salinity Data from IPTS-68 to ITS-90
+            if 'SSALST02' in variable_list:  # Convert Seconday Salinity Data from IPTS-68 to ITS-90
                 _fill_nan(var, gsw.SP_from_SK(dset.variables['SSALST02'][:]))
-            if _has_variable('ODSDM021', variable_list):  # Convert Secondary Salinity Data from IPTS-68 to ITS-90
+            if 'ODSDM021' in variable_list:  # Convert Secondary Salinity Data from IPTS-68 to ITS-90
                 _fill_nan(var, gsw.SP_from_SK(dset.variables['ODSDM021'][:]))
 
     # Combine Depth (depth)
@@ -133,15 +133,15 @@ def add_standard_variables(filename):
 
         if variable_name_convention == 'BODC':
             # Data already in Depth (m)
-            if _has_variable('depth', variable_list):
+            if 'depth' in variable_list:
                 _fill_nan(var, dset.variables['depth'])
                 
             # Convert Pressure to Pressure with TEOS-10 z_from_p tool
             # Convert Primary Pressure Data from dbar to m
-            if (_has_variable('PRESPR01', variable_list) and _has_variable('latitude', variable_list)):
+            if 'PRESPR01' in variable_list and 'latitude' in variable_list:
                 _fill_nan(var, gsw.z_from_p(dset.variables['PRESPR01'][:], dset.variables['latitude'][:]))
                 # Convert Secondary Pressure Data from dbar to m
-            if (_has_variable('PRESPR02', variable_list) and _has_variable('latitude', variable_list)):
+            if 'PRESPR02' in variable_list and 'latitude' in variable_list:
                 _fill_nan(var, gsw.z_from_p(dset.variables['PRESPR02'][:], dset.variables['latitude'][:]))
 
     # Combine pressure (sea_water_pressure)
@@ -155,14 +155,14 @@ def add_standard_variables(filename):
 
         if variable_name_convention == 'BODC':  # If use BODC convention for variable names
             # ata already in Sea Pressure (dBar)
-            if _has_variable('PRESPR01', variable_list):
+            if 'PRESPR01' in variable_list:
                 _fill_nan(var, dset.variables['PRESPR01'])
-            if _has_variable('PRESPR02', variable_list):
+            if 'PRESPR02' in variable_list:
                 _fill_nan(var, dset.variables['PRESPR02'])
                 
             # Convert Depth to Pressure with TEOS-10 p_from_z tool
             # Convert Primary Pressure Data from dbar to m
-            if (_has_variable('depth', variable_list) and _has_variable('latitude', variable_list)):
+            if 'depth' in variable_list and 'latitude' in variable_list:
                 _fill_nan(var, gsw.p_from_z(-dset.variables['depth'][:], dset.variables['latitude'][:]))
                     
     # Save to NetCDF File
