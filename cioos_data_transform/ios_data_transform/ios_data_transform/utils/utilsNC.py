@@ -5,6 +5,7 @@ import datetime
 
 
 def _get_time_stamp():
+    # Get now timestamp in UTC as a string
     time_stamp = datetime.datetime.utcnow().isoformat() + ' UTC'
     return time_stamp
 
@@ -16,11 +17,22 @@ def _has_variable(input_str: list, string_list: list) -> bool:
 
 
 def _fill_nan(x, y):
+    # _fill_nan replace any NaN or flagged values in the array x by its correspondant in y
+
+    # Make a copy of the input x
+    x_in = np.copy(x)
+    is_updated = False
+
     # Function to replace Nan or flagged values by value from a second vector
     x[np.isnan(x)] = y[np.isnan(x)]
+
     if np.size(x[:].mask) > 1:
         x[x[:].mask] = y[x[:].mask]
-    return x
+
+    # Compare input vs output and output True if changed
+    if (x_in != x[:]).any():
+        is_updated = True
+    return x, is_updated
 
 
 def _create_new_empty_variable(dset, new_variable_name, similar_variables, long_name, standard_name, units):
@@ -78,37 +90,44 @@ def add_standard_variables(filename):
                                    'sea_water_temperature', 'degC')
         var = dset[new_variable]
         # Define History
-        add_history_line = 'Create ' + new_variable + ' and apply the following parameters: '
+        add_history_line = 'Create ' + new_variable + ' variable and apply the following parameters: '
 
         if variable_name_convention == 'BODC':  # If use BODC convention for variable names
             # Data already in ITS-90 Convention
             if 'TEMPS901' in variable_list:
-                _fill_nan(var, dset.variables['TEMPS901'])
-                add_history_line = add_history_line + 'TEMPS901, '
+                var, is_updated = _fill_nan(var, dset.variables['TEMPS901'])
+                if is_updated:
+                    add_history_line = add_history_line + 'TEMPS901, '
             if 'TEMPS902' in variable_list:
-                _fill_nan(var, dset.variables['TEMPS902'])
-                add_history_line = add_history_line + 'TEMPS902, '
+                var, is_updated = _fill_nan(var, dset.variables['TEMPS902'])
+                if is_updated:
+                    add_history_line = add_history_line + 'TEMPS902, '
 
             # Convert IPTS-68 to ITS-90
             if 'TEMPS601' in variable_list:
                 # Convert Primary Temperature Sensor Data from IPTS-68 to ITS-90
-                _fill_nan(var, gsw.t90_from_t68(dset.variables['TEMPS601'][:]))
-                add_history_line = add_history_line + 'gsw.t90_from_t68(\'TEMPS601\'), '
+                var, is_updated = _fill_nan(var, gsw.t90_from_t68(dset.variables['TEMPS601'][:]))
+                if is_updated:
+                    add_history_line = add_history_line + 'gsw.t90_from_t68(\'TEMPS601\'), '
             if 'TEMPS602' in variable_list:
                 # Convert Secondary Temperature Sensor Data from IPTS-68 to ITS-90
-                _fill_nan(var, gsw.t90_from_t68(dset.variables['TEMPS602'][:]))
-                add_history_line = add_history_line + 'gsw.t90_from_t68(\'TEMPS602\'), '
+                var, is_updated = _fill_nan(var, gsw.t90_from_t68(dset.variables['TEMPS602'][:]))
+                if is_updated:
+                    add_history_line = add_history_line + 'gsw.t90_from_t68(\'TEMPS602\'), '
 
-            # Older Standards which still needs to be defined
+            # Older Standards which still needs to be define
             # if 'TEMPRTN' in variable_list:
-            #     _fill_nan(var, dset.variables['TEMPRTN'])
-            #     add_history_line = add_history_line + 'TEMPRTN, '
+            #     var, is_updated = _fill_nan(var, dset.variables['TEMPRTN'])
+            #     if is_updated:
+            #       add_history_line = add_history_line + 'TEMPRTN, '
             # if 'TEMPST1' in variable_list:
-            #     _fill_nan(var, dset.variables['TEMPST1'])
-            #     add_history_line = add_history_line + 'TEMPST1, '
+            #     var, is_updated = _fill_nan(var, dset.variables['TEMPST1'])
+            #     if is_updated:
+            #       add_history_line = add_history_line + 'TEMPST1, '
             # if 'TEMPST2' in variable_list:
-            #     _fill_nan(var, dset.variables['TEMPST2'])
-            #     add_history_line = add_history_line + 'TEMPST2, '
+            #     var, is_updated = _fill_nan(var, dset.variables['TEMPST2'])
+            #     if is_updated:
+            #       add_history_line = add_history_line + 'TEMPST2, '
 
         # Append list of variables added to history_attribute
         history_attribute[_get_time_stamp()] = add_history_line[:-2]  # ignore the last ','
@@ -126,46 +145,55 @@ def add_standard_variables(filename):
         var = dset[new_variable]
 
         # Define History
-        add_history_line = 'Create ' + new_variable + ' and apply the following parameters: '
+        add_history_line = 'Create ' + new_variable + ' variable and apply the following parameters: '
 
         if variable_name_convention == 'BODC':  # If use BODC convention for variable names
             # Data already in Practical Salinity unit
             if 'PSALST01' in variable_list:
-                _fill_nan(var, dset.variables['PSALST01'])
-                add_history_line = add_history_line + 'PSALST01, '
+                var, is_updated = _fill_nan(var, dset.variables['PSALST01'])
+                if is_updated:
+                    add_history_line = add_history_line + 'PSALST01, '
             if 'PSALST02' in variable_list:
-                _fill_nan(var, dset.variables['PSALST02'])
-                add_history_line = add_history_line + 'PSALST02, '
+                var, is_updated = _fill_nan(var, dset.variables['PSALST02'])
+                if is_updated:
+                    add_history_line = add_history_line + 'PSALST02, '
             if 'PSALBST01' in variable_list:
-                _fill_nan(var, dset.variables['PSALBST01'])
-                add_history_line = add_history_line + 'PSALBST01, '
+                var, is_updated = _fill_nan(var, dset.variables['PSALBST01'])
+                if is_updated:
+                    add_history_line = add_history_line + 'PSALBST01, '
             if 'PSALBST02' in variable_list:
-                _fill_nan(var, dset.variables['PSALBST02'])
-                add_history_line = add_history_line + 'PSALBST02, '
+                var, is_updated = _fill_nan(var, dset.variables['PSALBST02'])
+                if is_updated:
+                    add_history_line = add_history_line + 'PSALBST02, '
             if 'PSALBST1' in variable_list:
-                _fill_nan(var, dset.variables['PSALBST1'])
-                add_history_line = add_history_line + 'PSALBST1, '
+                var, is_updated = _fill_nan(var, dset.variables['PSALBST1'])
+                if is_updated:
+                    add_history_line = add_history_line + 'PSALBST1, '
             if 'PSALBST2' in variable_list:
-                _fill_nan(var, dset.variables['PSALBST2'])
-                add_history_line = add_history_line + 'PSALBST2, '
+                var, is_updated = _fill_nan(var, dset.variables['PSALBST2'])
+                if is_updated:
+                    add_history_line = add_history_line + 'PSALBST2, '
 
             # Data with Salinity in PPT convert to Practical Salinity
             if 'SSALST01' in variable_list:  # Convert Primary Salinity Data from IPTS-68 to ITS-90
-                _fill_nan(var, gsw.SP_from_SK(dset.variables['SSALST01'][:]))
-                add_history_line = add_history_line + 'gsw.SP_from_SK(\'PSALBST2\'), '
+                var, is_updated = _fill_nan(var, gsw.SP_from_SK(dset.variables['SSALST01'][:]))
+                if is_updated:
+                    add_history_line = add_history_line + 'gsw.SP_from_SK(\'PSALBST2\'), '
             if 'SSALST02' in variable_list:  # Convert Seconday Salinity Data from IPTS-68 to ITS-90
-                _fill_nan(var, gsw.SP_from_SK(dset.variables['SSALST02'][:]))
-                add_history_line = add_history_line + 'gsw.SP_from_SK(\'SSALST02\'), '
+                var, is_updated = _fill_nan(var, gsw.SP_from_SK(dset.variables['SSALST02'][:]))
+                if is_updated:
+                    add_history_line = add_history_line + 'gsw.SP_from_SK(\'SSALST02\'), '
             if 'ODSDM021' in variable_list:  # Convert Secondary Salinity Data from IPTS-68 to ITS-90
-                _fill_nan(var, gsw.SP_from_SK(dset.variables['ODSDM021'][:]))
-                add_history_line = add_history_line + 'gsw.SP_from_SK(\'ODSDM021\'), '
+                var, is_updated = _fill_nan(var, gsw.SP_from_SK(dset.variables['ODSDM021'][:]))
+                if is_updated:
+                    add_history_line = add_history_line + 'gsw.SP_from_SK(\'ODSDM021\'), '
 
         # Append list of variables added to history_attribute for global attribute and comment to the varaible attribute
         history_attribute[_get_time_stamp()] = add_history_line[:-2]  # ignore the last ','
         dset[new_variable].comment = str({_get_time_stamp(): add_history_line[:-2]})
 
     # Combine Depth (depth)
-    combine_var_names = ['depth', 'PRESPR01', 'PRESPR02']
+    combine_var_names = ['PRESPR01', 'PRESPR02']
 
     if _has_variable(combine_var_names, variable_list):
         # Create New Variable
@@ -174,27 +202,31 @@ def add_standard_variables(filename):
                                    'depth_below_sea_level_in_meters', 'm')
         var = dset[new_variable]
 
-        # Define History
-        add_history_line = 'Create ' + new_variable + ' and apply the following parameters: '
+        # If depth variable is already populated with real values skip that part
+        if (np.any(var.mask) and np.size(var.mask)>1) or np.isnan(var[:]).any():
+            # Define History
+            add_history_line = 'Create ' + new_variable + ' variable and apply the following parameters: '
 
-        if variable_name_convention == 'BODC':
-            # Data already in Depth (m)
-            if 'depth' in variable_list:
-                _fill_nan(var, dset.variables['depth'])
-                add_history_line = add_history_line + 'depth, '
-            # Convert Pressure to Pressure with TEOS-10 z_from_p tool
-            # Convert Primary Pressure Data from dbar to m
-            if 'PRESPR01' in variable_list and 'latitude' in variable_list:
-                _fill_nan(var, gsw.z_from_p(dset.variables['PRESPR01'][:], dset.variables['latitude'][:]))
-                add_history_line = add_history_line + 'gsw.z_from_p(\'PRESPR01\',\'latitude\'), '
-                # Convert Secondary Pressure Data from dbar to m
-            if 'PRESPR02' in variable_list and 'latitude' in variable_list:
-                _fill_nan(var, gsw.z_from_p(dset.variables['PRESPR02'][:], dset.variables['latitude'][:]))
-                add_history_line = add_history_line + 'gsw.z_from_p(\'PRESPR02\',\'latitude\'), '
+            if variable_name_convention == 'BODC':
+                # Depth already in depth (m) if depth already existed
 
-        # Append list of variables added to history_attribute
-        history_attribute[_get_time_stamp()] = add_history_line[:-2]  # ignore the last ','
-        dset[new_variable].comment = str({_get_time_stamp(): add_history_line[:-2]})
+                # Convert Pressure to Pressure with TEOS-10 z_from_p tool
+                # Convert Primary Pressure Data from dbar to m
+                if 'PRESPR01' in variable_list and 'latitude' in variable_list:
+                    var, is_updated = _fill_nan(var, -gsw.z_from_p(dset.variables['PRESPR01'][:],
+                                                                   dset.variables['latitude'][:]))
+                    if is_updated:
+                        add_history_line = add_history_line + 'gsw.z_from_p(\'PRESPR01\',\'latitude\'), '
+                    # Convert Secondary Pressure Data from dbar to m
+                if 'PRESPR02' in variable_list and 'latitude' in variable_list:
+                    var, is_updated = _fill_nan(var, -gsw.z_from_p(dset.variables['PRESPR02'][:],
+                                                                   dset.variables['latitude'][:]))
+                    if is_updated:
+                        add_history_line = add_history_line + '-gsw.z_from_p(\'PRESPR02\',\'latitude\'), '
+
+            # Append list of variables added to history_attribute
+            history_attribute[_get_time_stamp()] = add_history_line[:-2]  # ignore the last ','
+            dset[new_variable].comment = str({_get_time_stamp(): add_history_line[:-2]})
 
     # Combine pressure (sea_water_pressure)
     combine_var_names = ['PRESPR01', 'PRESPR02', 'depth']
@@ -205,22 +237,26 @@ def add_standard_variables(filename):
         _create_new_empty_variable(dset, new_variable, combine_var_names, 'Sea Water Pressure in dbar',
                                    'sea_water_pressure', 'dbar')
         var = dset[new_variable]
-        add_history_line = 'Create ' + new_variable + ' and apply the following parameters: '
+        add_history_line = 'Create ' + new_variable + ' variable and apply the following parameters: '
 
         if variable_name_convention == 'BODC':  # If use BODC convention for variable names
             # ata already in Sea Pressure (dBar)
             if 'PRESPR01' in variable_list:
-                _fill_nan(var, dset.variables['PRESPR01'])
-                add_history_line = add_history_line + 'PRESPR01, '
+                var, is_updated = _fill_nan(var, dset.variables['PRESPR01'])
+                if is_updated:
+                    add_history_line = add_history_line + 'PRESPR01, '
             if 'PRESPR02' in variable_list:
-                _fill_nan(var, dset.variables['PRESPR02'])
-                add_history_line = add_history_line + 'PRESPR02, '
+                var, is_updated = _fill_nan(var, dset.variables['PRESPR02'])
+                if is_updated:
+                    add_history_line = add_history_line + 'PRESPR02, '
 
             # Convert Depth to Pressure with TEOS-10 p_from_z tool
             # Convert Primary Pressure Data from dbar to m
             if 'depth' in variable_list and 'latitude' in variable_list:
-                _fill_nan(var, gsw.p_from_z(-dset.variables['depth'][:], dset.variables['latitude'][:]))
-                add_history_line = add_history_line + 'gsw.p_from_z(-\'depth\',\'latitude\'), '
+                var, is_updated = _fill_nan(var, gsw.p_from_z(-dset.variables['depth'][:],
+                                                              dset.variables['latitude'][:]))
+                if is_updated:
+                    add_history_line = add_history_line + 'gsw.p_from_z(-\'depth\',\'latitude\'), '
 
         # Append list of variables added to history_attribute
         history_attribute[_get_time_stamp()] = add_history_line[:-2]  # ignore the last ','
