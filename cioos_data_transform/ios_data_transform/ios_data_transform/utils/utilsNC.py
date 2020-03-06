@@ -70,6 +70,8 @@ def _create_new_empty_variable(dset, new_variable_name, similar_variables, long_
 
 
 def add_standard_variables(filename):
+    # TODO Add documentation to the function
+
     # Load NC Data Set and get Variable list
     dset = nc.Dataset(filename, 'r+')
     variable_list = dset.variables.keys()
@@ -274,3 +276,5 @@ def add_standard_variables(filename):
 
     # Save to NetCDF File
     dset.close()
+
+# TODO Create tools to add derived variables, particularly sound speed, density, potential density etc.
