@@ -202,31 +202,32 @@ def add_standard_variables(filename):
                                    'depth_below_sea_level_in_meters', 'm')
         var = dset[new_variable]
 
-        # If depth variable is already populated with real values skip that part
-        if (np.any(var.mask) and np.size(var.mask)>1) or np.isnan(var[:]).any():
-            # Define History
-            add_history_line = 'Create ' + new_variable + ' variable and apply the following parameters: '
+        # Define History: Start opposite for this one since depth variable already exist
+        add_history_line = ''
 
-            if variable_name_convention == 'BODC':
-                # Depth already in depth (m) if depth already existed
+        if variable_name_convention == 'BODC':
+            # Depth already in depth (m) if depth already existed
 
-                # Convert Pressure to Pressure with TEOS-10 z_from_p tool
-                # Convert Primary Pressure Data from dbar to m
-                if 'PRESPR01' in variable_list and 'latitude' in variable_list:
-                    var, is_updated = _fill_nan(var, -gsw.z_from_p(dset.variables['PRESPR01'][:],
-                                                                   dset.variables['latitude'][:]))
-                    if is_updated:
-                        add_history_line = add_history_line + 'gsw.z_from_p(\'PRESPR01\',\'latitude\'), '
-                    # Convert Secondary Pressure Data from dbar to m
-                if 'PRESPR02' in variable_list and 'latitude' in variable_list:
-                    var, is_updated = _fill_nan(var, -gsw.z_from_p(dset.variables['PRESPR02'][:],
-                                                                   dset.variables['latitude'][:]))
-                    if is_updated:
-                        add_history_line = add_history_line + '-gsw.z_from_p(\'PRESPR02\',\'latitude\'), '
+            # Convert Pressure to Pressure with TEOS-10 z_from_p tool
+            # Convert Primary Pressure Data from dbar to m
+            if 'PRESPR01' in variable_list and 'latitude' in variable_list:
+                var, is_updated = _fill_nan(var, -gsw.z_from_p(dset.variables['PRESPR01'][:],
+                                                               dset.variables['latitude'][:]))
+                if is_updated:
+                    add_history_line = add_history_line + 'gsw.z_from_p(\'PRESPR01\',\'latitude\'), '
+            # Convert Secondary Pressure Data from dbar to m
+            if 'PRESPR02' in variable_list and 'latitude' in variable_list:
+                var, is_updated = _fill_nan(var, -gsw.z_from_p(dset.variables['PRESPR02'][:],
+                                                               dset.variables['latitude'][:]))
+                if is_updated:
+                    add_history_line = add_history_line + '-gsw.z_from_p(\'PRESPR02\',\'latitude\'), '
 
-            # Append list of variables added to history_attribute
-            history_attribute[_get_time_stamp()] = add_history_line[:-2]  # ignore the last ','
-            dset[new_variable].comment = str({_get_time_stamp(): add_history_line[:-2]})
+            if len(add_history_line) > 1:
+                add_history_line = 'Create ' + new_variable + ' variable and apply the following parameters: ' \
+                                   + add_history_line
+                # Append list of variables added to history_attribute
+                history_attribute[_get_time_stamp()] = add_history_line[:-2]  # ignore the last ','
+                dset[new_variable].comment = str({_get_time_stamp(): add_history_line[:-2]})
 
     # Combine pressure (sea_water_pressure)
     combine_var_names = ['PRESPR01', 'PRESPR02', 'depth']
