@@ -115,6 +115,7 @@ def add_standard_variables(filename):
                 if is_updated:
                     add_history_line = add_history_line + 'gsw.t90_from_t68(\'TEMPS602\'), '
 
+            # TODO: Add other Temperature variables to the sea_water_temperature, need to discuss transformations to apply first
             # Older Standards which still needs to be define
             # if 'TEMPRTN' in variable_list:
             #     var, is_updated = _fill_nan(var, dset.variables['TEMPRTN'])
@@ -221,6 +222,8 @@ def add_standard_variables(filename):
                                                                dset.variables['latitude'][:]))
                 if is_updated:
                     add_history_line = add_history_line + '-gsw.z_from_p(\'PRESPR02\',\'latitude\'), '
+
+            # TODO: Copy instrument_depth variable value to depth variable if no other parameters are available
 
             if len(add_history_line) > 1:
                 add_history_line = 'Create ' + new_variable + ' variable and apply the following parameters: ' \
