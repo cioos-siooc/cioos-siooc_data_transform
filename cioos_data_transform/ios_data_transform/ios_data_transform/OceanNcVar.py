@@ -7,7 +7,7 @@ import numpy as np
 
 class OceanNcVar(object):
     def __init__(self, vartype, varname, varunits, varmin, varmax, varval, varclslist=[], vardim=(),
-                 varnull=float("nan")):
+                 varnull=float("nan"), conv_to_BODC = True):
         self.cf_role = None
         self.name = varname
         self.type = vartype
@@ -20,6 +20,7 @@ class OceanNcVar(object):
         self.null_value = varnull
         self.dimensions = vardim
         self.data = varval
+        self.conv_to_BODC = conv_to_BODC
         # from existing varlist. get all variables that are going to be written into the ncfile
         # this will be checked to make sure new variable name does not conflict with existing ones
         varlist = []
@@ -169,23 +170,29 @@ class OceanNcVar(object):
             BODC code
         """
         from .utils import is_in
-        bodc_code = '';
+        if not self.conv_to_BODC:
+            # do not convert varname, varunits ot BODC. instead just return original values
+            # use this option on datasets where variables are not named using this convention or
+            # using a different method to define variable names and types
+            return self.name, self.units
+
+        bodc_code = ''
         bodc_units = ''
         if vartype == 'temperature':
             if is_in(['reversing'], ios_varname) and is_in(['deg c'], varunits):
-                bodc_code = 'TEMPRTN';
+                bodc_code = 'TEMPRTN'
                 bodc_units = 'deg C'
                 bodc_code = '{}{:01d}'.format(bodc_code, iter + 1)
             elif is_in(['ITS90', 'ITS-90'], varunits):
-                bodc_code = 'TEMPS9';
+                bodc_code = 'TEMPS9'
                 bodc_units = 'deg C'
                 bodc_code = '{}{:02d}'.format(bodc_code, iter + 1)
             elif is_in(['IPTS-68', 'IPTS68'], varunits):
-                bodc_code = 'TEMPS6';
+                bodc_code = 'TEMPS6'
                 bodc_units = 'deg C'
                 bodc_code = '{}{:02d}'.format(bodc_code, iter + 1)
             elif is_in(['deg c', 'degc'], varunits):
-                bodc_code = 'TEMPST';
+                bodc_code = 'TEMPST'
                 bodc_units = 'deg C'
                 bodc_code = '{}{:02d}'.format(bodc_code, iter + 1)
             else:  # if varunits does not specify type of temperature
