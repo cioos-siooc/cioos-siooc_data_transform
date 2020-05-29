@@ -139,6 +139,15 @@ def write_ctd_ncfile(filename, ctdcls):
                                                   ('z'), null_value))
             except Exception as e:
                 print(e)
+        #  Chlorophyll
+        elif is_in(['chlorophyll:extracted'], channel) and not is_in(['flag'], channel):
+            try:
+                ncfile_var_list.append(OceanNcVar('other', ctdcls.channels['Name'][i],
+                                                ctdcls.channels['Units'][i], ctdcls.channels['Minimum'][i],
+                                                ctdcls.channels['Maximum'][i], ctdcls.data[:,i], ncfile_var_list,
+                                                ('z'), null_value))
+            except Exception as e:
+                print(e)
         else:
             print(channel, ctdcls.channels['Units'][i], 'not transferred to netcdf file !')
             # raise Exception('not found !!')
