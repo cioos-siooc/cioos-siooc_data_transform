@@ -147,6 +147,15 @@ class OceanNcVar(object):
             self.name = bodc_code
             self.units = bodc_units
             self.__set_null_val()
+        elif self.type == 'other':
+            self.datatype = 'float32'
+            for i in range(4):
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.units = bodc_units
+            self.__set_null_val()
         else:
             print("Do not know how to define this variable..")
             raise Exception("Fatal Error")
@@ -200,19 +209,19 @@ class OceanNcVar(object):
 
         elif vartype == 'salinity':
             if not is_in(['bottle'], ios_varname) and is_in(['PSS-78'], varunits):
-                bodc_code = "PSALST";
+                bodc_code = "PSALST"
                 bodc_units = 'PSS-78'
                 bodc_code = '{}{:02d}'.format(bodc_code, iter + 1)
             elif not is_in(['bottle'], ios_varname) and is_in(['ppt'], varunits):
-                bodc_code = "SSALST";
+                bodc_code = "SSALST"
                 bodc_units = 'PPT'
                 bodc_code = '{}{:02d}'.format(bodc_code, iter + 1)
             elif is_in(['bottle'], ios_varname) and is_in(['PSS-78'], varunits):
-                bodc_code = "PSALBST";
+                bodc_code = "PSALBST"
                 bodc_units = 'PSS-78'
                 bodc_code = '{}{:01d}'.format(bodc_code, iter + 1)
             elif is_in(['bottle'], ios_varname) and is_in(['ppt'], varunits):
-                bodc_code = "ODSDM021";
+                bodc_code = "ODSDM021"
                 bodc_units = 'PPT'
 
             else:
@@ -220,45 +229,54 @@ class OceanNcVar(object):
 
         elif vartype == 'oxygen':
             if is_in(['ml/l'], varunits):
-                bodc_code = "DOXYZZ";
+                bodc_code = "DOXYZZ"
                 bodc_units = 'mL/L'
             elif is_in(['umol/kg'], varunits):
-                bodc_code = "DOXMZZ";
+                bodc_code = "DOXMZZ"
                 bodc_units = 'umol/kg'
             elif is_in(['umol/L'], varunits):
-                bodc_code = "DOXY";
+                bodc_code = "DOXY"
                 bodc_units = 'umol/L'
             else:
                 raise Exception("Oxygen units not defined", ios_varname, varunits, vartype)
             bodc_code = '{}{:02d}'.format(bodc_code, iter + 1)
         elif vartype == 'conductivity':
             if is_in(['s/m'], varunits):
-                bodc_code = 'CNDCST';
+                bodc_code = 'CNDCST'
                 bodc_units = 'S/m'
             elif is_in(['ms/cm'], varunits):
-                bodc_code = 'CNDCSTX';
+                bodc_code = 'CNDCSTX'
                 bodc_units = 'mS/cm'
             else:
                 raise Exception("Conductivity units not compatible with BODC code", ios_varname, varunits, vartype)
             bodc_code = '{}{:02d}'.format(bodc_code, iter + 1)
         elif vartype == 'nutrient':
             if is_in(['nitrate_plus_nitrite'], ios_varname) and is_in(['umol/l'], varunits):
-                bodc_code = 'NTRZAAZ';
+                bodc_code = 'NTRZAAZ'
                 bodc_units = 'umol/L'
                 self.standard_name = 'mole_concentration_of_nitrate_and_nitrite_in_sea_water'
                 self.long_name = 'Mole Concentration of Nitrate and Nitrite in Sea Water'
             elif is_in(['phosphate'], ios_varname) and is_in(['umol/l'], varunits):
-                bodc_code = 'PHOSAAZ';
+                bodc_code = 'PHOSAAZ'
                 bodc_units = 'umol/L'
                 self.standard_name = 'mole_concentration_of_phosphate_in_sea_water'
                 self.long_name = 'Mole Concentration of Phosphate in Sea Water'
             elif is_in(['silicate'], ios_varname) and is_in(['umol/l'], varunits):
-                bodc_code = 'SLCAAAZ';
+                bodc_code = 'SLCAAAZ'
                 bodc_units = 'umol/L'
                 self.standard_name = 'mole_concentration_of_silicate_in_sea_water'
                 self.long_name = 'Mole Concentration of Silicate in Sea Water'
             else:
                 raise Exception("Nutrient units not compatible with BODC code", ios_varname, varunits, vartype)
+            bodc_code = '{}{:01d}'.format(bodc_code, iter + 1)
+        elif vartype == 'other':
+            if is_in(['chlorophyll'], ios_varname) and is_in(['mg/m^3'], varunits):
+                bodc_code = 'CPHLFLP'
+                bodc_units = 'mg/m^3'
+                self.standard_name = 'concentration_of_chlorophyll-a_in_water_body'
+                self.long_name = 'Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >GF/F phase] by filtration, acetone extraction and fluorometry'
+            else:
+                raise Exception("'Other' units not compatible with BODC code", ios_varname, varunits, vartype)
             bodc_code = '{}{:01d}'.format(bodc_code, iter + 1)
         else:
             raise Exception('Cannot find BODC code for this variable', ios_varname, varunits, vartype)
