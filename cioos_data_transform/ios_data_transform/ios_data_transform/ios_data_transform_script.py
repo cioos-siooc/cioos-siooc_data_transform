@@ -78,24 +78,24 @@ def convert_files_threads(ftype, fname, fgeo, out_path):
         yy = fdata.start_date[0:4]
         if not os.path.exists(out_path + yy):
             os.mkdir(out_path + yy)
-        ncFileName = out_path + yy + '/' + fname.split('/')[-1] + '.nc', fdata
+        ncFileName = out_path + yy + '/' + fname.split('/')[-1] + '.nc'
         if ftype == 'ctd':
             try:
-                iod.write_ctd_ncfile(ncFileName)
+                iod.write_ctd_ncfile(ncFileName, fdata)
                 standardize_variable_names(ncFileName)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
                 subprocess.call(['rm', '-f', ncFileName])
         elif ftype == 'mctd':
             try:
-                iod.write_mctd_ncfile(ncFileName)
+                iod.write_mctd_ncfile(ncFileName, fdata)
                 standardize_variable_names(ncFileName)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
                 subprocess.call(['rm', '-f', ncFileName])
         elif ftype == 'bot':
             try:
-                iod.write_ctd_ncfile(ncFileName)
+                iod.write_ctd_ncfile(ncFileName, fdata)
                 standardize_variable_names(ncFileName)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
