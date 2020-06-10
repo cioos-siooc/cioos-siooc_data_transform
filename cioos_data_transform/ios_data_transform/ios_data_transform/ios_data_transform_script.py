@@ -47,6 +47,13 @@ def convert_files(env_vars, opt='all', ftype=None):
     return flist
 
 
+def standardize_variable_names(ncfile):
+    # input: netcdf file with non-standard variable names
+    # output: netcdf file with standard variables added
+    # NOTE: netcdf files are overwritten
+    pass
+
+
 def convert_files_threads(ftype, fname, fgeo, out_path):
     # skip processing file if its older than 24 hours old
     if iod.file_mod_time(fname) < -24. and opt == 'new':
@@ -71,24 +78,28 @@ def convert_files_threads(ftype, fname, fgeo, out_path):
         yy = fdata.start_date[0:4]
         if not os.path.exists(out_path + yy):
             os.mkdir(out_path + yy)
+        ncFileName = out_path + yy + '/' + fname.split('/')[-1] + '.nc', fdata
         if ftype == 'ctd':
             try:
-                iod.write_ctd_ncfile(out_path + yy + '/' + fname.split('/')[-1] + '.nc', fdata)
+                iod.write_ctd_ncfile(ncFileName)
+                standardize_variable_names(ncFileName)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
-                subprocess.call(['rm', '-f', out_path + yy + '/' + fname.split('/')[-1] + '.nc'])
+                subprocess.call(['rm', '-f', ncFileName])
         elif ftype == 'mctd':
             try:
-                iod.write_mctd_ncfile(out_path + yy + '/' + fname.split('/')[-1] + '.nc', fdata)
+                iod.write_mctd_ncfile(ncFileName)
+                standardize_variable_names(ncFileName)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
-                subprocess.call(['rm', '-f', out_path + yy + '/' + fname.split('/')[-1] + '.nc'])
+                subprocess.call(['rm', '-f', ncFileName])
         elif ftype == 'bot':
             try:
-                iod.write_ctd_ncfile(out_path + yy + '/' + fname.split('/')[-1] + '.nc', fdata)
+                iod.write_ctd_ncfile(ncFileName)
+                standardize_variable_names(ncFileName)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
-                subprocess.call(['rm', '-f', out_path + yy + '/' + fname.split('/')[-1] + '.nc'])
+                subprocess.call(['rm', '-f', ncFileName])
     else:
         print("Error: Unable to import data from file", fname)
         return 0
