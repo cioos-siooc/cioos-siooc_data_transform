@@ -51,6 +51,7 @@ def standardize_variable_names(ncfile):
     # input: netcdf file with non-standard variable names
     # output: netcdf file with standard variables added
     # NOTE: netcdf files are overwritten
+    print(f'Adding standard variables:{ncfile}')
     iod.add_standard_variables(ncfile)
 
 
