@@ -18,8 +18,8 @@ def write_bcsop_ncfile(filename, profile_id, sopdf):
     out = MCtdNcFile()
     # write global attributes
     out.featureType = 'timeSeries'
-    out.summary = 'This dataset contains observations made by the BCSOP program'
-    out.title = 'This dataset contains observations made by the BCSOP program.'
+    out.summary = 'The dataset consists of 12 coastal stations that have been monitored for several decades, the earliest commencing in 1914. There are gaps in the daily data due to weather conditions being too dangerous for sampling'
+    out.title = 'BC Lightstation data'
     out.institution = 'Institute of Ocean Sciences, 9860 West Saanich Road, Sidney, B.C., Canada'
     out.infoUrl = 'https://open.canada.ca/data/en/dataset/719955f2-bf8e-44f7-bc26-6bd623e82884'
     out.cdm_profile_variables = 'time'  
@@ -27,47 +27,15 @@ def write_bcsop_ncfile(filename, profile_id, sopdf):
     out.description = open('header.txt').readlines()
     # initcreate dimension variable
     out.nrec = int(len(sopdf.index))
-    # add variable profile_id (dummy variable)
     ncfile_var_list = []
-    # profile_id = random.randint(1, 100000)
-    # ncfile_var_list.append(OceanNcVar('str_id', 'filename', None, None, None, ctdcls.filename.split('/')[-1]))
-    # add administration variables
-    # if 'COUNTRY' in ctdcls.administration:
     ncfile_var_list.append(OceanNcVar('str_id', 'country', None, None, None, 'Canada'))
-    ncfile_var_list.append(OceanNcVar('str_id', 'project', None, None, None, 'BCSOP'))
-    ncfile_var_list.append(OceanNcVar('str_id', 'scientist', None, None, None, ''))
-    ncfile_var_list.append(OceanNcVar('str_id', 'agency', None, None, None, 'D.F.O'))
-    # if 'PLATFORM' in ctdcls.administration:
-    #     ncfile_var_list.append(
-    #         OceanNcVar('str_id', 'platform', None, None, None, ctdcls.administration['PLATFORM'].strip()))
-    # add instrument type
-    # if 'TYPE' in ctdcls.instrument:
-    #     ncfile_var_list.append(
-    ncfile_var_list.append(OceanNcVar('str_id', 'instrument_type', None, None, None, ''))
-    # if 'MODEL' in ctdcls.instrument:
-    #     ncfile_var_list.append(
-    #         OceanNcVar('str_id', 'instrument_model', None, None, None, ctdcls.instrument['MODEL'].strip()))
-    # if 'SERIAL NUMBER' in ctdcls.instrument:
-    #     ncfile_var_list.append(OceanNcVar('str_id', 'instrument_serial_number', None, None, None,
-    #                                       ctdcls.instrument['SERIAL NUMBER'].strip()))
-    # if 'DEPTH' in ctdcls.instrument:
-    #     ncfile_var_list.append(
-    #         OceanNcVar('instr_depth', 'instrument_depth', None, None, None, float(ctdcls.instrument['DEPTH'])))
-    # add locations variables
+    ncfile_var_list.append(OceanNcVar('str_id', 'project', None, None, None, 'British Columbia Shore station Observation Program (BCSOP)'))
+    ncfile_var_list.append(OceanNcVar('str_id', 'contact_name', None, None, None, 'Peter Chandler'))
+    ncfile_var_list.append(OceanNcVar('str_id', 'contact_email',None, None, None, 'peter.chandler@dfo-mpo.gc.ca'))
+    ncfile_var_list.append(OceanNcVar('str_id', 'agency', None, None, None, 'Fisheries and Oceans Canada'))
+    ncfile_var_list.append(OceanNcVar('str_id', 'instrument_type', None, None, None, 'Given this is a multi-decade time series the sampling instruments have changed over time. At present measurements are made with a YSI Pro30 multimeter.'))
     ncfile_var_list.append(OceanNcVar('lat', 'latitude', 'degrees_north', None, None, sopdf['latitude'].values[0]))
     ncfile_var_list.append(OceanNcVar('lon', 'longitude', 'degrees_east', None, None, sopdf['longitude'].values[0]))
-    # ncfile_var_list.append(OceanNcVar('str_id', 'geographic_area', None, None, None, ctdcls.geo_code))
-
-    # if 'EVENT NUMBER' in ctdcls.location:
-    #     event_id = ctdcls.location['EVENT NUMBER'].strip()
-    # else:
-    #     print("Event number not found!" + ctdcls.filename)
-    #     event_id = '0000'
-    # ncfile_var_list.append(OceanNcVar('str_id', 'event_number', None, None, None, event_id))
-    # add time variable
-    # profile_id = '{:04d}-{:03d}-{:04d}'.format(int(buf[0]), int(buf[1]), int(event_id))
-    # print(profile_id)
-    # timezone(date_string[0:3]).localize(date_obj)
     ncfile_var_list.append(OceanNcVar('profile', 'profile', None, None, None, profile_id))
     obs_time = [datetime.strptime(d, "%m/%d/%Y") for d in sopdf['date'].values]
     obs_time_utc = [timezone('UTC').localize(date_obj) for date_obj in obs_time]
@@ -75,12 +43,12 @@ def write_bcsop_ncfile(filename, profile_id, sopdf):
     # go through channels and add each variable depending on type
     null_value = float('NaN')
     # add temperature variable 
-    ncfile_var_list.append(OceanNcVar('temperature', 'sea surface temperature',
+    ncfile_var_list.append(OceanNcVar('temperature', 'TEMPTC01',
                             'deg C', sopdf['temperature'].min,
                             sopdf['temperature'].max, sopdf['temperature'].values, ncfile_var_list,
                             ('time'), null_value, conv_to_BODC=False))
     # add salinity variable
-    ncfile_var_list.append(OceanNcVar('salinity', 'sea surface salinity',
+    ncfile_var_list.append(OceanNcVar('salinity', 'PSALPR01',
                             'PSS-78', sopdf['salinity'].min,
                             sopdf['salinity'].max, sopdf['salinity'].values, ncfile_var_list,
                             ('time'), null_value, conv_to_BODC=False))
