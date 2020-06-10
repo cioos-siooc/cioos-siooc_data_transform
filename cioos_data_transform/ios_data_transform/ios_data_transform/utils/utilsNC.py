@@ -110,12 +110,12 @@ def add_standard_variables(filename):
                 # Convert Primary Temperature Sensor Data from IPTS-68 to ITS-90
                 var, is_updated = _fill_nan(var, gsw.t90_from_t68(dset.variables['TEMPS601'][:]))
                 if is_updated:
-                    add_history_line = add_history_line + 'gsw.t90_from_t68(\'TEMPS601\'), '
+                    add_history_line = add_history_line + 'TEOS-10 gsw.t90_from_t68(\'TEMPS601\'), '
             if 'TEMPS602' in variable_list:
                 # Convert Secondary Temperature Sensor Data from IPTS-68 to ITS-90
                 var, is_updated = _fill_nan(var, gsw.t90_from_t68(dset.variables['TEMPS602'][:]))
                 if is_updated:
-                    add_history_line = add_history_line + 'gsw.t90_from_t68(\'TEMPS602\'), '
+                    add_history_line = add_history_line + 'TEOS-10 gsw.t90_from_t68(\'TEMPS602\'), '
 
             # TODO: Add other Temperature variables to the sea_water_temperature, need to discuss transformations to apply first
             # Older Standards which still needs to be define
@@ -181,15 +181,15 @@ def add_standard_variables(filename):
             if 'SSALST01' in variable_list:  # Convert Primary Salinity Data from IPTS-68 to ITS-90
                 var, is_updated = _fill_nan(var, gsw.SP_from_SK(dset.variables['SSALST01'][:]))
                 if is_updated:
-                    add_history_line = add_history_line + 'gsw.SP_from_SK(\'PSALBST2\'), '
+                    add_history_line = add_history_line + 'TEOS-10 gsw.SP_from_SK(\'PSALBST2\'), '
             if 'SSALST02' in variable_list:  # Convert Seconday Salinity Data from IPTS-68 to ITS-90
                 var, is_updated = _fill_nan(var, gsw.SP_from_SK(dset.variables['SSALST02'][:]))
                 if is_updated:
-                    add_history_line = add_history_line + 'gsw.SP_from_SK(\'SSALST02\'), '
+                    add_history_line = add_history_line + 'TEOS-10 gsw.SP_from_SK(\'SSALST02\'), '
             if 'ODSDM021' in variable_list:  # Convert Secondary Salinity Data from IPTS-68 to ITS-90
                 var, is_updated = _fill_nan(var, gsw.SP_from_SK(dset.variables['ODSDM021'][:]))
                 if is_updated:
-                    add_history_line = add_history_line + 'gsw.SP_from_SK(\'ODSDM021\'), '
+                    add_history_line = add_history_line + 'TEOS-10 gsw.SP_from_SK(\'ODSDM021\'), '
 
         # Append list of variables added to history_attribute for global attribute and comment to the varaible attribute
         history_attribute[_get_time_stamp()] = add_history_line[:-2]  # ignore the last ','
@@ -217,13 +217,13 @@ def add_standard_variables(filename):
                 var, is_updated = _fill_nan(var, -gsw.z_from_p(dset.variables['PRESPR01'][:],
                                                                dset.variables['latitude'][:]))
                 if is_updated:
-                    add_history_line = add_history_line + 'gsw.z_from_p(\'PRESPR01\',\'latitude\'), '
+                    add_history_line = add_history_line + 'TEOS-10 gsw.z_from_p(\'PRESPR01\',\'latitude\'), '
             # Convert Secondary Pressure Data from dbar to m
             if 'PRESPR02' in variable_list and 'latitude' in variable_list:
                 var, is_updated = _fill_nan(var, -gsw.z_from_p(dset.variables['PRESPR02'][:],
                                                                dset.variables['latitude'][:]))
                 if is_updated:
-                    add_history_line = add_history_line + '-gsw.z_from_p(\'PRESPR02\',\'latitude\'), '
+                    add_history_line = add_history_line + 'TEOS-10 -gsw.z_from_p(\'PRESPR02\',\'latitude\'), '
 
             # TODO: Copy instrument_depth variable value to depth variable if no other parameters are available
 
@@ -262,7 +262,7 @@ def add_standard_variables(filename):
                 var, is_updated = _fill_nan(var, gsw.p_from_z(-dset.variables['depth'][:],
                                                               dset.variables['latitude'][:]))
                 if is_updated:
-                    add_history_line = add_history_line + 'gsw.p_from_z(-\'depth\',\'latitude\'), '
+                    add_history_line = add_history_line + 'TEOS-10 gsw.p_from_z(-\'depth\',\'latitude\'), '
 
         # Append list of variables added to history_attribute
         history_attribute[_get_time_stamp()] = add_history_line[:-2]  # ignore the last ','
