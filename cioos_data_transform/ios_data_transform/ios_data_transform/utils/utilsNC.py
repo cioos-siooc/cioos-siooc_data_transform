@@ -211,7 +211,7 @@ def add_standard_variables(filename):
         if variable_name_convention == 'BODC':
             # Depth already in depth (m) if depth already existed
 
-            # Convert Pressure to Pressure with TEOS-10 z_from_p tool
+            # Convert Pressure to Depth with TEOS-10 z_from_p tool
             # Convert Primary Pressure Data from dbar to m
             if 'PRESPR01' in variable_list and 'latitude' in variable_list:
                 var, is_updated = _fill_nan(var, -gsw.z_from_p(dset.variables['PRESPR01'][:],
@@ -246,7 +246,7 @@ def add_standard_variables(filename):
         add_history_line = 'Create ' + new_variable + ' variable and apply the following parameters: '
 
         if variable_name_convention == 'BODC':  # If use BODC convention for variable names
-            # ata already in Sea Pressure (dBar)
+            # Data already in Sea Pressure (dBar)
             if 'PRESPR01' in variable_list:
                 var, is_updated = _fill_nan(var, dset.variables['PRESPR01'])
                 if is_updated:
