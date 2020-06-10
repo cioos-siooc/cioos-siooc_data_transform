@@ -10,12 +10,13 @@ from netCDF4 import Dataset as ncdata
 class OceanNcFile(object):
     def __init__(self):
         self.featureType = ''
-        self.summary = ''
-        self.title = ''
-        self.institution = ''
-        self.history = ''
-        self.infoUrl = ''
-        self.HEADER = ''
+        self.summary = None
+        self.title = None
+        self.institution = None
+        self.history = None
+        self.infoUrl = None
+        self.HEADER = None
+        self.description = None
         # list of var class in the netcdf
         self.varlist = []
         self.nrec = 0
@@ -25,12 +26,10 @@ class OceanNcFile(object):
         self.ncfile = ncdata(filename=ncfilename, mode='w', format='NETCDF4', clobber=True)
         # setup global attributes of netcdf file based class data
         setattr(self.ncfile, 'featureType', self.featureType)
-        setattr(self.ncfile, 'summary', self.summary)
-        setattr(self.ncfile, 'title', self.title)
-        setattr(self.ncfile, 'institution', self.institution)
-        setattr(self.ncfile, 'history', self.history)
-        setattr(self.ncfile, 'infoUrl', self.infoUrl)
-        setattr(self.ncfile, 'HEADER', self.HEADER)
+        for featureName, featureVal in zip(['summary','title','institution','history','infoUrl','header','description'],
+            [self.summary, self.title, self.institution, self.history,self.infoUrl, self.HEADER, self.description]):
+            if featureVal is not None:
+                setattr(self.ncfile, featureName, featureVal)
         # setup dimensions
         self.setup_dimensions()
         # setup attributes unique to the datatype
