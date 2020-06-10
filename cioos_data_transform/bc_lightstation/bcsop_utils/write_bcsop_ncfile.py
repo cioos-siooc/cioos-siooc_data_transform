@@ -24,7 +24,7 @@ def write_bcsop_ncfile(filename, profile_id, sopdf):
     out.infoUrl = 'https://open.canada.ca/data/en/dataset/719955f2-bf8e-44f7-bc26-6bd623e82884'
     out.cdm_profile_variables = 'time'  
     # write full original header, as json dictionary
-    out.HEADER = open('header.txt').readlines()
+    out.description = open('header.txt').readlines()
     # initcreate dimension variable
     out.nrec = int(len(sopdf.index))
     # add variable profile_id (dummy variable)
@@ -78,12 +78,12 @@ def write_bcsop_ncfile(filename, profile_id, sopdf):
     ncfile_var_list.append(OceanNcVar('temperature', 'sea surface temperature',
                             'deg C', sopdf['temperature'].min,
                             sopdf['temperature'].max, sopdf['temperature'].values, ncfile_var_list,
-                            ('time'), null_value))
+                            ('time'), null_value, conv_to_BODC=False))
     # add salinity variable
     ncfile_var_list.append(OceanNcVar('salinity', 'sea surface salinity',
                             'PSS-78', sopdf['salinity'].min,
                             sopdf['salinity'].max, sopdf['salinity'].values, ncfile_var_list,
-                            ('time'), null_value))
+                            ('time'), null_value, conv_to_BODC=False))
     # attach variables to ncfileclass and call method to write netcdf file
     out.varlist = ncfile_var_list
     out.write_ncfile(filename)
