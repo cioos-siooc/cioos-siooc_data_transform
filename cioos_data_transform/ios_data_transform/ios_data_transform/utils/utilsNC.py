@@ -17,7 +17,7 @@ def _has_variable(input_str: list, string_list: list) -> bool:
 
 
 def _fill_nan(x, y):
-    # _fill_nan replace any NaN or flagged values in the array x by its correspondant in y
+    # _fill_nan replace any NaN or flagged values in the array x by its correspondent in y
 
     # Make a copy of the input x
     x_in = np.copy(x)
