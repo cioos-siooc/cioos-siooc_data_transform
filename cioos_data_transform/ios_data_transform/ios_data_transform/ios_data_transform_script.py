@@ -51,7 +51,7 @@ def standardize_variable_names(ncfile):
     # input: netcdf file with non-standard variable names
     # output: netcdf file with standard variables added
     # NOTE: netcdf files are overwritten
-    pass
+    iod.add_standard_variables(ncfile)
 
 
 def convert_files_threads(ftype, fname, fgeo, out_path):
