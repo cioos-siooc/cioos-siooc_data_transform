@@ -1,7 +1,7 @@
 import json
 from .OceanNcFile import MCtdNcFile
 from .OceanNcVar import OceanNcVar
-from .utils import is_in, release_memory, find_geographic_area, read_geojson
+from .utils.utils import is_in, release_memory, find_geographic_area, read_geojson
 from shapely.geometry import Point
 
 

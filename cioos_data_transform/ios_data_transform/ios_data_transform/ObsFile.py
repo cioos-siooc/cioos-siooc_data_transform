@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 import fortranformat as ff
 import numpy as np
 from pytz import timezone
-from .utils import find_geographic_area, read_geojson
+from .utils.utils import find_geographic_area, read_geojson
 from shapely.geometry import Point
 from io import StringIO
 

@@ -2,7 +2,7 @@
 import json
 from .OceanNcFile import CtdNcFile
 from .OceanNcVar import OceanNcVar
-from .utils import is_in, release_memory, find_geographic_area, read_geojson
+from .utils.utils import is_in, release_memory, find_geographic_area, read_geojson
 from datetime import datetime
 from netCDF4 import Dataset as ncdata
 from shapely.geometry import Point
