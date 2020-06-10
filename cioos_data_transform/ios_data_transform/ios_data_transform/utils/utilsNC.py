@@ -144,7 +144,7 @@ def add_standard_variables(filename):
         # Create New Variable
         new_variable = 'sea_water_practical_salinity'
         _create_new_empty_variable(dset, new_variable, combine_var_names, 'Sea Water Practical Salinity',
-                                   'sea_water_practical_salinity', '')
+                                   'sea_water_practical_salinity', 'PSS-78')
         var = dset[new_variable]
 
         # Define History
