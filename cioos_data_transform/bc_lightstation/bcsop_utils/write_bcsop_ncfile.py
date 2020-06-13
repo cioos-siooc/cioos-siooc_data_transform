@@ -1,11 +1,11 @@
 from ios_data_transform.OceanNcFile import MCtdNcFile
 from ios_data_transform.OceanNcVar import OceanNcVar
-from ios_data_transform.utils import is_in, release_memory, find_geographic_area, read_geojson
+from ios_data_transform.utils.utils import is_in, find_geographic_area, read_geojson
 from datetime import datetime
 from pytz import timezone
 
 
-def write_bcsop_ncfile(filename, profile_id, sopdf):
+def write_bcsop_ncfile(filename, profile_id, sopdf, status):
     '''
     use data from pandas dataframe sopdf to write the data into a netcdf file
     author: Pramod Thupaki pramod.thupaki@hakai.org
@@ -37,7 +37,11 @@ def write_bcsop_ncfile(filename, profile_id, sopdf):
     ncfile_var_list.append(OceanNcVar('lat', 'latitude', 'degrees_north', None, None, sopdf['latitude'].values[0]))
     ncfile_var_list.append(OceanNcVar('lon', 'longitude', 'degrees_east', None, None, sopdf['longitude'].values[0]))
     ncfile_var_list.append(OceanNcVar('profile', 'profile', None, None, None, profile_id))
-    obs_time = [datetime.strptime(d, "%m/%d/%Y") for d in sopdf['date'].values]
+    ncfile_var_list.append(OceanNcVar('str_id', 'status', None, None, None, status))
+    try:
+        obs_time = [datetime.strptime(d, "%m/%d/%Y") for d in sopdf['date'].values]
+    except:
+        obs_time = [datetime.strptime(d, "%Y-%m-%d") for d in sopdf['date'].values]
     obs_time_utc = [timezone('UTC').localize(date_obj) for date_obj in obs_time]
     ncfile_var_list.append(OceanNcVar('time', 'time', None, None, None, obs_time_utc, vardim=('time')))
     # go through channels and add each variable depending on type
@@ -55,5 +59,5 @@ def write_bcsop_ncfile(filename, profile_id, sopdf):
     # attach variables to ncfileclass and call method to write netcdf file
     out.varlist = ncfile_var_list
     out.write_ncfile(filename)
-    print("Finished writing file:", filename, "\n")
+    print("Finished writing file:", filename)
     return 1
