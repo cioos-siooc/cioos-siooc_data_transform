@@ -78,3 +78,11 @@ class MCtdNcFile(OceanNcFile):
 
     def setup_filetype(self):
         setattr(self.ncfile, 'cdm_timeseries_variables', 'profile')
+
+
+class CurNcFile(OceanNcFile):
+    def setup_dimensions(self):
+        self.ncfile.createDimension('time', self.nrec)
+
+    def setup_filetype(self):
+        setattr(self.ncfile, 'cdm_timeseries_variables', 'profile')
