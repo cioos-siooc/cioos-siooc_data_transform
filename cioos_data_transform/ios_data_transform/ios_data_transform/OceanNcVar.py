@@ -138,6 +138,18 @@ class OceanNcVar(object):
             self.standard_name = 'sea_water_practical_salinity'
             self.units = bodc_units
             self.__set_null_val()
+        elif self.type == 'salinity:cur':
+            self.datatype = 'float32'
+            # self.dimensions = ('z')
+            for i in range(4):  # will try to get a unique variable name at least 4 times
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.long_name = 'Sea Water Practical Salinity'
+            self.standard_name = 'sea_water_practical_salinity'
+            self.units = bodc_units
+            self.__set_null_val()
         elif self.type == 'oxygen':
             self.datatype = 'float32'
             # self.dimensions = ('z')
@@ -390,6 +402,13 @@ class OceanNcVar(object):
 
             else:
                 raise Exception("Salinity type not defined", ios_varname, varunits, vartype)
+
+        elif vartype == 'salinity:cur':
+            if is_in(['PSS-78'], varunits):
+                bodc_code = "PSLTZZ01"
+                bodc_units = 'PSS-78'
+            else:
+                raise Exception("Current meter salinity units not defined", ios_varname, varunits, vartype)
 
         elif vartype == 'oxygen':
             if is_in(['ml/l'], varunits):

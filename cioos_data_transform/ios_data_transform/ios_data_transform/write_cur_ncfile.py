@@ -129,7 +129,7 @@ def write_cur_ncfile(filename, curcls):
                                               curcls.channels['Maximum'][i], curcls.data[:, i], ncfile_var_list,
                                               ('time'), null_value))
         elif is_in(['salinity'], channel) and not is_in(['flag', 'bottle'], channel):
-            ncfile_var_list.append(OceanNcVar('salinity', curcls.channels['Name'][i],
+            ncfile_var_list.append(OceanNcVar('salinity:cur', curcls.channels['Name'][i],
                                               curcls.channels['Units'][i], curcls.channels['Minimum'][i],
                                               curcls.channels['Maximum'][i], curcls.data[:, i], ncfile_var_list,
                                               ('time'), null_value))
