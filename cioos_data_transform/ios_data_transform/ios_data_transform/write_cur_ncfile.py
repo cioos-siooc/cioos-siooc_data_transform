@@ -119,12 +119,12 @@ def write_cur_ncfile(filename, curcls):
                                               curcls.channels['Maximum'][i], curcls.data[:, i], ncfile_var_list,
                                               ('time'), null_value))
         elif is_in(['temperature'], channel) and not is_in(['flag', 'bottle', 'temperature:high_res'], channel):
-            ncfile_var_list.append(OceanNcVar('temperature', curcls.channels['Name'][i],
+            ncfile_var_list.append(OceanNcVar('temperature:cur', curcls.channels['Name'][i],
                                               curcls.channels['Units'][i], curcls.channels['Minimum'][i],
                                               curcls.channels['Maximum'][i], curcls.data[:, i], ncfile_var_list,
                                               ('time'), null_value))
         elif is_in(['temperature:high_res'], channel) and not is_in(['flag', 'bottle'], channel):
-            ncfile_var_list.append(OceanNcVar('temperature:high_res', curcls.channels['Name'][i],
+            ncfile_var_list.append(OceanNcVar('temperature:cur:high_res', curcls.channels['Name'][i],
                                               curcls.channels['Units'][i], curcls.channels['Minimum'][i],
                                               curcls.channels['Maximum'][i], curcls.data[:, i], ncfile_var_list,
                                               ('time'), null_value))

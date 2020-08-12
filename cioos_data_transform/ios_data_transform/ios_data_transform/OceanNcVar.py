@@ -102,7 +102,19 @@ class OceanNcVar(object):
             self.standard_name = 'sea_water_temperature'
             self.units = bodc_units
             self.__set_null_val()
-        elif self.type == 'temperature:high_res':
+        elif self.type == 'temperature:cur':
+            self.datatype = 'float32'
+            # self.dimensions = ('z')
+            for i in range(4):
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.long_name = 'Sea Water Temperature'
+            self.standard_name = 'sea_water_temperature'
+            self.units = bodc_units
+            self.__set_null_val()
+        elif self.type == 'temperature:cur:high_res':
             self.datatype = 'float32'
             # self.dimensions = ('z')
             for i in range(4):
@@ -345,9 +357,16 @@ class OceanNcVar(object):
             else:  # if varunits does not specify type of temperature
                 raise Exception("Temperature type not defined", ios_varname, varunits, vartype)
 
-        elif vartype == 'temperature:high_res':
+        elif vartype == 'temperature:cur':
             if is_in(['deg c', 'degc'], varunits):
-                bodc_code = 'TEMPST02'
+                bodc_code = 'TEMPPR01'
+                bodc_units = 'deg C'
+            else:  # if varunits does not specify type of temperature
+                raise Exception("Temperature type not defined", ios_varname, varunits, vartype)
+
+        elif vartype == 'temperature:cur:high_res':
+            if is_in(['deg c', 'degc'], varunits):
+                bodc_code = 'TEMPPR02'
                 bodc_units = 'deg C'
             else:  # if varunits does not specify type of temperature
                 raise Exception("Temperature type not defined", ios_varname, varunits, vartype)
