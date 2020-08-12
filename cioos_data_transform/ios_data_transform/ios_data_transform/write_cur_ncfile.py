@@ -16,8 +16,8 @@ def write_cur_ncfile(filename, curcls):
         NONE
     """
     # Correct filename to lowercase CUR
-    if "CUR" in filename:
-        filename = "cur".join(filename.rsplit("CUR", 1))
+    if ".CUR" in filename:
+        filename = ".cur".join(filename.rsplit(".CUR", 1))
 
     out = CurNcFile()
     # write global attributes
