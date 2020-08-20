@@ -49,6 +49,7 @@ def convert_ctd_files(f, out_path):
 
 
 def convert_cur_files(f, out_path):
+    print(f)
     fdata = iod.CurFile(filename=f, debug=False)
     if fdata.import_data():
         fdata.assign_geo_code(fix_path('test_files/ios_polygons.geojson'))
@@ -58,14 +59,14 @@ def convert_cur_files(f, out_path):
         print("Unable to import data from file", fdata.filename)
 
 
-for fn in glob(fix_path('./test_files/ctd_mooring/*.*'), recursive=True):
-    convert_mctd_files(f=fn, out_path=fix_path('temp/'))
-
-for fn in glob(fix_path('./test_files/ctd_profile/*.*'), recursive=True):
-    convert_ctd_files(f=fn, out_path=fix_path('temp/'))
-
-for fn in glob(fix_path('./test_files/bot/*.*'), recursive=True):
-    convert_bot_files(f=fn, out_path=fix_path('temp/'))
+# for fn in glob(fix_path('./test_files/ctd_mooring/*.*'), recursive=True):
+#     convert_mctd_files(f=fn, out_path=fix_path('temp/'))
+#
+# for fn in glob(fix_path('./test_files/ctd_profile/*.*'), recursive=True):
+#     convert_ctd_files(f=fn, out_path=fix_path('temp/'))
+#
+# for fn in glob(fix_path('./test_files/bot/*.*'), recursive=True):
+#     convert_bot_files(f=fn, out_path=fix_path('temp/'))
 
 for fn in glob(fix_path('./test_files/current_meter/*.[Cc][Uu][Rr]'), recursive=True):
     convert_cur_files(f=fn, out_path=fix_path('temp/'))
