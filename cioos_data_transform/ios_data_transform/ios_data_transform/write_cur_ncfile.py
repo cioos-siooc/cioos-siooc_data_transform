@@ -279,26 +279,29 @@ def write_cur_ncfile(filename, curcls):
             # raise Exception('not found !!')
 
     # Calculate North and East components of speed if missing
-    if flag_ne_speed == 0:
-        print('Calculating east and north speed components ...')
-        if type(curcls.data[:, index_speed][0]) is np.bytes_ and type(curcls.data[:, index_direction][0]) is np.bytes_:
-            speed_decoded = np.array([float(a.decode('ascii')) for a in curcls.data[:, index_speed]])
-            direction_decoded = np.array([float(a.decode('ascii')) for a in curcls.data[:, index_direction]])
-            speed_east, speed_north = add_ne_speed(speed_decoded, direction_decoded)
-        else:
-            speed_east, speed_north = add_ne_speed(curcls.data[:, index_speed], curcls.data[:, index_direction])
+    try:
+        if flag_ne_speed == 0:
+            if type(curcls.data[:, index_speed][0]) is np.bytes_ and type(curcls.data[:, index_direction][0]) is np.bytes_:
+                speed_decoded = np.array([float(a.decode('ascii')) for a in curcls.data[:, index_speed]])
+                direction_decoded = np.array([float(a.decode('ascii')) for a in curcls.data[:, index_direction]])
+                speed_east, speed_north = add_ne_speed(speed_decoded, direction_decoded)
+            else:
+                speed_east, speed_north = add_ne_speed(curcls.data[:, index_speed], curcls.data[:, index_direction])
 
-        null_value = "' '"
-        ncfile_var_list.append(OceanNcVar('speed:east', 'Speed:East',
-                                          curcls.channels['Units'][index_speed],
-                                          np.nanmin(speed_east),
-                                          np.nanmax(speed_east), speed_east, ncfile_var_list,
-                                          ('time'), null_value))
-        ncfile_var_list.append(OceanNcVar('speed:north', 'Speed:North',
-                                          curcls.channels['Units'][index_speed],
-                                          np.nanmin(speed_north),
-                                          np.nanmax(speed_north), speed_north, ncfile_var_list,
-                                          ('time'), null_value))
+            null_value = "' '"
+            ncfile_var_list.append(OceanNcVar('speed:east', 'Speed:East',
+                                              curcls.channels['Units'][index_speed],
+                                              np.nanmin(speed_east),
+                                              np.nanmax(speed_east), speed_east, ncfile_var_list,
+                                              ('time'), null_value))
+            ncfile_var_list.append(OceanNcVar('speed:north', 'Speed:North',
+                                              curcls.channels['Units'][index_speed],
+                                              np.nanmin(speed_north),
+                                              np.nanmax(speed_north), speed_north, ncfile_var_list,
+                                              ('time'), null_value))
+            print('Calculated east and north speed components ...')
+    except UnboundLocalError as e:
+        print('Speed and speed components not found in file !')
 
     # attach variables to ncfileclass and call method to write netcdf file
     out.varlist = ncfile_var_list
