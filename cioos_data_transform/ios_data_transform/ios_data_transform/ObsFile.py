@@ -490,7 +490,6 @@ class CurFile(ObsFile):
                     self.obs_time = [self.start_dateobj + timedelta(seconds=time_increment.total_seconds() * (i))
                                      for i in range(int(self.file['NUMBER OF RECORDS']))]
             except Exception as e:
-                print(e)
                 print("Could not read file using 'struct' data format description...")
                 return 0
         return 1

@@ -301,7 +301,7 @@ def write_cur_ncfile(filename, curcls):
                                               ('time'), null_value))
             print('Calculated east and north speed components ...')
     except UnboundLocalError as e:
-        print('Speed and speed components not found in file !')
+        print('Speed and speed component channels not found in file !')
 
     # attach variables to ncfileclass and call method to write netcdf file
     out.varlist = ncfile_var_list
