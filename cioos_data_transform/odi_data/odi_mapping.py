@@ -1,7 +1,6 @@
 
 import uuid
 from netCDF4 import Dataset
-from
 
 class OdiCtdMapping(object):
 
@@ -31,7 +30,8 @@ class OdiCtdMapping(object):
             'platform': self.create_platform(),
         }
 
-    def write_yaml
+    def write_yaml(self):
+        pass
 
     def create_metadata(self):
         metadata = {
