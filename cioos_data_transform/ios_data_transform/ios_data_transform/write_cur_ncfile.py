@@ -3,6 +3,28 @@ from .OceanNcFile import CurNcFile
 from .OceanNcVar import OceanNcVar
 from .utils.utils import is_in, release_memory, find_geographic_area, read_geojson
 from shapely.geometry import Point
+import numpy as np
+
+
+def add_ne_speed(speed, direction):
+    """
+    calculate the North and East speed components of current meter speed and add these variables to
+    the output netCDF file
+    author: Hana Hourston hana.hourston@dfo-mpo.gc.ca
+    input:
+        - speed: speed data
+        - direction: direction(to) data (measured clockwise from North)
+    output:
+        None
+    """
+    east_comp = np.zeros(speed.shape, dtype='float32')
+    north_comp = np.zeros(speed.shape, dtype='float32')
+
+    for i in range(len(speed)):
+        east_comp[i] = np.round(speed[i] * np.cos(np.deg2rad(90 - direction[i])), decimals=3)
+        north_comp[i] = np.round(speed[i] * np.sin(np.deg2rad(90 - direction[i])), decimals=3)
+
+    return east_comp, north_comp
 
 
 def write_cur_ncfile(filename, curcls):
@@ -96,7 +118,27 @@ def write_cur_ncfile(filename, curcls):
 
     # print(profile_id)
     ncfile_var_list.append(OceanNcVar('profile', 'profile', None, None, None, profile_id))
-    ncfile_var_list.append(OceanNcVar('time', 'time', None, None, None, curcls.obs_time, vardim=('time')))
+
+    # Check if variable lengths are same length as curcls.obs_time
+    direction_index = None
+    for i, channel in enumerate(curcls.channels['Name']):
+        if is_in(['direction:geog(to)'], channel):
+            direction_index = i
+    if direction_index is not None:
+        if len(curcls.obs_time) <= len(curcls.data[:, direction_index]):
+            ncfile_var_list.append(OceanNcVar('time', 'time', None, None, None, curcls.obs_time, vardim=('time')))
+        else:
+            print('Time range length ({}) greater than direction:geog(to) length ({}) !'.format(
+                len(curcls.obs_time), len(curcls.data[:, direction_index])))
+            out.nrec = len(curcls.data[:, direction_index]) #correct number of records
+            ncfile_var_list.append(OceanNcVar('time', 'time', None, None, None,
+                                              curcls.obs_time[:len(curcls.data[:, direction_index])], vardim=('time')))
+
+    flag_ne_speed = 0 #flag to determine if north and east speed components are vars in the .cur file
+    flag_cndc = 0 #flag to check for conductivity
+    flag_cndc_ratio = 0 #flag to check for conductivity ratio
+    temp_count = 0 #counter for the number of "Temperature" channels
+
     # go through channels and add each variable depending on type
     for i, channel in enumerate(curcls.channels['Name']):
         try:
@@ -118,17 +160,29 @@ def write_cur_ncfile(filename, curcls):
                                               curcls.channels['Units'][i], curcls.channels['Minimum'][i],
                                               curcls.channels['Maximum'][i], curcls.data[:, i], ncfile_var_list,
                                               ('time'), null_value))
-        elif is_in(['temperature'], channel) and not is_in(['flag', 'bottle', 'temperature:high_res'], channel):
-            ncfile_var_list.append(OceanNcVar('temperature:cur', curcls.channels['Name'][i],
+        elif is_in(['temperature:low_res'], channel):
+            ncfile_var_list.append(OceanNcVar('temperature:cur:low_res', curcls.channels['Name'][i],
                                               curcls.channels['Units'][i], curcls.channels['Minimum'][i],
                                               curcls.channels['Maximum'][i], curcls.data[:, i], ncfile_var_list,
                                               ('time'), null_value))
-        elif is_in(['temperature:high_res'], channel) and not is_in(['flag', 'bottle'], channel):
+        elif is_in(['temperature'], channel) and not is_in(['temperature:high_res', 'temperature:low_res'], channel):
+            temp_count += 1
+            if temp_count == 1:
+                ncfile_var_list.append(OceanNcVar('temperature:cur', curcls.channels['Name'][i],
+                                                  curcls.channels['Units'][i], curcls.channels['Minimum'][i],
+                                                  curcls.channels['Maximum'][i], curcls.data[:, i], ncfile_var_list,
+                                                  ('time'), null_value))
+            elif temp_count == 2:
+                ncfile_var_list.append(OceanNcVar('temperature:cur:high_res', curcls.channels['Name'][i],
+                                                  curcls.channels['Units'][i], curcls.channels['Minimum'][i],
+                                                  curcls.channels['Maximum'][i], curcls.data[:, i], ncfile_var_list,
+                                                  ('time'), null_value))
+        elif is_in(['temperature:high_res'], channel):
             ncfile_var_list.append(OceanNcVar('temperature:cur:high_res', curcls.channels['Name'][i],
                                               curcls.channels['Units'][i], curcls.channels['Minimum'][i],
                                               curcls.channels['Maximum'][i], curcls.data[:, i], ncfile_var_list,
                                               ('time'), null_value))
-        elif is_in(['salinity'], channel) and not is_in(['flag', 'bottle'], channel):
+        elif is_in(['salinity'], channel):
             ncfile_var_list.append(OceanNcVar('salinity:cur', curcls.channels['Name'][i],
                                               curcls.channels['Units'][i], curcls.channels['Minimum'][i],
                                               curcls.channels['Maximum'][i], curcls.data[:, i], ncfile_var_list,
@@ -138,17 +192,17 @@ def write_cur_ncfile(filename, curcls):
                                               curcls.channels['Units'][i], curcls.channels['Minimum'][i],
                                               curcls.channels['Maximum'][i], curcls.data[:, i], ncfile_var_list,
                                               ('time'), null_value))
-        elif is_in(['conductivity'], channel):
-            ncfile_var_list.append(OceanNcVar('conductivity', curcls.channels['Name'][i],
-                                              curcls.channels['Units'][i], curcls.channels['Minimum'][i],
-                                              curcls.channels['Maximum'][i], curcls.data[:, i], ncfile_var_list,
-                                              ('time'), null_value))
-        elif is_in(['speed:east'], channel):
+        elif is_in(['conductivity'], channel) and not is_in(['conductivity_ratio', 'conductivity ratio'], channel):
+            pass
+        elif is_in(['conductivity_ratio', 'conductivity ratio'], channel):
+            pass
+        elif is_in(['speed:east', 'ew_comp'], channel):
+            flag_ne_speed += 1
             ncfile_var_list.append(OceanNcVar('speed:east', curcls.channels['Name'][i],
                                               curcls.channels['Units'][i], curcls.channels['Minimum'][i],
                                               curcls.channels['Maximum'][i], curcls.data[:, i], ncfile_var_list,
                                               ('time'), null_value))
-        elif is_in(['speed:north'], channel):
+        elif is_in(['speed:north', 'ns_comp'], channel):
             ncfile_var_list.append(OceanNcVar('speed:north', curcls.channels['Name'][i],
                                               curcls.channels['Units'][i], curcls.channels['Minimum'][i],
                                               curcls.channels['Maximum'][i], curcls.data[:, i], ncfile_var_list,
@@ -208,14 +262,46 @@ def write_cur_ncfile(filename, curcls):
                                               curcls.channels['Units'][i], curcls.channels['Minimum'][i],
                                               curcls.channels['Maximum'][i], curcls.data[:, i], ncfile_var_list,
                                               ('time'), null_value))
-        elif is_in(['direction:geog(to)'], channel):
+            index_speed = i
+        elif is_in(['direction:geog(to)', 'direction:current'], channel):
             ncfile_var_list.append(OceanNcVar('direction:geog(to)', curcls.channels['Name'][i],
+                                              curcls.channels['Units'][i], curcls.channels['Minimum'][i],
+                                              curcls.channels['Maximum'][i], curcls.data[:, i], ncfile_var_list,
+                                              ('time'), null_value))
+            index_direction = i
+        elif is_in(['sigma-t'], channel):
+            ncfile_var_list.append(OceanNcVar('sigma-t', curcls.channels['Name'][i],
                                               curcls.channels['Units'][i], curcls.channels['Minimum'][i],
                                               curcls.channels['Maximum'][i], curcls.data[:, i], ncfile_var_list,
                                               ('time'), null_value))
         else:
             print(channel, 'not transferred to netcdf file !')
             # raise Exception('not found !!')
+
+    # Calculate North and East components of speed if missing
+    try:
+        if flag_ne_speed == 0:
+            if type(curcls.data[:, index_speed][0]) is np.bytes_ and type(curcls.data[:, index_direction][0]) is np.bytes_:
+                speed_decoded = np.array([float(a.decode('ascii')) for a in curcls.data[:, index_speed]])
+                direction_decoded = np.array([float(a.decode('ascii')) for a in curcls.data[:, index_direction]])
+                speed_east, speed_north = add_ne_speed(speed_decoded, direction_decoded)
+            else:
+                speed_east, speed_north = add_ne_speed(curcls.data[:, index_speed], curcls.data[:, index_direction])
+
+            null_value = "' '"
+            ncfile_var_list.append(OceanNcVar('speed:east', 'Speed:East',
+                                              curcls.channels['Units'][index_speed],
+                                              np.nanmin(speed_east),
+                                              np.nanmax(speed_east), speed_east, ncfile_var_list,
+                                              ('time'), null_value))
+            ncfile_var_list.append(OceanNcVar('speed:north', 'Speed:North',
+                                              curcls.channels['Units'][index_speed],
+                                              np.nanmin(speed_north),
+                                              np.nanmax(speed_north), speed_north, ncfile_var_list,
+                                              ('time'), null_value))
+            print('Calculated east and north speed components ...')
+    except UnboundLocalError as e:
+        print('Speed and speed component channels not found in file !')
 
     # attach variables to ncfileclass and call method to write netcdf file
     out.varlist = ncfile_var_list

@@ -49,6 +49,7 @@ def convert_ctd_files(f, out_path):
 
 
 def convert_cur_files(f, out_path):
+    print(f)
     fdata = iod.CurFile(filename=f, debug=False)
     if fdata.import_data():
         fdata.assign_geo_code(fix_path('test_files/ios_polygons.geojson'))
@@ -67,7 +68,7 @@ for fn in glob(fix_path('./test_files/ctd_profile/*.*'), recursive=True):
 for fn in glob(fix_path('./test_files/bot/*.*'), recursive=True):
     convert_bot_files(f=fn, out_path=fix_path('temp/'))
 
-for fn in glob(fix_path('./test_files/current_meter/*.[Cc][Uu][Rr]'), recursive=True):
+for fn in glob(fix_path('./test_files/current_meter/*.*'), recursive=True):
     convert_cur_files(f=fn, out_path=fix_path('temp/'))
 
 # print(iod.utils.compare_file_list(['a.bot', 'c.bkas.asd'], ['nc2/a.nc', 'nc3/nc1/b.nc', 'nc1/nc/c.nc', 'd.nc']))

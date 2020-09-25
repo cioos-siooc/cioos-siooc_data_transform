@@ -234,7 +234,6 @@ class ObsFile(object):
                         data.append(struct.unpack(fmt_struct, lines[i].rstrip().ljust(fmt_len).encode('utf-8')))
                         # data.append([r for r in lines[i].split()])
             except Exception as e:
-                print(e)
                 data = np.genfromtxt(StringIO(''.join(lines)), delimiter='', dtype=str, comments=None)
                 print("Reading data using delimiter was successful !")
 
@@ -452,8 +451,13 @@ class CurFile(ObsFile):
         self.deployment = self.get_section('DEPLOYMENT')
         self.recovery = self.get_section('RECOVERY')
         time_increment = self.get_dt()
-        self.obs_time = [self.start_dateobj + timedelta(seconds=time_increment * (i))
-                         for i in range(int(self.file['NUMBER OF RECORDS']))]
+        flag_none_time_incr = 0
+        if time_increment is None:
+            flag_none_time_incr += 1
+        else:
+            print(time_increment)
+            self.obs_time = [self.start_dateobj + timedelta(seconds=time_increment * (i))
+                             for i in range(int(self.file['NUMBER OF RECORDS']))]
 
         self.channel_details = self.get_channel_detail()
         if self.channel_details is None:
@@ -461,6 +465,14 @@ class CurFile(ObsFile):
         # try reading file using format specified in 'FORMAT'
         try:
             self.data = self.get_data(formatline=self.file['FORMAT'])
+            if flag_none_time_incr:
+                # Take difference of first two times in self.data
+                print('Getting time increment from data section ...')
+                t0 = datetime.strptime(self.data[0, 0] + ' ' + self.data[0, 1], '%Y/%m/%d %H:%M:%S')
+                t1 = datetime.strptime(self.data[1, 0] + ' ' + self.data[1, 1], '%Y/%m/%d %H:%M:%S')
+                time_increment = t1 - t0
+                self.obs_time = [self.start_dateobj + timedelta(seconds=time_increment.total_seconds() * (i))
+                                 for i in range(int(self.file['NUMBER OF RECORDS']))]
         except Exception as e:
             print("Could not read file using 'FORMAT' description...")
             self.data = None
@@ -469,7 +481,16 @@ class CurFile(ObsFile):
             try:
                 # self.channel_details = self.get_channel_detail()
                 self.data = self.get_data(formatline=None)
+                if flag_none_time_incr:
+                    # Take difference of first two times in self.data
+                    print('Getting time increment from data section ...')
+                    t0 = datetime.strptime(self.data[0, 0] + ' ' + self.data[0, 1], '%Y/%m/%d %H:%M:%S')
+                    t1 = datetime.strptime(self.data[1, 0] + ' ' + self.data[1, 1], '%Y/%m/%d %H:%M:%S')
+                    time_increment = t1 - t0
+                    self.obs_time = [self.start_dateobj + timedelta(seconds=time_increment.total_seconds() * (i))
+                                     for i in range(int(self.file['NUMBER OF RECORDS']))]
             except Exception as e:
+                print("Could not read file using 'struct' data format description...")
                 return 0
         return 1
 
