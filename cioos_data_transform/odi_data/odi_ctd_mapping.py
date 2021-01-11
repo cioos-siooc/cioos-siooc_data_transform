@@ -2,6 +2,7 @@
 import uuid
 import yaml
 from netCDF4 import Dataset
+import re
 
 
 class OdiCtdMapping(object):
@@ -49,16 +50,18 @@ class OdiCtdMapping(object):
             },
             'history': {
                 'en': self.nc['history'],
+                # TODO: XML won't validate without entering something for French?
+                'fr': self.nc['history'],
             }
         }
 
     def add_spatial(self):
         self.odi_dict['spatial'] = {
             'bbox': [
-                str(self.nc['geospatial_lat_min']),
                 str(self.nc['geospatial_lon_min']),
-                str(self.nc['geospatial_lat_max']),
-                str(self.nc['geospatial_lon_max'])
+                str(self.nc['geospatial_lat_min']),
+                str(self.nc['geospatial_lon_max']),
+                str(self.nc['geospatial_lat_max'])
             ],
             'vertical': [
                 str(self.nc['geospatial_vertical_min']),
@@ -73,6 +76,9 @@ class OdiCtdMapping(object):
             f"{self.nc['mooring_number']}_{self.nc['serial_number']}_"
             f"{round(float(self.nc['sampling_interval']))}"
         )
+        # Fix the non-ISO8601 trailing '+0000' portion of the start/end dates
+        temporal_begin = re.sub(r'\+0000', r'Z', self.nc['time_coverage_start'])
+        temporal_end = re.sub(r'\+0000', r'Z', self.nc['time_coverage_end'])
         self.odi_dict['identification'] = {
             'title': {
                 'en': title,
@@ -93,9 +99,12 @@ class OdiCtdMapping(object):
                 # TODO: create mapping between DFO standard names and CIOOS EOVs
                 'eov': ['subSurfaceTemperature', 'subSurfaceSalinity', 'oxygen']
             },
-            'temporal_begin': self.nc['time_coverage_start'],
-            'temporal_end': self.nc['time_coverage_end'],
-            'temporal_duration': self.nc['time_coverage_duration'],
+            # Putting quotes around the start/end dates is necessary or the 'T' can get stripped
+            'temporal_begin': '"'.join([temporal_begin]),
+            'temporal_end': '"'.join([temporal_end]),
+            # The smallest value is allowed to have a decimal, but currently
+            # unsupported by the ISO 19115 schema.
+            # 'temporal_duration': self.nc['time_coverage_duration'],
             # TODO: Does nc['sampling_interval'] go here or in instrument?
             'status': 'completed',
         }
@@ -186,10 +195,18 @@ class OdiCtdMapping(object):
                 {
                     # TODO: parse and lookup NERC L22 ID from inst_model
                     'id': self.nc['serial_number'],
-                    'type': { 'en': 'http://vocab.nerc.ac.uk/collection/L22/current/TOOL1393/', },
+                    'type': {
+                        'en': 'http://vocab.nerc.ac.uk/collection/L22/current/TOOL1393/',
+                        'fr': 'http://vocab.nerc.ac.uk/collection/L22/current/TOOL1393/'
+                    },
                     'description': {
                         'en': ('A series of high accuracy conductivity and temperature recorders '
-                            'with integrated pressure sensors designed for deployment on moorings.')
+                               'with integrated pressure sensors designed for deployment on '
+                               'moorings.'),
+                        'fr': ("[Traduction automatique] Une série d'enregistreurs de "
+                               "conductivité et de température de haute précision avec capteurs "
+                               "de pression intégrés conçus pour être déployés sur des "
+                               "mouillages."),
                     },
                     'manufacturer': 'Sea-Bird',
                     'version': inst_version,
