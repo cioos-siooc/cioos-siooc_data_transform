@@ -35,6 +35,8 @@ See ios_data_transform/tests/test.py for example on how to use the package to re
 ## Authors
 
 * **Pramod Thupaki** - pramod.thupaki@hakai.org
+* **Hana Hourston**
+* **Jessy Barrette**
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
