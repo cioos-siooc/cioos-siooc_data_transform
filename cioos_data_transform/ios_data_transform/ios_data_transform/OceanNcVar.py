@@ -80,12 +80,16 @@ class OceanNcVar(object):
             self.units = 'm'
             self.__set_null_val()
         elif self.type == 'pressure':
+            if self.units.strip().lower() in ['kpascal', 'kilopascal']:
+                self.__convert_units(self.type, self.name, self.units)
             self.name = 'PRESPR01'
             self.datatype = 'float32'
             # self.dimensions = ('z')
             self.long_name = 'Pressure'
-            if self.units.strip().lower() in ['dbar', 'dbars', 'decibar']:
+            if self.units.strip().lower() in ['dbar', 'dbars', 'decibar', 'decibars']:
                 self.units = 'decibar'
+            elif self.units.strip().lower() in ['count', 'counts']: #TODO add different long_name?
+                self.units = 'counts'
             else:
                 raise Exception('Unclear units for pressure!')
             self.standard_name = 'sea_water_pressure'
@@ -102,7 +106,55 @@ class OceanNcVar(object):
             self.standard_name = 'sea_water_temperature'
             self.units = bodc_units
             self.__set_null_val()
+        elif self.type == 'temperature:cur:low_res':
+            self.datatype = 'float32'
+            # self.dimensions = ('z')
+            for i in range(4):
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.long_name = 'Sea Water Temperature (Low Resolution)'
+            self.standard_name = 'sea_water_temperature'
+            self.units = bodc_units
+            self.__set_null_val()
+        elif self.type == 'temperature:cur':
+            self.datatype = 'float32'
+            # self.dimensions = ('z')
+            for i in range(4):
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.long_name = 'Sea Water Temperature'
+            self.standard_name = 'sea_water_temperature'
+            self.units = bodc_units
+            self.__set_null_val()
+        elif self.type == 'temperature:cur:high_res':
+            self.datatype = 'float32'
+            # self.dimensions = ('z')
+            for i in range(4):
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.long_name = 'Sea Water Temperature (High Resolution)'
+            self.standard_name = 'sea_water_temperature'
+            self.units = bodc_units
+            self.__set_null_val()
         elif self.type == 'salinity':
+            self.datatype = 'float32'
+            # self.dimensions = ('z')
+            for i in range(4):  # will try to get a unique variable name at least 4 times
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.long_name = 'Sea Water Practical Salinity'
+            self.standard_name = 'sea_water_practical_salinity'
+            self.units = bodc_units
+            self.__set_null_val()
+        elif self.type == 'salinity:cur':
             self.datatype = 'float32'
             # self.dimensions = ('z')
             for i in range(4):  # will try to get a unique variable name at least 4 times
@@ -138,6 +190,16 @@ class OceanNcVar(object):
             self.standard_name = 'sea_water_electrical_conductivity'
             self.units = bodc_units
             self.__set_null_val()
+        elif self.type == 'conductivity_gsw': #TODO
+            self.datatype = 'float32'
+            for i in range(4):  # will try to get a unique variable name at least 4 times
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.long_name = 'Sea Water Electrical Conductivity gsw'
+            # self.standard_name = ''
+            self.units = bodc_units
         elif self.type == 'nutrient':
             self.datatype = 'float32'
             for i in range(4):
@@ -156,6 +218,150 @@ class OceanNcVar(object):
             self.name = bodc_code
             self.units = bodc_units
             self.__set_null_val()
+        elif self.type == 'speed:east':
+            self.datatype = 'float32'
+            if self.units.strip().lower() in ['cm/s'] and self.units.strip().lower() not in ['m/s']:
+                self.__convert_units(self.type, self.name, self.units)
+            for i in range(4):  # will try to get a unique variable name at least 4 times
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.standard_name = 'eastward_sea_water_velocity'
+            self.units = bodc_units
+        elif self.type == 'speed:north':
+            self.datatype = 'float32'
+            if self.units.strip().lower() in ['cm/s'] and self.units.strip().lower() not in ['m/s']:
+                self.__convert_units(self.type, self.name, self.units)
+            for i in range(4):  # will try to get a unique variable name at least 4 times
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.standard_name = 'northward_sea_water_velocity'
+            self.units = bodc_units
+        elif self.type == 'speed:up':
+            self.datatype = 'float32'
+            if self.units.strip().lower() in ['cm/s'] and self.units.strip().lower() not in ['m/s']:
+                self.__convert_units(self.type, self.name, self.units)
+            for i in range(4):  # will try to get a unique variable name at least 4 times
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.standard_name = 'upward_sea_water_velocity'
+            self.units = bodc_units
+        elif self.type == 'amplitude:beam1':
+            self.datatype = 'float32'
+            for i in range(4):  # will try to get a unique variable name at least 4 times
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.standard_name = 'signal_intensity_from_multibeam_acoustic_doppler_velocity_sensor_in_sea_water'
+            self.units = bodc_units
+        elif self.type == 'amplitude:beam2':
+            self.datatype = 'float32'
+            for i in range(4):  # will try to get a unique variable name at least 4 times
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.standard_name = 'signal_intensity_from_multibeam_acoustic_doppler_velocity_sensor_in_sea_water'
+            self.units = bodc_units
+        elif self.type == 'amplitude:beam3':
+            self.datatype = 'float32'
+            for i in range(4):  # will try to get a unique variable name at least 4 times
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.standard_name = 'signal_intensity_from_multibeam_acoustic_doppler_velocity_sensor_in_sea_water'
+            self.units = bodc_units
+        elif self.type == 'speed:sound':
+            self.datatype = 'float32'
+            for i in range(4):  # will try to get a unique variable name at least 4 times
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.standard_name = 'speed_of_sound_in_sea_water'
+            self.units = bodc_units
+        elif self.type == 'speed:sound:1':
+            self.datatype = 'float32'
+            for i in range(4):  # will try to get a unique variable name at least 4 times
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.standard_name = 'speed_of_sound_in_sea_water'
+            self.units = bodc_units
+        elif self.type == 'speed:sound:2':
+            self.datatype = 'float32'
+            for i in range(4):  # will try to get a unique variable name at least 4 times
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.standard_name = 'speed_of_sound_in_sea_water'
+            self.units = bodc_units
+        elif self.type == 'heading':
+            self.datatype = 'float32'
+            for i in range(4):  # will try to get a unique variable name at least 4 times
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.standard_name = 'platform_orientation'
+            self.units = bodc_units
+        elif self.type == 'pitch':
+            self.datatype = 'float32'
+            for i in range(4):  # will try to get a unique variable name at least 4 times
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.standard_name = 'platform_pitch'
+            self.units = bodc_units
+        elif self.type == 'roll':
+            self.datatype = 'float32'
+            for i in range(4):  # will try to get a unique variable name at least 4 times
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.standard_name = 'platform_roll'
+            self.units = bodc_units
+        elif self.type == 'speed':
+            self.datatype = 'float32'
+            if self.units.strip().lower() in ['cm/s'] and self.units.strip().lower() not in ['m/s']:
+                self.__convert_units(self.type, self.name, self.units)
+            for i in range(4):  # will try to get a unique variable name at least 4 times
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.standard_name = 'sea_water_speed'
+            self.units = bodc_units
+        elif self.type == 'direction:geog(to)':
+            self.datatype = 'float32'
+            for i in range(4):  # will try to get a unique variable name at least 4 times
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            self.standard_name = 'sea_water_velocity_to_direction'
+            self.units = bodc_units
+        elif self.type == 'sigma-t': #TODO
+            self.datatype = 'float32'
+            for i in range(4):  # will try to get a unique variable name at least 4 times
+                bodc_code, bodc_units = self.__get_bodc_code(self.type, self.name, self.units, i)
+                if bodc_code not in varlist:
+                    break
+            self.name = bodc_code
+            # self.standard_name = ''
+            self.long_name = 'Sigma-theta'
+            self.units = bodc_units
         else:
             print("Do not know how to define this variable..")
             raise Exception("Fatal Error")
@@ -207,6 +413,36 @@ class OceanNcVar(object):
             else:  # if varunits does not specify type of temperature
                 raise Exception("Temperature type not defined", ios_varname, varunits, vartype)
 
+        elif vartype == 'temperature:cur:low_res':
+            if is_in(['deg c', 'degc'], varunits):
+                bodc_code = 'TEMPPR03'
+                bodc_units = 'deg C'
+            elif is_in(['deg C (IPTS68)'], varunits):
+                bodc_code = 'TEMPP683' #TODO
+                bodc_units = 'deg C'
+            else:
+                raise Exception("Temperature type not defined", ios_varname, varunits, vartype)
+
+        elif vartype == 'temperature:cur':
+            if is_in(['deg c', 'degc'], varunits):
+                bodc_code = 'TEMPPR01'
+                bodc_units = 'deg C'
+            elif is_in(['deg C (IPTS68)'], varunits):
+                bodc_code = 'TEMPP681'
+                bodc_units = 'deg C'
+            else:  # if varunits does not specify type of temperature
+                raise Exception("Temperature type not defined", ios_varname, varunits, vartype)
+
+        elif vartype == 'temperature:cur:high_res':
+            if is_in(['deg c', 'degc'], varunits):
+                bodc_code = 'TEMPPR02'
+                bodc_units = 'deg C'
+            elif is_in(['deg C (IPTS68)'], varunits):
+                bodc_code = 'TEMPP682' #TODO
+                bodc_units = 'deg C'
+            else:  # if varunits does not specify type of temperature
+                raise Exception("Temperature type not defined", ios_varname, varunits, vartype)
+
         elif vartype == 'salinity':
             if not is_in(['bottle'], ios_varname) and is_in(['PSS-78'], varunits):
                 bodc_code = "PSALST"
@@ -226,6 +462,16 @@ class OceanNcVar(object):
 
             else:
                 raise Exception("Salinity type not defined", ios_varname, varunits, vartype)
+
+        elif vartype == 'salinity:cur':
+            if is_in(['PSS-78'], varunits):
+                bodc_code = "PSLTZZ01"
+                bodc_units = 'PSS-78'
+            elif is_in(['ppt'], varunits):
+                bodc_code = "ODSDM021"
+                bodc_units = 'PPT'
+            else:
+                raise Exception("Current meter salinity units not defined", ios_varname, varunits, vartype)
 
         elif vartype == 'oxygen':
             if is_in(['ml/l'], varunits):
@@ -247,9 +493,15 @@ class OceanNcVar(object):
             elif is_in(['ms/cm'], varunits):
                 bodc_code = 'CNDCSTX'
                 bodc_units = 'mS/cm'
+            elif is_in(['counts', 'count'], varunits):
+                bodc_code = 'CNDCZZ'
+                bodc_units = 'counts'
             else:
                 raise Exception("Conductivity units not compatible with BODC code", ios_varname, varunits, vartype)
             bodc_code = '{}{:02d}'.format(bodc_code, iter + 1)
+        elif vartype == 'conductivity_gsw':
+            bodc_code = 'CNDC_RATIO' #TODO
+            bodc_units = 'n/a'
         elif vartype == 'nutrient':
             if is_in(['nitrate_plus_nitrite'], ios_varname) and is_in(['umol/l'], varunits):
                 bodc_code = 'NTRZAAZ'
@@ -278,6 +530,87 @@ class OceanNcVar(object):
             else:
                 raise Exception("'Other' units not compatible with BODC code", ios_varname, varunits, vartype)
             bodc_code = '{}{:01d}'.format(bodc_code, iter + 1)
+        elif vartype == 'speed:east':
+            if is_in(['m/s', 'metres/sec'], varunits):
+                bodc_code = 'LCEWEL01'
+                bodc_units = 'm/s'
+            else:
+                raise Exception("'speed:east' units not compatible with BODC code", ios_varname, varunits, vartype)
+        elif vartype == 'speed:north':
+            if is_in(['m/s', 'metres/sec'], varunits):
+                bodc_code = 'LCNSEL01'
+                bodc_units = 'm/s'
+            else:
+                raise Exception("'speed:north' units not compatible with BODC code", ios_varname, varunits, vartype)
+        elif vartype == 'speed:up':
+            if is_in(['m/s', 'metres/sec'], varunits):
+                bodc_code = 'LRZASP01'
+                bodc_units = 'm/s'
+            else:
+                raise Exception("'speed:up' units not compatible with BODC code", ios_varname, varunits, vartype)
+        elif vartype == 'amplitude:beam1':
+            bodc_code = 'ISCMBMA1'
+            bodc_units = 'counts'
+        elif vartype == 'amplitude:beam2':
+            bodc_code = 'ISCMBMA2'
+            bodc_units = 'counts'
+        elif vartype == 'amplitude:beam3':
+            bodc_code = 'ISCMBMA3'
+            bodc_units = 'counts'
+        elif vartype == 'speed:sound':
+            bodc_code = 'SVELCV01'
+            bodc_units = 'm/s'
+        elif vartype == 'speed:sound:1':
+            bodc_code = 'SVELCV01'
+            bodc_units = 'm/s'
+        elif vartype == 'speed:sound:2':
+            bodc_code = 'SVELCV02'
+            bodc_units = 'm/s'
+        elif vartype == 'heading':
+            bodc_code = 'HEADCM01'
+            bodc_units = 'deg'
+        elif vartype == 'pitch':
+            bodc_code = 'PTCHEI01'
+            bodc_units = 'deg'
+        elif vartype == 'roll':
+            bodc_code = 'ROLLEI01'
+            bodc_units = 'deg'
+        elif vartype == 'speed':
+            if is_in(['m/s', 'metres/sec'], varunits):
+                bodc_code = 'LCSAEL01'
+                bodc_units = 'm/s'
+            else:
+                raise Exception("'speed' units not compatible with BODC code", ios_varname, varunits, vartype)
+        elif vartype == 'direction:geog(to)':
+            bodc_code = 'LCDAEL01'
+            bodc_units = 'deg'
+        elif vartype == 'sigma-t':
+            bodc_code = 'SIGTEQST'
+            bodc_units = 'n/a'
         else:
             raise Exception('Cannot find BODC code for this variable', ios_varname, varunits, vartype)
         return bodc_code, bodc_units
+
+    def __convert_units(self, vartype, ios_varname, varunits):
+        """
+        convert units of variables going into output netCDF file
+        author: Hana Hourston hana.hourston@dfo-mpo.gc.ca
+        input:
+            - vartype: list. [0] = vartype, [1]=instance details (primary/secondary etc)
+            - ios_varname:
+            - varunits:
+        output:
+            NONE
+        """
+        if self.units.strip().lower() in ['cm/s']:
+            cm2m = 100.
+            self.data *= cm2m
+            self.units = 'm/s'
+        elif self.units.strip().lower() in ['kpascal', 'kilopascal']:
+            kpascal2dbar = 0.1
+            self.data *= kpascal2dbar
+            self.units = 'decibar'
+        else:
+            raise Exception('Input units not understood !', ios_varname, varunits, vartype)
+        return
+
