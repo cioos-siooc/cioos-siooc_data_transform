@@ -603,12 +603,12 @@ class OceanNcVar(object):
             NONE
         """
         if self.units.strip().lower() in ['cm/s']:
-            cm2m = 100.
-            self.data *= cm2m
+            cm2m = 0.01
+            self.data = cm2m*np.asarray(self.data, dtype=float)
             self.units = 'm/s'
         elif self.units.strip().lower() in ['kpascal', 'kilopascal']:
             kpascal2dbar = 0.1
-            self.data *= kpascal2dbar
+            self.data = kpascal2dbar*np.asarray(self.data, dtype=float)
             self.units = 'decibar'
         else:
             raise Exception('Input units not understood !', ios_varname, varunits, vartype)
