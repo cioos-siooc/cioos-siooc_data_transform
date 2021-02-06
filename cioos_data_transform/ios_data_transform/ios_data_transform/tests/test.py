@@ -1,6 +1,7 @@
 # script runs automated tests on data conversions
 import sys
 import os
+sys.path.insert(0, os.getcwd()+'../../')
 import ios_data_transform as iod
 from glob import glob
 

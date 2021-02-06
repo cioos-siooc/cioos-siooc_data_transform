@@ -107,3 +107,5 @@ cioos_data_transform/ios_data_transform/\.idea/
 cioos_data_transform/\.idea/
 \.idea
 *.nc
+
+.vscode/
