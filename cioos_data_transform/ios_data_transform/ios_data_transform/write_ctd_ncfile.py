@@ -2,7 +2,7 @@
 import json
 from .OceanNcFile import CtdNcFile
 from .OceanNcVar import OceanNcVar
-from .utils import is_in, release_memory, find_geographic_area, read_geojson
+from .utils.utils import is_in, release_memory, find_geographic_area, read_geojson
 from datetime import datetime
 from netCDF4 import Dataset as ncdata
 from shapely.geometry import Point
@@ -120,7 +120,7 @@ def write_ctd_ncfile(filename, ctdcls):
                                               ctdcls.channels['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('z'),
                                               null_value))
         elif is_in(['oxygen'], channel) and not is_in(
-                ['flag', 'bottle', 'rinko', 'temperature', 'current', 'isotope', 'saturation'], channel):
+                ['flag', 'bottle', 'rinko', 'temperature', 'current', 'isotope', 'saturation','voltage'], channel):
             ncfile_var_list.append(OceanNcVar('oxygen', ctdcls.channels['Name'][i],
                                               ctdcls.channels['Units'][i], ctdcls.channels['Minimum'][i],
                                               ctdcls.channels['Maximum'][i], ctdcls.data[:, i], ncfile_var_list, ('z'),
@@ -137,6 +137,15 @@ def write_ctd_ncfile(filename, ctdcls):
                                                   ctdcls.channels['Units'][i], ctdcls.channels['Minimum'][i],
                                                   ctdcls.channels['Maximum'][i], ctdcls.data[:, i], ncfile_var_list,
                                                   ('z'), null_value))
+            except Exception as e:
+                print(e)
+        #  Chlorophyll
+        elif is_in(['chlorophyll:extracted'], channel) and not is_in(['flag'], channel):
+            try:
+                ncfile_var_list.append(OceanNcVar('other', ctdcls.channels['Name'][i],
+                                                ctdcls.channels['Units'][i], ctdcls.channels['Minimum'][i],
+                                                ctdcls.channels['Maximum'][i], ctdcls.data[:,i], ncfile_var_list,
+                                                ('z'), null_value))
             except Exception as e:
                 print(e)
         else:

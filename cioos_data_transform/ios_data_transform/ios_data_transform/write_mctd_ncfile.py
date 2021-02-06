@@ -1,7 +1,7 @@
 import json
 from .OceanNcFile import MCtdNcFile
 from .OceanNcVar import OceanNcVar
-from .utils import is_in, release_memory, find_geographic_area, read_geojson
+from .utils.utils import is_in, release_memory, find_geographic_area, read_geojson
 from shapely.geometry import Point
 
 
@@ -35,8 +35,8 @@ def write_mctd_ncfile(filename, ctdcls):
     if 'COUNTRY' in ctdcls.administration:
         ncfile_var_list.append(
             OceanNcVar('str_id', 'country', None, None, None, ctdcls.administration['COUNTRY'].strip()))
-    if 'MISSION' in ctdcls.deployment:
-        mission_id = ctdcls.deployment['MISSION'].strip()
+    if 'MISSION' in ctdcls.administration:
+        mission_id = ctdcls.administration['MISSION'].strip()
     else:
         mission_id = 'n/a'
     if mission_id.lower() == 'n/a':

@@ -3,8 +3,6 @@ import sys
 import glob
 from multiprocessing import Process
 from time import time
-
-sys.path.insert(0, os.getcwd() + '/../../')
 import ios_data_transform as iod
 import subprocess
 
@@ -15,7 +13,7 @@ def convert_files(env_vars, opt='all', ftype=None):
     # opt = 'all' for all files. default value;
     # ftype =   'ctd' for CTD profiles
     #           'mctd' for mooring CTDs
-    #           'cur' for currentmeters
+    #           'cur' for current meters
     print('Option, ftype =', opt, ftype)
     if ftype == 'ctd':
         in_path = env_vars['ctd_raw_folder']
@@ -36,6 +34,11 @@ def convert_files(env_vars, opt='all', ftype=None):
         flist = []
         flist.extend(glob.glob(in_path + '**/*.[Bb][Oo][Tt]', recursive=True))
         flist.extend(glob.glob(in_path + '**/*.[Cc][Hh][Ee]', recursive=True))
+    elif ftype == 'cur':
+        in_path = env_vars['cur_raw_folder']
+        out_path = env_vars['cur_nc_folder']
+        fgeo = env_vars['geojson_file']
+        flist = glob.glob(in_path + '**/*.[Cc][Uu][Rr]', recursive=True)
     else:
         print("ERROR: Filetype not understood ...")
         return None
@@ -47,6 +50,14 @@ def convert_files(env_vars, opt='all', ftype=None):
         p.start()
         p.join()
     return flist
+
+
+def standardize_variable_names(ncfile):
+    # input: netcdf file with non-standard variable names
+    # output: netcdf file with standard variables added
+    # NOTE: netcdf files are overwritten
+    print(f'Adding standard variables:{ncfile}')
+    iod.add_standard_variables(ncfile)
 
 
 def convert_files_threads(ftype, fname, fgeo, out_path):
@@ -62,6 +73,8 @@ def convert_files_threads(ftype, fname, fgeo, out_path):
         fdata = iod.MCtdFile(filename=fname, debug=False)
     elif ftype == 'bot':
         fdata = iod.CtdFile(filename=fname, debug=False)
+    elif ftype == 'cur':
+        fdata = iod.CurFile(filename=fname, debug=False)
     else:
         print("Filetype not understood!")
         sys.exit()
@@ -73,24 +86,34 @@ def convert_files_threads(ftype, fname, fgeo, out_path):
         yy = fdata.start_date[0:4]
         if not os.path.exists(out_path + yy):
             os.mkdir(out_path + yy)
+        ncFileName = out_path + yy + '/' + fname.split('/')[-1] + '.nc'
         if ftype == 'ctd':
             try:
-                iod.write_ctd_ncfile(out_path + yy + '/' + fname.split('/')[-1] + '.nc', fdata)
+                iod.write_ctd_ncfile(ncFileName, fdata)
+                standardize_variable_names(ncFileName)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
-                subprocess.call(['rm', '-f', out_path + yy + '/' + fname.split('/')[-1] + '.nc'])
+                subprocess.call(['rm', '-f', ncFileName])
         elif ftype == 'mctd':
             try:
-                iod.write_mctd_ncfile(out_path + yy + '/' + fname.split('/')[-1] + '.nc', fdata)
+                iod.write_mctd_ncfile(ncFileName, fdata)
+                standardize_variable_names(ncFileName)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
-                subprocess.call(['rm', '-f', out_path + yy + '/' + fname.split('/')[-1] + '.nc'])
+                subprocess.call(['rm', '-f', ncFileName])
         elif ftype == 'bot':
             try:
-                iod.write_ctd_ncfile(out_path + yy + '/' + fname.split('/')[-1] + '.nc', fdata)
+                iod.write_ctd_ncfile(ncFileName, fdata)
+                standardize_variable_names(ncFileName)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
-                subprocess.call(['rm', '-f', out_path + yy + '/' + fname.split('/')[-1] + '.nc'])
+                subprocess.call(['rm', '-f', ncFileName])
+        elif ftype == 'cur':
+            try:
+                iod.write_cur_ncfile(ncFileName, fdata)
+            except Exception as e:
+                print("Error: Unable to create netcdf file:", fname, e)
+                subprocess.call(['rm', '-f', ncFileName])
     else:
         print("Error: Unable to import data from file", fname)
         return 0
