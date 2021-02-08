@@ -397,6 +397,27 @@ class ObsFile(object):
             geo_code = 'None'
         self.geo_code = geo_code
 
+    def get_obs_time(self):
+        # Return a timeseries 
+        from pandas import to_datetime
+        chnList = [i.strip().lower() for i in self.channels['Name']]
+        try:
+            dates = [i.decode('utf').strip() for i in self.data[:,chnList.index('date')] ]
+            times = [i.decode('utf').strip() for i in self.data[:,chnList.index('time')] ]
+        except Exception as e:
+            raise Exception("Error: Unable to find date/time columns in file", self.filename)
+            
+        datetime = to_datetime([ date + ' ' + time for date, time in zip(dates, times) ])
+        self.obs_time = datetime.to_pydatetime()
+        # date/time section in data is supposed to be in UTC. 
+        # check if they match, if not then raise fatal error
+        self.obs_time = [timezone('UTC').localize(i + timedelta(hours=0)) for i in self.obs_time]
+        if self.obs_time[0] != self.start_dateobj:
+            print(self.obs_time[0], self.start_dateobj)
+            raise Exception("Error: First record in data does not match start date in header")
+# 
+# ********************              END DEFINITION FOR OBSFILE CLASS          **************************
+# 
 
 class CtdFile(ObsFile):
     """
@@ -450,14 +471,7 @@ class CurFile(ObsFile):
         self.instrument = self.get_section('INSTRUMENT')
         self.deployment = self.get_section('DEPLOYMENT')
         self.recovery = self.get_section('RECOVERY')
-        time_increment = self.get_dt()
-        flag_none_time_incr = 0
-        if time_increment is None:
-            flag_none_time_incr += 1
-        else:
-            print(time_increment)
-            self.obs_time = [self.start_dateobj + timedelta(seconds=time_increment * (i))
-                             for i in range(int(self.file['NUMBER OF RECORDS']))]
+        # time_increment = self.get_dt()
 
         self.channel_details = self.get_channel_detail()
         if self.channel_details is None:
@@ -465,14 +479,6 @@ class CurFile(ObsFile):
         # try reading file using format specified in 'FORMAT'
         try:
             self.data = self.get_data(formatline=self.file['FORMAT'])
-            if flag_none_time_incr:
-                # Take difference of first two times in self.data
-                print('Getting time increment from data section ...')
-                t0 = datetime.strptime(self.data[0, 0] + ' ' + self.data[0, 1], '%Y/%m/%d %H:%M:%S')
-                t1 = datetime.strptime(self.data[1, 0] + ' ' + self.data[1, 1], '%Y/%m/%d %H:%M:%S')
-                time_increment = t1 - t0
-                self.obs_time = [self.start_dateobj + timedelta(seconds=time_increment.total_seconds() * (i))
-                                 for i in range(int(self.file['NUMBER OF RECORDS']))]
         except Exception as e:
             print("Could not read file using 'FORMAT' description...")
             self.data = None
@@ -481,17 +487,28 @@ class CurFile(ObsFile):
             try:
                 # self.channel_details = self.get_channel_detail()
                 self.data = self.get_data(formatline=None)
-                if flag_none_time_incr:
-                    # Take difference of first two times in self.data
-                    print('Getting time increment from data section ...')
-                    t0 = datetime.strptime(self.data[0, 0] + ' ' + self.data[0, 1], '%Y/%m/%d %H:%M:%S')
-                    t1 = datetime.strptime(self.data[1, 0] + ' ' + self.data[1, 1], '%Y/%m/%d %H:%M:%S')
-                    time_increment = t1 - t0
-                    self.obs_time = [self.start_dateobj + timedelta(seconds=time_increment.total_seconds() * (i))
-                                     for i in range(int(self.file['NUMBER OF RECORDS']))]
             except Exception as e:
                 print("Could not read file using 'struct' data format description...")
                 return 0
+
+        # if time_increment is None:
+        # print("Did not find 'TIME INCREMENT'. Trying to calculate it from endtime and nrecs ...")
+        # enddateobj, _ = self.get_date(opt='end')
+        # print((enddateobj - self.start_dateobj).total_seconds(), self.file['NUMBER OF RECORDS'])
+        # time_increment = (enddateobj - self.start_dateobj).total_seconds()/(int(self.file['NUMBER OF RECORDS'])-1)
+        # print('New time increment =', time_increment)
+        # print('Getting time increment from data section ...')
+
+        # get timeseries times from data directly. raise fatal error if not availale
+        # (2021/Jan - tpp) time increment based method is nor reliable (burst mode/ incorrect nrec etc.)
+        self.get_obs_time()
+        # # Take difference of first two times in self.data
+        # time_increment = (self.obs_time[1] - self.obs_time[0]).total_seconds()
+
+        # self.obs_time = [self.start_dateobj + timedelta(seconds=time_increment * (i))
+                            # for i in range(int(self.file['NUMBER OF RECORDS']))]
+
+
         return 1
 
 
@@ -519,14 +536,14 @@ class MCtdFile(ObsFile):
         if self.channel_details is None:
             print("Unable to get channel details from header...")
 
-        if time_increment is None:
-            print("Did not find 'TIME INCREMENT'. Trying to calculate it from endtime and nrecs ...")
-            enddateobj, _ = self.get_date(opt='end')
-            time_increment = (enddateobj - self.start_dateobj).total_seconds()/(int(self.file['NUMBER OF RECORDS'])-1)
-            print('New time increment =', time_increment)
+        # if time_increment is None:
+            # print("Did not find 'TIME INCREMENT'. Trying to calculate it from endtime and nrecs ...")
+            # enddateobj, _ = self.get_date(opt='end')
+            # time_increment = (enddateobj - self.start_dateobj).total_seconds()/(int(self.file['NUMBER OF RECORDS'])-1)
+            # print('New time increment =', time_increment)
 
-        self.obs_time = [self.start_dateobj + timedelta(seconds=time_increment * (i))
-                         for i in range(int(self.file['NUMBER OF RECORDS']))]
+        # self.obs_time = [self.start_dateobj + timedelta(seconds=time_increment * (i))
+                        #  for i in range(int(self.file['NUMBER OF RECORDS']))]
         if self.debug:
             print(self.obs_time[0], self.obs_time[-1])
         # try reading file using format specified in 'FORMAT'
@@ -542,6 +559,12 @@ class MCtdFile(ObsFile):
                 self.data = self.get_data(formatline=None)
             except Exception as e:
                 return 0
+
+        # get timeseries times from data directly. raise fatal error if not availale
+        # (2021/Jan - tpp) time increment based method is nor reliable (burst mode/ incorrect nrec etc.)
+
+        self.get_obs_time()
+
         return 1
 
 

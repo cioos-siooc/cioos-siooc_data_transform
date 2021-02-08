@@ -39,12 +39,16 @@ def write_mctd_ncfile(filename, ctdcls):
         mission_id = ctdcls.administration['MISSION'].strip()
     else:
         mission_id = 'n/a'
+    
     if mission_id.lower() == 'n/a':
-        raise Exception("Error: Mission ID not available", ctdcls.filename)
-
-    buf = mission_id.split('-')
-    mission_id = '{:4d}-{:03d}'.format(int(buf[0]), int(buf[1]))
-    ncfile_var_list.append(OceanNcVar('str_id', 'deployment_mission_id', None, None, None, mission_id))
+        # raise Exception("Error: Mission ID not available", ctdcls.filename)
+        print("Mission ID not available !", ctdcls.filename)
+        ncfile_var_list.append(OceanNcVar('str_id', 'deployment_mission_id', None, None, None, mission_id.lower()))
+    else:
+        buf = mission_id.split('-')
+        mission_id = '{:4d}-{:03d}'.format(int(buf[0]), int(buf[1]))
+        ncfile_var_list.append(OceanNcVar('str_id', 'deployment_mission_id', None, None, None, mission_id))
+    
     if 'SCIENTIST' in ctdcls.administration:
         ncfile_var_list.append(
             OceanNcVar('str_id', 'scientist', None, None, None, ctdcls.administration['SCIENTIST'].strip()))
@@ -78,8 +82,9 @@ def write_mctd_ncfile(filename, ctdcls):
     if 'EVENT NUMBER' in ctdcls.location:
         event_id = ctdcls.location['EVENT NUMBER'].strip()
     else:
-        print("Event number not found!" + ctdcls.filename)
+        # print("Event number not found!" + ctdcls.filename)
         event_id = '0000'
+
     ncfile_var_list.append(OceanNcVar('str_id', 'event_number', None, None, None, event_id))
     # add time variable
     profile_id = '{:04d}-{:03d}-{:04d}'.format(int(buf[0]), int(buf[1]), int(event_id))

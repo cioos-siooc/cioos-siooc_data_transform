@@ -30,7 +30,8 @@ def add_ne_speed(speed, direction):
 def write_cur_ncfile(filename, curcls):
     """
     use data and methods in curcls object to write the current meter data into a netcdf file
-    authors: Pramod Thupaki pramod.thupaki@hakai.org, Hana Hourston hana.hourston@dfo-mpo.gc.ca
+    authors:    Pramod Thupaki pramod.thupaki@hakai.org, 
+                Hana Hourston hana.hourston@dfo-mpo.gc.ca
     inputs:
         filename: output file name to be created in netcdf format
         curcls: cur object. includes methods to read IOS format and stores data
@@ -65,9 +66,10 @@ def write_cur_ncfile(filename, curcls):
         mission_id = curcls.administration['MISSION'].strip()
     else:
         mission_id = 'n/a'
+    
     if mission_id.lower() == 'n/a':
         # raise Exception("Error: Mission ID not available", curcls.filename)
-        print("Mission ID not available !", curcls.filename)
+        # print("Mission ID not available !", curcls.filename)
         ncfile_var_list.append(OceanNcVar('str_id', 'deployment_mission_id', None, None, None, mission_id.lower()))
     else:
         buf = mission_id.split('-')
@@ -107,7 +109,7 @@ def write_cur_ncfile(filename, curcls):
     if 'EVENT NUMBER' in curcls.location:
         event_id = curcls.location['EVENT NUMBER'].strip()
     else:
-        print("Event number not found!" + curcls.filename)
+        # print("Event number not found!" + curcls.filename)
         event_id = '0000'
     ncfile_var_list.append(OceanNcVar('str_id', 'event_number', None, None, None, event_id))
     # add time variable
@@ -120,19 +122,20 @@ def write_cur_ncfile(filename, curcls):
     ncfile_var_list.append(OceanNcVar('profile', 'profile', None, None, None, profile_id))
 
     # Check if variable lengths are same length as curcls.obs_time
-    direction_index = None
-    for i, channel in enumerate(curcls.channels['Name']):
-        if is_in(['direction:geog(to)'], channel):
-            direction_index = i
-    if direction_index is not None:
-        if len(curcls.obs_time) <= len(curcls.data[:, direction_index]):
-            ncfile_var_list.append(OceanNcVar('time', 'time', None, None, None, curcls.obs_time, vardim=('time')))
-        else:
-            print('Time range length ({}) greater than direction:geog(to) length ({}) !'.format(
-                len(curcls.obs_time), len(curcls.data[:, direction_index])))
-            out.nrec = len(curcls.data[:, direction_index]) #correct number of records
-            ncfile_var_list.append(OceanNcVar('time', 'time', None, None, None,
-                                              curcls.obs_time[:len(curcls.data[:, direction_index])], vardim=('time')))
+    ncfile_var_list.append(OceanNcVar('time', 'time', None, None, None, curcls.obs_time, vardim=('time')))
+    # direction_index = None
+    # for i, channel in enumerate(curcls.channels['Name']):
+    #     if is_in(['direction:geog(to)'], channel):
+    #         direction_index = i
+    # if direction_index is not None:
+    #     if len(curcls.obs_time) <= len(curcls.data[:, direction_index]):
+    #         ncfile_var_list.append(OceanNcVar('time', 'time', None, None, None, curcls.obs_time, vardim=('time')))
+    #     else:
+    #         print('Time range length ({}) greater than direction:geog(to) length ({}) !'.format(
+    #             len(curcls.obs_time), len(curcls.data[:, direction_index])))
+    #         out.nrec = len(curcls.data[:, direction_index]) #correct number of records
+    #         ncfile_var_list.append(OceanNcVar('time', 'time', None, None, None,
+    #                                           curcls.obs_time[:len(curcls.data[:, direction_index])], vardim=('time')))
 
     flag_ne_speed = 0 #flag to determine if north and east speed components are vars in the .cur file
     flag_cndc = 0 #flag to check for conductivity
