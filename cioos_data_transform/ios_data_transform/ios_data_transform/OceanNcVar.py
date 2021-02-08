@@ -371,7 +371,9 @@ class OceanNcVar(object):
         try:
             self.data[self.data == float(self.null_value)] = float("nan")
         except Exception as e:
-            print("Pad field is empty. Setting FillValue to NaN ...")
+            # print("Pad field is empty. Setting FillValue to NaN ...")
+            self.null_value = np.nan
+
 
     def __get_bodc_code(self, vartype, ios_varname, varunits, iter):
         """

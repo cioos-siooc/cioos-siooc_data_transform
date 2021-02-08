@@ -5,7 +5,7 @@
 # AIM:  this will be the common entry point for data from different sources that go into CIOOS
 #       ensuring common ncfile metadata standards. File has to conform to CF conventions and CIOOS variable standards
 from netCDF4 import Dataset as ncdata
-
+import numpy as np
 
 class OceanNcFile(object):
     def __init__(self):
@@ -49,7 +49,11 @@ class OceanNcFile(object):
         # var.dimensions is a tuple
         # var.type is  a string
         # print('Writing', var.name, var.datatype, var.dimensions, var.data)
-        ncvar = self.ncfile.createVariable(var.name, var.datatype, var.dimensions)
+        fill_value = None
+        if var.datatype is not str:
+            fill_value = np.nan
+        ncvar = self.ncfile.createVariable(var.name, var.datatype, var.dimensions, fill_value = fill_value)
+        
         for key, value in zip(['long_name', 'standard_name', 'units'],
                               [var.long_name, var.standard_name, var.units]):
             if value is not None:
@@ -60,7 +64,7 @@ class OceanNcFile(object):
         if var.datatype == str:
             ncvar[0] = var.data
         else:
-            setattr(ncvar, 'FillValue', float('NaN'))
+            # setattr(ncvar, 'FillValue', float('NaN'))
             ncvar[:] = var.data
 
 

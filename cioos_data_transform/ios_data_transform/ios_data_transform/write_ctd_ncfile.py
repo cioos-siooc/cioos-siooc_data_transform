@@ -80,8 +80,13 @@ def write_ctd_ncfile(filename, ctdcls):
         event_id = ctdcls.location['EVENT NUMBER'].strip()
     else:
         print("Event number not found!" + ctdcls.filename)
-        event_id = ctdcls.filename.split('-')[-1][:-4]
-        print('Guessing ...', ctdcls.filename, '; event id = ', event_id)
+        try:
+            event_id = ctdcls.filename.split('-')[-1][:-4]
+            print('Guessing ...', ctdcls.filename, '; event id = ', event_id)
+        except Exception as e:
+            print('Unable to guess event_id from file name. Using "0000" !')
+            event_id = '0000'
+
     ncfile_var_list.append(OceanNcVar('str_id', 'event_number', None, None, None, event_id))
     # add time variable
     profile_id = '{:04d}-{:03d}-{}'.format(int(buf[0]), int(buf[1]), event_id.zfill(4))
