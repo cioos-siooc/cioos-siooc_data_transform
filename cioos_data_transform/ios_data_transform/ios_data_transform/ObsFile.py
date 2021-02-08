@@ -154,7 +154,7 @@ class ObsFile(object):
             dt = np.asarray(line.split('!')[0].split(), dtype=float)
             dt = sum(dt * [24. * 3600., 3600., 60., 1., 0.001])  # in seconds
         else:
-            print("Error: Time Increment not found in Section:FILE", self.filename)
+            print("Time Increment not found in Section:FILE", self.filename)
             dt = None
         return dt
 
@@ -401,20 +401,43 @@ class ObsFile(object):
         # Return a timeseries 
         from pandas import to_datetime
         chnList = [i.strip().lower() for i in self.channels['Name']]
-        try:
-            dates = [i.decode('utf').strip() for i in self.data[:,chnList.index('date')] ]
-            times = [i.decode('utf').strip() for i in self.data[:,chnList.index('time')] ]
-        except Exception as e:
-            raise Exception("Error: Unable to find date/time columns in file", self.filename)
-            
-        datetime = to_datetime([ date + ' ' + time for date, time in zip(dates, times) ])
-        self.obs_time = datetime.to_pydatetime()
+        
+        if 'date' in chnList and 'time' in chnList:
+            if isinstance(self.data[0,chnList.index('date')], bytes):
+                dates = [i.decode('utf8').strip() for i in self.data[:,chnList.index('date')] ]
+                times = [i.decode('utf8').strip() for i in self.data[:,chnList.index('time')] ]
+            else:
+                dates = [i.strip() for i in self.data[:,chnList.index('date')] ]
+                times = [i.strip() for i in self.data[:,chnList.index('time')] ]
+            datetime = to_datetime([ date + ' ' + time for date, time in zip(dates, times) ])
+            self.obs_time = datetime.to_pydatetime()
+            self.obs_time = [timezone('UTC').localize(i + timedelta(hours=0)) for i in self.obs_time]
+        elif 'date' in chnList and 'time' not in chnList:
+            if isinstance(self.data[0,chnList.index('date')], bytes):
+                dates = [i.decode('utf8').strip() for i in self.data[:,chnList.index('date')] ]
+            else:
+                dates = [i.strip() for i in self.data[:,chnList.index('date')] ]
+            datetime = to_datetime([ date for date in dates ])
+            self.obs_time = datetime.to_pydatetime()
+            self.obs_time = [timezone('UTC').localize(i + timedelta(hours=0)) for i in self.obs_time]
+        else:
+            print("Unable to find date/time columns in file", self.filename)
+            try:
+                time_increment = self.get_dt()
+                self.obs_time = [self.start_dateobj + timedelta(seconds=time_increment * (i))
+                    for i in range(int(self.file['NUMBER OF RECORDS']))]
+            except Exception as e:
+                raise Exception("ERROR: Unable to use time increment", self.filename)
+                #return 0
+           
+
         # date/time section in data is supposed to be in UTC. 
         # check if they match, if not then raise fatal error
-        self.obs_time = [timezone('UTC').localize(i + timedelta(hours=0)) for i in self.obs_time]
+
         if self.obs_time[0] != self.start_dateobj:
             print(self.obs_time[0], self.start_dateobj)
-            raise Exception("Error: First record in data does not match start date in header")
+            print("Error: First record in data does not match start date in header", self.filename)
+            return 0
 # 
 # ********************              END DEFINITION FOR OBSFILE CLASS          **************************
 # 

@@ -37,12 +37,15 @@ def write_mctd_ncfile(filename, ctdcls):
             OceanNcVar('str_id', 'country', None, None, None, ctdcls.administration['COUNTRY'].strip()))
     if 'MISSION' in ctdcls.administration:
         mission_id = ctdcls.administration['MISSION'].strip()
+    elif 'MISSION' in ctdcls.deployment:
+        mission_id = ctdcls.deployment['MISSION'].strip()
     else:
         mission_id = 'n/a'
     
     if mission_id.lower() == 'n/a':
         # raise Exception("Error: Mission ID not available", ctdcls.filename)
         print("Mission ID not available !", ctdcls.filename)
+        buf = [ctdcls.start_date[:4],'000' ]
         ncfile_var_list.append(OceanNcVar('str_id', 'deployment_mission_id', None, None, None, mission_id.lower()))
     else:
         buf = mission_id.split('-')
