@@ -15,7 +15,7 @@ class OceanNcFile(object):
         self.institution = None
         self.history = None
         self.infoUrl = None
-        self.HEADER = None
+        self.header = None
         self.description = None
         # list of var class in the netcdf
         self.varlist = []
@@ -27,7 +27,7 @@ class OceanNcFile(object):
         # setup global attributes of netcdf file based class data
         setattr(self.ncfile, 'featureType', self.featureType)
         for featureName, featureVal in zip(['summary','title','institution','history','infoUrl','header','description'],
-            [self.summary, self.title, self.institution, self.history,self.infoUrl, self.HEADER, self.description]):
+            [self.summary, self.title, self.institution, self.history,self.infoUrl, self.header, self.description]):
             if featureVal is not None:
                 setattr(self.ncfile, featureName, featureVal)
         # setup dimensions
