@@ -1,5 +1,5 @@
 import sys
-# import os
+import os
 sys.path.insert(0, '../../')
 import numpy as np
 import json
@@ -33,7 +33,7 @@ def write_ctd_ncfile(filename,odf_data):
     out.infoUrl = 'http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html'
     out.cdm_profile_variables = 'time'
     # write full original header, as json dictionary
-    # out.HEADER = json.dumps(data['metadata']['header'], ensure_ascii=False, indent=False)
+    out.header = json.dumps(data['metadata']['header'], ensure_ascii=False, indent=False)
     # initcreate dimension variable
     out.nrec = len(data['data']['scan'])
     # add variable profile_id (dummy variable)
@@ -97,6 +97,9 @@ def write_ctd_ncfile(filename,odf_data):
 
 
 flist = glob.glob('./test_files/*.json')
+if not os.path.isdir('./temp/'):
+    os.mkdir('./temp/')
+
 for f in flist:
     with open(f, 'r') as fid:
         data = fid.read()
