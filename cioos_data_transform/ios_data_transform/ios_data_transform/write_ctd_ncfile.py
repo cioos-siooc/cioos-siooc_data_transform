@@ -18,6 +18,7 @@ def write_ctd_ncfile(filename, ctdcls):
     output:
         NONE
     '''
+    print("hello")
     out = CtdNcFile()
     # write global attributes
     out.featureType = 'profile'
