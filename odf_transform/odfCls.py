@@ -1,22 +1,43 @@
 from ios_data_transform.OceanNcVar import OceanNcVar
 from ios_data_transform.OceanNcFile import OceanNcFile
-import numpy as np 
-from netCDF4  import Dataset as ncdata 
+import numpy as np
+from netCDF4 import Dataset as ncdata
+
 
 class CtdNcFile(OceanNcFile):
     def setup_dimensions(self):
-        self.ncfile.createDimension('z', self.nrec)
+        self.ncfile.createDimension("z", self.nrec)
 
     def setup_filetype(self):
-        setattr(self.ncfile, 'cdm_profile_variables', 'time, profile')
+        setattr(self.ncfile, "cdm_profile_variables", "time, profile")
 
     def write_ncfile(self, ncfilename):
         # create ncfile
-        self.ncfile = ncdata(filename=ncfilename, mode='w', format='NETCDF4', clobber=True)
+        self.ncfile = ncdata(
+            filename=ncfilename, mode="w", format="NETCDF4", clobber=True
+        )
         # setup global attributes of netcdf file based class data
-        setattr(self.ncfile, 'featureType', self.featureType)
-        for featureName, featureVal in zip(['summary','title','institution','history','infoUrl','header','description'],
-            [self.summary, self.title, self.institution, self.history,self.infoUrl, self.header, self.description]):
+        setattr(self.ncfile, "featureType", self.featureType)
+        for featureName, featureVal in zip(
+            [
+                "summary",
+                "title",
+                "institution",
+                "history",
+                "infoUrl",
+                "header",
+                "description",
+            ],
+            [
+                self.summary,
+                self.title,
+                self.institution,
+                self.history,
+                self.infoUrl,
+                self.header,
+                self.description,
+            ],
+        ):
             if featureVal is not None:
                 setattr(self.ncfile, featureName, featureVal)
         # setup dimensions
@@ -35,9 +56,13 @@ class CtdNcFile(OceanNcFile):
         fill_value = None
         if var.datatype is not str:
             fill_value = np.nan
-        ncvar = self.ncfile.createVariable(var.name, var.datatype, var.dimensions, fill_value = fill_value)
-        for key, value in zip(['long_name', 'standard_name', 'units', 'pcode', 'gf3'],
-                              [var.long_name, var.standard_name, var.units, var.pcode, var.gf3]):
+        ncvar = self.ncfile.createVariable(
+            var.name, var.datatype, var.dimensions, fill_value=fill_value
+        )
+        for key, value in zip(
+            ["long_name", "standard_name", "units", "pcode", "gf3"],
+            [var.long_name, var.standard_name, var.units, var.pcode, var.gf3],
+        ):
             if value is not None:
                 setattr(ncvar, key, value)
         if var.datatype == str:
@@ -46,17 +71,25 @@ class CtdNcFile(OceanNcFile):
             ncvar[:] = var.data
 
 
-
 class NcVar(OceanNcVar):
-    def __init__(self, vartype, varname, varunits, varval, varclslist=[], vardim=(),
-                 varnull=float("nan"), conv_to_BODC = True):
+    def __init__(
+        self,
+        vartype,
+        varname,
+        varunits,
+        varval,
+        varclslist=[],
+        vardim=(),
+        varnull=float("nan"),
+        conv_to_BODC=True,
+    ):
         self.cf_role = None
         self.name = varname
         self.type = vartype
         self.standard_name = None
         self.long_name = None
         self.units = varunits
-        self.datatype = ''
+        self.datatype = ""
         self.null_value = varnull
         self.dimensions = vardim
         self.data = varval
@@ -73,24 +106,41 @@ class NcVar(OceanNcVar):
         self.add_var(varlist)
 
     def get_bodc(self):
-        # calculate the correct BODC, pcode, GF3 code 
+        # calculate the correct BODC, pcode, GF3 code
         # calculate standard name and long name
         # based on variable name, type, and units
-        return ''
-    
+        return ""
+
     def get_pcode(self):
-        if self.name in ['filename','country','institute','cruise_id','scientist','project','platform',
-                        'instrument_type', 'instrument_serial_number']:
+        if self.name in [
+            "filename",
+            "country",
+            "institute",
+            "cruise_id",
+            "scientist",
+            "project",
+            "platform",
+            "instrument_type",
+            "instrument_serial_number",
+        ]:
             pcode = None
         else:
-            pcode = ''
+            pcode = ""
         return pcode
-    
+
     def get_gf3(self):
-        if self.name in ['filename','country','institute','cruise_id','scientist','project','platform',
-                        'instrument_type', 'instrument_serial_number']:
+        if self.name in [
+            "filename",
+            "country",
+            "institute",
+            "cruise_id",
+            "scientist",
+            "project",
+            "platform",
+            "instrument_type",
+            "instrument_serial_number",
+        ]:
             gf3 = None
         else:
-            gf3 = ''
-        return gf3 
-        
+            gf3 = ""
+        return gf3
