@@ -2,10 +2,12 @@
 import json
 from .OceanNcFile import CtdNcFile
 from .OceanNcVar import OceanNcVar
-from .utils.utils import is_in, release_memory, find_geographic_area, read_geojson
-from datetime import datetime
-from netCDF4 import Dataset as ncdata
-from shapely.geometry import Point
+from .utils.utils import is_in
+
+# from .utils.utils import is_in, release_memory, find_geographic_area, read_geojson
+# from datetime import datetime
+# from netCDF4 import Dataset as ncdata
+# from shapely.geometry import Point
 
 
 def write_ctd_ncfile(filename, ctdcls):
@@ -33,19 +35,33 @@ def write_ctd_ncfile(filename, ctdcls):
     out.infoUrl = "http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html"
     out.cdm_profile_variables = "time"  # TEMPS901, TEMPS902, TEMPS601, TEMPS602, TEMPS01, PSALST01, PSALST02, PSALSTPPT01, PRESPR01
     # write full original header, as json dictionary
-    out.HEADER = json.dumps(ctdcls.get_complete_header(), ensure_ascii=False, indent=False)
+    out.HEADER = json.dumps(
+        ctdcls.get_complete_header(), ensure_ascii=False, indent=False
+    )
     # initcreate dimension variable
     out.nrec = int(ctdcls.file["NUMBER OF RECORDS"])
     # add variable profile_id (dummy variable)
     ncfile_var_list = []
     ncfile_var_list.append(
-        OceanNcVar("str_id", "filename", None, None, None, ctdcls.filename.split("/")[-1])
+        OceanNcVar(
+            "str_id",
+            "filename",
+            None,
+            None,
+            None,
+            ctdcls.filename.split("/")[-1],
+        )
     )
     # add administration variables
     if "COUNTRY" in ctdcls.administration:
         ncfile_var_list.append(
             OceanNcVar(
-                "str_id", "country", None, None, None, ctdcls.administration["COUNTRY"].strip()
+                "str_id",
+                "country",
+                None,
+                None,
+                None,
+                ctdcls.administration["COUNTRY"].strip(),
             )
         )
     if "MISSION" in ctdcls.administration:
@@ -54,42 +70,74 @@ def write_ctd_ncfile(filename, ctdcls):
         mission_id = ctdcls.administration["CRUISE"].strip()
     buf = mission_id.split("-")
     mission_id = "{:04d}-{:03d}".format(int(buf[0]), int(buf[1]))
-    ncfile_var_list.append(OceanNcVar("str_id", "mission_id", None, None, None, mission_id))
+    ncfile_var_list.append(
+        OceanNcVar("str_id", "mission_id", None, None, None, mission_id)
+    )
     if "SCIENTIST" in ctdcls.administration:
         ncfile_var_list.append(
             OceanNcVar(
-                "str_id", "scientist", None, None, None, ctdcls.administration["SCIENTIST"].strip()
+                "str_id",
+                "scientist",
+                None,
+                None,
+                None,
+                ctdcls.administration["SCIENTIST"].strip(),
             )
         )
     if "PROJECT" in ctdcls.administration:
         ncfile_var_list.append(
             OceanNcVar(
-                "str_id", "project", None, None, None, ctdcls.administration["PROJECT"].strip()
+                "str_id",
+                "project",
+                None,
+                None,
+                None,
+                ctdcls.administration["PROJECT"].strip(),
             )
         )
     if "AGENCY" in ctdcls.administration:
         ncfile_var_list.append(
             OceanNcVar(
-                "str_id", "agency", None, None, None, ctdcls.administration["AGENCY"].strip()
+                "str_id",
+                "agency",
+                None,
+                None,
+                None,
+                ctdcls.administration["AGENCY"].strip(),
             )
         )
     if "PLATFORM" in ctdcls.administration:
         ncfile_var_list.append(
             OceanNcVar(
-                "str_id", "platform", None, None, None, ctdcls.administration["PLATFORM"].strip()
+                "str_id",
+                "platform",
+                None,
+                None,
+                None,
+                ctdcls.administration["PLATFORM"].strip(),
             )
         )
     # add instrument type
     if "TYPE" in ctdcls.instrument:
         ncfile_var_list.append(
             OceanNcVar(
-                "str_id", "instrument_type", None, None, None, ctdcls.instrument["TYPE"].strip()
+                "str_id",
+                "instrument_type",
+                None,
+                None,
+                None,
+                ctdcls.instrument["TYPE"].strip(),
             )
         )
     if "MODEL" in ctdcls.instrument:
         ncfile_var_list.append(
             OceanNcVar(
-                "str_id", "instrument_model", None, None, None, ctdcls.instrument["MODEL"].strip()
+                "str_id",
+                "instrument_model",
+                None,
+                None,
+                None,
+                ctdcls.instrument["MODEL"].strip(),
             )
         )
     if "SERIAL NUMBER" in ctdcls.instrument:
@@ -105,13 +153,29 @@ def write_ctd_ncfile(filename, ctdcls):
         )
     # add locations variables
     ncfile_var_list.append(
-        OceanNcVar("lat", "latitude", "degrees_north", None, None, ctdcls.location["LATITUDE"])
+        OceanNcVar(
+            "lat",
+            "latitude",
+            "degrees_north",
+            None,
+            None,
+            ctdcls.location["LATITUDE"],
+        )
     )
     ncfile_var_list.append(
-        OceanNcVar("lon", "longitude", "degrees_east", None, None, ctdcls.location["LONGITUDE"])
+        OceanNcVar(
+            "lon",
+            "longitude",
+            "degrees_east",
+            None,
+            None,
+            ctdcls.location["LONGITUDE"],
+        )
     )
     ncfile_var_list.append(
-        OceanNcVar("str_id", "geographic_area", None, None, None, ctdcls.geo_code)
+        OceanNcVar(
+            "str_id", "geographic_area", None, None, None, ctdcls.geo_code
+        )
     )
     if "EVENT NUMBER" in ctdcls.location:
         event_id = ctdcls.location["EVENT NUMBER"].strip()
@@ -124,12 +188,20 @@ def write_ctd_ncfile(filename, ctdcls):
             print('Unable to guess event_id from file name. Using "0000" !')
             event_id = "0000"
 
-    ncfile_var_list.append(OceanNcVar("str_id", "event_number", None, None, None, event_id))
+    ncfile_var_list.append(
+        OceanNcVar("str_id", "event_number", None, None, None, event_id)
+    )
     # add time variable
-    profile_id = "{:04d}-{:03d}-{}".format(int(buf[0]), int(buf[1]), event_id.zfill(4))
+    profile_id = "{:04d}-{:03d}-{}".format(
+        int(buf[0]), int(buf[1]), event_id.zfill(4)
+    )
     # print(profile_id)
-    ncfile_var_list.append(OceanNcVar("profile", "profile", None, None, None, profile_id))
-    ncfile_var_list.append(OceanNcVar("time", "time", None, None, None, [ctdcls.start_dateobj]))
+    ncfile_var_list.append(
+        OceanNcVar("profile", "profile", None, None, None, profile_id)
+    )
+    ncfile_var_list.append(
+        OceanNcVar("time", "time", None, None, None, [ctdcls.start_dateobj])
+    )
     # go through channels and add each variable depending on type
     for i, channel in enumerate(ctdcls.channels["Name"]):
         try:
@@ -137,7 +209,10 @@ def write_ctd_ncfile(filename, ctdcls):
         except Exception as e:
             if "PAD" in ctdcls.file.keys():
                 null_value = ctdcls.file["PAD"].strip()
-                print("Channel Details missing. Setting Pad value to: ", null_value.strip())
+                print(
+                    "Channel Details missing. Setting Pad value to: ",
+                    null_value.strip(),
+                )
             else:
                 print("Channel Details missing. Setting Pad value to ' ' ...")
                 null_value = "' '"
@@ -169,7 +244,9 @@ def write_ctd_ncfile(filename, ctdcls):
                     null_value,
                 )
             )
-        elif is_in(["temperature"], channel) and not is_in(["flag", "rinko", "bottle"], channel):
+        elif is_in(["temperature"], channel) and not is_in(
+            ["flag", "rinko", "bottle"], channel
+        ):
             ncfile_var_list.append(
                 OceanNcVar(
                     "temperature",
@@ -238,9 +315,9 @@ def write_ctd_ncfile(filename, ctdcls):
                 )
             )
         #     Nutrients in bottle files
-        elif is_in(["nitrate_plus_nitrite", "silicate", "phosphate"], channel) and not is_in(
-            ["flag"], channel
-        ):
+        elif is_in(
+            ["nitrate_plus_nitrite", "silicate", "phosphate"], channel
+        ) and not is_in(["flag"], channel):
             try:
                 ncfile_var_list.append(
                     OceanNcVar(
@@ -258,7 +335,9 @@ def write_ctd_ncfile(filename, ctdcls):
             except Exception as e:
                 print(e)
         #  Chlorophyll
-        elif is_in(["chlorophyll:extracted"], channel) and not is_in(["flag"], channel):
+        elif is_in(["chlorophyll:extracted"], channel) and not is_in(
+            ["flag"], channel
+        ):
             try:
                 ncfile_var_list.append(
                     OceanNcVar(
@@ -276,7 +355,11 @@ def write_ctd_ncfile(filename, ctdcls):
             except Exception as e:
                 print(e)
         else:
-            print(channel, ctdcls.channels["Units"][i], "not transferred to netcdf file !")
+            print(
+                channel,
+                ctdcls.channels["Units"][i],
+                "not transferred to netcdf file !",
+            )
             # raise Exception('not found !!')
 
     # attach variables to ncfileclass and call method to write netcdf file

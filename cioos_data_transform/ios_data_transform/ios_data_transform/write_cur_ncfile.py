@@ -1,8 +1,10 @@
 import json
 from .OceanNcFile import CurNcFile
 from .OceanNcVar import OceanNcVar
-from .utils.utils import is_in, release_memory, find_geographic_area, read_geojson
-from shapely.geometry import Point
+from .utils.utils import is_in
+
+# from .utils.utils import is_in, find_geographic_area, read_geojson
+# from shapely.geometry import Point
 import numpy as np
 
 
@@ -21,8 +23,12 @@ def add_ne_speed(speed, direction):
     north_comp = np.zeros(speed.shape, dtype="float32")
 
     for i in range(len(speed)):
-        east_comp[i] = np.round(speed[i] * np.cos(np.deg2rad(90 - direction[i])), decimals=3)
-        north_comp[i] = np.round(speed[i] * np.sin(np.deg2rad(90 - direction[i])), decimals=3)
+        east_comp[i] = np.round(
+            speed[i] * np.cos(np.deg2rad(90 - direction[i])), decimals=3
+        )
+        north_comp[i] = np.round(
+            speed[i] * np.sin(np.deg2rad(90 - direction[i])), decimals=3
+        )
 
     return east_comp, north_comp
 
@@ -51,20 +57,34 @@ def write_cur_ncfile(filename, curcls):
     out.infoUrl = "http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html"
     out.cdm_profile_variables = "time"  # TEMPS901, TEMPS902, TEMPS601, TEMPS602, TEMPS01, PSALST01, PSALST02, PSALSTPPT01, PRESPR01
     # write full original header, as json dictionary
-    out.HEADER = json.dumps(curcls.get_complete_header(), ensure_ascii=False, indent=False)
+    out.HEADER = json.dumps(
+        curcls.get_complete_header(), ensure_ascii=False, indent=False
+    )
     # initcreate dimension variable
     out.nrec = int(curcls.file["NUMBER OF RECORDS"])
     # add variable profile_id (dummy variable)
     ncfile_var_list = []
     # profile_id = random.randint(1, 100000)
     ncfile_var_list.append(
-        OceanNcVar("str_id", "filename", None, None, None, curcls.filename.split("/")[-1])
+        OceanNcVar(
+            "str_id",
+            "filename",
+            None,
+            None,
+            None,
+            curcls.filename.split("/")[-1],
+        )
     )
     # add administration variables
     if "COUNTRY" in curcls.administration:
         ncfile_var_list.append(
             OceanNcVar(
-                "str_id", "country", None, None, None, curcls.administration["COUNTRY"].strip()
+                "str_id",
+                "country",
+                None,
+                None,
+                None,
+                curcls.administration["COUNTRY"].strip(),
             )
         )
     if "MISSION" in curcls.administration:
@@ -76,50 +96,89 @@ def write_cur_ncfile(filename, curcls):
         # raise Exception("Error: Mission ID not available", curcls.filename)
         # print("Mission ID not available !", curcls.filename)
         ncfile_var_list.append(
-            OceanNcVar("str_id", "deployment_mission_id", None, None, None, mission_id.lower())
+            OceanNcVar(
+                "str_id",
+                "deployment_mission_id",
+                None,
+                None,
+                None,
+                mission_id.lower(),
+            )
         )
     else:
         buf = mission_id.split("-")
         mission_id = "{:4d}-{:03d}".format(int(buf[0]), int(buf[1]))
         ncfile_var_list.append(
-            OceanNcVar("str_id", "deployment_mission_id", None, None, None, mission_id)
+            OceanNcVar(
+                "str_id", "deployment_mission_id", None, None, None, mission_id
+            )
         )
 
     if "SCIENTIST" in curcls.administration:
         ncfile_var_list.append(
             OceanNcVar(
-                "str_id", "scientist", None, None, None, curcls.administration["SCIENTIST"].strip()
+                "str_id",
+                "scientist",
+                None,
+                None,
+                None,
+                curcls.administration["SCIENTIST"].strip(),
             )
         )
     if "PROJECT" in curcls.administration:
         ncfile_var_list.append(
             OceanNcVar(
-                "str_id", "project", None, None, None, curcls.administration["PROJECT"].strip()
+                "str_id",
+                "project",
+                None,
+                None,
+                None,
+                curcls.administration["PROJECT"].strip(),
             )
         )
     if "AGENCY" in curcls.administration:
         ncfile_var_list.append(
             OceanNcVar(
-                "str_id", "agency", None, None, None, curcls.administration["AGENCY"].strip()
+                "str_id",
+                "agency",
+                None,
+                None,
+                None,
+                curcls.administration["AGENCY"].strip(),
             )
         )
     if "PLATFORM" in curcls.administration:
         ncfile_var_list.append(
             OceanNcVar(
-                "str_id", "platform", None, None, None, curcls.administration["PLATFORM"].strip()
+                "str_id",
+                "platform",
+                None,
+                None,
+                None,
+                curcls.administration["PLATFORM"].strip(),
             )
         )
     # add instrument type
     if "TYPE" in curcls.instrument:
         ncfile_var_list.append(
             OceanNcVar(
-                "str_id", "instrument_type", None, None, None, curcls.instrument["TYPE"].strip()
+                "str_id",
+                "instrument_type",
+                None,
+                None,
+                None,
+                curcls.instrument["TYPE"].strip(),
             )
         )
     if "MODEL" in curcls.instrument:
         ncfile_var_list.append(
             OceanNcVar(
-                "str_id", "instrument_model", None, None, None, curcls.instrument["MODEL"].strip()
+                "str_id",
+                "instrument_model",
+                None,
+                None,
+                None,
+                curcls.instrument["MODEL"].strip(),
             )
         )
     if "SERIAL NUMBER" in curcls.instrument:
@@ -146,13 +205,29 @@ def write_cur_ncfile(filename, curcls):
         )
     # add locations variables
     ncfile_var_list.append(
-        OceanNcVar("lat", "latitude", "degrees_north", None, None, curcls.location["LATITUDE"])
+        OceanNcVar(
+            "lat",
+            "latitude",
+            "degrees_north",
+            None,
+            None,
+            curcls.location["LATITUDE"],
+        )
     )
     ncfile_var_list.append(
-        OceanNcVar("lon", "longitude", "degrees_east", None, None, curcls.location["LONGITUDE"])
+        OceanNcVar(
+            "lon",
+            "longitude",
+            "degrees_east",
+            None,
+            None,
+            curcls.location["LONGITUDE"],
+        )
     )
     ncfile_var_list.append(
-        OceanNcVar("str_id", "geographic_area", None, None, None, curcls.geo_code)
+        OceanNcVar(
+            "str_id", "geographic_area", None, None, None, curcls.geo_code
+        )
     )
 
     if "EVENT NUMBER" in curcls.location:
@@ -160,19 +235,27 @@ def write_cur_ncfile(filename, curcls):
     else:
         # print("Event number not found!" + curcls.filename)
         event_id = "0000"
-    ncfile_var_list.append(OceanNcVar("str_id", "event_number", None, None, None, event_id))
+    ncfile_var_list.append(
+        OceanNcVar("str_id", "event_number", None, None, None, event_id)
+    )
     # add time variable
     if mission_id.lower() == "n/a":
         profile_id = "{}-{:04d}".format(mission_id.lower(), int(event_id))
     else:
-        profile_id = "{:04d}-{:03d}-{:04d}".format(int(buf[0]), int(buf[1]), int(event_id))
+        profile_id = "{:04d}-{:03d}-{:04d}".format(
+            int(buf[0]), int(buf[1]), int(event_id)
+        )
 
     # print(profile_id)
-    ncfile_var_list.append(OceanNcVar("profile", "profile", None, None, None, profile_id))
+    ncfile_var_list.append(
+        OceanNcVar("profile", "profile", None, None, None, profile_id)
+    )
 
     # Check if variable lengths are same length as curcls.obs_time
     ncfile_var_list.append(
-        OceanNcVar("time", "time", None, None, None, curcls.obs_time, vardim=("time"))
+        OceanNcVar(
+            "time", "time", None, None, None, curcls.obs_time, vardim=("time")
+        )
     )
     # direction_index = None
     # for i, channel in enumerate(curcls.channels['Name']):
@@ -188,9 +271,7 @@ def write_cur_ncfile(filename, curcls):
     #         ncfile_var_list.append(OceanNcVar('time', 'time', None, None, None,
     #                                           curcls.obs_time[:len(curcls.data[:, direction_index])], vardim=('time')))
 
-    flag_ne_speed = (
-        0  # flag to determine if north and east speed components are vars in the .cur file
-    )
+    flag_ne_speed = 0  # flag to determine if north and east speed components are vars in the .cur file
     flag_cndc = 0  # flag to check for conductivity
     flag_cndc_ratio = 0  # flag to check for conductivity ratio
     temp_count = 0  # counter for the number of "Temperature" channels
@@ -202,7 +283,10 @@ def write_cur_ncfile(filename, curcls):
         except Exception as e:
             if "PAD" in curcls.file.keys():
                 null_value = curcls.file["PAD"].strip()
-                print("Channel Details missing. Setting Pad value to: ", null_value.strip())
+                print(
+                    "Channel Details missing. Setting Pad value to: ",
+                    null_value.strip(),
+                )
             else:
                 print("Channel Details missing. Setting Pad value to ' ' ...")
                 null_value = "' '"
@@ -557,15 +641,24 @@ def write_cur_ncfile(filename, curcls):
                 and type(curcls.data[:, index_direction][0]) is np.bytes_
             ):
                 speed_decoded = np.array(
-                    [float(a.decode("ascii")) for a in curcls.data[:, index_speed]]
+                    [
+                        float(a.decode("ascii"))
+                        for a in curcls.data[:, index_speed]
+                    ]
                 )
                 direction_decoded = np.array(
-                    [float(a.decode("ascii")) for a in curcls.data[:, index_direction]]
+                    [
+                        float(a.decode("ascii"))
+                        for a in curcls.data[:, index_direction]
+                    ]
                 )
-                speed_east, speed_north = add_ne_speed(speed_decoded, direction_decoded)
+                speed_east, speed_north = add_ne_speed(
+                    speed_decoded, direction_decoded
+                )
             else:
                 speed_east, speed_north = add_ne_speed(
-                    curcls.data[:, index_speed], curcls.data[:, index_direction]
+                    curcls.data[:, index_speed],
+                    curcls.data[:, index_direction],
                 )
 
             null_value = "' '"
