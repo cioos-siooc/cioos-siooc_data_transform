@@ -13,9 +13,7 @@ class CtdNcFile(OceanNcFile):
 
     def write_ncfile(self, ncfilename):
         # create ncfile
-        self.ncfile = ncdata(
-            filename=ncfilename, mode="w", format="NETCDF4", clobber=True
-        )
+        self.ncfile = ncdata(filename=ncfilename, mode="w", format="NETCDF4", clobber=True)
         # setup global attributes of netcdf file based class data
         setattr(self.ncfile, "featureType", self.featureType)
         for featureName, featureVal in zip(
