@@ -1,28 +1,27 @@
 import sys
 import os
-
-sys.path.insert(0, "../../")
 import numpy as np
 import json
+
+sys.path.insert(0, "../../")
+
 from odf_transform.odfCls import CtdNcFile, NcVar
 
-# from ios_data_transform.OceanNcFile import CtdNcFile
-# from ios_data_transform.OceanNcVar import OceanNcVar as NcVar
-from ios_data_transform import is_in, find_geographic_area, read_geojson
+from odf_transform.utils.utils import get_geo_code, read_geojson
+from ios_data_transform import is_in
 from datetime import datetime
-from netCDF4 import Dataset as ncdata
-from shapely.geometry import Point
 from pytz import timezone
 import glob
 
 
-def write_ctd_ncfile(filename, odf_data):
+def write_ctd_ncfile(outfile, odf_data, **kwargs):
     """
     use data and methods in ctdcls object to write the CTD data into a netcdf file
     author:
     inputs:
-        filename: output file name to be created in netcdf format
-        ctdcls: ctd object. includes methods to read IOS format and stores data
+        outfile: output file name to be created in netcdf format
+        odf_data: dict with data from odf file converted to json using oce package
+        **kwargs: optional arguments
     output:
         NONE
     """
@@ -32,9 +31,7 @@ def write_ctd_ncfile(filename, odf_data):
     out.summary = ""
     out.title = ""
     out.institution = data["metadata"]["institute"]
-    out.infoUrl = (
-        "http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html"
-    )
+    out.infoUrl = "http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html"
     out.cdm_profile_variables = "time"
     # write full original header, as json dictionary
     out.header = json.dumps(
@@ -45,7 +42,12 @@ def write_ctd_ncfile(filename, odf_data):
     # add variable profile_id (dummy variable)
     ncfile_var_list = []
     ncfile_var_list.append(
-        NcVar("str_id", "filename", None, data["metadata"]["filename"].split("/")[-1])
+        NcVar(
+            "str_id",
+            "filename",
+            None,
+            data["metadata"]["filename"].split("/")[-1],
+        )
     )
     # add administration variables
     ncfile_var_list.append(NcVar("str_id", "country", None, "Canada"))
@@ -58,8 +60,12 @@ def write_ctd_ncfile(filename, odf_data):
     ncfile_var_list.append(
         NcVar("str_id", "scientist", None, data["metadata"]["scientist"])
     )
-    ncfile_var_list.append(NcVar("str_id", "project", None, data["metadata"]["cruise"]))
-    ncfile_var_list.append(NcVar("str_id", "platform", None, data["metadata"]["ship"]))
+    ncfile_var_list.append(
+        NcVar("str_id", "project", None, data["metadata"]["cruise"])
+    )
+    ncfile_var_list.append(
+        NcVar("str_id", "platform", None, data["metadata"]["ship"])
+    )
     ncfile_var_list.append(
         NcVar(
             "str_id",
@@ -70,7 +76,10 @@ def write_ctd_ncfile(filename, odf_data):
     )
     ncfile_var_list.append(
         NcVar(
-            "str_id", "instrument_serial_number", None, data["metadata"]["serialNumber"]
+            "str_id",
+            "instrument_serial_number",
+            None,
+            data["metadata"]["serialNumber"],
         )
     )
     # add locations variables
@@ -78,7 +87,9 @@ def write_ctd_ncfile(filename, odf_data):
         NcVar("lat", "latitude", "degrees_north", data["metadata"]["latitude"])
     )
     ncfile_var_list.append(
-        NcVar("lon", "longitude", "degrees_east", data["metadata"]["longitude"])
+        NcVar(
+            "lon", "longitude", "degrees_east", data["metadata"]["longitude"]
+        )
     )
     ncfile_var_list.append(NcVar("str_id", "geographic_area", None, ""))
     event_id = "{}-{}".format(
@@ -158,8 +169,18 @@ def write_ctd_ncfile(filename, odf_data):
     # now actuallY write the information in CtdNcFile object to a netcdf file
     out.varlist = ncfile_var_list
     # print(ncfile_var_list[0])
-    # print('Writing ncfile:',filename)
-    out.write_ncfile(filename)
+    # print('Writing ncfile:',outfile)
+    out.write_ncfile(outfile)
+
+
+# read json file with information on dataset etc.
+with open("./config.json", "r") as fid:
+    info = json.load(fid)
+
+# read geojson files
+polygons_dict = {}
+for fname in info["geojsonFileList"]:
+    polygons_dict.update(read_geojson(fname))
 
 
 flist = glob.glob("./test_files/*.json")
@@ -173,7 +194,11 @@ for f in flist:
     # parse file
     try:
         print(f)
-        write_ctd_ncfile("./temp/{}.nc".format(f.split("/")[-1]), data)
+        write_ctd_ncfile(
+            outfile="./temp/{}.nc".format(f.split("/")[-1]),
+            odf_data=data,
+            polygons_dict=polygons_dict,
+        )
     except Exception as e:
         print("***** ERROR***", f)
         print(e)
