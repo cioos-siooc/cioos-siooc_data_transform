@@ -202,7 +202,7 @@ def write_ctd_ncfile(outfile, odf_data, **kwargs):
 
 
 # read json file with information on dataset etc.
-with open("./config.json", "r") as fid:
+with open(os.path.join(".", "config.json"), "r") as fid:
     info = json.load(fid)
 
 # read geojson files
@@ -212,9 +212,9 @@ for fname in info["geojsonFileList"]:
 info.update({"polygons_dict": polygons_dict})
 # print(polygons_dict)
 
-flist = glob.glob("./test_files/*.json")
-if not os.path.isdir("./temp/"):
-    os.mkdir("./temp/")
+flist = glob.glob(os.path.join(".", "test_files", "*.json"))
+if not os.path.isdir(os.path.join('.', 'temp')):
+    os.mkdir(os.path.join('.','temp'))
 
 for f in flist:
     with open(f, "r") as fid:
@@ -224,7 +224,7 @@ for f in flist:
     try:
         print(f)
         write_ctd_ncfile(
-            outfile="./temp/{}.nc".format(f.split("/")[-1]),
+            outfile=os.path.join(".", "temp", os.path.basename(f)+".nc"),
             odf_data=data,
             **info,
         )
