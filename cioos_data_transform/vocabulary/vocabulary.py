@@ -59,7 +59,7 @@ def retrieve_variable_info(nerc_id):
     """
     info = get_nvs_variable_info(nerc_id)
 
-    if len(info)>1:
+    if len(info) > 1:
         assert RuntimeWarning('mutile info exists')
 
     var_dict = {}
@@ -81,17 +81,21 @@ def retrieve_variable_info(nerc_id):
 
     return var_dict
 
+
 # Generate NERC Dataframe
 # Retrieve all the  P01 data
-p01 = get_nvs_variable_info(variable=None)
+print('Get P01 vocabulary')
+p01 = get_nvs_variable_info(variable=None,vocabulary='P01')
 df_p01 = pd.DataFrame(p01)  # Convert to a dataframe
 
 # Extract different info form nerc id, add them to the dataframe
-df_var = df_p01['@id'].apply(split_nerc_id).apply(pd.Series).drop(['http','empty','unknown'],axis='columns')
-df_p01 = df_p01.merge(df_var,left_index=True,right_index=True)
+df_var = df_p01['@id'].apply(split_nerc_id).apply(pd.Series).drop(['http', 'empty', 'unknown'], axis='columns')
+df_p01 = df_p01.merge(df_var, left_index=True, right_index=True)
 
 # For each variables, retrieve variable info
 df_p01['variable_dict'] = df_p01['@id'].progress_apply(retrieve_variable_info)
 # Convert dictionary to a columns
-df_p01.merge(df_p01['variable_dict'].apply(pd.Series),left_index=True,right_index=True)
+df_p01.merge(df_p01['variable_dict'].apply(pd.Series), left_index=True, right_index=True)
 
+# Save to csv
+df_p01.to_csv('nerc_p01_list.csv')
