@@ -6,7 +6,6 @@ import json
 sys.path.insert(0, "../../")
 
 from odf_transform.odfCls import CtdNcFile, NcVar
-
 from odf_transform.utils.utils import get_geo_code, read_geojson
 from ios_data_transform import is_in
 from datetime import datetime
@@ -25,13 +24,14 @@ def write_ctd_ncfile(outfile, odf_data, **kwargs):
     output:
         NONE
     """
+    print(kwargs.keys())
     out = CtdNcFile()
     # write global attributes
     out.featureType = "profile"
-    out.summary = ""
-    out.title = ""
+    out.summary = kwargs["summary"]
+    out.title = kwargs["title"]
     out.institution = data["metadata"]["institute"]
-    out.infoUrl = "http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html"
+    out.infoUrl = kwargs["infoUrl"]
     out.cdm_profile_variables = "time"
     # write full original header, as json dictionary
     out.header = json.dumps(
@@ -194,7 +194,7 @@ with open("./config.json", "r") as fid:
 polygons_dict = {}
 for fname in info["geojsonFileList"]:
     polygons_dict.update(read_geojson(fname))
-
+info.update({"polygons_dict": polygons_dict})
 # print(polygons_dict)
 
 flist = glob.glob("./test_files/*.json")
@@ -211,7 +211,7 @@ for f in flist:
         write_ctd_ncfile(
             outfile="./temp/{}.nc".format(f.split("/")[-1]),
             odf_data=data,
-            polygons_dict=polygons_dict,
+            **info,
         )
     except Exception as e:
         print("***** ERROR***", f)

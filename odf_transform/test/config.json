@@ -1,5 +1,9 @@
 {
     "geojsonFileList": [
         "../geojson_files/ios_polygons.geojson"
-    ]
+    ],
+    "summary": "brief summary of dataset",
+    "title": "brief title",
+    "description": "detailed description",
+    "infoUrl": "http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html"
 }
