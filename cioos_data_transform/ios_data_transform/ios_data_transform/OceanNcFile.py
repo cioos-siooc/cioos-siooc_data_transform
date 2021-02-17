@@ -12,23 +12,27 @@ class OceanNcFile(object):
     def __init__(self):
         self.featureType = ""
         self.summary = ""
+        self.summary_fra = ""
         self.title = ""
+        self.title_fra = ""
         self.institution = ""
         self.history = ""
         self.infoUrl = ""
         self.header = ""
         self.description = ""
+        self.description_fra = ""
         self.keywords = ""
+        self.keywords_fra = ""
         self.acknowledgements = ""
         self.id = ""
-        self.naming_authority = "COARDS"
+        self.naming_authority = "COARDS,CF Standard Name Table v29"
         self.comment = ""
         self.creator_name = ""
         self.creator_email = ""
         self.creator_url = ""
         self.license = ""
         self.project = ""
-        self.keywords_vocabulary = ""
+        self.keywords_vocabulary = "GCMD Science Keywords"
         self.convention = "CF1.7,ACDD1.1"
         # list of var class in the netcdf
         self.varlist = []
@@ -41,52 +45,33 @@ class OceanNcFile(object):
         )
         # setup global attributes of netcdf file based class data
         setattr(self.ncfile, "featureType", self.featureType)
-        for featureName, featureVal in zip(
-            [
-                "summary",
-                "title",
-                "institution",
-                "history",
-                "infoUrl",
-                "header",
-                "description",
-                "keywords",
-                "acknowledgements",
-                "id",
-                "naming_authority",
-                "comment",
-                "creator_name",
-                "creator_email",
-                "creator_url",
-                "license",
-                "project",
-                "keywords_vocabulary",
-                "convention",
-            ],
-            [
-                self.summary,
-                self.title,
-                self.institution,
-                self.history,
-                self.infoUrl,
-                self.header,
-                self.description,
-                self.keywords,
-                self.acknowledgements,
-                self.id,
-                self.naming_authority,
-                self.comment,
-                self.creator_name,
-                self.creator_email,
-                self.creator_url,
-                self.license,
-                self.project,
-                self.keywords_vocabulary,
-                self.convention,
-            ],
-        ):
-            if featureVal is not None:
-                setattr(self.ncfile, featureName, featureVal)
+        for key in [
+            "summary",
+            "summary_fra",
+            "title",
+            "institution",
+            "history",
+            "infoUrl",
+            "header",
+            "description",
+            "description_fra",
+            "keywords",
+            "keywords_fra",
+            "acknowledgements",
+            "id",
+            "naming_authority",
+            "comment",
+            "creator_name",
+            "creator_email",
+            "creator_url",
+            "license",
+            "project",
+            "keywords_vocabulary",
+            "convention",
+        ]:
+            value = getattr(self, key)
+            if value is not None:
+                setattr(self.ncfile, key, value)
         # setup dimensions
         self.setup_dimensions()
         # setup attributes unique to the datatype
