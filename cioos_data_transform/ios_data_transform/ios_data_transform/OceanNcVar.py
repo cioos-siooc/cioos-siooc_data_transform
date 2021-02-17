@@ -88,8 +88,8 @@ class OceanNcVar(object):
         elif self.type == "depth":
             self.datatype = "float32"
             # self.dimensions = ('z')
-            self.long_name = "Depth in meters"
-            self.standard_name = "depth_below_sea_level_in_meters"
+            self.long_name = "Depth below surface"
+            self.standard_name = "depth"
             self.units = "m"
             self.__set_null_val()
         elif self.type == "pressure":
@@ -521,19 +521,19 @@ class OceanNcVar(object):
                 ["deg c"], varunits
             ):
                 bodc_code = "TEMPRTN"
-                bodc_units = "deg C"
+                bodc_units = "deg_C"
                 bodc_code = "{}{:01d}".format(bodc_code, iter + 1)
             elif is_in(["ITS90", "ITS-90"], varunits):
                 bodc_code = "TEMPS9"
-                bodc_units = "deg C"
+                bodc_units = "deg_C"
                 bodc_code = "{}{:02d}".format(bodc_code, iter + 1)
             elif is_in(["IPTS-68", "IPTS68"], varunits):
                 bodc_code = "TEMPS6"
-                bodc_units = "deg C"
+                bodc_units = "deg_C"
                 bodc_code = "{}{:02d}".format(bodc_code, iter + 1)
             elif is_in(["deg c", "degc"], varunits):
                 bodc_code = "TEMPST"
-                bodc_units = "deg C"
+                bodc_units = "deg_C"
                 bodc_code = "{}{:02d}".format(bodc_code, iter + 1)
             else:  # if varunits does not specify type of temperature
                 raise Exception(
@@ -546,10 +546,10 @@ class OceanNcVar(object):
         elif vartype == "temperature:cur:low_res":
             if is_in(["deg c", "degc"], varunits):
                 bodc_code = "TEMPPR03"
-                bodc_units = "deg C"
+                bodc_units = "deg_C"
             elif is_in(["deg C (IPTS68)"], varunits):
                 bodc_code = "TEMPP683"  # TODO
-                bodc_units = "deg C"
+                bodc_units = "deg_C"
             else:
                 raise Exception(
                     "Temperature type not defined",
@@ -561,10 +561,10 @@ class OceanNcVar(object):
         elif vartype == "temperature:cur":
             if is_in(["deg c", "degc"], varunits):
                 bodc_code = "TEMPPR01"
-                bodc_units = "deg C"
+                bodc_units = "deg_C"
             elif is_in(["deg C (IPTS68)"], varunits):
                 bodc_code = "TEMPP681"
-                bodc_units = "deg C"
+                bodc_units = "deg_C"
             else:  # if varunits does not specify type of temperature
                 raise Exception(
                     "Temperature type not defined",
@@ -576,10 +576,10 @@ class OceanNcVar(object):
         elif vartype == "temperature:cur:high_res":
             if is_in(["deg c", "degc"], varunits):
                 bodc_code = "TEMPPR02"
-                bodc_units = "deg C"
+                bodc_units = "deg_C"
             elif is_in(["deg C (IPTS68)"], varunits):
                 bodc_code = "TEMPP682"  # TODO
-                bodc_units = "deg C"
+                bodc_units = "deg_C"
             else:  # if varunits does not specify type of temperature
                 raise Exception(
                     "Temperature type not defined",
