@@ -24,14 +24,28 @@ def write_ctd_ncfile(outfile, odf_data, **kwargs):
     output:
         NONE
     """
-    print(kwargs.keys())
+    # print(kwargs.keys())
     out = CtdNcFile()
     # write global attributes
     out.featureType = "profile"
-    out.summary = kwargs["summary"]
-    out.title = kwargs["title"]
-    out.institution = data["metadata"]["institute"]
-    out.infoUrl = kwargs["infoUrl"]
+    try:
+        out.summary = kwargs["summary"]
+        out.title = kwargs["title"]
+        out.institution = data["metadata"]["institute"]
+        out.infoUrl = kwargs["infoUrl"]
+        out.description = kwargs["description"]
+        out.keywords = kwargs["keywords"]
+        out.acknowledgements = kwargs["acknowledgements"]
+        out.naming_authority = "COARDS"
+        out.creator_name = kwargs["creator_name"]
+        out.creator_email = kwargs["creator_email"]
+        out.creator_url = kwargs["creator_url"]
+        out.license = kwargs["license"]
+        out.keywords_vocabulary = kwargs["keywords_vocabulary"]
+    except KeyError as e:
+        raise Exception(
+            f"Unable to find following value for {e} in the config file..."
+        )
     out.cdm_profile_variables = "time"
     # write full original header, as json dictionary
     out.header = json.dumps(
@@ -116,6 +130,7 @@ def write_ctd_ncfile(outfile, odf_data, **kwargs):
         data["metadata"]["eventQualifier"],
     )
     print("Profile ID:", profile_id)
+    out.id = profile_id
     ncfile_var_list.append(NcVar("profile", "profile", None, profile_id))
     # pramod - someone should check this...
     date_obj = datetime.utcfromtimestamp(data["metadata"]["startTime"])
