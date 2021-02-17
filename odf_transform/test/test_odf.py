@@ -35,13 +35,15 @@ def write_ctd_ncfile(outfile, odf_data, **kwargs):
         out.infoUrl = kwargs["infoUrl"]
         out.description = kwargs["description"]
         out.keywords = kwargs["keywords"]
-        out.acknowledgements = kwargs["acknowledgements"]
+        out.acknowledgement = kwargs["acknowledgement"]
         out.naming_authority = "COARDS"
         out.creator_name = kwargs["creator_name"]
         out.creator_email = kwargs["creator_email"]
         out.creator_url = kwargs["creator_url"]
         out.license = kwargs["license"]
+        out.project = data["metadata"]["cruise"]
         out.keywords_vocabulary = kwargs["keywords_vocabulary"]
+        out.Conventions = kwargs["Conventions"]
     except KeyError as e:
         raise Exception(
             f"Unable to find following value for {e} in the config file..."
@@ -52,8 +54,9 @@ def write_ctd_ncfile(outfile, odf_data, **kwargs):
         data["metadata"]["header"], ensure_ascii=False, indent=False
     )
     # initcreate dimension variable
-    out.nrec = len(data["data"]["scan"])
-    # add variable profile_id (dummy variable)
+    # use length of first variable to define length of profile
+    out.nrec = len(data["data"][list(data["data"].keys())[0]])
+    # add variable profile_id
     ncfile_var_list = []
     ncfile_var_list.append(
         NcVar(
@@ -66,16 +69,10 @@ def write_ctd_ncfile(outfile, odf_data, **kwargs):
     # add administration variables
     ncfile_var_list.append(NcVar("str_id", "country", None, "Canada"))
     ncfile_var_list.append(
-        NcVar("str_id", "institute", None, data["metadata"]["institute"])
-    )
-    ncfile_var_list.append(
         NcVar("str_id", "cruise_id", None, data["metadata"]["cruiseNumber"])
     )
     ncfile_var_list.append(
         NcVar("str_id", "scientist", None, data["metadata"]["scientist"])
-    )
-    ncfile_var_list.append(
-        NcVar("str_id", "project", None, data["metadata"]["cruise"])
     )
     ncfile_var_list.append(
         NcVar("str_id", "platform", None, data["metadata"]["ship"])

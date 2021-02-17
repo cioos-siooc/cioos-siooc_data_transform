@@ -11,11 +11,12 @@
     "infoUrl": "http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html",
     "keywords": "temperature, salinity",
     "keywords_fra": "salinite",
-    "acknowledgements": "thanks etc ...",
+    "acknowledgement": "thanks etc ...",
     "naming_authority": "CF Standard Name Table v29",
     "creator_name": "CIOOS",
     "creator_email": "cioos email here",
     "creator_url": "http://www.someurlhere.com",
     "license": "standard license information here",
-    "keywords_vocabulary": "GCMD Science Keywords"
+    "keywords_vocabulary": "GCMD Science Keywords",
+    "Conventions": "CF-1.6,CF-1.7,ACDD1.1"
 }

@@ -23,7 +23,7 @@ class OceanNcFile(object):
         self.description_fra = ""
         self.keywords = ""
         self.keywords_fra = ""
-        self.acknowledgements = ""
+        self.acknowledgement = ""
         self.id = ""
         self.naming_authority = "COARDS,CF Standard Name Table v29"
         self.comment = ""
@@ -33,7 +33,7 @@ class OceanNcFile(object):
         self.license = ""
         self.project = ""
         self.keywords_vocabulary = "GCMD Science Keywords"
-        self.convention = "CF1.7,ACDD1.1"
+        self.Conventions = "CF1.7,ACDD1.1"
         # list of var class in the netcdf
         self.varlist = []
         self.nrec = 0
@@ -57,7 +57,7 @@ class OceanNcFile(object):
             "description_fra",
             "keywords",
             "keywords_fra",
-            "acknowledgements",
+            "acknowledgement",
             "id",
             "naming_authority",
             "comment",
@@ -67,7 +67,7 @@ class OceanNcFile(object):
             "license",
             "project",
             "keywords_vocabulary",
-            "convention",
+            "Conventions",
         ]:
             value = getattr(self, key)
             if value is not None:
