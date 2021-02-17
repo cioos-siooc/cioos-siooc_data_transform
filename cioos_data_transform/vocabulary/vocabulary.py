@@ -53,10 +53,18 @@ def split_nerc_id(id_url):
     return dict(zip(val, id_list))
 
 
-def retrieve_variable_info(nerc_id):
+def retrieve_variable_info(nerc_id=None,
+                           variable=None,
+                           vocabulary=None,
+                           nvs_url="http://vocab.nerc.ac.uk/collection/",
+                           version="current"):
     """
-    Method used to extract important information from the variable specific info.
+    Method used to extract important information from the variable specific info page.
     """
+    # if Variable is given instead
+    if variable and vocabulary:
+        nerc_id = '%s/%s/$%s' % (nvs_url, vocabulary, variable)
+
     info = get_nvs_variable_info(nerc_id)
 
     if len(info) > 1:
@@ -64,28 +72,54 @@ def retrieve_variable_info(nerc_id):
 
     var_dict = {}
     # Get Definition
-    for definition in info[0]['http://www.w3.org/2004/02/skos/core#definition']:
-        var_dict.update({'definition_' + definition['@language']: definition['@value']})
+    if 'http://www.w3.org/2004/02/skos/core#definition' in info[0]:
+        for definition in info[0]['http://www.w3.org/2004/02/skos/core#definition']:
+            var_dict.update({'definition_' + definition['@language']: definition['@value']})
     # Pref Label
-    for prefLabel in info[0]['http://www.w3.org/2004/02/skos/core#prefLabel']:
-        var_dict.update({'prefLabel_' + prefLabel['@language']: prefLabel['@value']})
+    if 'http://www.w3.org/2004/02/skos/core#prefLabel' in info[0]:
+        for prefLabel in info[0]['http://www.w3.org/2004/02/skos/core#prefLabel']:
+            var_dict.update({'prefLabel_' + prefLabel['@language']: prefLabel['@value']})
     # Broader P07 matching (CF Name)
-    for id in info[0]['http://www.w3.org/2004/02/skos/core#broader']:
-        if '/P07/' in id['@id']:
-            var_dict.update({'Broader_P07': id['@id']})
+    if 'http://www.w3.org/2004/02/skos/core#broader' in info[0]:
+        for id in info[0]['http://www.w3.org/2004/02/skos/core#broader']:
+            if '/P07/' in id['@id']:
+                var_dict.update({'Broader_P07': id['@id']})
     # Related P06 matching (Units)
-    for id in info[0]['http://www.w3.org/2004/02/skos/core#related']:
-        if '/P06/' in id['@id']:
-            var_dict.update({'Related_P06': id['@id']})
+    if 'http://www.w3.org/2004/02/skos/core#related' in info[0]:
+        for id in info[0]['http://www.w3.org/2004/02/skos/core#related']:
+            if '/P06/' in id['@id']:
+                var_dict.update({'Related_P06': id['@id']})
     # Related Sensors L22
 
     return var_dict
 
 
+def get_bio_reference(xlsx_path):
+    df_bio = pd.read_excel(bio_list)
+    df_bio.rename({'GF3(BIO) code': 'GF3'})
+    df_bio['Organization'] = 'BIO'
+    return df_bio
+
+
+def read_dfo_variable_sheets():
+    # Format BIO and MEDS variable lists
+    df_meds = pd.read_csv('meds_pcodes_20191212_mods_utf8.csv') \
+        .rename({'CODE': 'GF3 CODE'}, axis='columns') \
+        .dropna(how='all', axis='index')
+    df_bio = pd.read_excel('bio_gf3_p01_mapping_2.7.2.xlsx') \
+        .rename({'GF3(BIO) code': 'GF3 CODE'}, axis='columns') \
+        .dropna(how='all', axis='index')
+    df_bio['OWNER'] = 'BIO'  # Add bio as own to bio list
+
+    # Merge the two together based on the owner and code
+    df_dfo = pd.merge(df_meds, df_bio, how='outer', on=['OWNER', 'GF3 CODE'])
+    return df_dfo
+
+
 # Generate NERC Dataframe
 # Retrieve all the  P01 data
 print('Get P01 vocabulary')
-p01 = get_nvs_variable_info(variable=None,vocabulary='P01')
+p01 = get_nvs_variable_info(variable=None, vocabulary='P01')
 df_p01 = pd.DataFrame(p01)  # Convert to a dataframe
 
 # Extract different info form nerc id, add them to the dataframe
