@@ -1416,8 +1416,8 @@ WDC$,NODC,A,Meteorology,Météorologie,text,texte,,,,
 WDIC,NODC,A,Meteorology,Météorologie,code table,table de code,,,877,
 WDIR,BIO,A,Meteorology,Météorologie,degree(angle),degré(angle),,,,True
 WDIR,IML,A,Meteorology,Météorologie,degree(angle),degré(angle),,,,To,True
-WDIR,MEDS,A,Meteorology,Météorologie,degree(angle),degré(angle),wind_from_direction,wind_from_direction_true,,From,True
-WDIR,NODC,A,Meteorology,Météorologie,degree(angle),degré(angle),,,,From,True
+WDIR,MEDS,A,Meteorology,Météorologie,degree(angle),degré(angle),wind_from_direction,wind_from_direction_true,,FromTrue
+WDIR,NODC,A,Meteorology,Météorologie,degree(angle),degré(angle),,,,FromTrue
 WDR#,MEDS,A,Meteorology,Météorologie,code table,table de code,,,877,From
 WDR#,NODC,A,Meteorology,Météorologie,code table,table de code,,,8770885,
 WETT,BIO,A,Meteorology,Météorologie,degree Celsius,degré Celsius,,,,
@@ -1451,7 +1451,7 @@ WSPN,IML,A,Meteorology,Météorologie,metre per second,mètre par seconde,,,,True
 WSPN,MEDS,A,Meteorology,Météorologie,metre per second,mètre par seconde,,,,True
 WSS$,MEDS,A,Meteorology,Météorologie,metre per second,mètre par seconde,,,,
 WTHA,MEDS,A,Meteorology,Météorologie,code table,table de code,,,4561,
-WVD#,MEDS,A,Wave,Vague,code table,table de code,,,,From,True
+WVD#,MEDS,A,Wave,Vague,code table,table de code,,,,FromTrue
 WVD#,NODC,A,Wave,Vague,code table,table de code,,,877,
 WVER,BIO,A,Meteorology,Météorologie,metre per second,mètre par seconde,,,,
 WVER,IML,A,Meteorology,Météorologie,metre per second,mètre par seconde,,,,
