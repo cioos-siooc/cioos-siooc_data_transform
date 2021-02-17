@@ -1,11 +1,16 @@
 import requests
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
+
 import pandas as pd
 from tqdm import tqdm
+
 # from tqdm.auto import tqdm  # for notebooks
 
 # Create and register a new `tqdm` instance with `pandas`
 # (can use tqdm_gui, optional kwargs, etc.)
 tqdm.pandas()
+
 
 def get_nvs_variable_info(id=None,
                           variable=None,
@@ -28,7 +33,13 @@ def get_nvs_variable_info(id=None,
             url = url + '/' + variable
 
     # Get the response from the NERC servers
-    response = requests.get(url + '/' + format_output)
+    session = requests.Session()
+    retry = Retry(connect=3, backoff_factor=0.5)
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount('http://', adapter)
+    session.mount('https://', adapter)
+
+    response = session.get(url + '/' + format_output)
     return response.json()
 
 
