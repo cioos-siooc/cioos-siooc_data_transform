@@ -91,7 +91,20 @@ def write_ctd_ncfile(outfile, odf_data, **kwargs):
             "lon", "longitude", "degrees_east", data["metadata"]["longitude"]
         )
     )
-    ncfile_var_list.append(NcVar("str_id", "geographic_area", None, ""))
+    ncfile_var_list.append(
+        NcVar(
+            "str_id",
+            "geographic_area",
+            None,
+            get_geo_code(
+                [
+                    float(data["metadata"]["longitude"]),
+                    float(data["metadata"]["latitude"]),
+                ],
+                kwargs["polygons_dict"],
+            ),
+        )
+    )
     event_id = "{}-{}".format(
         data["metadata"]["eventQualifier"], data["metadata"]["eventNumber"]
     )
@@ -182,6 +195,7 @@ polygons_dict = {}
 for fname in info["geojsonFileList"]:
     polygons_dict.update(read_geojson(fname))
 
+# print(polygons_dict)
 
 flist = glob.glob("./test_files/*.json")
 if not os.path.isdir("./temp/"):

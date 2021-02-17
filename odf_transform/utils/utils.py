@@ -37,8 +37,10 @@ def get_geo_code(location, polygons_dict):
     # read geojson file and assign file
     geo_code = find_geographic_area(
         polygons_dict,
-        Point(location["LONGITUDE"], location["LATITUDE"]),
+        Point(location[0], location[1]),
     )
     if geo_code == "":
-        geo_code = None
+        geo_code = "n/a"
+
+    # print(f"geocode = {geo_code}; lonlat = {location}")
     return geo_code
