@@ -1,7 +1,7 @@
 import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
-
+import xmltodict
 import pandas as pd
 from tqdm import tqdm
 
@@ -52,6 +52,17 @@ def split_nerc_id(id_url):
     val = ['http', 'empty', 'nerc_url', 'type', 'vocabulary', 'version', 'variable', 'unknown']
     return dict(zip(val, id_list))
 
+
+def get_cf_names():
+    response = requests.get('https://cfconventions.org/Data/cf-standard-names/77/src/cf-standard-name-table.xml',
+                            stream=True)
+    response.raw.decode_content = True
+    cf_dict = xmltodict.parse(response.text)
+
+    # Convert to dataframes
+    df_cf_alias = pd.DataFrame(cf_dict['standard_name_table']['alias'])
+    df_cf = pd.DataFrame(cf_dict['standard_name_table']['entry'])
+    return df_cf, df_cf_alias
 
 def retrieve_variable_info(nerc_id=None,
                            variable=None,
