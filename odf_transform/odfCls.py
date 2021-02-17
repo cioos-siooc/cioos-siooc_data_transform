@@ -1,7 +1,8 @@
 from ios_data_transform.OceanNcVar import OceanNcVar
 from ios_data_transform.OceanNcFile import OceanNcFile
 import numpy as np
-from netCDF4 import Dataset as ncdata
+
+# from netCDF4 import Dataset as ncdata
 
 
 class CtdNcFile(OceanNcFile):
@@ -10,44 +11,6 @@ class CtdNcFile(OceanNcFile):
 
     def setup_filetype(self):
         setattr(self.ncfile, "cdm_profile_variables", "time, profile")
-
-    def write_ncfile(self, ncfilename):
-        # create ncfile
-        self.ncfile = ncdata(
-            filename=ncfilename, mode="w", format="NETCDF4", clobber=True
-        )
-        # setup global attributes of netcdf file based class data
-        setattr(self.ncfile, "featureType", self.featureType)
-        for featureName, featureVal in zip(
-            [
-                "summary",
-                "title",
-                "institution",
-                "history",
-                "infoUrl",
-                "header",
-                "description",
-            ],
-            [
-                self.summary,
-                self.title,
-                self.institution,
-                self.history,
-                self.infoUrl,
-                self.header,
-                self.description,
-            ],
-        ):
-            if featureVal is not None:
-                setattr(self.ncfile, featureName, featureVal)
-        # setup dimensions
-        self.setup_dimensions()
-        # setup attributes unique to the datatype
-        self.setup_filetype()
-        # write variables
-        for var in self.varlist:
-            self.__write_var(var)
-        self.ncfile.close()
 
     def __write_var(self, var):
         # var.dimensions is a tuple
