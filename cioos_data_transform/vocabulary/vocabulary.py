@@ -8,11 +8,11 @@ from tqdm import tqdm
 tqdm.pandas()
 
 def get_nvs_variable_info(id=None,
-                          variable =None,
+                          variable=None,
+                          vocabulary=None,
                           nvs_url="http://vocab.nerc.ac.uk/collection/",
-                          vocabulary = "P01",
-                          version = "current",
-                          format_output ="?_profile=skos&_mediatype=application/ld+json"
+                          version="current",
+                          format_output="?_profile=skos&_mediatype=application/ld+json"
                           ):
     """
     Method to parse the json format from the NERC NVS servers
