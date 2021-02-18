@@ -2,6 +2,7 @@ import sys
 import os
 import numpy as np
 import json
+import re
 
 sys.path.insert(0, "../../")
 
@@ -137,6 +138,9 @@ def write_ctd_ncfile(outfile, odf_data, **kwargs):
     date_obj = date_obj.astimezone(timezone("UTC"))
     ncfile_var_list.append(NcVar("time", "time", None, [date_obj]))
 
+    # Retrieve original header and it's OCE matching variable
+    data['metadata']['odf_header'] = get_odf_var_attributes_to_oce(data)
+
     for i, var in enumerate(data["data"].keys()):
         #
         # ***********  TODO: CREATE A FUNCTION TO CONVERT UNITS FROM DICTIONARY FORMAT TO PLAIN STRING   ************
@@ -199,6 +203,41 @@ def write_ctd_ncfile(outfile, odf_data, **kwargs):
     # print(ncfile_var_list[0])
     # print('Writing ncfile:',outfile)
     out.write_ncfile(outfile)
+
+
+def get_odf_var_attributes_to_oce(data_dict,
+                                  oce_variable_parameter='CODE'):
+    """
+    OCE change completely the order of the original data, but is still providing access to the header
+    metadata within a metadata dictionary.
+    """
+    # OCE also rename the variable to some other names, we'll match the ODF header to OCE variables
+    map_oce_variables = dict(zip(data['metadata']['dataNamesOriginal'].values(),
+                                 data['metadata']['dataNamesOriginal'].keys()))
+    odf_variable_header = {}
+    for key, attribute_list in data["metadata"]["header"].items():
+        if key.startswith('PARAMETER_HEADER'):
+            # For some reasons OCE appen a number at the end of each attriutes (ex: _01), we'll get rid of them.
+            attribute_list = {re.sub(r'_\d+$', '', att):parm for att, parm in attribute_list.items()}
+            # Let's remove the \' symbols around the strings
+            attribute_list = {att: re.sub(r'^\'|\'$', '', parm) for att, parm in attribute_list.items()}
+
+            # Convert float and integer in attributes
+            for att, parm in attribute_list.items():
+                if re.match(r'[\+\-]{0,1}\d+\.\d+', parm):  # Is float
+                    attribute_list[att] = float(parm)
+                elif re.match(r'\d+', parm):  # Is integer
+                    attribute_list[att] = int(parm)
+
+            if oce_variable_parameter in attribute_list:
+                var_name = attribute_list[oce_variable_parameter]
+                # Retrieve OCE name otherwise keep the original name
+                if var_name in map_oce_variables.keys():
+                    odf_variable_header.update({map_oce_variables[var_name]: attribute_list})
+                else:
+                    odf_variable_header.update({var_name: attribute_list})
+
+    return odf_variable_header
 
 
 # read json file with information on dataset etc.
