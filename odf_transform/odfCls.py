@@ -1,8 +1,8 @@
-from ios_data_transform.OceanNcVar import OceanNcVar
-from ios_data_transform.OceanNcFile import OceanNcFile
 import numpy as np
+from netCDF4 import Dataset as ncdata
 
-# from netCDF4 import Dataset as ncdata
+from ios_data_transform.OceanNcFile import OceanNcFile
+from ios_data_transform.OceanNcVar import OceanNcVar
 
 
 class CtdNcFile(OceanNcFile):
@@ -11,6 +11,27 @@ class CtdNcFile(OceanNcFile):
 
     def setup_filetype(self):
         setattr(self.ncfile, "cdm_profile_variables", "time, profile")
+
+    def write_ncfile(self, ncfilename):
+        
+
+        # create ncfile
+        self.ncfile = ncdata(
+            filename=ncfilename, mode="w", format="NETCDF4", clobber=True
+        )
+        # print(self.global_attrs)
+        for key, value in self.global_attrs.items():
+            if value is not None:
+                setattr(self.ncfile, key, value)
+        
+        # setup dimensions
+        self.setup_dimensions()
+        # setup attributes unique to the datatype
+        self.setup_filetype()
+        # write variables
+        for var in self.varlist:
+            self.__write_var(var)
+        self.ncfile.close()
 
     def __write_var(self, var):
         # var.dimensions is a tuple
@@ -22,16 +43,37 @@ class CtdNcFile(OceanNcFile):
         ncvar = self.ncfile.createVariable(
             var.name, var.datatype, var.dimensions, fill_value=fill_value
         )
-        for key, value in zip(
-            ["long_name", "standard_name", "units", "pcode", "gf3"],
-            [var.long_name, var.standard_name, var.units, var.pcode, var.gf3],
-        ):
-            if value is not None:
+        for key in ["long_name", "standard_name", "units", "pcode", "gf3"]:
+            value = getattr(var, key)
+
+            if value:
                 setattr(ncvar, key, value)
+
         if var.datatype == str:
             ncvar[0] = var.data
         else:
             ncvar[:] = var.data
+
+    def add_var(
+        self,
+        vartype,
+        varname,
+        varunits,
+        varval,
+        vardim=(),
+        varnull=float("nan"),
+        conv_to_BODC=True,
+    ):
+
+        varnames = list(map(lambda var: var.name, self.varlist))
+
+        nc_var = NcVar(
+            vartype, varname, varunits, varval, vardim, varnull, conv_to_BODC
+        )
+
+        nc_var.add_var(varnames)
+
+        self.varlist.append(nc_var)
 
 
 class NcVar(OceanNcVar):
@@ -41,7 +83,6 @@ class NcVar(OceanNcVar):
         varname,
         varunits,
         varval,
-        varclslist=[],
         vardim=(),
         varnull=float("nan"),
         conv_to_BODC=True,
@@ -61,12 +102,6 @@ class NcVar(OceanNcVar):
         self.gf3 = self.get_gf3()
         self.pcode = self.get_pcode()
         self.bodc = self.get_bodc()
-        # from existing varlist. get all variables that are going to be written into the ncfile
-        # this will be checked to make sure new variable name does not conflict with existing ones
-        varlist = []
-        for v in varclslist:
-            varlist.append(v.name)
-        self.add_var(varlist)
 
     def get_bodc(self):
         # calculate the correct BODC, pcode, GF3 code

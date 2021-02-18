@@ -3,15 +3,20 @@
         "../geojson_files/ios_polygons.geojson"
     ],
     "summary": "brief summary of dataset",
+    "summary_fra": " summary in french here",
     "title": "dataset title",
+    "title_fra": "title in french here",
     "description": "detailed description",
+    "description_fra": "description in french",
     "infoUrl": "http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html",
     "keywords": "temperature, salinity",
-    "acknowledgements": "thanks etc ...",
-    "naming_authority": "GCMD Science Keywords",
+    "keywords_fra": "salinite",
+    "acknowledgement": "thanks etc ...",
+    "naming_authority": "CF Standard Name Table v29",
     "creator_name": "CIOOS",
     "creator_email": "cioos email here",
     "creator_url": "http://www.someurlhere.com",
     "license": "standard license information here",
-    "keywords_vocabulary": "CF Standard Name Table v29"
+    "keywords_vocabulary": "GCMD Science Keywords",
+    "Conventions": "CF-1.6,CF-1.7,ACDD1.1"
 }
