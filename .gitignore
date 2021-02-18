@@ -109,5 +109,3 @@ cioos_data_transform/\.idea/
 *.nc
 
 .vscode/
-
-*.ipynb
