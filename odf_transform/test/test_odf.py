@@ -11,15 +11,17 @@ from pytz import timezone
 sys.path.insert(0, "../../")
 
 from ios_data_transform import is_in
+from ios_data_transform.utils.utils import fix_path
 from odf_transform.odfCls import CtdNcFile
 from odf_transform.utils.utils import get_geo_code, read_geojson
 
 
 
 
-CONFIG_PATH = "./config.json"
-TEST_FILES_PATH = "./test_files/"
-TEST_FILES_OUTPUT = "./temp/"
+
+CONFIG_PATH = fix_path("./config.json")
+TEST_FILES_PATH = fix_path("./test_files/")
+TEST_FILES_OUTPUT = fix_path("./temp/")
 
 
 def read_config():
@@ -54,6 +56,7 @@ def write_ctd_ncfile(outfile, odf_data, config={}):
     profile_id = f"{metadata['cruiseNumber']}-{metadata['eventNumber']}-{metadata['eventQualifier']}"
 
     # write global attributes
+
     global_attrs["featureType"] = "profile"
 
     global_attrs["summary"] = config.get("summary")
@@ -61,13 +64,15 @@ def write_ctd_ncfile(outfile, odf_data, config={}):
     global_attrs["institution"] = metadata.get("institute")
     global_attrs["history"] = ""
     global_attrs["infoUrl"] = config.get("infoUrl")
+    global_attrs["cdm_profile_variables"] = "time"
+
     # write full original header, as json dictionary
     global_attrs["header"] = json.dumps(
         metadata["header"], ensure_ascii=False, indent=False
     )
     global_attrs["description"] = config.get("description")
     global_attrs["keywords"] = config.get("keywords")
-    global_attrs["acknowledgements"] = config.get("acknowledgements")
+    global_attrs["acknowledgement"] = config.get("acknowledgement")
     global_attrs["id"] = profile_id
     global_attrs["naming_authority"] = "COARDS"
     global_attrs["comment"] = ""
@@ -75,13 +80,15 @@ def write_ctd_ncfile(outfile, odf_data, config={}):
     global_attrs["creator_email"] = config.get("creator_email")
     global_attrs["creator_url"] = config.get("creator_url")
     global_attrs["license"] = config.get("license")
-    global_attrs["project"] = ""
+    global_attrs["project"] = metadata["cruise"]
     global_attrs["keywords_vocabulary"] = config.get("keywords_vocabulary")
+    global_attrs["Conventions"] = config.get("Conventions")
 
 
     # initcreate dimension variable
-    ncfile.nrec = len(data["scan"])
 
+    # use length of first variable to define length of profile
+    ncfile.nrec = len(data[list(data.keys())[0]])
     # add variable profile_id (dummy variable)
 
     ncfile.add_var(
@@ -89,14 +96,13 @@ def write_ctd_ncfile(outfile, odf_data, config={}):
         "filename",
         None,
         metadata["filename"].split("/")[-1],
+
     )
 
     # add administration variables
     ncfile.add_var("str_id", "country", None, "Canada")
-    ncfile.add_var("str_id", "institute", None, metadata["institute"])
     ncfile.add_var("str_id", "cruise_id", None, metadata["cruiseNumber"])
     ncfile.add_var("str_id", "scientist", None, metadata["scientist"])
-    ncfile.add_var("str_id", "project", None, metadata["cruise"])
     ncfile.add_var("str_id", "platform", None, metadata["ship"])
     ncfile.add_var(
         "str_id", "instrument_type", None, metadata["type"] + " " + metadata["model"]
@@ -208,7 +214,7 @@ def convert_test_files(config):
         try:
             print(f)
             write_ctd_ncfile(
-                outfile=TEST_FILES_OUTPUT + "{}.nc".format(f.split("/")[-1]),
+                outfile=TEST_FILES_OUTPUT + "{}.nc".format(os.path.basename(f)),
                 odf_data=data,
                 config=config,
             )
