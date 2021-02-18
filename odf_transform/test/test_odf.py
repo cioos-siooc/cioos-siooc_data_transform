@@ -8,6 +8,7 @@ sys.path.insert(0, "../../")
 from odf_transform.odfCls import CtdNcFile, NcVar
 from odf_transform.utils.utils import get_geo_code, read_geojson
 from ios_data_transform import is_in
+from ios_data_transform.utils.utils import fix_path
 from datetime import datetime
 from pytz import timezone
 import glob
@@ -199,7 +200,7 @@ def write_ctd_ncfile(outfile, odf_data, **kwargs):
 
 
 # read json file with information on dataset etc.
-with open("./config.json", "r") as fid:
+with open(fix_path("./config.json"), "r") as fid:
     info = json.load(fid)
 
 # read geojson files
@@ -209,7 +210,7 @@ for fname in info["geojsonFileList"]:
 info.update({"polygons_dict": polygons_dict})
 # print(polygons_dict)
 
-flist = glob.glob("./test_files/*.json")
+flist = glob.glob(fix_path("./test_files/*.json"))
 if not os.path.isdir("./temp/"):
     os.mkdir("./temp/")
 
@@ -221,7 +222,7 @@ for f in flist:
     try:
         print(f)
         write_ctd_ncfile(
-            outfile="./temp/{}.nc".format(f.split("/")[-1]),
+            outfile=fix_path("./temp/{}.nc".format(os.path.basename(f))),
             odf_data=data,
             **info,
         )
