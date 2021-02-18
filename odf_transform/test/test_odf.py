@@ -1,231 +1,236 @@
-import sys
-import os
-import numpy as np
+import glob
 import json
+import os
+import sys
+import traceback
+from datetime import datetime
+
+import numpy as np
+from pytz import timezone
 
 sys.path.insert(0, "../../")
 
-from odf_transform.odfCls import CtdNcFile, NcVar
-from odf_transform.utils.utils import get_geo_code, read_geojson
 from ios_data_transform import is_in
 from ios_data_transform.utils.utils import fix_path
-from datetime import datetime
-from pytz import timezone
-import glob
+from odf_transform.odfCls import CtdNcFile
+from odf_transform.utils.utils import get_geo_code, read_geojson
 
 
-def write_ctd_ncfile(outfile, odf_data, **kwargs):
+
+
+
+CONFIG_PATH = fix_path("./config.json")
+TEST_FILES_PATH = fix_path("./test_files/")
+TEST_FILES_OUTPUT = fix_path("./temp/")
+
+
+def read_config():
+    # read json file with information on dataset etc.
+    with open(CONFIG_PATH) as fid:
+        config = json.load(fid)
+
+        return config
+
+
+def write_ctd_ncfile(outfile, odf_data, config={}):
     """
     use data and methods in ctdcls object to write the CTD data into a netcdf file
     author:
     inputs:
         outfile: output file name to be created in netcdf format
         odf_data: dict with data from odf file converted to json using oce package
-        **kwargs: optional arguments
+        config: optional arguments, mostly from the config file
     output:
         NONE
     """
-    # print(kwargs.keys())
-    out = CtdNcFile()
-    # write global attributes
-    out.featureType = "profile"
-    try:
-        out.summary = kwargs["summary"]
-        out.title = kwargs["title"]
-        out.institution = data["metadata"]["institute"]
-        out.infoUrl = kwargs["infoUrl"]
-        out.description = kwargs["description"]
-        out.keywords = kwargs["keywords"]
-        out.acknowledgement = kwargs["acknowledgement"]
-        out.naming_authority = "COARDS"
-        out.creator_name = kwargs["creator_name"]
-        out.creator_email = kwargs["creator_email"]
-        out.creator_url = kwargs["creator_url"]
-        out.license = kwargs["license"]
-        out.project = data["metadata"]["cruise"]
-        out.keywords_vocabulary = kwargs["keywords_vocabulary"]
-        out.Conventions = kwargs["Conventions"]
-    except KeyError as e:
-        raise Exception(
-            f"Unable to find following value for {e} in the config file..."
-        )
-    out.cdm_profile_variables = "time"
-    # write full original header, as json dictionary
-    out.header = json.dumps(
-        data["metadata"]["header"], ensure_ascii=False, indent=False
-    )
-    # initcreate dimension variable
-    # use length of first variable to define length of profile
-    out.nrec = len(data["data"][list(data["data"].keys())[0]])
-    # add variable profile_id
-    ncfile_var_list = []
-    ncfile_var_list.append(
-        NcVar(
-            "str_id",
-            "filename",
-            None,
-            data["metadata"]["filename"].split("/")[-1],
-        )
-    )
-    # add administration variables
-    ncfile_var_list.append(NcVar("str_id", "country", None, "Canada"))
-    ncfile_var_list.append(
-        NcVar("str_id", "cruise_id", None, data["metadata"]["cruiseNumber"])
-    )
-    ncfile_var_list.append(
-        NcVar("str_id", "scientist", None, data["metadata"]["scientist"])
-    )
-    ncfile_var_list.append(
-        NcVar("str_id", "platform", None, data["metadata"]["ship"])
-    )
-    ncfile_var_list.append(
-        NcVar(
-            "str_id",
-            "instrument_type",
-            None,
-            data["metadata"]["type"] + " " + data["metadata"]["model"],
-        )
-    )
-    ncfile_var_list.append(
-        NcVar(
-            "str_id",
-            "instrument_serial_number",
-            None,
-            data["metadata"]["serialNumber"],
-        )
-    )
-    # add locations variables
-    ncfile_var_list.append(
-        NcVar("lat", "latitude", "degrees_north", data["metadata"]["latitude"])
-    )
-    ncfile_var_list.append(
-        NcVar(
-            "lon", "longitude", "degrees_east", data["metadata"]["longitude"]
-        )
-    )
-    ncfile_var_list.append(
-        NcVar(
-            "str_id",
-            "geographic_area",
-            None,
-            get_geo_code(
-                [
-                    float(data["metadata"]["longitude"]),
-                    float(data["metadata"]["latitude"]),
-                ],
-                kwargs["polygons_dict"],
-            ),
-        )
-    )
-    event_id = "{}-{}".format(
-        data["metadata"]["eventQualifier"], data["metadata"]["eventNumber"]
-    )
-    ncfile_var_list.append(NcVar("str_id", "event_number", None, event_id))
-    # create unique ID for each profile
-    profile_id = "{}-{}-{}".format(
-        data["metadata"]["cruiseNumber"],
-        data["metadata"]["eventNumber"],
-        data["metadata"]["eventQualifier"],
-    )
-    print("Profile ID:", profile_id)
-    out.id = profile_id
-    ncfile_var_list.append(NcVar("profile", "profile", None, profile_id))
-    # pramod - someone should check this...
-    date_obj = datetime.utcfromtimestamp(data["metadata"]["startTime"])
-    date_obj = date_obj.astimezone(timezone("UTC"))
-    ncfile_var_list.append(NcVar("time", "time", None, [date_obj]))
 
-    for i, var in enumerate(data["data"].keys()):
+    data = odf_data["data"]
+    metadata = odf_data["metadata"]
+
+    ncfile = CtdNcFile()
+    global_attrs = {}
+
+    ncfile.global_attrs = global_attrs
+
+    # create unique ID for each profile
+    profile_id = f"{metadata['cruiseNumber']}-{metadata['eventNumber']}-{metadata['eventQualifier']}"
+
+    # write global attributes
+
+    global_attrs["featureType"] = "profile"
+
+    global_attrs["summary"] = config.get("summary")
+    global_attrs["title"] = config.get("title")
+    global_attrs["institution"] = metadata.get("institute")
+    global_attrs["history"] = ""
+    global_attrs["infoUrl"] = config.get("infoUrl")
+
+    # write full original header, as json dictionary
+    global_attrs["header"] = json.dumps(
+        metadata["header"], ensure_ascii=False, indent=False
+    )
+    global_attrs["description"] = config.get("description")
+    global_attrs["keywords"] = config.get("keywords")
+    global_attrs["acknowledgement"] = config.get("acknowledgement")
+    global_attrs["id"] = profile_id
+    global_attrs["naming_authority"] = "COARDS"
+    global_attrs["comment"] = ""
+    global_attrs["creator_name"] = config.get("creator_name")
+    global_attrs["creator_email"] = config.get("creator_email")
+    global_attrs["creator_url"] = config.get("creator_url")
+    global_attrs["license"] = config.get("license")
+    global_attrs["project"] = metadata["cruise"]
+    global_attrs["keywords_vocabulary"] = config.get("keywords_vocabulary")
+    global_attrs["Conventions"] = config.get("Conventions")
+    global_attrs["cdm_profile_variables"] = "time"
+
+    # initcreate dimension variable
+
+    # use length of first variable to define length of profile
+    ncfile.nrec = len(data[list(data.keys())[0]])
+    # add variable profile_id (dummy variable)
+
+    ncfile.add_var(
+        "str_id",
+        "filename",
+        None,
+        metadata["filename"].split("/")[-1],
+
+    )
+
+    # add administration variables
+    ncfile.add_var("str_id", "country", None, "Canada")
+    ncfile.add_var("str_id", "cruise_id", None, metadata["cruiseNumber"])
+    ncfile.add_var("str_id", "scientist", None, metadata["scientist"])
+    ncfile.add_var("str_id", "platform", None, metadata["ship"])
+    ncfile.add_var(
+        "str_id", "instrument_type", None, metadata["type"] + " " + metadata["model"]
+    )
+
+    ncfile.add_var(
+        "str_id",
+        "instrument_serial_number",
+        None,
+        metadata["serialNumber"],
+    )
+
+    # add locations variables
+    ncfile.add_var("lat", "latitude", "degrees_north", metadata["latitude"])
+
+    ncfile.add_var("lon", "longitude", "degrees_east", metadata["longitude"])
+
+    ncfile.add_var(
+        "str_id",
+        "geographic_area",
+        None,
+        get_geo_code(
+            [
+                float(metadata["longitude"]),
+                float(metadata["latitude"]),
+            ],
+            config["polygons_dict"],
+        ),
+    )
+    event_id = f"{metadata['eventQualifier']}-{metadata['eventNumber']}"
+
+    ncfile.add_var("str_id", "event_number", None, event_id)
+
+
+    print("Profile ID:", profile_id)
+
+    ncfile.add_var("profile", "profile", None, profile_id)
+    # pramod - someone should check this...
+    date_obj = datetime.utcfromtimestamp(metadata["startTime"])
+    date_obj = date_obj.astimezone(timezone("UTC"))
+    ncfile.add_var("time", "time", None, [date_obj])
+
+    for var in data.keys():
         #
         # ***********  TODO: CREATE A FUNCTION TO CONVERT UNITS FROM DICTIONARY FORMAT TO PLAIN STRING   ************
         # ***********  TODO: DETERMINE BODC/GF3 CODE FROM THE UNITS AND VARIABLE NAME IN ODF FILE *******************
         #
         null_value = np.nan
         if is_in(["depth"], var):
-            ncfile_var_list.append(
-                NcVar(
-                    vartype="depth",
-                    varname="depth",
-                    varunits="meters",
-                    varval=data["data"][var],
-                    varclslist=ncfile_var_list,
-                    vardim=("z"),
-                    varnull=null_value,
-                )
+            ncfile.add_var(
+                vartype="depth",
+                varname="depth",
+                varunits="meters",
+                varval=data[var],
+                vardim=("z"),
+                varnull=null_value,
             )
+
         elif is_in(["pressure"], var):
-            ncfile_var_list.append(
-                NcVar(
-                    "pressure",
-                    "pressure",
-                    "dbar",
-                    data["data"][var],
-                    ncfile_var_list,
-                    ("z"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "pressure",
+                "pressure",
+                "dbar",
+                data[var],
+                ("z"),
+                null_value,
             )
+
         elif is_in(["temperature"], var):
-            ncfile_var_list.append(
-                NcVar(
-                    "temperature",
-                    "temperature",
-                    "IPTS-68",
-                    data["data"][var],
-                    ncfile_var_list,
-                    ("z"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "temperature",
+                "temperature",
+                "IPTS-68",
+                data[var],
+                ("z"),
+                null_value,
             )
+
         elif is_in(["salinity"], var):
-            ncfile_var_list.append(
-                NcVar(
-                    "salinity",
-                    "salinity",
-                    "PSS-78",
-                    data["data"][var],
-                    ncfile_var_list,
-                    ("z"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "salinity",
+                "salinity",
+                "PSS-78",
+                data[var],
+                ("z"),
+                null_value,
             )
+
         else:
             pass
             # print(var, data['metadata']['units'][var], 'not transferred to netcdf file !')
     # now actuallY write the information in CtdNcFile object to a netcdf file
-    out.varlist = ncfile_var_list
     # print(ncfile_var_list[0])
     # print('Writing ncfile:',outfile)
-    out.write_ncfile(outfile)
+    ncfile.write_ncfile(outfile)
 
 
-# read json file with information on dataset etc.
-with open(fix_path("./config.json"), "r") as fid:
-    info = json.load(fid)
+def convert_test_files(config):
+    flist = glob.glob(TEST_FILES_PATH + "/*.json")
+
+    if not os.path.isdir(TEST_FILES_OUTPUT):
+        os.mkdir(TEST_FILES_OUTPUT)
+
+    for f in flist:
+        with open(f) as fid:
+            data = fid.read()
+            data = json.loads(data)
+        # parse file
+        try:
+            print(f)
+            write_ctd_ncfile(
+                outfile=TEST_FILES_OUTPUT + "{}.nc".format(os.path.basename(f)),
+                odf_data=data,
+                config=config,
+            )
+
+        except Exception as e:
+            print("***** ERROR***", f)
+            print(e)
+            print(traceback.print_exc())
+
+
+config = read_config()
 
 # read geojson files
 polygons_dict = {}
-for fname in info["geojsonFileList"]:
+for fname in config["geojsonFileList"]:
     polygons_dict.update(read_geojson(fname))
-info.update({"polygons_dict": polygons_dict})
+config.update({"polygons_dict": polygons_dict})
 # print(polygons_dict)
 
-flist = glob.glob(fix_path("./test_files/*.json"))
-if not os.path.isdir("./temp/"):
-    os.mkdir("./temp/")
-
-for f in flist:
-    with open(f, "r") as fid:
-        data = fid.read()
-        data = json.loads(data)
-    # parse file
-    try:
-        print(f)
-        write_ctd_ncfile(
-            outfile=fix_path("./temp/{}.nc".format(os.path.basename(f))),
-            odf_data=data,
-            **info,
-        )
-    except Exception as e:
-        print("***** ERROR***", f)
-        print(e)
+convert_test_files(config)
