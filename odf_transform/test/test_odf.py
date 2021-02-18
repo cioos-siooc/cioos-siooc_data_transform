@@ -209,7 +209,8 @@ def get_odf_var_attributes_to_oce(data_dict,
                                   oce_variable_parameter='CODE'):
     """
     OCE change completely the order of the original data, but is still providing access to the header
-    metadata within a metadata dictionary.
+    metadata within a metadata dictionary. This tool retrieve the original header and assign variable name to each
+     respective original header variable.
     """
     # OCE also rename the variable to some other names, we'll match the ODF header to OCE variables
     map_oce_variables = dict(zip(data['metadata']['dataNamesOriginal'].values(),
