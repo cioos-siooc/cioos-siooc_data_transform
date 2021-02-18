@@ -5,31 +5,73 @@
 # AIM:  this will be the common entry point for data from different sources that go into CIOOS
 #       ensuring common ncfile metadata standards. File has to conform to CF conventions and CIOOS variable standards
 from netCDF4 import Dataset as ncdata
+import numpy as np
 
 
 class OceanNcFile(object):
     def __init__(self):
-        self.featureType = ''
-        self.summary = None
-        self.title = None
-        self.institution = None
-        self.history = None
-        self.infoUrl = None
-        self.HEADER = None
-        self.description = None
+        self.featureType = ""
+        self.summary = ""
+        self.summary_fra = ""
+        self.title = ""
+        self.title_fra = ""
+        self.institution = ""
+        self.history = ""
+        self.infoUrl = ""
+        self.header = ""
+        self.description = ""
+        self.description_fra = ""
+        self.keywords = ""
+        self.keywords_fra = ""
+        self.acknowledgement = ""
+        self.id = ""
+        self.naming_authority = "COARDS,CF Standard Name Table v29"
+        self.comment = ""
+        self.creator_name = ""
+        self.creator_email = ""
+        self.creator_url = ""
+        self.license = ""
+        self.project = ""
+        self.keywords_vocabulary = "GCMD Science Keywords"
+        self.Conventions = "CF1.7,ACDD1.1"
         # list of var class in the netcdf
         self.varlist = []
         self.nrec = 0
 
     def write_ncfile(self, ncfilename):
         # create ncfile
-        self.ncfile = ncdata(filename=ncfilename, mode='w', format='NETCDF4', clobber=True)
+        self.ncfile = ncdata(
+            filename=ncfilename, mode="w", format="NETCDF4", clobber=True
+        )
         # setup global attributes of netcdf file based class data
-        setattr(self.ncfile, 'featureType', self.featureType)
-        for featureName, featureVal in zip(['summary','title','institution','history','infoUrl','header','description'],
-            [self.summary, self.title, self.institution, self.history,self.infoUrl, self.HEADER, self.description]):
-            if featureVal is not None:
-                setattr(self.ncfile, featureName, featureVal)
+        setattr(self.ncfile, "featureType", self.featureType)
+        for key in [
+            "summary",
+            "summary_fra",
+            "title",
+            "institution",
+            "history",
+            "infoUrl",
+            "header",
+            "description",
+            "description_fra",
+            "keywords",
+            "keywords_fra",
+            "acknowledgement",
+            "id",
+            "naming_authority",
+            "comment",
+            "creator_name",
+            "creator_email",
+            "creator_url",
+            "license",
+            "project",
+            "keywords_vocabulary",
+            "Conventions",
+        ]:
+            value = getattr(self, key)
+            if value is not None:
+                setattr(self.ncfile, key, value)
         # setup dimensions
         self.setup_dimensions()
         # setup attributes unique to the datatype
@@ -43,38 +85,51 @@ class OceanNcFile(object):
         pass
 
     def setup_filetype(self):
-        setattr(self.ncfile, 'cdm_profile_variables', '')
+        setattr(self.ncfile, "cdm_profile_variables", "")
 
     def __write_var(self, var):
         # var.dimensions is a tuple
         # var.type is  a string
         # print('Writing', var.name, var.datatype, var.dimensions, var.data)
-        ncvar = self.ncfile.createVariable(var.name, var.datatype, var.dimensions)
-        for key, value in zip(['long_name', 'standard_name', 'units'],
-                              [var.long_name, var.standard_name, var.units]):
+        fill_value = None
+        if var.datatype is not str:
+            fill_value = np.nan
+        ncvar = self.ncfile.createVariable(
+            var.name, var.datatype, var.dimensions, fill_value=fill_value
+        )
+
+        for key, value in zip(
+            ["long_name", "standard_name", "units"],
+            [var.long_name, var.standard_name, var.units],
+        ):
             if value is not None:
                 setattr(ncvar, key, value)
-        # setattr(ncvar, 'long_name', var.long_name)
-        # setattr(ncvar, 'standard_name', var.standard_name)
-        # setattr(ncvar, 'units', var.units)
+
         if var.datatype == str:
             ncvar[0] = var.data
         else:
-            setattr(ncvar, 'FillValue', float('NaN'))
             ncvar[:] = var.data
 
 
 class CtdNcFile(OceanNcFile):
     def setup_dimensions(self):
-        self.ncfile.createDimension('z', self.nrec)
+        self.ncfile.createDimension("z", self.nrec)
 
     def setup_filetype(self):
-        setattr(self.ncfile, 'cdm_profile_variables', 'time, profile')
+        setattr(self.ncfile, "cdm_profile_variables", "time, profile")
 
 
 class MCtdNcFile(OceanNcFile):
     def setup_dimensions(self):
-        self.ncfile.createDimension('time', self.nrec)
+        self.ncfile.createDimension("time", self.nrec)
 
     def setup_filetype(self):
-        setattr(self.ncfile, 'cdm_timeseries_variables', 'profile')
+        setattr(self.ncfile, "cdm_timeseries_variables", "profile")
+
+
+class CurNcFile(OceanNcFile):
+    def setup_dimensions(self):
+        self.ncfile.createDimension("time", self.nrec)
+
+    def setup_filetype(self):
+        setattr(self.ncfile, "cdm_timeseries_variables", "profile")
