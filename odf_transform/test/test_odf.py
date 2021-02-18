@@ -144,6 +144,7 @@ def write_ctd_ncfile(outfile, odf_data, config={}):
     date_obj = date_obj.astimezone(timezone("UTC"))
     ncfile.add_var("time", "time", None, [date_obj])
 
+    # Retrieve Original ODF Variable Headers
     metadata['original_header'] = get_odf_var_attributes_to_oce(metadata)
 
     for var in data.keys():
