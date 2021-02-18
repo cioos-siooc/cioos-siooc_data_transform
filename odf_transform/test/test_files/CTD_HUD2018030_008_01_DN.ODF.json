@@ -4278,8 +4278,8 @@
                 "PROCESS_59": "'# name 19 = sal11: Salinity, Practical, 2 [PSU]'",
                 "PROCESS_60": "'# name 20 = potemp068C: Potential Temperature [IPTS-68, deg C]'",
                 "PROCESS_61": "'# name 21 = potemp168C: Potential Temperature, 2 [IPTS-68, deg C]'",
-                "PROCESS_62": "'# name 22 = sigma-\u00c3\u00a900: Density [sigma-theta, kg/m^3]'",
-                "PROCESS_63": "'# name 23 = sigma-\u00c3\u00a911: Density, 2 [sigma-theta, kg/m^3]'",
+                "PROCESS_62": "'# name 22 = sigma-é00: Density [sigma-theta, kg/m^3]'",
+                "PROCESS_63": "'# name 23 = sigma-é11: Density, 2 [sigma-theta, kg/m^3]'",
                 "PROCESS_64": "'# name 24 = sbeox0ML/L: Oxygen, SBE 43 [ml/l], WS = 2'",
                 "PROCESS_65": "'# name 25 = sbeox1ML/L: Oxygen, SBE 43, 2 [ml/l], WS = 2'",
                 "PROCESS_66": "'# name 26 = nbin: number of scans per bin'",
@@ -9442,8 +9442,8 @@
     },
     "processingLog": {
         "time": [
-            1613540000.0,
-            1613540000.0
+            1613691000.0,
+            1613691000.0
         ],
         "value": [
             "create 'odf' object",

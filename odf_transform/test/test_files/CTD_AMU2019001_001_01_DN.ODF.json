@@ -10394,8 +10394,8 @@
                 "PROCESS_50": "'# name 19 = sal11: Salinity, Practical, 2 [PSU]'",
                 "PROCESS_51": "'# name 20 = potemp068C: Potential Temperature [IPTS-68, deg C]'",
                 "PROCESS_52": "'# name 21 = potemp168C: Potential Temperature, 2 [IPTS-68, deg C]'",
-                "PROCESS_53": "'# name 22 = sigma-\u00c3\u0083\u00c6\u0092\u00c3\u0086\u00e2\u0080\u0099\u00c3\u0083\u00e2\u0080\u00a0\u00c3\u00a2\u00e2\u0082\u00ac\u00e2\u0084\u00a2\u00c3\u0083\u00c6\u0092\u00c3\u00a2\u00e2\u0082\u00ac\u00c5\u00a1\u00c3\u0083\u00e2\u0080\u009a\u00c3\u0082\u00c2\u00a900: Density [sigma-theta, kg/m^3]'",
-                "PROCESS_54": "'# name 23 = sigma-\u00c3\u0083\u00c6\u0092\u00c3\u0086\u00e2\u0080\u0099\u00c3\u0083\u00e2\u0080\u00a0\u00c3\u00a2\u00e2\u0082\u00ac\u00e2\u0084\u00a2\u00c3\u0083\u00c6\u0092\u00c3\u00a2\u00e2\u0082\u00ac\u00c5\u00a1\u00c3\u0083\u00e2\u0080\u009a\u00c3\u0082\u00c2\u00a911: Density, 2 [sigma-theta, kg/m^3]'",
+                "PROCESS_53": "'# name 22 = sigma-ÃÆÃâÃâÃÂ©00: Density [sigma-theta, kg/m^3]'",
+                "PROCESS_54": "'# name 23 = sigma-ÃÆÃâÃâÃÂ©11: Density, 2 [sigma-theta, kg/m^3]'",
                 "PROCESS_55": "'# name 24 = sbeox0ML/L: Oxygen, SBE 43 [ml/l], WS = 2'",
                 "PROCESS_56": "'# name 25 = sbeox1ML/L: Oxygen, SBE 43, 2 [ml/l], WS = 2'",
                 "PROCESS_57": "'# name 26 = nbin: number of scans per bin'",
@@ -21683,8 +21683,8 @@
     },
     "processingLog": {
         "time": [
-            1613540000.0,
-            1613540000.0
+            1613691000.0,
+            1613691000.0
         ],
         "value": [
             "create 'odf' object",

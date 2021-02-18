@@ -125,7 +125,7 @@
                         "/",
                         [
                             "/",
-                            "\u00c2\u00b5einsteins",
+                            "µeinsteins",
                             "s"
                         ],
                         [
@@ -155,7 +155,7 @@
             },
             "OXYM": {
                 "unit": [
-                    "\u00c2\u00b5M"
+                    "µM"
                 ],
                 "scale": ""
             },
@@ -13862,7 +13862,7 @@
             "PARAMETER_HEADER17": {
                 "TYPE_17": "'DOUB'",
                 "NAME_17": "'Surface Photosynthetic Active Radiation'",
-                "UNITS_17": "'\u00c2\u00b5einsteins/s/m^2'",
+                "UNITS_17": "'µeinsteins/s/m^2'",
                 "CODE_17": "'SPAR_01'",
                 "NULL_VALUE_17": "-9.900000E+01",
                 "PRINT_FIELD_WIDTH_17": "10",
@@ -13942,7 +13942,7 @@
             "PARAMETER_HEADER22": {
                 "TYPE_22": "'DOUB'",
                 "NAME_22": "'Dissolved Oxygen'",
-                "UNITS_22": "'\u00c2\u00b5M'",
+                "UNITS_22": "'µM'",
                 "CODE_22": "'OXYM_01'",
                 "NULL_VALUE_22": "-9.900000E+01",
                 "PRINT_FIELD_WIDTH_22": "10",
@@ -30870,8 +30870,8 @@
     },
     "processingLog": {
         "time": [
-            1613540000.0,
-            1613540000.0
+            1613691000.0,
+            1613691000.0
         ],
         "value": [
             "create 'odf' object",
