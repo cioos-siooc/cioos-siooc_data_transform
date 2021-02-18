@@ -1,10 +1,10 @@
 import setuptools
 
-with open("../README.md", "r") as fh:
+with open("./README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="ios_data_transform",
+    name="cioos_data_transform",
     version="1.0.0",
     author="Pramod Thupaki",
     author_email="pramod.thupaki@hakai.org",
