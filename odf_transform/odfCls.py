@@ -13,9 +13,6 @@ class CtdNcFile(OceanNcFile):
         setattr(self.ncfile, "cdm_profile_variables", "time, profile")
 
     def write_ncfile(self, ncfilename):
-        global_attr_defaults={
-            "convention":"CF1.7,ACDD1.1"
-        }
         
 
         # create ncfile
@@ -23,7 +20,7 @@ class CtdNcFile(OceanNcFile):
             filename=ncfilename, mode="w", format="NETCDF4", clobber=True
         )
         # print(self.global_attrs)
-        for key, value in {**global_attr_defaults, **self.global_attrs}.items():
+        for key, value in self.global_attrs.items():
             if value is not None:
                 setattr(self.ncfile, key, value)
         

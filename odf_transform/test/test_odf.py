@@ -64,7 +64,6 @@ def write_ctd_ncfile(outfile, odf_data, config={}):
     global_attrs["institution"] = metadata.get("institute")
     global_attrs["history"] = ""
     global_attrs["infoUrl"] = config.get("infoUrl")
-    global_attrs["cdm_profile_variables"] = "time"
 
     # write full original header, as json dictionary
     global_attrs["header"] = json.dumps(
@@ -83,7 +82,7 @@ def write_ctd_ncfile(outfile, odf_data, config={}):
     global_attrs["project"] = metadata["cruise"]
     global_attrs["keywords_vocabulary"] = config.get("keywords_vocabulary")
     global_attrs["Conventions"] = config.get("Conventions")
-
+    global_attrs["cdm_profile_variables"] = "time"
 
     # initcreate dimension variable
 
