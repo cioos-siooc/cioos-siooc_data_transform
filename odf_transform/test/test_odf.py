@@ -203,7 +203,7 @@ def write_ctd_ncfile(outfile, odf_data, **kwargs):
 
 
 # read json file with information on dataset etc.
-with open("./config.json", "r") as fid:
+with open(os.path.join(".", "config.json"), "r") as fid:
     info = json.load(fid)
 
 # read geojson files
