@@ -1,6 +1,7 @@
 # script runs automated tests on data conversions
 import os
-import cioos_data_transform.cioos_data_transform.IosObsFile as iod
+import cioos_data_transform.IosObsFile as ios
+import cioos_data_transform.utils as cioos_utils
 from write_ctd_ncfile import write_ctd_ncfile
 from write_cur_ncfile import write_cur_ncfile
 from write_mctd_ncfile import write_mctd_ncfile
@@ -9,13 +10,15 @@ from glob import glob
 
 
 def convert_mctd_files(f, out_path):
-    fdata = iod.IosObsFile.MCtdFile(filename=f, debug=False)
+    fdata = ios.MCtdFile(filename=f, debug=False)
     if fdata.import_data():
-        fdata.assign_geo_code(fix_path("test_files/ios_polygons.geojson"))
+        fdata.assign_geo_code(
+            fix_path("tests/test_files/ios_polygons.geojson")
+        )
         write_mctd_ncfile(
             fix_path(out_path + f.split(os.path.sep)[-1] + ".nc"), fdata
         )
-        iod.utils.add_standard_variables(
+        cioos_utils.add_standard_variables(
             fix_path(out_path + f.split(os.path.sep)[-1] + ".nc")
         )
     else:
@@ -23,15 +26,17 @@ def convert_mctd_files(f, out_path):
 
 
 def convert_bot_files(f, out_path):
-    fdata = iod.IosObsFile.BotFile(filename=f, debug=False)
+    fdata = ios.BotFile(filename=f, debug=False)
     print(fdata.filename)
     if fdata.import_data():
         # print(fdata.data)
-        fdata.assign_geo_code(fix_path("test_files/ios_polygons.geojson"))
+        fdata.assign_geo_code(
+            fix_path("tests/test_files/ios_polygons.geojson")
+        )
         write_ctd_ncfile(
             fix_path(out_path + f.split(os.path.sep)[-1] + ".nc"), fdata
         )
-        iod.utils.add_standard_variables(
+        cioos_utils.add_standard_variables(
             fix_path(out_path + f.split(os.path.sep)[-1] + ".nc")
         )
 
@@ -40,15 +45,17 @@ def convert_bot_files(f, out_path):
 
 
 def convert_ctd_files(f, out_path):
-    fdata = iod.IosObsFile.CtdFile(filename=f, debug=False)
+    fdata = ios.CtdFile(filename=f, debug=False)
     print(fdata.filename)
     if fdata.import_data():
         # print(fdata.data)
-        fdata.assign_geo_code(fix_path("test_files/ios_polygons.geojson"))
+        fdata.assign_geo_code(
+            fix_path("tests/test_files/ios_polygons.geojson")
+        )
         write_ctd_ncfile(
             fix_path(out_path + f.split(os.path.sep)[-1] + ".nc"), fdata
         )
-        iod.utils.add_standard_variables(
+        cioos_utils.add_standard_variables(
             fix_path(out_path + f.split(os.path.sep)[-1] + ".nc")
         )
     else:
@@ -57,9 +64,11 @@ def convert_ctd_files(f, out_path):
 
 def convert_cur_files(f, out_path):
     print(f)
-    fdata = iod.IosObsFile.CurFile(filename=f, debug=False)
+    fdata = ios.CurFile(filename=f, debug=False)
     if fdata.import_data():
-        fdata.assign_geo_code(fix_path("test_files/ios_polygons.geojson"))
+        fdata.assign_geo_code(
+            fix_path("tests/test_files/ios_polygons.geojson")
+        )
         write_cur_ncfile(
             fix_path(out_path + f.split(os.path.sep)[-1] + ".nc"), fdata
         )
