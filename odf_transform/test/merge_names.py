@@ -1,8 +1,10 @@
 import json
 
-source_file = 'odf_transform/geojson_files/Climate_ScotiaFundy_Polygons.geojson'
-names_file = 'odf_transform/test/Climate_ScotiaFundy_area_names.json'
-destination_file = 'odf_transform/geojson_files/Climate_ScotiaFundy_Polygons_names.geojson'
+source_file = "odf_transform/geojson_files/Climate_ScotiaFundy_Polygons.geojson"
+names_file = "odf_transform/test/Climate_ScotiaFundy_area_names.json"
+destination_file = (
+    "odf_transform/geojson_files/Climate_ScotiaFundy_Polygons_names.geojson"
+)
 match_on = "Area"
 add_fields = ["name"]
 
@@ -22,5 +24,5 @@ for index, feature in enumerate(source["features"]):
             break
 
 
-with open(destination_file, 'w') as file_obj:
+with open(destination_file, "w") as file_obj:
     json.dump(source, file_obj)
