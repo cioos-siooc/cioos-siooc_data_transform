@@ -1,10 +1,7 @@
 import json
-from .OceanNcFile import CurNcFile
-from .OceanNcVar import OceanNcVar
-from .utils.utils import is_in
-
-# from .utils.utils import is_in, find_geographic_area, read_geojson
-# from shapely.geometry import Point
+from cioos_data_transform.OceanNcFile import CurNcFile
+from cioos_data_transform.OceanNcVar import OceanNcVar
+from cioos_data_transform.utils import is_in
 import numpy as np
 
 

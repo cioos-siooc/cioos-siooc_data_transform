@@ -1,13 +1,8 @@
 # import random
 import json
-from .OceanNcFile import CtdNcFile
-from .OceanNcVar import OceanNcVar
-from .utils.utils import is_in
-
-# from .utils.utils import is_in, release_memory, find_geographic_area, read_geojson
-# from datetime import datetime
-# from netCDF4 import Dataset as ncdata
-# from shapely.geometry import Point
+from cioos_data_transform.OceanNcFile import CtdNcFile
+from cioos_data_transform.OceanNcVar import OceanNcVar
+from cioos_data_transform.utils import is_in
 
 
 def write_ctd_ncfile(filename, ctdcls):

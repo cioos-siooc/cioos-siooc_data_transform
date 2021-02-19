@@ -1,0 +1,547 @@
+*2018/04/11 09:25:38.99
+*IOS HEADER VERSION 2.0      2016/04/28 2016/06/13 IVF16
+
+*FILE
+    START TIME          : UTC 2017/07/15 17:35:53.000
+    TIME INCREMENT      : 0 0 0 0.125 0  ! (day hr min sec ms)
+    NUMBER OF RECORDS   : 122
+    DATA DESCRIPTION    : CTD
+    FILE TYPE           : ASCII
+    CRC                 : BB82EC41
+    NUMBER OF CHANNELS  : 8
+
+    $TABLE: CHANNELS
+    ! No Name                    Units           Minimum        Maximum
+    !--- ----------------------- --------------- -------------- --------------
+       1 Pressure                decibar         8.307          129.085
+       2 Depth                   metres          8.237          127.95
+       3 Temperature:Primary     'deg C (ITS90)' 7.1216         12.5509
+       4 pH:SBE:Nominal          n/a             8.298          8.928
+       5 Salinity:T0:C0          PSS-78          31.7145        33.8937
+       6 Oxygen:Dissolved:SBE    mL/L            2.316          6.945
+       7 Oxygen:Dissolved:SBE    umol/kg         100.7207       302.742
+       8 Number_of_bin_records   n/a             5              17
+    $END
+
+    $TABLE: CHANNEL DETAIL
+    ! No  Pad   Start  Width  Format  Type  Decimal_Places
+    !---  ----  -----  -----  ------  ----  --------------
+       1  -99   ' '        7  F       ' '     1
+       2  -99   ' '        7  F       ' '     1
+       3  -99   ' '        9  F       ' '     4
+       4  -99   ' '        8  F       ' '     3
+       5  -99   ' '        9  F       ' '     4
+       6  -99   ' '        7  F       ' '     2
+       7  -99   ' '        6  F       ' '     1
+       8  ' '   ' '        5  I       I       0
+    $END
+    $REMARKS
+        This file converted from Sea-Bird file:
+        P:\Cruise_Data_Processing\2017-42\Processing\derive\2017-42-1021.cnv
+    $END
+
+*ADMINISTRATION
+    MISSION             : 2017-42
+    AGENCY              : PBS, Ecosystem Sciences Division, Nanaimo, B.C.
+    COUNTRY             : Canada
+    PROJECT             : Integrated Pelagics Ecosystem Survey
+    SCIENTIST           : King J.
+    PLATFORM            : Sea Crest
+
+*LOCATION
+    GEOGRAPHIC AREA     : West Coast Vancouver Island
+    STATION             : 8413
+    EVENT NUMBER        : 1021
+    LATITUDE            :  50  17.77500 N  ! (deg min)
+    LONGITUDE           : 128   8.32500 W  ! (deg min)
+    WATER DEPTH         : 152
+
+*INSTRUMENT
+    TYPE                : Sea-Bird CTD
+    MODEL               : SBE25plus
+    SERIAL NUMBER       : 404
+
+    $TABLE: SENSORS
+    !   Name                               Abs Depth       Serial No
+    !   ---------------------------------  --------------  ----------
+        Temperature                        ' '             2449
+        Conductivity                       ' '             1764
+        'Pressure:Strain Gauge'            ' '             0464
+        pH                                 ' '             0852
+        'Oxygen:SBE 43'                    ' '             1176
+        'Fluorometer:WET Labs ECO-AFL/FL'  ' '             FLRTD-4185
+    $END
+    $REMARKS
+        Software Version 1.59
+    $END
+
+*HISTORY
+
+    $TABLE: PROGRAMS
+    !   Name     Vers   Date       Time     Recs In   Recs Out
+    !   -------- ------ ---------- -------- --------- ---------
+        SBE_IOS  4.2.2  2018/04/06 14:54:57      3035      3035
+        MERGEHDR 1.3    2018/04/06 15:17:10      3035      3035
+        CLIP     1.3    2018/04/06 16:03:49      3035      2636
+        SHIFTDAT 3.4    2018/04/06 16:15:05      2636      2636
+        DELETE   6.3    2018/04/06 16:35:37      2636       948
+        CTDEDIT  5.2.3  2018/04/09 14:37:22       948       937
+        FILTERS  4.3    2018/04/09 15:52:46       937       937
+        CALIB    11.9   2018/04/09 15:52:52       937       937
+        BINAVE   4.2    2018/04/09 15:53:08       937       122
+        REMOVECH 8.2    2018/04/10 09:02:03       122       122
+        CHGUNITS 3.1.1  2018/04/10 09:02:08       122       122
+        REORDER  1.3.1  2018/04/10 09:02:13 ?         ?
+        HDREDIT2 3.1.1  2018/04/11 09:25:38 ?         ?
+    $END
+    $REMARKS
+        -The following CLIP parameters were used.
+         Clip by Record Number Limits
+         First Record,Last Record =    400, 50000
+         Time Not Available in File
+        -The following SHIFT parameters were used.
+         Shift Channel: pH:SBE
+         # of Records to Advance (-ve for Delay):
+         At REC#     0 Shift= 10.00
+        -The following DELETE parameters were used:
+         Surface Record Removal: Last Press Min
+           Maximum Surface Pressure (relative):      10.00
+           Surface Swell Pressure Tolerance:       1.00
+         Pressure NOT filtered.
+         Swells deleted. Warning message if pressure difference of      2.00
+         Drop rates <   0.30m/s (calculated over   9 points) will be deleted.
+         Drop rate applies in the range    10.00 to   119.45 dbars
+         Sample interval (from FILE section of header) =     0.125 seconds.
+        -CTDEDIT  v5.2.3   2018/04/09 14:37:22
+             11 records were deleted in this editing session.
+             15 changes in channel Oxygen:Dissolved:SBE
+        -The following FILTER parameters were used.
+         Median filter was used.
+         Filter width =    5
+         The following channel(s) were filtered.
+           Fluorescence:URU:Wetlabs:ECO-AFL
+        -CALIB parameters: 2018/04/09 15:52:52
+         Calibration type = Correct
+         Mode: ONLY - calibration specs from Cal File only.
+         Calibration file = P:\Cruise_Data_Processing\2017-42\Processing\doc\2017-42-recal1.CCF
+         Calibration limited to records where Fluorescence:URU:Wetlabs:ECO-AFL between:
+            -5 and 0
+               29 records, in 1 block, were within the limits.
+              908 records were outside the limits.
+         Calibrations applied:
+         Ch Name                          Units    Fmla Coefficents
+         -- ----------------------------- --------- --- -----------------------------
+          6 Fluorescence:URU:Wetlabs:ECO- mg/m^3     10  0.0000000E+00  0.0000000E+00
+        -The following BINAVE parameters were used:
+         Bin channel = Press*
+         Averaging interval =    1.00
+         Minimum bin value =       0.000
+         Average value was used
+         Interpolated values were NOT used for empty bins
+         Channel 'NUMBER_OF_BIN_RECORDS' was added to file.
+        -REMOVECH 2018/04/10 09:02:03
+         The following CHANNEL(S) were removed:
+          Scan_Number
+          Conductivity:Primary [S/m]
+          Fluorescence:URU:Wetlabs:ECO-AFL [mg/m^3]
+          Oxygen:Voltage:SBE [volts]
+          Descent_Rate [m/s]
+          Flag
+        -CHANGE units:
+         Temperature reference channel: Temperature:Primary
+         Salinity    reference channel: Salinity:T0:C0
+         'Oxygen:Dissolved:SBE [mL/L]' changed from mL/L    to umol/kg
+        -HEADER EDITS: 2018/04/11 09:25:38
+         Applied edit header: P:\Cruise_Data_Processing\2017-42\Processing\doc\2017-42-HDR.TXT
+         Channel  1: Pressure [decibar]
+           Name:   Pressure:StrainGauge ==> Pressure
+         Channel  2: Depth [metres]
+           Name:   Depth:Salt_Water ==> Depth
+         Channel  6: Oxygen:Dissolved:SBE [mL/L]
+           Format: F8.3 ==> F7.2
+         Channel  4: pH:SBE:Nominal [n/a]
+           Name:   pH:SBE ==> pH:SBE:Nominal
+           Units:  pH Units ==> n/a
+    $END
+
+*COMMENTS
+    SBE HEADER
+      Sea-Bird SBE25 Data File:
+      FileName = C:\Users\WaterProperties-16\Desktop\2017-42 CTD\2017-42-003.hex
+      Software Version 1.59
+      Temperature SN = 2449
+      Conductivity SN = 1764
+      System UpLoad Time = Jul 16 2017 01:46:02
+       stn 8413
+      ds
+      SBE 25 CTD  V 4.1c SN 0404   07/16/17  01:38:11.238
+      external pressure sensor, range = 10153 psia,  tcval = 37
+      xtal = 9437232   clk = 32767.977   vmain = 12.5   iop = 204   vlith = 5.1
+      ncasts = 6   samples = 17118   free = 627855   lwait = 0 msec
+
+      CTD configuration:
+      number of scans averaged = 1,  data stored at 8 scans per second
+      real time data transmitted at 8 scans per second
+      minimum conductivity frequency for pump turn on = 3100
+      pump delay = 45 seconds
+
+      battery type = ALKALINE
+
+      3 external voltages sampled
+      stored voltage # 0 = external voltage 0
+      stored voltage # 1 = external voltage 4
+      stored voltage # 2 = external voltage 5
+
+
+      S>
+      dh
+      cast 3  07/15 17:35:53  smpls 10056 to 13090  nv = 3  avg = 1  stp = switch of
+
+      S>
+    # nquan = 12
+    # nvalues = 3035
+    # units = specified
+    # name 0 = scan: Scan Count
+    # name 1 = prSM: Pressure, Strain Gauge [db]
+    # name 2 = depSM: Depth [salt water, m], lat = 49.00
+    # name 3 = t090C: Temperature [ITS-90, deg C]
+    # name 4 = c0S/m: Conductivity [S/m]
+    # name 5 = flECO-AFL: Fluorescence, WET Labs ECO-AFL/FL [mg/m^3]
+    # name 6 = sbeox0V: Oxygen raw, SBE 43 [V]
+    # name 7 = ph: pH
+    # name 8 = dz/dtM: Descent Rate [m/s]
+    # name 9 = sal00: Salinity, Practical [PSU]
+    # name 10 = sbeox0ML/L: Oxygen, SBE 43 [ml/l], WS = 2
+    # name 11 = flag: flag
+    # span 0 =          1,       3035
+    # span 1 =     -0.076,    129.449
+    # span 2 =     -0.075,    128.311
+    # span 3 =     7.1178,    13.5137
+    # span 4 =   0.089855,   3.754612
+    # span 5 =    -0.3120,    26.9102
+    # span 6 =     0.0000,     2.4444
+    # span 7 =      8.293,      8.931
+    # span 8 =     -1.929,      1.511
+    # span 9 =     0.5759,    33.8945
+    # span 10 =    -2.2830,    20.5585
+    # span 11 = 0.0000e+00, 0.0000e+00
+    # interval = seconds: 0.125
+    # start_time = Jul 15 2017 17:35:53 [Instrument's time stamp, header]
+    # bad_flag = -9.990e-29
+    # <Sensors count="6" >
+    #   <sensor Channel="1" >
+    #     <!-- Frequency 0, Temperature -->
+    #     <TemperatureSensor SensorID="55" >
+    #       <SerialNumber>2449</SerialNumber>
+    #       <CalibrationDate>16-Dec-15</CalibrationDate>
+    #       <UseG_J>1</UseG_J>
+    #       <A>0.00000000e+000</A>
+    #       <B>0.00000000e+000</B>
+    #       <C>0.00000000e+000</C>
+    #       <D>0.00000000e+000</D>
+    #       <F0_Old>0.000</F0_Old>
+    #       <G>4.35536976e-003</G>
+    #       <H>6.43861843e-004</H>
+    #       <I>2.35988525e-005</I>
+    #       <J>2.27425418e-006</J>
+    #       <F0>1000.000</F0>
+    #       <Slope>1.00000000</Slope>
+    #       <Offset>0.0000</Offset>
+    #     </TemperatureSensor>
+    #   </sensor>
+    #   <sensor Channel="2" >
+    #     <!-- Frequency 1, Conductivity -->
+    #     <ConductivitySensor SensorID="3" >
+    #       <SerialNumber>1764</SerialNumber>
+    #       <CalibrationDate>23-Feb-17</CalibrationDate>
+    #       <UseG_J>1</UseG_J>
+    #       <!-- Cell const and series R are applicable only for wide range sensors.
+     -->
+    #       <SeriesR>0.0000</SeriesR>
+    #       <CellConst>2000.0000</CellConst>
+    #       <ConductivityType>0</ConductivityType>
+    #       <Coefficients equation="0" >
+    #         <A>0.00000000e+000</A>
+    #         <B>0.00000000e+000</B>
+    #         <C>0.00000000e+000</C>
+    #         <D>0.00000000e+000</D>
+    #         <M>0.0</M>
+    #         <CPcor>-9.57000000e-008</CPcor>
+    #       </Coefficients>
+    #       <Coefficients equation="1" >
+    #         <G>-4.15782044e+000</G>
+    #         <H>4.88269411e-001</H>
+    #         <I>-7.82043110e-004</I>
+    #         <J>6.18774318e-005</J>
+    #         <CPcor>-9.57000000e-008</CPcor>
+    #         <CTcor>3.2500e-006</CTcor>
+    #         <!-- WBOTC not applicable unless ConductivityType = 1. -->
+    #         <WBOTC>0.00000000e+000</WBOTC>
+    #       </Coefficients>
+    #       <Slope>1.00000000</Slope>
+    #       <Offset>0.00000</Offset>
+    #     </ConductivitySensor>
+    #   </sensor>
+    #   <sensor Channel="3" >
+    #     <!-- Pressure voltage, Pressure, Strain Gauge -->
+    #     <PressureSensor SensorID="49" >
+    #       <SerialNumber>0464</SerialNumber>
+    #       <CalibrationDate>28-Feb-17</CalibrationDate>
+    #       <A0>7.973872e+002</A0>
+    #       <A1>-2.072374e-001</A1>
+    #       <A2>2.547327e-007</A2>
+    #       <Offset>0.00000</Offset>
+    #     </PressureSensor>
+    #   </sensor>
+    #   <sensor Channel="4" >
+    #     <!-- A/D voltage 0, pH -->
+    #     <pH_Sensor SensorID="43" >
+    #       <SerialNumber>0852</SerialNumber>
+    #       <CalibrationDate>08-Mar-17</CalibrationDate>
+    #       <Slope>4.5991</Slope>
+    #       <Offset>2.5690</Offset>
+    #     </pH_Sensor>
+    #   </sensor>
+    #   <sensor Channel="5" >
+    #     <!-- A/D voltage 1, Oxygen, SBE 43 -->
+    #     <OxygenSensor SensorID="38" >
+    #       <SerialNumber>1176</SerialNumber>
+    #       <CalibrationDate>02-Mar-17</CalibrationDate>
+    #       <Use2007Equation>1</Use2007Equation>
+    #       <CalibrationCoefficients equation="0" >
+    #         <!-- Coefficients for Owens-Millard equation. -->
+    #         <Boc>0.0000</Boc>
+    #         <Soc>0.0000e+000</Soc>
+    #         <offset>0.0000</offset>
+    #         <Pcor>0.00e+000</Pcor>
+    #         <Tcor>0.0000</Tcor>
+    #         <Tau>0.0</Tau>
+    #       </CalibrationCoefficients>
+    #       <CalibrationCoefficients equation="1" >
+    #         <!-- Coefficients for Sea-Bird equation - SBE calibration in 2007 and
+    later. -->
+    #         <Soc>6.1597e-001</Soc>
+    #         <offset>-0.5257</offset>
+    #         <A>-4.5701e-003</A>
+    #         <B> 2.1508e-004</B>
+    #         <C>-3.4602e-006</C>
+    #         <D0> 2.5826e+000</D0>
+    #         <D1> 1.92634e-004</D1>
+    #         <D2>-4.64803e-002</D2>
+    #         <E> 3.6000e-002</E>
+    #         <Tau20> 1.6700</Tau20>
+    #         <H1>-3.3000e-002</H1>
+    #         <H2> 5.0000e+003</H2>
+    #         <H3> 1.4500e+003</H3>
+    #       </CalibrationCoefficients>
+    #     </OxygenSensor>
+    #   </sensor>
+    #   <sensor Channel="6" >
+    #     <!-- A/D voltage 2, Fluorometer, WET Labs ECO-AFL/FL -->
+    #     <FluoroWetlabECO_AFL_FL_Sensor SensorID="20" >
+    #       <SerialNumber>FLRTD-4185</SerialNumber>
+    #       <CalibrationDate>07-Mar-2017</CalibrationDate>
+    #       <ScaleFactor>1.30000000e+001</ScaleFactor>
+    #       <!-- Dark output -->
+    #       <Vblank>0.0240</Vblank>
+    #     </FluoroWetlabECO_AFL_FL_Sensor>
+    #   </sensor>
+    # </Sensors>
+    # datcnv_date = Apr 06 2018 12:10:22, 7.23.2 [datcnv_vars = 9]
+    # datcnv_in = P:\Cruise_Data_Processing\2017-42\Processing\rename\2017-42-1021.h
+    ex P:\Cruise_Data_Processing\2017-42\Processing\doc\2017-53-ctd.xmlcon
+    # datcnv_skipover = 0
+    # datcnv_ox_hysteresis_correction = no
+    # wfilter_date = Apr 06 2018 14:16:35, 7.23.2
+    # wfilter_in = P:\Cruise_Data_Processing\2017-42\Processing\convert\2017-42-1021
+    .cnv
+    # wfilter_excl_bad_scans = yes
+    # wfilter_action prSM = cosine, 5
+    # wfilter_action depSM = cosine, 5
+    # wfilter_action t090C = cosine, 5
+    # wfilter_action c0S/m = cosine, 5
+    # alignctd_date = Apr 06 2018 14:17:05, 7.23.2
+    # alignctd_in = P:\Cruise_Data_Processing\2017-42\Processing\wfilter\2017-42-102
+    1.cnv
+    # alignctd_adv = sbeox0V 2.500
+    # celltm_date = Apr 06 2018 14:17:41, 7.23.2
+    # celltm_in = P:\Cruise_Data_Processing\2017-42\Processing\align\2017-42-1021.cn
+    v
+    # celltm_alpha = 0.0400, 0.0000
+    # celltm_tau = 8.0000, 0.0000
+    # celltm_temp_sensor_use_for_cond = primary,
+    # Derive_date = Apr 06 2018 14:18:46, 7.23.2 [derive_vars = 2]
+    # Derive_in = P:\Cruise_Data_Processing\2017-42\Processing\celltm\2017-42-1021.c
+    nv P:\Cruise_Data_Processing\2017-42\Processing\doc\2017-42-ctd.xmlcon
+    # derive_time_window_docdt = seconds: 2
+    # derive_ox_tau_correction = yes
+    # file_type = ascii
+     END*
+    Remarks from CTDEDIT:
+    CTDEDIT was used to remove a few records corrupted by shed wakes;
+     dissolved oxygen data were removed from the top 9db.
+
+    Data Processing Notes:
+    ----------------------
+    The length of the surface soaks varied greatly, with some not being long enough
+      for the pumps to come on and equilibration of pumped channels to be achieved.
+
+    Dissolved Oxygen and pH:SBE data are nominal and unedited, except that some
+      records were removed in editing temperature and salinity and some bad
+      near-surface dissolved oxygen data were removed.
+
+    Channel Fluorescence:URU:Wetlabs was removed from casts #1001-1035 because
+      the protective cap had not been removed. The data that remain are nominal.
+      Some small negative values in fluorescence were set to 0 using program
+      Calibrate.
+
+    There was no calibration sampling available from this cruise. An inter-ship
+      comparison of 2 casts from a June 2017 cruise using these sensors with a cast
+      from a cruise that did include calibration sampling, suggested that the salinity
+      values from this CTD were accurate but that dissolved oxygen values were likely
+      low by up to 4%.
+
+    WARNING: The pH:SBE:Nominal data should be used with caution; no field calibration
+      data were available at the time of processing.
+      Calibration is required for each cast to get absolute values, although general
+      trends within a cast are likely real.
+
+    For details on the processing see processing report: 2017-42-Processing_Report.doc.
+
+*CALIBRATION
+
+    $TABLE: CORRECTED CHANNELS
+    !Name                               Units    Fmla Pad    Coefficients
+    !---------------------------------- -------- ---- ------ ------------
+     Fluorescence:URU:Wetlabs:ECO-AFL   mg/m^3     10 -99    () (0 0)
+    $END
+!--1--- --2--- ---3---- ---4--- ---5---- --6--- --7-- -8--
+!Pressu Depth  Temperat pH:SBE: Salinity Oxygen Oxyge Numb
+!re            ure:     Nominal :T0:C0   :      n:    er_o
+!              Primary                   Dissol Disso ~bin
+!                                        ved:   lved: _rec
+!                                        SBE    SBE   ords
+!------ ------ -------- ------- -------- ------ ----- ----
+*END OF HEADER
+    8.3    8.2  12.5509   8.927  31.7145 -99.00 -99.0    5
+    8.9    8.8  12.4415   8.928  31.7675   6.84 298.4    5
+   10.0    9.9  12.3790   8.926  31.7968   6.87 299.6    6
+   11.0   10.9  12.3173   8.925  31.8233   6.92 301.5    7
+   12.0   11.9  12.3014   8.921  31.8339   6.93 302.2    6
+   13.1   13.0  12.1891   8.917  31.8663   6.95 302.7    9
+   14.0   13.9  12.0050   8.893  31.9057   6.61 288.0    8
+   15.0   14.8  11.7369   8.849  31.9483   6.35 276.6    7
+   16.0   15.9  11.3360   8.820  32.0055   6.20 270.2    6
+   17.0   16.8  11.1459   8.804  32.0246   6.11 266.3    6
+   18.0   17.9  10.9553   8.789  32.0376   6.04 263.2    8
+   19.1   18.9  10.8187   8.777  32.0627   5.79 252.3   17
+   19.9   19.7  10.4227   8.697  32.1278   5.17 225.2   12
+   21.0   20.8   9.7209   8.615  32.2452   4.76 207.5    7
+   22.1   21.9   9.5210   8.583  32.2870   4.57 199.0    7
+   23.0   22.8   9.3082   8.559  32.3331   4.43 192.8    7
+   24.1   23.9   9.2206   8.541  32.3550   4.29 186.9    6
+   25.1   24.8   9.0957   8.512  32.3926   4.16 181.0    6
+   26.0   25.8   8.8769   8.492  32.4490   4.04 175.8    5
+   27.1   26.8   8.7239   8.477  32.4834   3.92 170.6   10
+   28.0   27.7   8.5948   8.461  32.5400   3.81 166.0    7
+   29.0   28.8   8.5376   8.456  32.5834   3.75 163.1    6
+   30.1   29.8   8.4892   8.452  32.6122   3.71 161.4    7
+   31.0   30.7   8.3984   8.447  32.6629   3.67 159.9    7
+   32.0   31.8   8.3416   8.440  32.7195   3.64 158.3    7
+   33.0   32.7   8.2958   8.440  32.7438   3.62 157.6    5
+   34.0   33.7   8.2856   8.437  32.7462   3.60 156.9    7
+   35.0   34.7   8.2808   8.439  32.7485   3.59 156.1    5
+   36.0   35.7   8.2764   8.435  32.7516   3.54 154.3    9
+   37.0   36.6   8.2885   8.419  32.7907   3.43 149.4    8
+   38.0   37.7   8.2852   8.412  32.8916   3.35 145.6    6
+   39.0   38.7   8.2355   8.412  32.9269   3.29 143.4    7
+   40.0   39.6   8.2269   8.412  32.9354   3.28 142.8    8
+   41.0   40.7   8.2059   8.413  32.9512   3.27 142.4    6
+   42.0   41.6   8.1708   8.413  32.9733   3.26 141.8    5
+   43.0   42.6   8.1075   8.414  33.0192   3.23 140.8    9
+   43.9   43.6   8.0693   8.409  33.0510   3.19 138.7    6
+   45.0   44.6   8.0357   8.405  33.0787   3.15 137.2    6
+   46.1   45.7   8.0056   8.403  33.1044   3.13 136.4    7
+   47.0   46.6   7.9865   8.402  33.1200   3.13 136.0    7
+   48.0   47.6   7.9715   8.399  33.1263   3.12 135.9    6
+   49.0   48.6   7.9506   8.400  33.1341   3.11 135.4    6
+   50.1   49.6   7.9169   8.397  33.1490   3.09 134.5    7
+   51.0   50.6   7.8491   8.390  33.1768   3.02 131.4    7
+   52.0   51.5   7.7826   8.387  33.2172   2.99 130.2    6
+   53.0   52.6   7.7670   8.385  33.2296   2.98 129.7    7
+   54.0   53.6   7.7666   8.385  33.2378   2.98 129.5    7
+   55.0   54.5   7.7696   8.381  33.2404   2.98 129.6    6
+   56.0   55.5   7.7624   8.380  33.2439   2.98 129.5    6
+   57.0   56.5   7.7447   8.381  33.2547   2.97 129.4   11
+   57.9   57.4   7.7650   8.379  33.2705   2.98 129.8    9
+   58.9   58.4   7.7883   8.380  33.2831   2.99 130.1    6
+   59.9   59.4   7.8065   8.382  33.2900   2.99 130.2    6
+   61.0   60.5   7.8391   8.385  33.3033   3.00 130.5    6
+   62.0   61.4   7.8568   8.384  33.3115   3.00 130.6    6
+   63.0   62.5   7.8705   8.384  33.3194   2.99 130.1   13
+   64.0   63.4   7.8706   8.381  33.3331   2.98 129.6    9
+   64.9   64.4   7.8515   8.378  33.3440   2.96 128.8    7
+   66.0   65.4   7.8205   8.374  33.3593   2.94 127.8    7
+   67.0   66.4   7.8011   8.372  33.3796   2.92 127.2    8
+   68.0   67.4   7.7976   8.368  33.3941   2.90 126.1    6
+   69.0   68.4   7.8104   8.366  33.4104   2.88 125.2    7
+   70.0   69.4   7.8200   8.365  33.4254   2.86 124.4    6
+   71.0   70.4   7.7973   8.363  33.4415   2.84 123.5    9
+   72.0   71.3   7.7728   8.359  33.4678   2.81 122.0   11
+   73.0   72.3   7.7249   8.358  33.4963   2.79 121.3    6
+   74.0   73.4   7.7054   8.357  33.5307   2.78 121.1    7
+   75.0   74.4   7.6981   8.354  33.5616   2.78 120.8    6
+   76.0   75.3   7.6982   8.354  33.5657   2.77 120.6    7
+   77.0   76.4   7.7074   8.354  33.5818   2.77 120.3    8
+   78.1   77.4   7.7094   8.352  33.5975   2.75 119.7    7
+   79.0   78.4   7.6922   8.350  33.6046   2.74 119.1    7
+   80.1   79.4   7.6588   8.347  33.6260   2.71 117.8    9
+   81.0   80.3   7.6320   8.344  33.6481   2.68 116.8   13
+   82.0   81.2   7.6350   8.344  33.6702   2.67 116.2    7
+   83.0   82.3   7.6666   8.345  33.7261   2.66 115.9    6
+   84.0   83.3   7.6706   8.345  33.7427   2.67 115.9    7
+   85.1   84.3   7.6722   8.344  33.7514   2.66 115.6    6
+   86.1   85.3   7.6451   8.341  33.7494   2.65 115.2    8
+   87.0   86.2   7.6502   8.342  33.7556   2.65 115.1   13
+   88.0   87.3   7.6579   8.341  33.7670   2.64 115.0    7
+   89.1   88.3   7.6689   8.344  33.7734   2.64 115.0    6
+   90.0   89.2   7.6763   8.344  33.7775   2.65 115.2    6
+   91.0   90.2   7.6799   8.343  33.7788   2.66 115.7    6
+   92.1   91.3   7.6858   8.343  33.7803   2.67 115.9    8
+   93.0   92.2   7.6950   8.344  33.7838   2.67 115.9   11
+   94.0   93.2   7.6980   8.343  33.7872   2.66 115.8    9
+   95.0   94.2   7.7000   8.343  33.7931   2.66 115.6    8
+   96.0   95.1   7.6923   8.342  33.7999   2.65 115.4    7
+   97.0   96.1   7.6909   8.344  33.8032   2.65 115.2    7
+   98.0   97.2   7.6923   8.343  33.8056   2.65 115.0    6
+   99.0   98.2   7.6825   8.339  33.8075   2.63 114.4    7
+  100.0   99.2   7.6708   8.339  33.8107   2.62 113.9   10
+  101.0  100.1   7.6528   8.337  33.8119   2.59 112.8   12
+  102.0  101.1   7.6317   8.331  33.8153   2.55 111.0    7
+  103.0  102.1   7.5813   8.325  33.8231   2.51 109.3    6
+  104.0  103.1   7.5211   8.321  33.8355   2.49 108.3    7
+  104.9  104.0   7.4879   8.322  33.8421   2.48 108.0    7
+  106.0  105.1   7.4652   8.320  33.8465   2.47 107.3    7
+  107.0  106.1   7.4484   8.320  33.8513   2.44 106.1    7
+  108.1  107.1   7.4366   8.317  33.8570   2.43 105.6    6
+  109.0  108.1   7.4178   8.315  33.8618   2.42 105.3    7
+  110.0  109.1   7.3958   8.313  33.8651   2.42 105.1    7
+  111.1  110.1   7.3873   8.312  33.8657   2.41 104.8    5
+  112.1  111.1   7.3481   8.313  33.8666   2.39 104.1   14
+  113.0  112.0   7.2869   8.309  33.8700   2.37 103.1   10
+  114.0  113.0   7.2587   8.307  33.8743   2.37 102.9    7
+  115.0  114.0   7.2405   8.307  33.8754   2.37 103.1    6
+  116.0  114.9   7.2386   8.307  33.8773   2.37 103.2    6
+  117.0  116.0   7.2404   8.308  33.8809   2.37 103.1    7
+  118.0  117.0   7.2361   8.308  33.8819   2.37 103.1    6
+  119.0  118.0   7.2324   8.308  33.8824   2.37 102.9   14
+  119.9  118.9   7.2299   8.308  33.8831   2.37 102.9   12
+  121.0  119.9   7.2259   8.307  33.8837   2.36 102.7    7
+  122.0  121.0   7.2249   8.305  33.8845   2.36 102.8    7
+  123.0  121.9   7.2249   8.307  33.8860   2.36 102.7    5
+  124.0  122.9   7.2108   8.307  33.8889   2.36 102.7    7
+  125.0  124.0   7.1979   8.304  33.8905   2.36 102.5    7
+  126.1  125.0   7.1625   8.303  33.8925   2.36 102.5    9
+  127.0  125.9   7.1566   8.303  33.8928   2.35 102.2   14
+  128.0  126.9   7.1428   8.301  33.8936   2.33 101.5   10
+  129.1  127.9   7.1216   8.298  33.8937   2.32 100.7   16

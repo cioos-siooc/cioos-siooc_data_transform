@@ -1,22 +1,17 @@
 import glob
 import json
 import os
-import sys
 import traceback
 from datetime import datetime
-
 import numpy as np
 from pytz import timezone
+from cioos_data_transform.utils import is_in
+from cioos_data_transform.utils import fix_path
+from cioos_data_transform.OdfCls import CtdNcFile
+from cioos_data_transform.utils import get_geo_code, read_geojson
 
-sys.path.insert(0, "../../")
-
-from ios_data_transform import is_in
-from ios_data_transform.utils.utils import fix_path
-from odf_transform.odfCls import CtdNcFile
-from odf_transform.utils.utils import get_geo_code, read_geojson
+# from odf_transform.utils.utils import get_geo_code, read_geojson
 from odf_transform.utils.oce import get_odf_var_attributes_to_oce
-
-
 
 
 CONFIG_PATH = fix_path("./config.json")
@@ -95,7 +90,6 @@ def write_ctd_ncfile(outfile, odf_data, config={}):
         "filename",
         None,
         metadata["filename"].split("/")[-1],
-
     )
 
     # add administration variables
@@ -104,7 +98,10 @@ def write_ctd_ncfile(outfile, odf_data, config={}):
     ncfile.add_var("str_id", "scientist", None, metadata["scientist"])
     ncfile.add_var("str_id", "platform", None, metadata["ship"])
     ncfile.add_var(
-        "str_id", "instrument_type", None, metadata["type"] + " " + metadata["model"]
+        "str_id",
+        "instrument_type",
+        None,
+        metadata["type"] + " " + metadata["model"],
     )
 
     ncfile.add_var(
@@ -135,7 +132,6 @@ def write_ctd_ncfile(outfile, odf_data, config={}):
 
     ncfile.add_var("str_id", "event_number", None, event_id)
 
-
     print("Profile ID:", profile_id)
 
     ncfile.add_var("profile", "profile", None, profile_id)
@@ -145,7 +141,7 @@ def write_ctd_ncfile(outfile, odf_data, config={}):
     ncfile.add_var("time", "time", None, [date_obj])
 
     # Retrieve Original ODF Variable Headers
-    metadata['original_header'] = get_odf_var_attributes_to_oce(metadata)
+    metadata["original_header"] = get_odf_var_attributes_to_oce(metadata)
 
     for var in data.keys():
         #
@@ -216,7 +212,8 @@ def convert_test_files(config):
         try:
             print(f)
             write_ctd_ncfile(
-                outfile=TEST_FILES_OUTPUT + "{}.nc".format(os.path.basename(f)),
+                outfile=TEST_FILES_OUTPUT
+                + "{}.nc".format(os.path.basename(f)),
                 odf_data=data,
                 config=config,
             )
