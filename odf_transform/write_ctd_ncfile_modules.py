@@ -14,14 +14,9 @@ from cioos_data_transform.utils import get_geo_code, read_geojson
 from utils.oce import get_odf_var_attributes_to_oce
 
 
-CONFIG_PATH = fix_path("./config.json")
-TEST_FILES_PATH = fix_path("./test/test_files/")
-TEST_FILES_OUTPUT = fix_path("./test/temp/")
-
-
-def read_config():
+def read_config(config_file):
     # read json file with information on dataset etc.
-    with open(CONFIG_PATH) as fid:
+    with open(config_file) as fid:
         config = json.load(fid)
 
         return config
@@ -199,10 +194,10 @@ def write_ctd_ncfile(outfile, odf_data, config={}):
 
 
 def convert_test_files(config):
-    flist = glob.glob(TEST_FILES_PATH + "/*.json")
+    flist = glob.glob(config["TEST_FILES_PATH"] + "/*.json")
 
-    if not os.path.isdir(TEST_FILES_OUTPUT):
-        os.mkdir(TEST_FILES_OUTPUT)
+    if not os.path.isdir(config["TEST_FILES_OUTPUT"]):
+        os.mkdir(config["TEST_FILES_OUTPUT"])
 
     for f in flist:
         with open(f) as fid:
@@ -212,7 +207,7 @@ def convert_test_files(config):
         try:
             print(f)
             write_ctd_ncfile(
-                outfile=TEST_FILES_OUTPUT
+                outfile=config["TEST_FILES_OUTPUT"]
                 + "{}.nc".format(os.path.basename(f)),
                 odf_data=data,
                 config=config,
@@ -236,8 +231,18 @@ def read_geojson_file_list(fileList):
 # make this file importable
 #
 if __name__ == "__main__":
-    config = read_config()
+    CONFIG_PATH = fix_path("./config.json")
+    TEST_FILES_PATH = fix_path("./test/test_files/")
+    TEST_FILES_OUTPUT = fix_path("./test/temp/")
+
+    config = read_config(CONFIG_PATH)
     config.update(
         {"polygons_dict": read_geojson_file_list(config["geojsonFileList"])}
+    )
+    config.update(
+        {
+            "TEST_FILES_PATH": TEST_FILES_PATH,
+            "TEST_FILES_OUTPUT": TEST_FILES_OUTPUT,
+        }
     )
     convert_test_files(config)
