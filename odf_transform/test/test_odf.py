@@ -14,7 +14,7 @@ from ios_data_transform import is_in
 from ios_data_transform.utils.utils import fix_path
 from odf_transform.odfCls import CtdNcFile
 from odf_transform.utils.utils import get_geo_code, read_geojson
-from odf_transform.utils.oce import get_odf_var_attributes_to_oce, convert_oce_units
+from odf_transform.utils.oce import get_odf_var_attributes_to_oce, convert_oce_units_to_udunit
 
 
 
@@ -148,7 +148,7 @@ def write_ctd_ncfile(outfile, odf_data, config={}):
     metadata['original_header'] = get_odf_var_attributes_to_oce(metadata)
 
     # Read OCE units and create a unit field in string format
-    metadata['units'] = convert_oce_units(metadata['units'])
+    metadata['units'] = convert_oce_units_to_udunit(metadata['units'])
 
     for var in data.keys():
         #

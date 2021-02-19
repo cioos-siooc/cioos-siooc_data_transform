@@ -2,7 +2,7 @@ import re
 import warnings
 
 
-def convert_oce_units(units):
+def convert_oce_units_to_udunit(units):
     """
     OCE convert ODF units to a special list. This present tool tries to convert the OCE units format
      to a udunit format.
