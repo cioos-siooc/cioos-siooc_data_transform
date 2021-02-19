@@ -111,3 +111,5 @@ cioos_data_transform/\.idea/
 .vscode/
 
 *.ipynb
+
+.DS_Store
