@@ -109,3 +109,6 @@ cioos_data_transform/\.idea/
 *.nc
 
 .vscode/
+
+
+.DS_Store
