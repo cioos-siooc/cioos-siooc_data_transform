@@ -1,8 +1,7 @@
 import re
-import warnings
 
 
-def convert_oce_units(units):
+def convert_oce_units_to_udunit(units):
     """
     OCE convert ODF units to a special list. This present tool tries to convert the OCE units format
      to a udunit format.
@@ -31,7 +30,7 @@ def convert_oce_units(units):
                 self.unit = input[1]
                 self.exponent = input[2]
             else:
-                raise RuntimeError('Failed to read expoenent:' + str(input))
+                raise RuntimeError('Failed to read exponent:' + str(input))
             return self
 
         def write_udunit(self):
