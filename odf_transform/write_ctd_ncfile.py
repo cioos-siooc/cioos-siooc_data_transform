@@ -224,13 +224,20 @@ def convert_test_files(config):
             print(traceback.print_exc())
 
 
-config = read_config()
+def read_geojson_file_list(fileList):
+    # read geojson files
+    polygons_dict = {}
+    for fname in fileList:
+        polygons_dict.update(read_geojson(fname))
+    return polygons_dict
 
-# read geojson files
-polygons_dict = {}
-for fname in config["geojsonFileList"]:
-    polygons_dict.update(read_geojson(fname))
-config.update({"polygons_dict": polygons_dict})
-# print(polygons_dict)
 
-convert_test_files(config)
+#
+# make this file importable
+#
+if __name__ == "__main__":
+    config = read_config()
+    config.update(
+        {"polygons_dict": read_geojson_file_list(config["geojsonFileList"])}
+    )
+    convert_test_files(config)
