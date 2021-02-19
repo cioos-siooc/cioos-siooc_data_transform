@@ -238,5 +238,8 @@ for fname in config["geojsonFileList"]:
     polygons_dict.update(read_geojson(fname))
 config.update({"polygons_dict": polygons_dict})
 # print(polygons_dict)
+with open(config['vocabularyFileList'][0]) as fid:
+    vocab = json.load(fid)
+config.update({"vocabulary": vocab})
 
 convert_test_files(config)
