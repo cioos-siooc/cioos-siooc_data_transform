@@ -158064,15 +158064,5 @@
             26.2203,
             26.2893
         ]
-    },
-    "processingLog": {
-        "time": [
-            1613761000.0,
-            1613761000.0
-        ],
-        "value": [
-            "create 'odf' object",
-            "read.odf(\"/Users/nate.rosenstock/dev/cioos-siooc_data_transform/odf_transform/sample_data/mli_data/2020-12-23/ODF_files_MLI/MCTD_2015016_RIKI_2386_900.ODF\", columns=c(\"\"), debug=0)"
-        ]
     }
 }

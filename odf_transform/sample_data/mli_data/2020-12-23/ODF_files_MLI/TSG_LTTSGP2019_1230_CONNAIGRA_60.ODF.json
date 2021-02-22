@@ -57967,15 +57967,5 @@
             8.79,
             8.79
         ]
-    },
-    "processingLog": {
-        "time": [
-            1613761000.0,
-            1613761000.0
-        ],
-        "value": [
-            "create 'odf' object",
-            "read.odf(\"/Users/nate.rosenstock/dev/cioos-siooc_data_transform/odf_transform/sample_data/mli_data/2020-12-23/ODF_files_MLI/TSG_LTTSGP2019_1230_CONNAIGRA_60.ODF\", columns=c(\"\"), debug=0)"
-        ]
     }
 }

@@ -904,15 +904,5 @@
             0.192,
             0.222
         ]
-    },
-    "processingLog": {
-        "time": [
-            1613761000.0,
-            1613761000.0
-        ],
-        "value": [
-            "create 'odf' object",
-            "read.odf(\"/Users/nate.rosenstock/dev/cioos-siooc_data_transform/odf_transform/sample_data/mli_data/2020-12-23/ODF_files_MLI/XBT_1992020_10_1_.ODF\", columns=c(\"\"), debug=0)"
-        ]
     }
 }
