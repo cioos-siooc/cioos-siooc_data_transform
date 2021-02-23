@@ -21680,15 +21680,5 @@
             63,
             137
         ]
-    },
-    "processingLog": {
-        "time": [
-            1613761000.0,
-            1613761000.0
-        ],
-        "value": [
-            "create 'odf' object",
-            "read.odf(\"/Users/nate.rosenstock/dev/cioos-siooc_data_transform/odf_transform/test/test_files/CTD_AMU2019001_001_01_DN.ODF\", columns=c(\"\"), debug=0)"
-        ]
     }
 }
