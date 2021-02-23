@@ -97,7 +97,7 @@ def convert_files_threads(ftype, fname, fgeo, out_path):
         ncFileName = out_path + yy + "/" + fname.split("/")[-1] + ".nc"
         if ftype == "ctd":
             try:
-                cioos_utils.write_ctd_ncfile(ncFileName, fdata)
+                write_ctd_ncfile(ncFileName, fdata)
                 standardize_variable_names(ncFileName)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
