@@ -1,5 +1,5 @@
 from .utils import (
-    import_env_variables,
+    read_config,
     is_in,
     file_mod_time,
     read_geojson,

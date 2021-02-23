@@ -3,7 +3,13 @@ import sys
 import glob
 from multiprocessing import Process
 from time import time
-import cioos_data_transform.cioos_data_transform as iod
+import cioos_data_transform.IosObsFile as ios
+from write_ctd_ncfile import write_ctd_ncfile
+from write_cur_ncfile import write_cur_ncfile
+from write_mctd_ncfile import write_mctd_ncfile
+
+# .cioos_data_transform as iod
+import cioos_data_transform.utils as cioos_utils
 import subprocess
 
 
@@ -59,24 +65,24 @@ def standardize_variable_names(ncfile):
     # output: netcdf file with standard variables added
     # NOTE: netcdf files are overwritten
     print(f"Adding standard variables:{ncfile}")
-    iod.add_standard_variables(ncfile)
+    cioos_utils.add_standard_variables(ncfile)
 
 
 def convert_files_threads(ftype, fname, fgeo, out_path):
     # skip processing file if its older than 24 hours old
-    if iod.file_mod_time(fname) < -24.0 and opt == "new":
+    if cioos_utils.file_mod_time(fname) < -24.0 and opt == "new":
         # print("Not converting file: ", fname)
         return 0
     print("Processing {} {}".format(ftype, fname))
     # read file based on file type
     if ftype == "ctd":
-        fdata = iod.CtdFile(filename=fname, debug=False)
+        fdata = ios.CtdFile(filename=fname, debug=False)
     elif ftype == "mctd":
-        fdata = iod.MCtdFile(filename=fname, debug=False)
+        fdata = ios.MCtdFile(filename=fname, debug=False)
     elif ftype == "bot":
-        fdata = iod.CtdFile(filename=fname, debug=False)
+        fdata = ios.CtdFile(filename=fname, debug=False)
     elif ftype == "cur":
-        fdata = iod.CurFile(filename=fname, debug=False)
+        fdata = ios.CurFile(filename=fname, debug=False)
     else:
         print("Filetype not understood!")
         sys.exit()
@@ -91,28 +97,28 @@ def convert_files_threads(ftype, fname, fgeo, out_path):
         ncFileName = out_path + yy + "/" + fname.split("/")[-1] + ".nc"
         if ftype == "ctd":
             try:
-                iod.write_ctd_ncfile(ncFileName, fdata)
+                cioos_utils.write_ctd_ncfile(ncFileName, fdata)
                 standardize_variable_names(ncFileName)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
                 subprocess.call(["rm", "-f", ncFileName])
         elif ftype == "mctd":
             try:
-                iod.write_mctd_ncfile(ncFileName, fdata)
+                write_mctd_ncfile(ncFileName, fdata)
                 standardize_variable_names(ncFileName)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
                 subprocess.call(["rm", "-f", ncFileName])
         elif ftype == "bot":
             try:
-                iod.write_ctd_ncfile(ncFileName, fdata)
+                write_ctd_ncfile(ncFileName, fdata)
                 standardize_variable_names(ncFileName)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
                 subprocess.call(["rm", "-f", ncFileName])
         elif ftype == "cur":
             try:
-                iod.write_cur_ncfile(ncFileName, fdata)
+                write_cur_ncfile(ncFileName, fdata)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
                 subprocess.call(["rm", "-f", ncFileName])
@@ -130,22 +136,23 @@ if len(sys.argv) > 1:
 else:  # default option. process all files !
     opt = "all"
     ftype = "ctd"
-env_vars = iod.import_env_variables("./.env")
-print("Inputs from .env file: ", env_vars)
+config = cioos_utils.read_config("config.json")
+# env_vars = iod.import_env_variables("./.env")
+print("Inputs from .env file: ", config)
 
 start = time()
-flist = convert_files(env_vars=env_vars, opt=opt, ftype=ftype)
+flist = convert_files(env_vars=config, opt=opt, ftype=ftype)
 print("Time taken to convert files: {:0.2f}".format(time() - start))
 # if any raw files have been removed, delete corresponding netCDF files
 if flist is not None:
     print("Checking if any netCDF files should be removed...")
     ncfilelist = glob.glob(
-        env_vars[ftype + "_nc_folder"] + "**/*.nc", recursive=True
+        config[ftype + "_nc_folder"] + "**/*.nc", recursive=True
     )
     for i, e in enumerate(
-        iod.utils.compare_file_list(sub_set=flist, global_set=ncfilelist)
+        cioos_utils.compare_file_list(sub_set=flist, global_set=ncfilelist)
     ):
-        filename = glob.glob(env_vars[ftype + "_nc_folder"] + "**/{}.nc")
+        filename = glob.glob(config[ftype + "_nc_folder"] + "**/{}.nc")
         print("deleting file:", e)
         subprocess.call(["rm", "-f", e])
 print("Total time taken:{:0.2f}".format(time() - start))
