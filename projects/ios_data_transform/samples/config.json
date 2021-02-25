@@ -1,0 +1,11 @@
+{
+    "ctd_raw_folder": "/home/pramod/code/hakai_code/cioos-siooc_data_transform/projects/ios_data_transform/tests/test_files/ctd_profile/",
+    "mctd_raw_folder": "/home/pramod/code/hakai_code/cioos-siooc_data_transform/projects/ios_data_transform/tests/test_files/ctd_mooring/",
+    "bot_raw_folder": "/home/pramod/code/hakai_code/cioos-siooc_data_transform/projects/ios_data_transform/tests/test_files/bot/",
+    "cur_raw_folder": "/home/pramod/code/hakai_code/cioos-siooc_data_transform/projects/ios_data_transform/tests/test_files/current_meter/",
+    "ctd_nc_folder": "/home/pramod/code/hakai_code/ios-erddap/datasets/IOS_CTD_profiles/",
+    "mctd_nc_folder": "/home/pramod/code/hakai_code/ios-erddap/datasets/IOS_CTD_moorings/",
+    "bot_nc_folder": "/home/pramod/code/hakai_code/ios-erddap/datasets/IOS_BOT_profiles/",
+    "cur_nc_folder": "/home/pramod/code/hakai_code/ios-erddap/datasets/IOS_CUR_moorings/",
+    "geojson_file": "/home/pramod/code/hakai_code/cioos-siooc_data_transform/projects/ios_data_transform/tests/test_files/ios_polygons.geojson"
+}
