@@ -3,7 +3,7 @@
         "./geojson_files/ios_polygons.geojson"
     ],
     "vocabularyFileList":[
-		"./vocabulary/dfo_vocabulary_list.json"
+		"./vocabulary/all_vocabulary_list.json"
 	],
     "organisationVocabulary": ["GF3", "IML"],
     "summary": "brief summary of dataset",
