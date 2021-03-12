@@ -15,16 +15,14 @@ This method essentially apply the following steps:
 
 
 def read(filename,
-             header_end='-- DATA --',
-             data_delimiter=r'\s+',
-             quotechar='\'',
-             parameter_section='PARAMETER_HEADER',
-             output_column_name='CODE',
-             variable_type='TYPE',
-             odf_type_to_pandas={'DOUB': float, 'SING': float,
-                                 'SYTM': '\'%d-%b-%Y %H:%M:%S.%f\'',
-                                 'INTE':int}
-             ):
+         header_end='-- DATA --',
+         data_delimiter=r'\s+',
+         quotechar='\'',
+         parameter_section='PARAMETER_HEADER',
+         output_column_name='CODE',
+         variable_type='TYPE',
+         odf_type_to_pandas=None
+         ):
     """
     Read_odf
     Read_odf parse the odf format used by some DFO organisation to python list of diectionary format and
@@ -42,17 +40,24 @@ def read(filename,
     :param odf_type_to_pandas: dictionary which map odf types versus python(Pandas) types.
     :return:
     """
+    # Default mapping of ODF to Pandas data type
+    if odf_type_to_pandas is None:
+        odf_type_to_pandas = {'DOUB': float, 'SING': float,
+                              'SYTM': '\'%d-%b-%Y %H:%M:%S.%f\'',
+                              'INTE': int}
+
     odf_date_format = [{'SYTM': {'regex': r'^\s*\'\d\d\-\w\w\w\-\d\d\d\d\s\d\d\:\d\d\:\d\d\.\d*\'\s*$',
-                        'datetime': '\'%d-%b-%Y %H:%M:%S.%f\''}}]
+                                 'datetime': '\'%d-%b-%Y %H:%M:%S.%f\''}}]
+
     metadata = {}
     line_count = 0
     with open(filename, 'r') as f:
         line = ''
-        original_header=[]
+        original_header = []
         # Read header one line at the time
         while not line.__contains__(header_end):
             line = f.readline()
-            line_count = line_count+1
+            line_count = line_count + 1
             # Drop some characters that aren't useful
             line = re.sub(r'\n|,$', '', line)
 
