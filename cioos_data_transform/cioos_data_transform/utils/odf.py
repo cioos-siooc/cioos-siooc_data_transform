@@ -218,6 +218,10 @@ def define_odf_variable_attributes(metadata,
             else:
                 metadata[flag_column].update({'name': flag_prefix + data_column})
         # TODO improve flag parameters default documentation
+        #  - add ancillary_variables to the associated variable attributes
+        #       http://cfconventions.org/cf-conventions/cf-conventions.html#ancillary-data
+        #  - add flag_values, flag_masks and flag_meanings to flag attributes
+        #       http://cfconventions.org/cf-conventions/cf-conventions.html#flags
 
     # Update P01 name based on pcode number
     for var in metadata:
@@ -232,6 +236,6 @@ def define_odf_variable_attributes(metadata,
                                            '%02d' % metadata[var]['pcode_number'],
                                            metadata[var]['name'])
 
-    # Add Warning for missing information and attributes
-    # Example: Standard Name, P01, P02
+    # TODO Add Warning for missing information and attributes (maybe)
+    #  Example: Standard Name, P01, P02
     return metadata
