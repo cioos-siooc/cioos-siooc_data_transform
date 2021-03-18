@@ -142,7 +142,7 @@ def define_odf_variable_attributes(metadata,
                                    flag_prefix='QualityFlag:'):
     """
     This method is use to retrieve from an ODF file each variable code and corresponding related
-    vocabularies associated to the organisation and variable name.
+    vocabularies associated to the organization and variable name.
     Flag columns are also reviewed and matched to the appropriate variable.
     """
     # Make sure organization is a list
@@ -188,19 +188,27 @@ def define_odf_variable_attributes(metadata,
             flag_column = False
             if pcode[0].startswith('QQQQ'):  # MLI FLAG should apply to previous variable
                 flag_dict.update({odf_pcode: _find_previous_key(metadata, var)})
+                flag_column = True
             elif pcode[0].startswith('Q') and odf_pcode[1:] in metadata.keys():
                 # BIO Format which Q+[PCODE] of the associated variable
                 flag_dict.update({odf_pcode: odf_pcode[1:]})
+                flag_column = True
 
             # Loop through each organisations and find the matching pcode within the vocabulary
-            for organisation in organizations:
-                if pcode[0] in vocabulary[organisation]:
-                    vocab_attributes = {key: value for key, value in vocabulary[organisation][pcode[0]].items()
+            found_matching_vocab = False
+            for organization in organizations:
+                if pcode[0] in vocabulary[organization]:
+                    vocab_attributes = {key: value for key, value in vocabulary[organization][pcode[0]].items()
                                         if key in vocabulary_attribute_list}
                     metadata[var].update(vocab_attributes)
+                    found_matching_vocab = True
                     break  # Stop after the first one detected
-                else:
-                    print(str(pcode) + ' not available for organization: ' + str(organisation))
+
+            # If will get there if no matching vocabulary exist
+            if not found_matching_vocab and not flag_column:
+                print(str(pcode) + ' not available for organization: ' + str(organizations))
+
+            # TODO compare expected units to units saved within the ODF file to make sure it is matching the vocabulary
 
     # Add Flag specific attributes
     for flag_column, data_column in flag_dict.items():
@@ -215,12 +223,12 @@ def define_odf_variable_attributes(metadata,
     for var in metadata:
         if 'sdn_parameter_urn' in metadata[var] and \
                 type(metadata[var]['sdn_parameter_urn']) is str:
-            metadata[var]['sdn_parameter_urn'] = re.sub('\d\d$',
+            metadata[var]['sdn_parameter_urn'] = re.sub(r'\d\d$',
                                                         '%02d' % metadata[var]['pcode_number'],
                                                         metadata[var]['sdn_parameter_urn'])
         if 'name' in metadata[var] and \
                 type(metadata[var]['name']) is str:
-            metadata[var]['name'] = re.sub('\d\d$',
+            metadata[var]['name'] = re.sub(r'\d\d$',
                                            '%02d' % metadata[var]['pcode_number'],
                                            metadata[var]['name'])
 
