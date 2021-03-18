@@ -5,7 +5,7 @@
     "vocabularyFileList":[
 		"./vocabulary/all_vocabulary_list.json"
 	],
-    "organisationVocabulary": ["GF3", "IML"],
+    "organisationVocabulary": ["BIO","GF3"],
     "summary": "brief summary of dataset",
     "summary_fra": " summary in french here",
     "title": "dataset title",
