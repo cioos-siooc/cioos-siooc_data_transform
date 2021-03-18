@@ -155,28 +155,23 @@ def write_ctd_ncfile(outfile, odf_data, config={}):
                                                                  organizations=config['organisationVocabulary'],
                                                                  vocabulary=config['vocabulary'])
 
-    # Define variable name
-    # TODO Add a name column to the vocabulary
-    for var, attributes in odf_variable_attributes.items():
-        if 'name' not in attributes and type(attributes['sdn_parameter_urn']) is str:
-            attributes['name'] = attributes['sdn_parameter_urn'].split(':')[-1]
-        else:
-            attributes['name'] = var
+    # Generate BODC Variables based variable, units and instrument
+    # TODO add a tool to the derives the different BODC variables based metadata
 
-    # Generate a variable for each variables available within the ODF files.
-    # TODO we would need to make the add_var method to be able to handle extra attributes
-    for var in odf_data.keys():
-        null_value = np.nan
-        ncfile.add_var(
-            vartype=odf_variable_attributes[var]['name'],
-            varname=odf_variable_attributes[var]['name'],
-            varunits=odf_variable_attributes[var]['units'],
-            varval=odf_data[var],
-            vardim=("z"),
-            varnull=null_value,
-            conv_to_BODC=False,
-            dictionary_att=odf_variable_attributes[var]
-        )
+    # # Generate a variable for each variables available within the ODF files.
+    # # TODO we would need to make the add_var method to be able to handle extra attributes
+    # for var in odf_data.keys():
+    #     null_value = np.nan
+    #     ncfile.add_var(
+    #         vartype=odf_variable_attributes[var]['name'],
+    #         varname=var,
+    #         varunits=odf_variable_attributes[var]['units'],
+    #         varval=odf_data[var],
+    #         vardim=("z"),
+    #         varnull=null_value,
+    #         conv_to_BODC=False,
+    #         dictionary_att=odf_variable_attributes[var]
+    #     )
 
     for var in data.keys():
         #
