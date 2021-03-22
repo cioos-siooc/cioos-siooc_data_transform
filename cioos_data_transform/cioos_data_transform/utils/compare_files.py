@@ -7,7 +7,7 @@ import glob
 def get_file_stats(flist):
     info = {}
     for f in flist:
-        info.update({f: [os.stat(f).st_size, int(os.stat(f).st_mtime / 60)]})
+        info[f] = [os.stat(f).st_size, int(os.stat(f).st_mtime / 60)]
     return info
 
 
