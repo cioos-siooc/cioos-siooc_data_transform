@@ -12,8 +12,10 @@ def get_file_stats(flist):
 
 
 def find_new_files(dir1):
-    # check if we have history for that directory
+    # Module to compare the file size and time stamp to find
+    # files that have been modified/deleted/added
 
+    # check if we have history for that directory
     finfo = "./.dir_stats"
     if os.path.exists(finfo):
         with open(finfo, "r") as fid:
@@ -34,6 +36,7 @@ def find_new_files(dir1):
     print("file in current folder newly added = ", s2 - s1)
     l2 = sorted(s1 & s2)
     change_log = []
+    # go through file list and compare with old size and timestamp
     for f in l2:
         if not old_dir_info[f][1] == new_dir_info[f][1]:
             change_log.append(f)
@@ -67,6 +70,6 @@ def compare_files(file1, file2, method="cmp"):
 
 
 if __name__ == "__main__":
-    f = "/home/pramod/Downloads/ubuntu-20.04.2.0-desktop-amd64.iso"
+    # f = "/home/pramod/Downloads/ubuntu-20.04.2.0-desktop-amd64.iso"
     # print(compare_files(f, "./utils.py", method="cmp"))
     find_new_files("/home/pramod/data/IOS_Drifter_Data/*/*.drf")
