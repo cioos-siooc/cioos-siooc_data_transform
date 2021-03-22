@@ -1,6 +1,7 @@
 import glob
 import json
 import os
+import re
 import traceback
 from datetime import datetime
 import numpy as np
@@ -9,9 +10,11 @@ from cioos_data_transform.utils import is_in
 from cioos_data_transform.utils import fix_path
 from cioos_data_transform.OdfCls import CtdNcFile
 from cioos_data_transform.utils import get_geo_code, read_geojson
+from cioos_data_transform.utils import oce
+from cioos_data_transform.utils import odf
 
 # from odf_transform.utils.utils import get_geo_code, read_geojson
-from utils.oce import get_odf_var_attributes_to_oce
+#from utils.oce import get_odf_var_attributes_to_oce
 
 
 def read_config(config_file):
@@ -135,8 +138,40 @@ def write_ctd_ncfile(outfile, odf_data, config={}):
     date_obj = date_obj.astimezone(timezone("UTC"))
     ncfile.add_var("time", "time", None, [date_obj])
 
-    # Retrieve Original ODF Variable Headers
-    metadata["original_header"] = get_odf_var_attributes_to_oce(metadata)
+    # Read OCE units and create a unit field in string format
+    metadata['units'] = oce.convert_oce_units_to_udunit(metadata['units'])
+
+    # Retrieve ODF Original Variable Attributes by digging in OCE
+    odf_variable_attributes = oce.get_odf_variable_attributes(metadata, prefix='original_')
+
+    # Retrieve ODF Original Data (Combine OCE data and Flags)
+    odf_data = oce.retrieve_odf_data_from_oce(data, metadata, odf_variable_attributes, 'original_')
+
+    # Retrieve OCE units
+    odf_variable_attributes = oce.oce_units_to_odf(odf_variable_attributes, metadata)
+
+    # Add vocabularies and documentation to variable attributes
+    odf_variable_attributes = odf.define_odf_variable_attributes(odf_variable_attributes, metadata,
+                                                                 organizations=config['organisationVocabulary'],
+                                                                 vocabulary=config['vocabulary'])
+
+    # Generate BODC Variables based variable, units and instrument
+    # TODO add a tool to the derives the different BODC variables based metadata
+
+    # # Generate a variable for each variables available within the ODF files.
+    # # TODO we would need to make the add_var method to be able to handle extra attributes
+    # for var in odf_data.keys():
+    #     null_value = np.nan
+    #     ncfile.add_var(
+    #         vartype=odf_variable_attributes[var]['name'],
+    #         varname=var,
+    #         varunits=odf_variable_attributes[var]['units'],
+    #         varval=odf_data[var],
+    #         vardim=("z"),
+    #         varnull=null_value,
+    #         conv_to_BODC=False,
+    #         dictionary_att=odf_variable_attributes[var]
+    #     )
 
     for var in data.keys():
         #
@@ -245,4 +280,5 @@ if __name__ == "__main__":
             "TEST_FILES_OUTPUT": TEST_FILES_OUTPUT,
         }
     )
+
     convert_test_files(config)
