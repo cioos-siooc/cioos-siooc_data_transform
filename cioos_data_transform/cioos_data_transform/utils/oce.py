@@ -158,7 +158,7 @@ def oce_units_to_odf(odf_variable_attributes, oce_metadata):
         if var in oce_metadata['dataNamesOriginal']:
             odf_oce_units[oce_metadata['dataNamesOriginal'][var]] = attributes
         else:
-            odf_oce_units.update({var: attributes})
+            odf_oce_units[var] = attributes
 
     # Add oce units and scale options oce units were converted to udunit
     for var in odf_oce_units.keys():

@@ -73,7 +73,7 @@ def read(filename,
             if re.match(r'^\w', line):
                 section = line.replace('\n', '').replace(',', '')
                 if section not in metadata:
-                    metadata.update({section: [{}]})
+                    metadata[section] = [{}]
                 else:
                     metadata[section].append({})
 
@@ -93,7 +93,7 @@ def read(filename,
                     #  lat/lon if special encoding (ex 58°34'13''N) (not sure if there's really data like that)
 
                 # Add to the metadata as a dictionary
-                metadata[section][-1].update({dict_line[0]: dict_line[1]})
+                metadata[section][-1][dict_line[0]] = dict_line[1]
 
             elif re.match(r'^\s+.+', line):  # Unknown line format (likely comments)
                 # TODO this hasn't been tested yet I haven't try an example with not a dictionary like line
@@ -102,7 +102,7 @@ def read(filename,
                 assert RuntimeError, "Can't understand the line: " + line
 
     # Add original header lines to the metadata
-    metadata.update({'original_header': original_header})
+    metadata['original_header'] = original_header
 
     # Read the rest with pandas directly
     data_raw = pd.read_csv(filename, delimiter=data_delimiter, quotechar=quotechar,
