@@ -214,9 +214,9 @@ def define_odf_variable_attributes(metadata,
     for flag_column, data_column in flag_dict.items():
         if data_column in metadata:
             if 'name' in metadata[data_column]:
-                metadata[flag_column].update({'name': flag_prefix + metadata[data_column]['name']})
+                metadata[flag_column].update({'long_name': flag_prefix + metadata[data_column]['name']})
             else:
-                metadata[flag_column].update({'name': flag_prefix + data_column})
+                metadata[flag_column].update({'long_name': flag_prefix + data_column})
         # TODO improve flag parameters default documentation
         #  - add ancillary_variables to the associated variable attributes
         #       http://cfconventions.org/cf-conventions/cf-conventions.html#ancillary-data
