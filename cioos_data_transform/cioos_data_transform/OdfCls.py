@@ -46,6 +46,9 @@ class CtdNcFile(OceanNcFile):
 
             if value:
                 setattr(ncvar, key, value)
+        
+        for key, value in var.attributes.items():
+            setattr(ncvar, key, value)
 
         if var.datatype == str:
             ncvar[0] = var.data
@@ -61,12 +64,13 @@ class CtdNcFile(OceanNcFile):
         vardim=(),
         varnull=float("nan"),
         conv_to_BODC=True,
+        attributes={}
     ):
 
         varnames = list(map(lambda var: var.name, self.varlist))
 
         nc_var = NcVar(
-            vartype, varname, varunits, varval, vardim, varnull, conv_to_BODC
+            vartype, varname, varunits, varval, vardim, varnull, conv_to_BODC, attributes
         )
 
         nc_var.add_var(varnames)
@@ -84,6 +88,7 @@ class NcVar(OceanNcVar):
         vardim=(),
         varnull=float("nan"),
         conv_to_BODC=True,
+        attributes={}
     ):
         self.cf_role = None
         self.name = varname
@@ -100,6 +105,9 @@ class NcVar(OceanNcVar):
         self.gf3 = self.get_gf3()
         self.pcode = self.get_pcode()
         self.bodc = self.get_bodc()
+
+        # NetCDF variable attributes
+        self.attributes = attributes
 
     def get_bodc(self):
         # calculate the correct BODC, pcode, GF3 code

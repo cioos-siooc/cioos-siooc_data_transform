@@ -18,6 +18,7 @@ class OceanNcVar(object):
         vardim=(),
         varnull=float("nan"),
         conv_to_BODC=True,
+        attributes={},
     ):
         self.cf_role = None
         self.name = varname
@@ -32,6 +33,7 @@ class OceanNcVar(object):
         self.dimensions = vardim
         self.data = varval
         self.conv_to_BODC = conv_to_BODC
+        self.attributes = attributes
         # from existing varlist. get all variables that are going to be written into the ncfile
         # this will be checked to make sure new variable name does not conflict with existing ones
         varlist = []
