@@ -22,6 +22,13 @@ def read_config(config_file):
     with open(config_file) as fid:
         config = json.load(fid)
 
+        # Load Vocabulary
+        for vocab_file in config['vocabularyFileList']:
+            config.update({"vocabulary": {}})
+            with open(vocab_file) as fid:
+                vocab = json.load(fid)
+            config["vocabulary"].update(vocab)
+
         return config
 
 
@@ -222,7 +229,7 @@ def write_ctd_ncfile(outfile, odf_data, config={}):
         else:
             pass
             # print(var, data['metadata']['units'][var], 'not transferred to netcdf file !')
-    # now actuallY write the information in CtdNcFile object to a netcdf file
+    # now actually write the information in CtdNcFile object to a netcdf file
     # print(ncfile_var_list[0])
     # print('Writing ncfile:',outfile)
     ncfile.write_ncfile(outfile)
