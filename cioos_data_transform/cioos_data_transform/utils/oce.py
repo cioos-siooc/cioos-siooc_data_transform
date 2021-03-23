@@ -168,8 +168,8 @@ def oce_units_to_odf(odf_variable_attributes, oce_metadata):
             else:
                 odf_variable_attributes[var].update({'units': ''})
             if 'scale' in odf_oce_units[var]:
-                odf_variable_attributes[var].update({'scale': odf_oce_units[var]['scale']})
+                odf_variable_attributes[var].update({'oce_scale': odf_oce_units[var]['scale']})
             else:
-                odf_variable_attributes[var].update({'scale': ''})
+                odf_variable_attributes[var].update({'oce_scale': ''})
 
     return odf_variable_attributes
