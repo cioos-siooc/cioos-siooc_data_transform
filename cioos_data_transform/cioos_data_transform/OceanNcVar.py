@@ -485,6 +485,12 @@ class OceanNcVar(object):
             # self.standard_name = ''
             self.long_name = "Sigma-theta"
             self.units = bodc_units
+        elif self.type in ['DOUB', 'SING', 'SYTM', 'INTE']:
+            type_mapping = {'DOUB': 'float64',
+                            'SING': 'float32',
+                            'SYTM': 'float64',
+                            'INTE': 'int32'}
+            self.datatype= type_mapping[self.type]
         else:
             print("Do not know how to define this variable..")
             raise Exception("Fatal Error")
