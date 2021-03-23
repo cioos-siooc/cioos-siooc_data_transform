@@ -193,6 +193,10 @@ def define_odf_variable_attributes(metadata,
                 # BIO Format which Q+[PCODE] of the associated variable
                 flag_dict[odf_pcode] = odf_pcode[1:]
                 flag_column = True
+            # Make sure that the flag column relate to something
+            if flag_column and flag_dict[odf_pcode] not in metadata:
+                raise UserWarning(odf_pcode + ' flag is refering to' + \
+                                  flag_dict[odf_pcode] + ' which is not available as variable')
 
             # Loop through each organisations and find the matching pcode within the vocabulary
             found_matching_vocab = False
@@ -217,11 +221,18 @@ def define_odf_variable_attributes(metadata,
                 metadata[flag_column]['name'] = flag_prefix + metadata[data_column]['name']
             else:
                 metadata[flag_column]['name'] = flag_prefix + data_column
+            if 'ancillary_variables' not in metadata[data_column]:
+                metadata[data_column]['ancillary_variables'] = flag_column
+            elif 'ancillary_variables' in metadata[data_column] and type(metadata[data_column]) is str:
+                metadata[data_column]['ancillary_variables'] += ','+flag_column
+            else:
+                raise UserWarning('unknown ancillary flag format attribute')
+
         # TODO improve flag parameters default documentation
-        #  - add ancillary_variables to the associated variable attributes
-        #       http://cfconventions.org/cf-conventions/cf-conventions.html#ancillary-data
         #  - add flag_values, flag_masks and flag_meanings to flag attributes
         #       http://cfconventions.org/cf-conventions/cf-conventions.html#flags
+        #       we would need to know the convention used by the organization if there's any.
+        #       Otherwise, this should be implemented within the erddap dataset.
 
     # Update P01 name based on pcode number
     for var in metadata:
