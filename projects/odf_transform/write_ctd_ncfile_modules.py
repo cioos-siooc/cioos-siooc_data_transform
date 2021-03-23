@@ -22,6 +22,13 @@ def read_config(config_file):
     with open(config_file) as fid:
         config = json.load(fid)
 
+        # Read Vocabulary file
+        for vocab_file in config['vocabularyFileList']:
+            config.update({"vocabulary": {}})
+            with open(vocab_file) as fid:
+                vocab = json.load(fid)
+            config["vocabulary"].update(vocab)
+
         return config
 
 
