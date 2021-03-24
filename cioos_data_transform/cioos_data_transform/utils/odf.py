@@ -143,8 +143,7 @@ def define_odf_variable_attributes(metadata,
                                    vocabulary_attribute_list=None,
                                    odf_var_header_prefix='original_',
                                    odf_variable_name="CODE",
-                                   flag_prefix='QualityFlag:',
-                                   parsed_by_oce=True):
+                                   flag_prefix='QualityFlag:'):
     """
     This method is use to retrieve from an ODF file each variable code and corresponding related
     vocabularies associated to the organization and variable name.
@@ -244,22 +243,19 @@ def define_odf_variable_attributes(metadata,
         #       Otherwise, this should be implemented within the erddap dataset.
 
     # null_values / fill_values
-    # Deal with fill value
+    # Deal with fill value based on OCE converted null_values
     for key, var in metadata.items():
-
         # If parsed directly with the ODF, OCE is modifying those null_values
-        if 'original_NULL_VALUE' in var.keys() and not parsed_by_oce:
-            if var['original_TYPE'] not in ['SYTM', 'INTE']:
-                null_value = np.array(var['original_NULL_VALUE']) \
-                    .astype(odf_dtypes[var['original_TYPE']])
-            elif var['original_TYPE'] == 'SYTM' and \
-                    re.match(r'\d\d-\w\w\w-\d\d\d\d\s\d\d\:\d\d\:\d\d', var['original_NULL_VALUE']):
-                null_value = (dt.datetime.strptime(var['original_NULL_VALUE'],
-                                              '%d-%b-%Y %H:%M:%S.%f') - dt.datetime(1970, 1, 1)).total_seconds()
-            elif var['original_TYPE'] == 'INTE':
-                null_value = int(np.array(var['original_NULL_VALUE']).astype(float).round())
+        if var['original_TYPE'] not in ['INTE']:
+            # We assume that OCE is converting DOUB to float and np.nan, same with time values which gets
+            # converted to floats seconds since 1970-01-01
+            null_value = np.nan
+        elif var['original_TYPE'] == 'INTE':
+            # Not sure how integers are yet handle by OCE
+            null_value = -99
 
-            metadata[key]['null_value'] = null_value
+        metadata[key]['_FillValues'] = null_value
+        metadata[key]['null_value'] = null_value
 
     # Update P01 name based on parameter_code number
     for var in metadata:
