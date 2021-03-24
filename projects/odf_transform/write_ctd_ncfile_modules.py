@@ -162,6 +162,11 @@ def write_ctd_ncfile(outfile, odf_data, config={}):
                                                                  organizations=config['organisationVocabulary'],
                                                                  vocabulary=config['vocabulary'])
 
+    # Explicitly use OCE units (where not sure if there's any conversion applied within OCE)
+    for var, att in odf_variable_attributes.items():
+        if 'original_UNITS' in att:
+            att['units'] = att['original_UNITS']
+
     # Generate BODC Variables based variable, units and instrument
     # TODO add a tool to the derives the different BODC variables based metadata
 
