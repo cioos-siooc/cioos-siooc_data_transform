@@ -143,7 +143,8 @@ def define_odf_variable_attributes(metadata,
                                    vocabulary_attribute_list=None,
                                    odf_var_header_prefix='original_',
                                    odf_variable_name="CODE",
-                                   flag_prefix='QualityFlag:'):
+                                   flag_prefix='QualityFlag:',
+                                   parsed_by_oce=True):
     """
     This method is use to retrieve from an ODF file each variable code and corresponding related
     vocabularies associated to the organization and variable name.
@@ -243,8 +244,9 @@ def define_odf_variable_attributes(metadata,
     # null_values / fill_values
     # Deal with fill value
     for key, var in metadata.items():
-        if 'original_NULL_VALUE' in var.keys():
 
+        # If parsed directly with the ODF, OCE is modifying those null_values
+        if 'original_NULL_VALUE' in var.keys() and not parsed_by_oce:
             if var['original_TYPE'] not in ['SYTM', 'INTE']:
                 null_value = np.array(var['original_NULL_VALUE']) \
                     .astype(odf_dtypes[var['original_TYPE']])
