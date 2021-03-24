@@ -164,9 +164,9 @@ def oce_units_to_odf(odf_variable_attributes, oce_metadata):
     for var in odf_oce_units.keys():
         if var in odf_variable_attributes.keys():  # Missing Flags that aren't match with their code anymore
             if 'udunit' in odf_oce_units[var]:
-                odf_variable_attributes[var]['units'] = odf_oce_units[var]['udunit']
+                odf_variable_attributes[var]['oce_units'] = odf_oce_units[var]['udunit']
             else:
-                odf_variable_attributes[var]['units'] = ''
+                odf_variable_attributes[var]['oce_units'] = ''
             if 'scale' in odf_oce_units[var]:
                 odf_variable_attributes[var]['oce_scale'] = odf_oce_units[var]['scale']
             else:
