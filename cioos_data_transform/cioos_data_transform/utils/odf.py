@@ -14,16 +14,8 @@ This method essentially apply the following steps:
  7. Save to a NetCDF file.  
 """
 
-
-def odf_dtypes(input=None):
-    """Return a dictionary with the mapping of the odf types to python types"""
-    odf_mapping = {'DOUB': 'float64', 'SING': 'float32', 'SYTM': 'float64', 'INTE': 'int32'}
-    if input and input in odf_dtypes():
-        output = odf_mapping[input]
-    else:
-        output = odf_mapping
-    return output
-
+"""Dictionary with the mapping of the odf types to python types"""
+odf_dtypes = {'DOUB': 'float64', 'SING': 'float32', 'SYTM': 'float64', 'INTE': 'int32'}
 
 
 def read(filename,
@@ -242,7 +234,7 @@ def define_odf_variable_attributes(metadata,
 
             if var['original_TYPE'] not in ['SYTM', 'INTE']:
                 null_value = np.array(var['original_NULL_VALUE']) \
-                    .astype(odf_dtypes(var['original_TYPE']))
+                    .astype(odf_dtypes[var['original_TYPE']])
             elif var['original_TYPE'] == 'SYTM' and \
                     re.match(r'\d\d-\w\w\w-\d\d\d\d\s\d\d\:\d\d\:\d\d', var['original_NULL_VALUE']):
                 null_value = (dt.datetime.strptime(var['original_NULL_VALUE'],
