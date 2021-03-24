@@ -1,0 +1,51 @@
+{
+  "type": "FeatureCollection",
+  "name": "AZMP DFO \/ PMZA MPO",
+  "features": [
+	{ "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+				[-55.65 ,  53.233],
+				[-55.5 ,  53.333],
+				[-55.357 ,  53.41],
+				[-55.145 ,  53.533],
+				[-55 ,  53.617],
+				[-54.777 ,  53.757],
+				[-54.5 ,  53.917],
+				[-54.217 ,  54.082],
+				[-54 ,  54.2],
+				[-53.733 ,  54.355],
+				[-53.5 ,  54.5],
+				[-53.25 ,  54.633],
+				[-53 ,  54.783],
+				[-52.5 ,  55.067]
+				]
+		},
+		"properties": {
+		   "Section Station Code": "SI01",
+		   "REGION": "Atlantic",
+		   "Section Name": "Seal Island \/ Île Seal"
+		}
+	},
+	{ "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+				[-65.48, 43.25],
+				[-65.48, 43],
+				[-65.483, 42.76],
+				[-65.483, 42.45],
+				[-65.5, 42.133],
+				[-65.51, 42],
+				[-65.35, 41.867]
+				]
+		},
+		"properties": {
+		   "Section Station Code": "BBL1",
+		   "REGION": "Atlantic",
+		   "Section Name": "Browns Bank \/ Banc de Brown"
+		}
+	}
+  ]
+}
