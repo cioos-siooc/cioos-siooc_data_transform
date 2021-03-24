@@ -182,20 +182,20 @@ def define_odf_variable_attributes(metadata,
 
             # Retrieve trailing number
             # pcodes are generally associated with a trailing number the define the primary, secondary ,... data
-            metadata[var].update({'pcode': pcode[0]})
+            metadata[var]['pcode'] = pcode[0]
             if len(pcode) == 2:
-                metadata[var].update({'pcode_number': int(pcode[1])})
+                metadata[var]['pcode_number'] = int(pcode[1])
             else:
-                metadata[var].update({'pcode_number': 1})
+                metadata[var]['pcode_number'] = 1
 
             # FLAG VARIABLES Detect if it is a flag column associated with another column
             flag_column = False
             if pcode[0].startswith('QQQQ'):  # MLI FLAG should apply to previous variable
-                flag_dict.update({odf_pcode: _find_previous_key(metadata, var)})
+                flag_dict[odf_pcode] = _find_previous_key(metadata, var)
                 flag_column = True
             elif pcode[0].startswith('Q') and odf_pcode[1:] in metadata.keys():
                 # BIO Format which Q+[PCODE] of the associated variable
-                flag_dict.update({odf_pcode: odf_pcode[1:]})
+                flag_dict[odf_pcode] = odf_pcode[1:]
                 flag_column = True
 
             # Loop through each organisations and find the matching pcode within the vocabulary
@@ -218,9 +218,9 @@ def define_odf_variable_attributes(metadata,
     for flag_column, data_column in flag_dict.items():
         if data_column in metadata:
             if 'name' in metadata[data_column]:
-                metadata[flag_column].update({'long_name': flag_prefix + metadata[data_column]['name']})
+                metadata[flag_column]['long_name'] = flag_prefix + metadata[data_column]['name']
             else:
-                metadata[flag_column].update({'long_name': flag_prefix + data_column})
+                metadata[flag_column]['long_name'] = flag_prefix + data_column
         # TODO improve flag parameters default documentation
         #  - add ancillary_variables to the associated variable attributes
         #       http://cfconventions.org/cf-conventions/cf-conventions.html#ancillary-data
