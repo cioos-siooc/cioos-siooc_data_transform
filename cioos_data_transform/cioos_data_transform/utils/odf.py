@@ -1,6 +1,7 @@
 import re
 import pandas as pd
 import datetime as dt
+import numpy as np
 
 """
 This method essentially apply the following steps:
@@ -233,6 +234,23 @@ def define_odf_variable_attributes(metadata,
         #       http://cfconventions.org/cf-conventions/cf-conventions.html#ancillary-data
         #  - add flag_values, flag_masks and flag_meanings to flag attributes
         #       http://cfconventions.org/cf-conventions/cf-conventions.html#flags
+
+    # null_values / fill_values
+    # Deal with fill value
+    for key, var in metadata.items():
+        if 'original_NULL_VALUE' in var.keys():
+
+            if var['original_TYPE'] not in ['SYTM', 'INTE']:
+                null_value = np.array(var['original_NULL_VALUE']) \
+                    .astype(odf_dtypes(var['original_TYPE']))
+            elif var['original_TYPE'] == 'SYTM' and \
+                    re.match(r'\d\d-\w\w\w-\d\d\d\d\s\d\d\:\d\d\:\d\d', var['original_NULL_VALUE']):
+                null_value = (dt.datetime.strptime(var['original_NULL_VALUE'],
+                                              '%d-%b-%Y %H:%M:%S.%f') - dt.datetime(1970, 1, 1)).total_seconds()
+            elif var['original_TYPE'] == 'INTE':
+                null_value = int(np.array(var['original_NULL_VALUE']).astype(float).round())
+
+            metadata[key]['null_value'] = null_value
 
     # Update P01 name based on pcode number
     for var in metadata:
