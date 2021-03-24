@@ -35,11 +35,11 @@ class CtdNcFile(OceanNcFile):
         # var.dimensions is a tuple
         # var.type is  a string
         # print('Writing', var.name, var.datatype, var.dimensions)
-        fill_value = None
-        if var.datatype is not str:
-            fill_value = np.nan
+        # fill_value = None
+        # if var.datatype is not str:
+        #     fill_value = np.nan
         ncvar = self.ncfile.createVariable(
-            var.name, var.datatype, var.dimensions, fill_value=fill_value
+            var.name, var.datatype, var.dimensions, fill_value=var.null_value
         )
         for key in ["long_name", "standard_name", "units", "pcode", "gf3"]:
             value = getattr(var, key)
@@ -48,7 +48,8 @@ class CtdNcFile(OceanNcFile):
                 setattr(ncvar, key, value)
         
         for key, value in var.attributes.items():
-            setattr(ncvar, key, value)
+            if value:
+                setattr(ncvar, key, value)
 
         if var.datatype == str:
             ncvar[0] = var.data
