@@ -18,6 +18,7 @@ class OceanNcVar(object):
         vardim=(),
         varnull=float("nan"),
         conv_to_BODC=True,
+        attributes={},
     ):
         self.cf_role = None
         self.name = varname
@@ -32,6 +33,7 @@ class OceanNcVar(object):
         self.dimensions = vardim
         self.data = varval
         self.conv_to_BODC = conv_to_BODC
+        self.attributes = attributes
         # from existing varlist. get all variables that are going to be written into the ncfile
         # this will be checked to make sure new variable name does not conflict with existing ones
         varlist = []
@@ -483,6 +485,12 @@ class OceanNcVar(object):
             # self.standard_name = ''
             self.long_name = "Sigma-theta"
             self.units = bodc_units
+        elif self.type in ['DOUB', 'SING', 'SYTM', 'INTE']:
+            type_mapping = {'DOUB': 'float64',
+                            'SING': 'float32',
+                            'SYTM': 'float64',
+                            'INTE': 'int32'}
+            self.datatype= type_mapping[self.type]
         else:
             print("Do not know how to define this variable..")
             raise Exception("Fatal Error")

@@ -22,6 +22,13 @@ def read_config(config_file):
     with open(config_file) as fid:
         config = json.load(fid)
 
+        # Read Vocabulary file
+        for vocab_file in config['vocabularyFileList']:
+            config.update({"vocabulary": {}})
+            with open(vocab_file) as fid:
+                vocab = json.load(fid)
+            config["vocabulary"].update(vocab)
+
         return config
 
 
@@ -160,18 +167,26 @@ def write_ctd_ncfile(outfile, odf_data, config={}):
 
     # # Generate a variable for each variables available within the ODF files.
     # # TODO we would need to make the add_var method to be able to handle extra attributes
-    # for var in odf_data.keys():
-    #     null_value = np.nan
-    #     ncfile.add_var(
-    #         vartype=odf_variable_attributes[var]['name'],
-    #         varname=var,
-    #         varunits=odf_variable_attributes[var]['units'],
-    #         varval=odf_data[var],
-    #         vardim=("z"),
-    #         varnull=null_value,
-    #         conv_to_BODC=False,
-    #         dictionary_att=odf_variable_attributes[var]
-    #     )
+    for var in odf_data.keys():
+        if 'units' not in odf_variable_attributes[var]:
+            odf_variable_attributes[var]['units'] = None
+        odf_variable_attributes[var]
+
+        if 'name' in odf_variable_attributes[var]:
+            var_name = odf_variable_attributes[var].pop('name')
+        else:
+            var_name = var
+
+        ncfile.add_var(
+            vartype=odf_variable_attributes[var]['original_TYPE'],
+            varname=var_name,
+            varunits=odf_variable_attributes[var]['units'],
+            varval=odf_data[var],
+            vardim=("z"),
+            varnull=odf_variable_attributes[var]['null_value'],
+            conv_to_BODC=False,
+            attributes=odf_variable_attributes[var]
+        )
 
     for var in data.keys():
         #

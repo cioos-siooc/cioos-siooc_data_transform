@@ -100,12 +100,12 @@ def get_odf_variable_attributes(metadata,
 
             if oce_variable_parameter in attribute_list:
                 var_name = attribute_list[oce_variable_parameter]
-                odf_variable_header.update({var_name: attribute_list})
+                odf_variable_header[var_name] = attribute_list
                 # # Retrieve OCE name otherwise keep the original name
                 # if var_name in map_oce_variables.keys():
-                #     odf_variable_header.update({map_oce_variables[var_name]: attribute_list})
+                #     odf_variable_header[map_oce_variables[var_name]] = attribute_list
                 # else:
-                #     odf_variable_header.update({var_name: attribute_list})
+                #     odf_variable_header[var_name] = attribute_list
 
     # Add prefix
     if type(prefix) is str:
@@ -128,22 +128,22 @@ def retrieve_odf_data_from_oce(data,
     odf_flag = {}
     for flag_name, flags in metadata['flags'].items():
         if flag_name in metadata['dataNamesOriginal']:
-            odf_flag.update({metadata['dataNamesOriginal'][flag_name]:flags})
+            odf_flag[metadata['dataNamesOriginal'][flag_name]] = flags
         else:
-            odf_flag.update({flag_name: flags})
+            odf_flag[flag_name] = flags
 
     data_out = {}
     for var, attributes in odf_variable_attributes.items():
         name = attributes[attribute_prefix+'CODE']
         if name in odf_data.keys():  # Retrieve from OCE data
-            data_out.update({name: odf_data.pop(name)})
+            data_out[name] = odf_data.pop(name)
         elif name in odf_flag.keys():  # haven't seen cases like this but we'll see
-            data_out.update({name: odf_flag.pop(name)})
+            data_out[name] = odf_flag.pop(name)
         elif name[0] == 'Q' and name[1:] in odf_flag.keys():  # Flag related to associated column Q[pcode]
-            data_out.update({name: odf_flag.pop(name[1:])})
+            data_out[name] = odf_flag.pop(name[1:])
         else:  # Grab the first one within the flags
             # We're assuming that OCE isn't changing the order of the original flag columns
-            data_out.update({name: odf_flag.pop(list(odf_flag.keys())[0])})
+            data_out[name] = odf_flag.pop(list(odf_flag.keys())[0])
 
     return data_out
 
@@ -156,20 +156,20 @@ def oce_units_to_odf(odf_variable_attributes, oce_metadata):
     odf_oce_units = {}
     for var, attributes in oce_metadata['units'].items():
         if var in oce_metadata['dataNamesOriginal']:
-            odf_oce_units.update({oce_metadata['dataNamesOriginal'][var]: attributes})
+            odf_oce_units[oce_metadata['dataNamesOriginal'][var]] = attributes
         else:
-            odf_oce_units.update({var: attributes})
+            odf_oce_units[var] = attributes
 
     # Add oce units and scale options oce units were converted to udunit
     for var in odf_oce_units.keys():
         if var in odf_variable_attributes.keys():  # Missing Flags that aren't match with their code anymore
             if 'udunit' in odf_oce_units[var]:
-                odf_variable_attributes[var].update({'units': odf_oce_units[var]['udunit']})
+                odf_variable_attributes[var]['units'] = odf_oce_units[var]['udunit']
             else:
-                odf_variable_attributes[var].update({'units': ''})
+                odf_variable_attributes[var]['units'] = ''
             if 'scale' in odf_oce_units[var]:
-                odf_variable_attributes[var].update({'scale': odf_oce_units[var]['scale']})
+                odf_variable_attributes[var]['oce_scale'] = odf_oce_units[var]['scale']
             else:
-                odf_variable_attributes[var].update({'scale': ''})
+                odf_variable_attributes[var]['oce_scale'] = ''
 
     return odf_variable_attributes

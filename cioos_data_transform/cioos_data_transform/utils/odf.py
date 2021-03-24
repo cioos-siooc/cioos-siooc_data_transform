@@ -1,6 +1,7 @@
 import re
 import pandas as pd
 import datetime as dt
+import numpy as np
 
 """
 This method essentially apply the following steps:
@@ -12,6 +13,9 @@ This method essentially apply the following steps:
  6. Add all global and variable attributes available within the ODF header.
  7. Save to a NetCDF file.  
 """
+
+"""Dictionary with the mapping of the odf types to python types"""
+odf_dtypes = {'DOUB': 'float64', 'SING': 'float32', 'SYTM': 'float64', 'INTE': 'int32'}
 
 
 def read(filename,
@@ -73,7 +77,7 @@ def read(filename,
             if re.match(r'^\w', line):
                 section = line.replace('\n', '').replace(',', '')
                 if section not in metadata:
-                    metadata.update({section: [{}]})
+                    metadata[section] = [{}]
                 else:
                     metadata[section].append({})
 
@@ -93,7 +97,7 @@ def read(filename,
                     #  lat/lon if special encoding (ex 58°34'13''N) (not sure if there's really data like that)
 
                 # Add to the metadata as a dictionary
-                metadata[section][-1].update({dict_line[0]: dict_line[1]})
+                metadata[section][-1][dict_line[0]] = dict_line[1]
 
             elif re.match(r'^\s+.+', line):  # Unknown line format (likely comments)
                 # TODO this hasn't been tested yet I haven't try an example with not a dictionary like line
@@ -102,7 +106,7 @@ def read(filename,
                 assert RuntimeError, "Can't understand the line: " + line
 
     # Add original header lines to the metadata
-    metadata.update({'original_header': original_header})
+    metadata['original_header'] = original_header
 
     # Read the rest with pandas directly
     data_raw = pd.read_csv(filename, delimiter=data_delimiter, quotechar=quotechar,
@@ -178,20 +182,20 @@ def define_odf_variable_attributes(metadata,
 
             # Retrieve trailing number
             # pcodes are generally associated with a trailing number the define the primary, secondary ,... data
-            metadata[var].update({'pcode': pcode[0]})
+            metadata[var]['pcode'] = pcode[0]
             if len(pcode) == 2:
-                metadata[var].update({'pcode_number': int(pcode[1])})
+                metadata[var]['pcode_number'] = int(pcode[1])
             else:
-                metadata[var].update({'pcode_number': 1})
+                metadata[var]['pcode_number'] = 1
 
             # FLAG VARIABLES Detect if it is a flag column associated with another column
             flag_column = False
             if pcode[0].startswith('QQQQ'):  # MLI FLAG should apply to previous variable
-                flag_dict.update({odf_pcode: _find_previous_key(metadata, var)})
+                flag_dict[odf_pcode] = _find_previous_key(metadata, var)
                 flag_column = True
             elif pcode[0].startswith('Q') and odf_pcode[1:] in metadata.keys():
                 # BIO Format which Q+[PCODE] of the associated variable
-                flag_dict.update({odf_pcode: odf_pcode[1:]})
+                flag_dict[odf_pcode] = odf_pcode[1:]
                 flag_column = True
 
             # Loop through each organisations and find the matching pcode within the vocabulary
@@ -214,14 +218,31 @@ def define_odf_variable_attributes(metadata,
     for flag_column, data_column in flag_dict.items():
         if data_column in metadata:
             if 'name' in metadata[data_column]:
-                metadata[flag_column].update({'name': flag_prefix + metadata[data_column]['name']})
+                metadata[flag_column]['long_name'] = flag_prefix + metadata[data_column]['name']
             else:
-                metadata[flag_column].update({'name': flag_prefix + data_column})
+                metadata[flag_column]['long_name'] = flag_prefix + data_column
         # TODO improve flag parameters default documentation
         #  - add ancillary_variables to the associated variable attributes
         #       http://cfconventions.org/cf-conventions/cf-conventions.html#ancillary-data
         #  - add flag_values, flag_masks and flag_meanings to flag attributes
         #       http://cfconventions.org/cf-conventions/cf-conventions.html#flags
+
+    # null_values / fill_values
+    # Deal with fill value
+    for key, var in metadata.items():
+        if 'original_NULL_VALUE' in var.keys():
+
+            if var['original_TYPE'] not in ['SYTM', 'INTE']:
+                null_value = np.array(var['original_NULL_VALUE']) \
+                    .astype(odf_dtypes[var['original_TYPE']])
+            elif var['original_TYPE'] == 'SYTM' and \
+                    re.match(r'\d\d-\w\w\w-\d\d\d\d\s\d\d\:\d\d\:\d\d', var['original_NULL_VALUE']):
+                null_value = (dt.datetime.strptime(var['original_NULL_VALUE'],
+                                              '%d-%b-%Y %H:%M:%S.%f') - dt.datetime(1970, 1, 1)).total_seconds()
+            elif var['original_TYPE'] == 'INTE':
+                null_value = int(np.array(var['original_NULL_VALUE']).astype(float).round())
+
+            metadata[key]['null_value'] = null_value
 
     # Update P01 name based on pcode number
     for var in metadata:
