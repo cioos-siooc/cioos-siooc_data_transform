@@ -135,16 +135,21 @@ def retrieve_odf_data_from_oce(data,
     data_out = {}
     for var, attributes in odf_variable_attributes.items():
         name = attributes[attribute_prefix+'CODE']
+        oce_name = name
         if name in odf_data.keys():  # Retrieve from OCE data
             data_out[name] = odf_data.pop(name)
         elif name in odf_flag.keys():  # haven't seen cases like this but we'll see
             data_out[name] = odf_flag.pop(name)
         elif name[0] == 'Q' and name[1:] in odf_flag.keys():  # Flag related to associated column Q[pcode]
             data_out[name] = odf_flag.pop(name[1:])
+            oce_name = 'flag:' + oce_name
         else:  # Grab the first one within the flags
             # We're assuming that OCE isn't changing the order of the original flag columns
+            oce_name = 'flag:' + list(odf_flag.keys())[0]
             data_out[name] = odf_flag.pop(list(odf_flag.keys())[0])
 
+        # Save the variable name used by OCE
+        odf_variable_attributes[var]['oce_name'] = oce_name
     return data_out
 
 
