@@ -14,6 +14,17 @@ This method essentially apply the following steps:
 """
 
 
+def odf_dtypes(input=None):
+    """Return a dictionary with the mapping of the odf types to python types"""
+    odf_mapping = {'DOUB': 'float64', 'SING': 'float32', 'SYTM': 'float64', 'INTE': 'int32'}
+    if input and input in odf_dtypes():
+        output = odf_mapping[input]
+    else:
+        output = odf_mapping
+    return output
+
+
+
 def read(filename,
          header_end='-- DATA --',
          data_delimiter=r'\s+',
