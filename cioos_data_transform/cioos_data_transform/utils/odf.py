@@ -242,21 +242,6 @@ def define_odf_variable_attributes(metadata,
         #       we would need to know the convention used by the organization if there's any.
         #       Otherwise, this should be implemented within the erddap dataset.
 
-    # null_values / fill_values
-    # Deal with fill value based on OCE converted null_values
-    for key, var in metadata.items():
-        # If parsed directly with the ODF, OCE is modifying those null_values
-        if var['original_TYPE'] not in ['INTE']:
-            # We assume that OCE is converting DOUB to float and np.nan, same with time values which gets
-            # converted to floats seconds since 1970-01-01
-            null_value = np.nan
-        elif var['original_TYPE'] == 'INTE':
-            # Not sure how integers are yet handle by OCE
-            null_value = -99
-
-        metadata[key]['_FillValues'] = null_value
-        metadata[key]['null_value'] = null_value
-
     # Update P01 name based on parameter_code number
     for var in metadata:
         if 'sdn_parameter_urn' in metadata[var] and \
