@@ -9,6 +9,10 @@
    source venv/bin/activate
    ```
 
+   If you plan to run the R oce package using rpy2, use Python 3.7 or below
+   (rpy2 requirement), and use the --system-site-packages argument (for use
+   of system R) in the python3 command above.
+
 1. Install cioos_data_transform package
 
    ```sh
