@@ -50,8 +50,11 @@ def read(filename,
                               'SYTM': '\'%d-%b-%Y %H:%M:%S.%f\'',
                               'INTE': int}
 
-    odf_date_format = [{'SYTM': {'regex': r'^\s*\'\d\d\-\w\w\w\-\d\d\d\d\s\d\d\:\d\d\:\d\d\.\d*\'\s*$',
-                                 'datetime': '\'%d-%b-%Y %H:%M:%S.%f\''}}]
+    odf_date_format = {'SYTM': {'regex': r'^\s*\'\d\d\-\w\w\w\-\d\d\d\d\s\d\d\:\d\d\:\d\d\.\d*\'\s*$',
+                                'datetime': '\'%d-%b-%Y %H:%M:%S.%f\''},
+                       'header': {'regex': r'^\'\d\d\-\w\w\w\-\d\d\d\d\s\d\d\:\d\d\:\d\d\.\d*\'$',
+                                  'datetime': '\'%d-%b-%Y %H:%M:%S.%f\''}
+                       }
 
     metadata = {}
     line_count = 0
