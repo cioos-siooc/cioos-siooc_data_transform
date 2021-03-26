@@ -242,6 +242,21 @@ def define_odf_variable_attributes(metadata,
         #       we would need to know the convention used by the organization if there's any.
         #       Otherwise, this should be implemented within the erddap dataset.
 
+    # Deal with fill value which are already specified within the ODF format
+    for key, var in metadata.items():
+        if 'original_NULL_VALUE' in var.keys():
+            if var['original_TYPE'] not in ['SYTM', 'INTE']:
+                null_value = np.array(var['original_NULL_VALUE']) \
+                    .astype(odf_dtypes[var['original_TYPE']])
+            elif var['original_TYPE'] == 'SYTM' and \
+                    re.match(r'\d\d-\w\w\w-\d\d\d\d\s\d\d\:\d\d\:\d\d', var['original_NULL_VALUE']):
+                null_value = (dt.datetime.strptime(var['original_NULL_VALUE'],
+                                                   '%d-%b-%Y %H:%M:%S.%f') - dt.datetime(1970, 1, 1)).total_seconds()
+            elif var['original_TYPE'] == 'INTE':
+                null_value = int(np.array(var['original_NULL_VALUE']).astype(float).round())
+
+            metadata[key]['null_value'] = null_value
+
     # Update P01 name based on parameter_code number
     for var in metadata:
         if 'sdn_parameter_urn' in metadata[var] and \
