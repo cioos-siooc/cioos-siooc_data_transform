@@ -108,9 +108,6 @@ def read(filename,
             else:
                 assert RuntimeError, "Can't understand the line: " + line
 
-    # Add original header lines to the metadata
-    metadata['original_header'] = original_header
-
     # Read the rest with pandas directly
     data_raw = pd.read_csv(filename, delimiter=data_delimiter, quotechar=quotechar,
                            skiprows=line_count, header=None)
@@ -236,7 +233,7 @@ def define_odf_variable_attributes(metadata,
             if 'ancillary_variables' not in metadata[data_column]:
                 metadata[data_column]['ancillary_variables'] = flag_column
             elif 'ancillary_variables' in metadata[data_column] and type(metadata[data_column]) is str:
-                metadata[data_column]['ancillary_variables'] += ','+flag_column
+                metadata[data_column]['ancillary_variables'] += ',' + flag_column
             else:
                 raise UserWarning('unknown ancillary flag format attribute')
         # TODO improve flag parameters default documentation
