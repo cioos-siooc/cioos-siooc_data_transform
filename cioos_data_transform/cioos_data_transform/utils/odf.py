@@ -157,7 +157,7 @@ def define_odf_variable_attributes(metadata,
         vocabulary_attribute_list = ['name', 'standard_name',
                                      'sdn_parameter_urn', 'sdn_parameter_name',
                                      'sdn_uom_urn', 'sdn_uom_name']
-    pcode_att = odf_var_header_prefix + odf_variable_name
+    parameter_code_att = odf_var_header_prefix + odf_variable_name
 
     def _find_previous_key(key_list, key):
         """
@@ -177,32 +177,38 @@ def define_odf_variable_attributes(metadata,
         flag_dict = {}
         for var in metadata.keys():
             # Retrieve ODF CODE and Associated number
-            odf_pcode = metadata[var][pcode_att]
-            pcode = odf_pcode.rsplit('_', 1)  # Separate the pcode from the number at the end of the variable
+            odf_paraneter_code = metadata[var][parameter_code_att]
+            # Separate the parameter_code from the number at the end of the variable
+            parameter_code = odf_paraneter_code.rsplit('_', 1)
 
             # Retrieve trailing number
-            # pcodes are generally associated with a trailing number the define the primary, secondary ,... data
-            metadata[var]['pcode'] = pcode[0]
-            if len(pcode) == 2:
-                metadata[var]['pcode_number'] = int(pcode[1])
+            # Parameter codes are generally associated with a trailing number the define the
+            # primary, secondary ,... data
+            metadata[var]['parameter_code'] = parameter_code[0]
+            if len(parameter_code) == 2:
+                metadata[var]['parameter_code_number'] = int(parameter_code[1])
             else:
-                metadata[var]['pcode_number'] = 1
+                metadata[var]['parameter_code_number'] = 1
 
             # FLAG VARIABLES Detect if it is a flag column associated with another column
             flag_column = False
-            if pcode[0].startswith('QQQQ'):  # MLI FLAG should apply to previous variable
-                flag_dict[odf_pcode] = _find_previous_key(metadata, var)
+            if parameter_code[0].startswith('QQQQ'):  # MLI FLAG should apply to previous variable
+                flag_dict[odf_paraneter_code] = _find_previous_key(metadata, var)
                 flag_column = True
-            elif pcode[0].startswith('Q') and odf_pcode[1:] in metadata.keys():
+            elif parameter_code[0].startswith('Q') and odf_paraneter_code[1:] in metadata.keys():
                 # BIO Format which Q+[PCODE] of the associated variable
-                flag_dict[odf_pcode] = odf_pcode[1:]
+                flag_dict[odf_paraneter_code] = odf_paraneter_code[1:]
                 flag_column = True
+            # Make sure that the flag column relate to something
+            if flag_column and flag_dict[odf_paraneter_code] not in metadata:
+                raise UserWarning(odf_paraneter_code + ' flag is refering to' + \
+                                  flag_dict[odf_paraneter_code] + ' which is not available as variable')
 
-            # Loop through each organisations and find the matching pcode within the vocabulary
+            # Loop through each organisations and find the matching parameter_code within the vocabulary
             found_matching_vocab = False
             for organization in organizations:
-                if pcode[0] in vocabulary[organization]:
-                    vocab_attributes = {key: value for key, value in vocabulary[organization][pcode[0]].items()
+                if parameter_code[0] in vocabulary[organization]:
+                    vocab_attributes = {key: value for key, value in vocabulary[organization][parameter_code[0]].items()
                                         if key in vocabulary_attribute_list}
                     metadata[var].update(vocab_attributes)
                     found_matching_vocab = True
@@ -210,51 +216,43 @@ def define_odf_variable_attributes(metadata,
 
             # If will get there if no matching vocabulary exist
             if not found_matching_vocab and not flag_column:
-                print(str(pcode) + ' not available for organization: ' + str(organizations))
+                print(str(parameter_code) + ' not available for organization: ' + str(organizations))
 
             # TODO compare expected units to units saved within the ODF file to make sure it is matching the vocabulary
 
     # Add Flag specific attributes
     for flag_column, data_column in flag_dict.items():
         if data_column in metadata:
+            # Add long name attribute which is generally QUALITY_FLAG: [variable it affects]
             if 'name' in metadata[data_column]:
                 metadata[flag_column]['long_name'] = flag_prefix + metadata[data_column]['name']
             else:
                 metadata[flag_column]['long_name'] = flag_prefix + data_column
+
+            # Add ancillary_variables attribute
+            if 'ancillary_variables' not in metadata[data_column]:
+                metadata[data_column]['ancillary_variables'] = flag_column
+            elif 'ancillary_variables' in metadata[data_column] and type(metadata[data_column]) is str:
+                metadata[data_column]['ancillary_variables'] += ','+flag_column
+            else:
+                raise UserWarning('unknown ancillary flag format attribute')
         # TODO improve flag parameters default documentation
-        #  - add ancillary_variables to the associated variable attributes
-        #       http://cfconventions.org/cf-conventions/cf-conventions.html#ancillary-data
         #  - add flag_values, flag_masks and flag_meanings to flag attributes
         #       http://cfconventions.org/cf-conventions/cf-conventions.html#flags
+        #       we would need to know the convention used by the organization if there's any.
+        #       Otherwise, this should be implemented within the erddap dataset.
 
-    # null_values / fill_values
-    # Deal with fill value
-    for key, var in metadata.items():
-        if 'original_NULL_VALUE' in var.keys():
-
-            if var['original_TYPE'] not in ['SYTM', 'INTE']:
-                null_value = np.array(var['original_NULL_VALUE']) \
-                    .astype(odf_dtypes[var['original_TYPE']])
-            elif var['original_TYPE'] == 'SYTM' and \
-                    re.match(r'\d\d-\w\w\w-\d\d\d\d\s\d\d\:\d\d\:\d\d', var['original_NULL_VALUE']):
-                null_value = (dt.datetime.strptime(var['original_NULL_VALUE'],
-                                              '%d-%b-%Y %H:%M:%S.%f') - dt.datetime(1970, 1, 1)).total_seconds()
-            elif var['original_TYPE'] == 'INTE':
-                null_value = int(np.array(var['original_NULL_VALUE']).astype(float).round())
-
-            metadata[key]['null_value'] = null_value
-
-    # Update P01 name based on pcode number
+    # Update P01 name based on parameter_code number
     for var in metadata:
         if 'sdn_parameter_urn' in metadata[var] and \
                 type(metadata[var]['sdn_parameter_urn']) is str:
             metadata[var]['sdn_parameter_urn'] = re.sub(r'\d\d$',
-                                                        '%02d' % metadata[var]['pcode_number'],
+                                                        '%02d' % metadata[var]['parameter_code_number'],
                                                         metadata[var]['sdn_parameter_urn'])
         if 'name' in metadata[var] and \
                 type(metadata[var]['name']) is str:
             metadata[var]['name'] = re.sub(r'\d\d$',
-                                           '%02d' % metadata[var]['pcode_number'],
+                                           '%02d' % metadata[var]['parameter_code_number'],
                                            metadata[var]['name'])
 
     # TODO Add Warning for missing information and attributes (maybe)
