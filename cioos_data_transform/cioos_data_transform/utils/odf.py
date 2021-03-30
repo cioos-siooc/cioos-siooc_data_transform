@@ -2,20 +2,11 @@ import re
 import pandas as pd
 import datetime as dt
 import numpy as np
+import warnings
 
 # Dictionary with the mapping of the odf types to python types
 odf_dtypes = {'DOUB': 'float64', 'SING': 'float32', 'DOUBLE': 'float64',
               'SYTM': 'float64', 'INTE': 'int32', 'CHAR': str}
- 2. Read all the data as a list of text
- 3. Convert that list of data into a Pandas Dataframe with Pandas
- 4. Convert each column of the pandas data frame to the matching format specified in the ODF associated PARAMETER_HEADER
- 5. Convert this Pandas DataFrame an xarray
- 6. Add all global and variable attributes available within the ODF header.
- 7. Save to a NetCDF file.  
-"""
-
-"""Dictionary with the mapping of the odf types to python types"""
-odf_dtypes = {'DOUB': 'float64', 'SING': 'float32', 'SYTM': 'float64', 'INTE': 'int32'}
 
 
 def read(filename,
@@ -25,12 +16,25 @@ def read(filename,
          parameter_section='PARAMETER_HEADER',
          output_column_name='CODE',
          variable_type='TYPE',
+         section_items_minimum_whitespaces=2,
          odf_type_to_pandas=None
          ):
     """
     Read_odf
     Read_odf parse the odf format used by some DFO organisation to python list of diectionary format and
     pandas dataframe. Once converted, the output can easily be converted to netcdf format.
+
+    Steps applied:
+        1. Read line by line an ODF header and distribute each lines in a list of list and dictionaries.
+            a. Lines associated with a character at the beginning are considered a section.
+            b. Lines starting white spaces are considered items in preceding section.
+            c. Repeated sections are grouped as a list
+            d. Each section items are grouped as a dictionary
+            e. dictionary items are converted to datetime (deactivated), string, integer or float format.
+        2. Read the data  following the header with Pandas.read_csv() method
+            a. Use defined separator  to distinguish columns (default '\s+').
+            b. Convert each column of the pandas data frame to the matching format specified in
+            the TYPE attribute of the ODF associated PARAMETER_HEADER
 
     read_odf is a simple tool that  parse the header metadata and data from an DFO ODF file to a list of dictionaries.
     :param filename: ODF file to read
@@ -41,28 +45,41 @@ def read(filename,
     :param parameter_section: section of the ODF that describes each variable attributes
     :param output_column_name: variable attribute used to name each data columns
     :param variable_type: variable attribute that describe each variable type
+    :param section_items_minimum_whitespaces: maximum amount of spaces prior to a section to be considered as a section
     :param odf_type_to_pandas: dictionary which map odf types versus python(Pandas) types.
     :return:
     """
     # Default mapping of ODF to Pandas data type
     if odf_type_to_pandas is None:
-        odf_type_to_pandas = {'DOUB': float, 'SING': float,
-                              'SYTM': '\'%d-%b-%Y %H:%M:%S.%f\'',
-                              'INTE': int}
+        odf_type_to_pandas = odf_dtypes
 
     odf_date_format = {'SYTM': {'regex': r'^\s*\'\d\d\-\w\w\w\-\d\d\d\d\s\d\d\:\d\d\:\d\d\.\d*\'\s*$',
-                                'datetime': '\'%d-%b-%Y %H:%M:%S.%f\''},
+                                'datetime': '%d-%b-%Y %H:%M:%S.%f'},
                        'header': {'regex': r'^\'\d\d\-\w\w\w\-\d\d\d\d\s\d\d\:\d\d\:\d\d\.\d*\'$',
                                   'datetime': '\'%d-%b-%Y %H:%M:%S.%f\''}
                        }
 
-    metadata = {}
-    line_count = 0
+    def _convert_to_number(value):
+        """ Simple method to try to convert values to integer or float."""
+        try:  # Try Integer first
+            output_value = int(value)
+        except ValueError:
+            try:  # Then try float
+                output_value = float(value)
+            except ValueError:  # If nothing works just keep it as is
+                output_value = re.sub(r'^\s*|\s*$', '', value)
+        return output_value
+
+    def _strtrim(string_to_trim):
+        return re.sub(r'^\s*|\s*$', '', string_to_trim)
+
+    metadata = {}  # Start with an empty dictionary
+    line_count = 0  # Line counter to use for reading the actual data.
     with open(filename, 'r') as f:
         line = ''
         original_header = []
         # Read header one line at the time
-        while not line.__contains__(header_end):
+        while header_end not in line:
             line = f.readline()
             line_count = line_count + 1
             # Drop some characters that aren't useful
@@ -72,45 +89,39 @@ def read(filename,
             original_header.append(line)
 
             # Detect the end of the header
-            if re.match(header_end, line):
+            if header_end in line:
                 # May also be stop by the while condition
                 break
 
             # Sections
-            if re.match(r'^\w', line):
+            if re.match(r'^\s{0,' + str(section_items_minimum_whitespaces - 1) + r'}\w', line):
                 section = line.replace('\n', '').replace(',', '')
+                section = re.sub(r'^\s*|\s$', '', section)  # Ignore white spaces before and after
                 if section not in metadata:
                     metadata[section] = [{}]
                 else:
                     metadata[section].append({})
 
             # Dictionary type lines (key=value)
-            elif re.match(r'^\s+.+=', line):  # Something=This
+            elif re.match(r'^\s{' + str(section_items_minimum_whitespaces) + r'}\s*\w', line):  # Something=This
                 dict_line = re.split(r'=', line, maxsplit=1)  # Make sure that only the first = is use to split
                 dict_line = [re.sub(r'^\s+|\s+$', '', item) for item in dict_line]  # Remove trailing white spaces
                 # if re.match(r'^\'\d\d\-\w\w\w\-\d\d\d\d\s\d\d\:\d\d\:\d\d\.\d*\'$',dict_line[1]): # Read Time
                 #     dict_line[1] = dt.datetime.strptime(dict_line[1], '\'%d-%b-%Y %H:%M:%S.%f\'')
                 if re.match(r'\'.*\'', dict_line[1]):  # Is delimited by double quotes, definitely a string
-                    dict_line[1] = str(re.sub(r'\'', '', dict_line[1]))
-                elif re.match(r'^([+-]?[1-9]\d*|0)$', dict_line[1]):  # Integer
-                    dict_line[1] = int(dict_line[1])
-                elif re.match(r'^[+-]?([0-9]*[.])?[0-9]*$', dict_line[1]):  # Float
-                    dict_line[1] = float(dict_line[1])
-                    # TODO we should add special cases for
-                    #  lat/lon if special encoding (ex 58°34'13''N) (not sure if there's really data like that)
+                    dict_line[1] = str(re.sub(r'\s*\'\s*', '', dict_line[1]))
+                else:
+                    # Try to convert the value of the dictionary in an integer or float
+                    dict_line[1] = _convert_to_number(dict_line[1])
 
                 # Add to the metadata as a dictionary
                 metadata[section][-1][dict_line[0]] = dict_line[1]
 
-            elif re.match(r'^\s+.+', line):  # Unknown line format (likely comments)
+            elif re.match(r'^\s+.+', line):  # Unknown line format (likely comments) doesn't seem to have any examples
                 # TODO this hasn't been tested yet I haven't try an example with not a dictionary like line
                 metadata[section].append(line)
             else:
                 assert RuntimeError, "Can't understand the line: " + line
-
-    # Read the rest with pandas directly
-    data_raw = pd.read_csv(filename, delimiter=data_delimiter, quotechar=quotechar,
-                           skiprows=line_count, header=None)
 
     # Simplify the single sections to a dictionary
     for section in metadata:
@@ -118,21 +129,33 @@ def read(filename,
                 type(metadata[section][0]) is dict:
             metadata[section] = metadata[section][0]
 
-    # Rename data columns based on PARAMETER_HEADER attribute (default CODE)
-    columns_name = [att[output_column_name] for att in metadata[parameter_section]]
-    data_raw.columns = columns_name
+    # READ ODF DATA SECTION
+    # Define first the variable names and the type.
+    column_format = {}
+    column_names = []
+    not_converted_columns = {}
+    for att in metadata[parameter_section]:
+        if output_column_name not in att:
+            att[output_column_name] = att['NAME']
 
-    # Format columns dtypes based on the format specified in the header
-    for parm in metadata[parameter_section]:
-        if parm[variable_type] in odf_type_to_pandas:
-            if parm[variable_type] in ['SYTM']:  # Convert to datetime
-                # Rely on pd.to_datetime to do the right conversion
-                data_raw[parm[output_column_name]] = pd.to_datetime(data_raw[parm[output_column_name]])
-            else:  # string, float, integers
-                data_raw[parm[output_column_name]] = data_raw[parm[output_column_name]].astype(
-                    odf_type_to_pandas[parm[variable_type]])
+        column_names.append(att[output_column_name])
+        if att[variable_type] not in ['SYTM'] and not column_names[-1].startswith('SYTM'):
+            column_format[att[output_column_name]] = odf_type_to_pandas[att[variable_type]]
         else:
-            raise AttributeError('Unknown Data Format: ' + parm[output_column_name] + '(' + parm[variable_type] + ')')
+            not_converted_columns[att[output_column_name]] = odf_type_to_pandas[att[variable_type]]
+
+    # Read with Pandas
+    data_raw = pd.read_csv(filename, delimiter=data_delimiter, quotechar=quotechar,
+                           skiprows=line_count, header=None,
+                           names=column_names, dtype=column_format)
+    if not_converted_columns:
+        # Parse Date/Time SYTM Variables
+        for parm in not_converted_columns:
+            try:
+                data_raw[parm] = pd.to_datetime(data_raw[parm], format=odf_date_format['SYTM']['datetime'])
+            except ValueError:
+                warnings.warn('Failed to read SYTM variable. Will try to use pandas.to_datetime()', RuntimeWarning)
+                data_raw[parm[output_column_name]] = pd.to_datetime(data_raw[parm[output_column_name]])
     return metadata, data_raw
 
 
