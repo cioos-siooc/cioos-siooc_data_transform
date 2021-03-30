@@ -60,10 +60,11 @@ def write_ctd_ncfile(odf_path,
 
     # # From ODF header
     ds = xarray_methods.add_variables_from_dict(ds,
-                                                config['global_attributes'],
+                                                config['global_attributes_from_header'],
                                                 None,
                                                 metadata,
                                                 global_attribute=True)
+    # Add all the original header as a json string
     ds.attrs['header'] = json.dumps(metadata, ensure_ascii=False, indent=False)
 
     # Add Variable from Global Attributes
