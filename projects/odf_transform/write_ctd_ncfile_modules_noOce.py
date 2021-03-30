@@ -46,6 +46,8 @@ def write_ctd_ncfile(odf_path,
     # Add the file name as variable
     raw_data['original_file'] = os.path.split(odf_path)[-1]
     raw_data = raw_data.set_index('original_file')
+    original_variables = raw_data.columns
+
     # create unique ID for each profile
     #profile_id = f"{metadata['cruiseNumber']}-{metadata['eventNumber']}-{metadata['eventQualifier']}"
 
@@ -68,7 +70,9 @@ def write_ctd_ncfile(odf_path,
     if 'variables_from_header' in config:
         ds = xarray_methods.add_variables_from_dict(ds, config['variables_from_header'],
                                                     'original_file', dictionary=metadata)
-        variables_order = config['variables_from_header'].keys()
+        metadata_variable_list = list(config['variables_from_header'].keys())
+    else:
+        metadata_variable_list = []
 
     # Add Variable Attributes
     # Convert metadata variable attributes list to dictionary
@@ -97,8 +101,9 @@ def write_ctd_ncfile(odf_path,
 
     # Finally save the xarray dataset to a NetCDF file!!!
     #  Make the global attribute variables preceding the original variables.
-    variable_order = []
-    ds.to_netcdf(output_path)
+    variables_order = metadata_variable_list
+    variables_order.extend(original_variables)
+    ds[variables_order].to_netcdf(output_path)
 
 
 def convert_test_files(config):
