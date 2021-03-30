@@ -277,6 +277,10 @@ def define_odf_variable_attributes(metadata,
     for key, var in metadata.items():
         if 'original_NULL_VALUE' in var.keys():
             if var['original_NULL_VALUE'] not in ['', None, '(none)']:
+                # Some ODF files used a FORTRAN Format (essentially replace the D in '-.99000000D+02' by E)
+                if type(var['original_NULL_VALUE']) is str:
+                    var['original_NULL_VALUE'] = re.sub('(?<=\d)D(?=[\+\-\d]\d)', 'E', var['original_NULL_VALUE'])
+
                 if var['original_TYPE'] not in ['SYTM', 'INTE']:
                     null_value = np.array(var['original_NULL_VALUE']) \
                         .astype(odf_dtypes[var['original_TYPE']])
