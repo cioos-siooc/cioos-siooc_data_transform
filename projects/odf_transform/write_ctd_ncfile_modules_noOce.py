@@ -92,7 +92,7 @@ def write_ctd_ncfile(odf_path,
         # Keep the original long_name and units for now, except if doesn't exist or None
         if ds[var].attrs.get('original_NAME'):
             ds[var].attrs['long_name'] = ds[var].attrs.get('original_NAME')
-        if ds[var].attrs.get('original_UNITS'):
+        if ds[var].attrs.get('original_UNITS') and ds[var].attrs['original_UNITS'] not in ['nan', '(none)', 'none']:
             ds[var].attrs['units'] = ds[var].attrs.get('original_UNITS')
 
     # Add geospatial and geometry related attributes
