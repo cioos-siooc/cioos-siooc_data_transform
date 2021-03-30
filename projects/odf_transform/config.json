@@ -39,7 +39,7 @@
         "latitude": {"dictionary": ["EVENT_HEADER", "INITIAL_LATITUDE"], "format": "float"},
         "longitude": {"dictionary": ["EVENT_HEADER", "INITIAL_LONGITUDE"], "format": "float"}
     },
-    "global_attributes": {
+    "global_attributes_from_header": {
         "project": {"dictionary": ["CRUISE_HEADER","CRUISE_NAME"]},
         "institution:": {"dictionary": ["CRUISE_HEADER","ORGANIZATION"]},
         "history": {"dictionary": ["HISTORY_HEADER"], "format": "json"}
