@@ -3,6 +3,7 @@ import json
 import os
 import traceback
 import re
+import shutil
 
 import xarray as xr
 import cioos_data_transform.utils.odf as odf
@@ -117,6 +118,11 @@ def convert_test_files(config):
             )
 
         except Exception as e:
+            # Copy problematic files to a subfolder
+            if not os.path.isdir(os.path.join(os.path.dirname(f), 'failed')):
+                os.mkdir(os.path.join(os.path.dirname(f), 'failed'))
+            shutil.copy(f, os.path.join(os.path.dirname(f), 'failed', os.path.split(f)[-1]))
+
             print("***** ERROR***", f)
             print(e)
             print(traceback.print_exc())
