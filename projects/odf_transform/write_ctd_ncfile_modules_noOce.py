@@ -7,11 +7,11 @@ import re
 import xarray as xr
 import cioos_data_transform.utils.odf as odf
 import cioos_data_transform.utils.xarray as xarray_methods
-import cioos_data_transform.utils.erddap_netcdf as erddap_netcdf
 from cioos_data_transform.utils.utils import fix_path
 from cioos_data_transform.utils.utils import get_geo_code, read_geojson
 import datetime as dt
 import pandas as pd
+
 
 def read_config(config_file):
     # read json file with information on dataset etc.
@@ -34,7 +34,6 @@ def write_ctd_ncfile(odf_path,
                      variable_header_section='PARAMETER_HEADER',
                      original_prefix_var_attribute='original_',
                      variable_name_attribute='CODE'):
-
 
     if not os.path.isdir(TEST_FILES_OUTPUT):
         os.mkdir(TEST_FILES_OUTPUT)
@@ -85,23 +84,20 @@ def write_ctd_ncfile(odf_path,
     for var, attrs in var_attributes.items():
         ds[var].attrs.update(attrs)
 
-        # Keep the original long_name and units for now
-        ds[var].attrs['long_name'] = ds[var].attrs.get('original_NAME')
-        ds[var].attrs['units'] = ds[var].attrs.get('original_UNITS')
+        # Keep the original long_name and units for now, except if doesn't exist or None
+        if ds[var].attrs.get('original_NAME'):
+            ds[var].attrs['long_name'] = ds[var].attrs.get('original_NAME')
+        if ds[var].attrs.get('original_UNITS'):
+            ds[var].attrs['units'] = ds[var].attrs.get('original_UNITS')
 
-    # Generate Extra Variables
-
-    # Add Geospatial and Geometry related attributes
-    ds = erddap_netcdf.get_spatial_coverage_attributes(ds)
-    ds = erddap_netcdf.convert_variables_to_erddap_format(ds)
-    # global_attrs["id"] = profile_id
-    # global_attrs["cdm_profile_variables"] = "time"
-    # global_attrs["featureType"] = "profile"
-
+    # Add geospatial and geometry related attributes
+    ds = xarray_methods.get_spatial_coverage_attributes(ds)  # Just add spatial/time range as attributes
+    ds = xarray_methods.convert_variables_to_erddap_format(ds)  # Add encoding information to netcdf and convert strings
 
     # Finally save the xarray dataset to a NetCDF file!!!
+    #  Make the global attribute variables preceding the original variables.
     variable_order = []
-    ds.to_netcdf(output_path + "{}.nc".format(os.path.basename(odf_path)))
+    ds.to_netcdf(output_path)
 
 
 def convert_test_files(config):
