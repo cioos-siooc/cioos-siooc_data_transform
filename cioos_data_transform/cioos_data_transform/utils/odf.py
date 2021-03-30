@@ -200,15 +200,15 @@ def define_odf_variable_attributes(metadata,
         flag_dict = {}
         for var in metadata.keys():
             # Retrieve ODF CODE and Associated number
-            odf_paraneter_code = metadata[var][parameter_code_att]
+            odf_parameter_code = metadata[var][parameter_code_att]
             # Separate the parameter_code from the number at the end of the variable
-            parameter_code = odf_paraneter_code.rsplit('_', 1)
+            parameter_code = odf_parameter_code.rsplit('_', 1)
 
-            # Retrieve trailing number
+            # Retrieve trailing
             # Parameter codes are generally associated with a trailing number the define the
             # primary, secondary ,... data
             metadata[var]['parameter_code'] = parameter_code[0]
-            if len(parameter_code) == 2:
+            if len(parameter_code) == 2 and parameter_code[1] != '':
                 metadata[var]['parameter_code_number'] = int(parameter_code[1])
             else:
                 metadata[var]['parameter_code_number'] = 1
@@ -216,16 +216,16 @@ def define_odf_variable_attributes(metadata,
             # FLAG VARIABLES Detect if it is a flag column associated with another column
             flag_column = False
             if parameter_code[0].startswith('QQQQ'):  # MLI FLAG should apply to previous variable
-                flag_dict[odf_paraneter_code] = _find_previous_key(metadata, var)
+                flag_dict[odf_parameter_code] = _find_previous_key(metadata, var)
                 flag_column = True
-            elif parameter_code[0].startswith('Q') and odf_paraneter_code[1:] in metadata.keys():
+            elif parameter_code[0].startswith('Q') and odf_parameter_code[1:] in metadata.keys():
                 # BIO Format which Q+[PCODE] of the associated variable
-                flag_dict[odf_paraneter_code] = odf_paraneter_code[1:]
+                flag_dict[odf_parameter_code] = odf_parameter_code[1:]
                 flag_column = True
             # Make sure that the flag column relate to something
-            if flag_column and flag_dict[odf_paraneter_code] not in metadata:
-                raise UserWarning(odf_paraneter_code + ' flag is refering to' + \
-                                  flag_dict[odf_paraneter_code] + ' which is not available as variable')
+            if flag_column and flag_dict[odf_parameter_code] not in metadata:
+                raise UserWarning(odf_parameter_code + ' flag is refering to' + \
+                                  flag_dict[odf_parameter_code] + ' which is not available as variable')
 
             # Loop through each organisations and find the matching parameter_code within the vocabulary
             found_matching_vocab = False
@@ -239,7 +239,7 @@ def define_odf_variable_attributes(metadata,
 
             # If will get there if no matching vocabulary exist
             if not found_matching_vocab and not flag_column:
-                print(str(parameter_code) + ' not available for organization: ' + str(organizations))
+                print(str(parameter_code) + ' not available in vocabularies: ' + str(organizations))
 
             # TODO compare expected units to units saved within the ODF file to make sure it is matching the vocabulary
 
@@ -268,17 +268,19 @@ def define_odf_variable_attributes(metadata,
     # Deal with fill value which are already specified within the ODF format
     for key, var in metadata.items():
         if 'original_NULL_VALUE' in var.keys():
-            if var['original_TYPE'] not in ['SYTM', 'INTE']:
-                null_value = np.array(var['original_NULL_VALUE']) \
-                    .astype(odf_dtypes[var['original_TYPE']])
-            elif var['original_TYPE'] == 'SYTM' and \
-                    re.match(r'\d\d-\w\w\w-\d\d\d\d\s\d\d\:\d\d\:\d\d', var['original_NULL_VALUE']):
-                null_value = (dt.datetime.strptime(var['original_NULL_VALUE'],
-                                                   '%d-%b-%Y %H:%M:%S.%f') - dt.datetime(1970, 1, 1)).total_seconds()
-            elif var['original_TYPE'] == 'INTE':
-                null_value = int(np.array(var['original_NULL_VALUE']).astype(float).round())
+            if var['original_NULL_VALUE'] not in ['', None, '(none)']:
+                if var['original_TYPE'] not in ['SYTM', 'INTE']:
+                    null_value = np.array(var['original_NULL_VALUE']) \
+                        .astype(odf_dtypes[var['original_TYPE']])
+                elif var['original_TYPE'] == 'SYTM' and \
+                        re.match(r'\d\d-\w\w\w-\d\d\d\d\s\d\d\:\d\d\:\d\d', var['original_NULL_VALUE']):
+                    null_value = (dt.datetime.strptime(var['original_NULL_VALUE'],
+                                                       '%d-%b-%Y %H:%M:%S.%f') - dt.datetime(1970, 1,
+                                                                                             1)).total_seconds()
+                elif var['original_TYPE'] == 'INTE':
+                    null_value = int(np.array(var['original_NULL_VALUE']).astype(float).round())
 
-            metadata[key]['null_value'] = null_value
+                metadata[key]['null_value'] = null_value
 
     # Update P01 name based on parameter_code number
     for var in metadata:
