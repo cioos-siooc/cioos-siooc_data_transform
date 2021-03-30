@@ -3,9 +3,9 @@ import pandas as pd
 import datetime as dt
 import numpy as np
 
-"""
-This method essentially apply the following steps:
- 1. Read line by line an ODF header and distribute each lines in a list of list and dictionaries.
+# Dictionary with the mapping of the odf types to python types
+odf_dtypes = {'DOUB': 'float64', 'SING': 'float32', 'DOUBLE': 'float64',
+              'SYTM': 'float64', 'INTE': 'int32', 'CHAR': str}
  2. Read all the data as a list of text
  3. Convert that list of data into a Pandas Dataframe with Pandas
  4. Convert each column of the pandas data frame to the matching format specified in the ODF associated PARAMETER_HEADER
