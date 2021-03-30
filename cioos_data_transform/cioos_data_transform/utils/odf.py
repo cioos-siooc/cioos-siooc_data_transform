@@ -149,6 +149,12 @@ def read(filename,
     data_raw = pd.read_csv(filename, delimiter=data_delimiter, quotechar=quotechar,
                            skiprows=line_count, header=None,
                            names=column_names, dtype=column_format, encoding=encoding_format)
+
+    # Make sure that there's the same amount of variables read versus what is suggested in the header
+    if len(data_raw) != len(metadata[parameter_section]):
+        raise RuntimeError('{0} variables were detected in the data versus {1} in the header.'\
+                           .format(len(data_raw), len(metadata[parameter_section])))
+
     if not_converted_columns:
         # Parse Date/Time SYTM Variables
         for parm in not_converted_columns:
