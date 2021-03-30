@@ -86,7 +86,9 @@ def convert_variables_to_erddap_format(ds):
       - datetime (timezone aware or not) are converted to: seconds since 1970-01-01T00:00:00[Z]
       - Any objects (usually strings) are converted to |S
     """
-    for var in ds:
+    variables_to_review = list(ds.keys())
+    variables_to_review.extend(ds.coords.keys())
+    for var in variables_to_review:
         if ds[var].dtype not in [float, int, 'float64', 'float32', 'int64', 'int32']:
             # Convert Datetime to seconds since 1970-01-01
             if ds[var].dtype.name.startswith('datetime'):
