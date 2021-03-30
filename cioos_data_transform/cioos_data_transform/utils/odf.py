@@ -231,8 +231,9 @@ def define_odf_variable_attributes(metadata,
                 flag_column = True
             # Make sure that the flag column relate to something
             if flag_column and flag_dict[odf_parameter_code] not in metadata:
-                raise UserWarning(odf_parameter_code + ' flag is refering to' + \
-                                  flag_dict[odf_parameter_code] + ' which is not available as variable')
+                warnings.warn(odf_parameter_code + ' flag is refering to' + \
+                              flag_dict[odf_parameter_code] + ' which is not available as variable',
+                              UserWarning)
 
             # Loop through each organisations and find the matching parameter_code within the vocabulary
             found_matching_vocab = False
@@ -265,7 +266,7 @@ def define_odf_variable_attributes(metadata,
             elif 'ancillary_variables' in metadata[data_column] and type(metadata[data_column]) is str:
                 metadata[data_column]['ancillary_variables'] += ',' + flag_column
             else:
-                raise UserWarning('unknown ancillary flag format attribute')
+                warnings.warn('unknown ancillary flag format attribute', UserWarning)
         # TODO improve flag parameters default documentation
         #  - add flag_values, flag_masks and flag_meanings to flag attributes
         #       http://cfconventions.org/cf-conventions/cf-conventions.html#flags
