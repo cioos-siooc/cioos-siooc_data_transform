@@ -110,8 +110,10 @@ def read(filename,
                 # if re.match(r'^\'\d\d\-\w\w\w\-\d\d\d\d\s\d\d\:\d\d\:\d\d\.\d*\'$',dict_line[1]): # Read Time
                 #     dict_line[1] = dt.datetime.strptime(dict_line[1], '\'%d-%b-%Y %H:%M:%S.%f\'')
                 if re.match(r'\'.*\'', dict_line[1]):  # Is delimited by double quotes, definitely a string
-                    dict_line[1] = str(re.sub(r'\s*\'\s*', '', dict_line[1]))
+                    # Drop the quote signs and the white spaces before and after
+                    dict_line[1] = str(re.sub(r'^\s*|\s*$', '', dict_line[1][1:-1]))
                 else:
+
                     # Try to convert the value of the dictionary in an integer or float
                     dict_line[1] = _convert_to_number(dict_line[1])
 
