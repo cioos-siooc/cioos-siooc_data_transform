@@ -17,7 +17,8 @@ def read(filename,
          output_column_name='CODE',
          variable_type='TYPE',
          section_items_minimum_whitespaces=2,
-         odf_type_to_pandas=None
+         odf_type_to_pandas=None,
+         encoding_format='Windows-1252'
          ):
     """
     Read_odf
@@ -75,7 +76,7 @@ def read(filename,
 
     metadata = {}  # Start with an empty dictionary
     line_count = 0  # Line counter to use for reading the actual data.
-    with open(filename, 'r') as f:
+    with open(filename, 'r', encoding=encoding_format) as f:
         line = ''
         original_header = []
         # Read header one line at the time
@@ -147,7 +148,7 @@ def read(filename,
     # Read with Pandas
     data_raw = pd.read_csv(filename, delimiter=data_delimiter, quotechar=quotechar,
                            skiprows=line_count, header=None,
-                           names=column_names, dtype=column_format)
+                           names=column_names, dtype=column_format, encoding=encoding_format)
     if not_converted_columns:
         # Parse Date/Time SYTM Variables
         for parm in not_converted_columns:
