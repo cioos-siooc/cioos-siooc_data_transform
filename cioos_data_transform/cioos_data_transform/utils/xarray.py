@@ -102,11 +102,12 @@ def convert_variables_to_erddap_format(ds):
                     timezone = ''
 
                 # Format encoding output
-                ds[var].encoding['units'] = 'seconds since 1970-01-01T00:00:00' + timezone
+                ds[var].encoding['units'] = 'seconds since 1970-01-01 00:00:00' + timezone
 
             else:
                 # Should be a string
                 ds[var] = ds[var].astype(str).str.encode('utf-8').astype("|S")
+                ds[var].attrs['_Encoding'] = 'UTF-8'
     return ds
 
 
