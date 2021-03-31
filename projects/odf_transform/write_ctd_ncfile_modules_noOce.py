@@ -49,6 +49,8 @@ def write_ctd_ncfile(odf_path,
     original_variables = raw_data.columns
 
     # create unique ID for each profile
+    # TODO This was in the previous code, not sure if we want to handle it that way. Different groups may have
+    #  their own convention. A file Name variable is at least generated for now.
     #profile_id = f"{metadata['cruiseNumber']}-{metadata['eventNumber']}-{metadata['eventQualifier']}"
 
     # Let's convert to an xarray dataset.
@@ -75,6 +77,10 @@ def write_ctd_ncfile(odf_path,
     else:
         metadata_variable_list = []
 
+    # geographic_area
+    ds['geographic_area'] = get_geo_code([ds['longitude'], ds['latitude']],
+        config["polygons_dict"])
+
     # Add Variable Attributes
     # Convert metadata variable attributes list to dictionary
     var_attributes = {var[variable_name_attribute]: {original_prefix_var_attribute + att: value
@@ -96,17 +102,17 @@ def write_ctd_ncfile(odf_path,
         if ds[var].attrs.get('original_UNITS') and ds[var].attrs['original_UNITS'] not in ['nan', '(none)', 'none']:
             ds[var].attrs['units'] = ds[var].attrs.get('original_UNITS')
 
-    # Geolocaton
-    ds['geographic_area'] = get_geo_code([ds['longitude'], ds['latitude']],
-        config["polygons_dict"])
+    # Generate extra variables (BODC, Derived)
+    # TODO This need to be added in the near future to make the data output fully usable
 
-    # Add geospatial and geometry related attributes
+    # Add geospatial and geometry related global attributes
     ds = xarray_methods.get_spatial_coverage_attributes(ds)  # Just add spatial/time range as attributes
     ds = xarray_methods.convert_variables_to_erddap_format(ds)  # Add encoding information to netcdf and convert strings
 
     # Finally save the xarray dataset to a NetCDF file!!!
     #  Make the global attribute variables preceding the original variables.
     variables_order = metadata_variable_list
+    variables_order.extend(['geographic_area'])
     variables_order.extend(original_variables)
     ds[variables_order].to_netcdf(output_path)
 
