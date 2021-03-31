@@ -75,14 +75,12 @@ def read(filename,
         return re.sub(r'^\s*|\s*$', '', string_to_trim)
 
     metadata = {}  # Start with an empty dictionary
-    line_count = 0  # Line counter to use for reading the actual data.
     with open(filename, 'r', encoding=encoding_format) as f:
         line = ''
         original_header = []
         # Read header one line at the time
         while header_end not in line:
             line = f.readline()
-            line_count = line_count + 1
             # Drop some characters that aren't useful
             line = re.sub(r'\n|,$', '', line)
 
@@ -126,31 +124,30 @@ def read(filename,
             else:
                 assert RuntimeError, "Can't understand the line: " + line
 
-    # Simplify the single sections to a dictionary
-    for section in metadata:
-        if len(metadata[section]) == 1 and \
-                type(metadata[section][0]) is dict:
-            metadata[section] = metadata[section][0]
+        # Simplify the single sections to a dictionary
+        for section in metadata:
+            if len(metadata[section]) == 1 and \
+                    type(metadata[section][0]) is dict:
+                metadata[section] = metadata[section][0]
 
-    # READ ODF DATA SECTION
-    # Define first the variable names and the type.
-    column_format = {}
-    column_names = []
-    not_converted_columns = {}
-    for att in metadata[parameter_section]:
-        if output_column_name not in att:
-            att[output_column_name] = att['NAME']
+        # READ ODF DATA SECTION
+        # Define first the variable names and the type.
+        column_format = {}
+        column_names = []
+        not_converted_columns = {}
+        for att in metadata[parameter_section]:
+            if output_column_name not in att:
+                att[output_column_name] = att['NAME']
 
-        column_names.append(att[output_column_name])
-        if att[variable_type] not in ['SYTM'] and not column_names[-1].startswith('SYTM'):
-            column_format[att[output_column_name]] = odf_type_to_pandas[att[variable_type]]
-        else:
-            not_converted_columns[att[output_column_name]] = odf_type_to_pandas[att[variable_type]]
+            column_names.append(att[output_column_name])
+            if att[variable_type] not in ['SYTM'] and not column_names[-1].startswith('SYTM'):
+                column_format[att[output_column_name]] = odf_type_to_pandas[att[variable_type]]
+            else:
+                not_converted_columns[att[output_column_name]] = odf_type_to_pandas[att[variable_type]]
 
-    # Read with Pandas
-    data_raw = pd.read_csv(filename, delimiter=data_delimiter, quotechar=quotechar,
-                           skiprows=line_count, header=None,
-                           names=column_names, dtype=column_format, encoding=encoding_format)
+        # Read with Pandas
+        data_raw = pd.read_csv(f, delimiter=data_delimiter, quotechar=quotechar, header=None,
+                               names=column_names, dtype=column_format, encoding=encoding_format)
 
     # Make sure that there's the same amount of variables read versus what is suggested in the header
     if len(data_raw.columns) != len(metadata[parameter_section]):
