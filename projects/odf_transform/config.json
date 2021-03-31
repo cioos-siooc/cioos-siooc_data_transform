@@ -1,7 +1,8 @@
 {
     "geojsonFileList": [
         "./geojson_files/ios_polygons.geojson",
-        "./geojson_files/MLI_St-LawrenceBoxes.geojson"
+        "./geojson_files/MLI_St-LawrenceBoxes.geojson",
+        "./geojson_files/csasAtlPhys_climatePolygons.geojson"
     ],
     "vocabularyFileList":[
 		"./vocabulary/all_vocabulary_list.json"
