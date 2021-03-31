@@ -96,6 +96,10 @@ def write_ctd_ncfile(odf_path,
         if ds[var].attrs.get('original_UNITS') and ds[var].attrs['original_UNITS'] not in ['nan', '(none)', 'none']:
             ds[var].attrs['units'] = ds[var].attrs.get('original_UNITS')
 
+    # Geolocaton
+    ds['geographic_area'] = get_geo_code([ds['longitude'], ds['latitude']],
+        config["polygons_dict"])
+
     # Add geospatial and geometry related attributes
     ds = xarray_methods.get_spatial_coverage_attributes(ds)  # Just add spatial/time range as attributes
     ds = xarray_methods.convert_variables_to_erddap_format(ds)  # Add encoding information to netcdf and convert strings
