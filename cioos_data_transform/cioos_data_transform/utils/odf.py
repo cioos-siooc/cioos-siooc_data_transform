@@ -2,6 +2,7 @@ import re
 import datetime as dt
 import numpy as np
 import warnings
+import pandas as pd
 
 # Dictionary with the mapping of the odf types to python types
 odf_dtypes = {'DOUB': 'float64', 'SING': 'float32', 'DOUBLE': 'float64',
