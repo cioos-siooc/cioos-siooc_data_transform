@@ -5,7 +5,7 @@ import warnings
 import datetime as dt
 import re
 import json
-
+import isodate
 
 def add_variables_from_dict(ds,
                             config,
@@ -126,8 +126,8 @@ def get_spatial_coverage_attributes(ds,
         time_spatial_coverage.update({
             'time_coverage_start': str(ds[time].min().values),
             'time_coverage_end': str(ds[time].max().values),
-            'time_coverage_duration': str((ds[time].max() - ds[time].min())
-                                          .values / np.timedelta64(1, 's')) + ' seconds'
+            'time_coverage_duration': isodate.duration_isoformat(ds[time].max() -ds[time].min())
+
         })
 
     # lat/long
