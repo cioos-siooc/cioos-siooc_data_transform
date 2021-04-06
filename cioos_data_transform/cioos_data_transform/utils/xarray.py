@@ -7,6 +7,7 @@ import re
 import json
 import isodate
 
+
 def add_variables_from_dict(ds,
                             config,
                             dim,
@@ -20,9 +21,9 @@ def add_variables_from_dict(ds,
     """
     This function adds new variables to an xarray dataset based from the configuration provided.
     It can retrieve data from a nested dictionary by providing one, it can the header of a file format which contains
-    a lot of informtation and was previously cnverted to a dictionary.
+    a lot of information and was previously converted to a dictionary.
 
-    The data can be converted to any ohter format.
+    The data can be converted to any other format.
     """
 
     # Loop through each metadata fields listed in config
@@ -74,9 +75,6 @@ def add_variables_from_dict(ds,
             ds[var] = value
 
     return ds
-
-
-import numpy as np
 
 
 def convert_variables_to_erddap_format(ds):
