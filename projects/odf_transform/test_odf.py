@@ -1,4 +1,4 @@
-from write_ctd_ncfile_modules import *
+from write_ctd_ncfile_modules_noOce import *
 
 CONFIG_PATH = fix_path("./config.json")
 TEST_FILES_PATH = fix_path("./test/test_files/")

@@ -36,8 +36,8 @@ def write_ctd_ncfile(odf_path,
                      original_prefix_var_attribute='original_',
                      variable_name_attribute='CODE'):
 
-    if not os.path.isdir(TEST_FILES_OUTPUT):
-        os.mkdir(TEST_FILES_OUTPUT)
+    if not os.path.isdir(config['TEST_FILES_OUTPUT']):
+        os.mkdir(config['TEST_FILES_OUTPUT'])
 
     print(os.path.split(odf_path)[-1])
     # Parse the ODF file with the CIOOS python parsing tool
