@@ -7,22 +7,45 @@
     "vocabularyFileList":[
 		"./vocabulary/all_vocabulary_list.json"
 	],
-    "organisationVocabulary": ["BIO","GF3"],
-    "summary": "brief summary of dataset",
-    "summary_fra": " summary in french here",
-    "title": "dataset title",
-    "title_fra": "title in french here",
-    "description": "detailed description",
-    "description_fra": "description in french",
-    "infoUrl": "http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html",
-    "keywords": "temperature, salinity",
-    "keywords_fra": "salinite",
-    "acknowledgement": "thanks etc ...",
-    "naming_authority": "CF Standard Name Table v29",
-    "creator_name": "CIOOS",
-    "creator_email": "cioos email here",
-    "creator_url": "http://www.someurlhere.com",
-    "license": "standard license information here",
-    "keywords_vocabulary": "GCMD Science Keywords",
-    "Conventions": "CF-1.6,CF-1.7,ACDD1.1"
+    "organisationVocabulary": ["IML","BIO","GF3"],
+    "global_attributes": {
+        "summary": "brief summary of dataset",
+        "summary_fra": " summary in french here",
+        "title": "dataset title",
+        "title_fra": "title in french here",
+        "description": "detailed description",
+        "description_fra": "description in french",
+        "infoUrl": "http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html",
+        "keywords": "temperature, salinity",
+        "keywords_fra": "salinite",
+        "acknowledgement": "thanks etc ...",
+        "naming_authority": "CF Standard Name Table v29",
+        "creator_name": "CIOOS",
+        "creator_email": "cioos email here",
+        "creator_url": "http://www.someurlhere.com",
+        "license": "standard license information here",
+        "keywords_vocabulary": "GCMD Science Keywords",
+        "Conventions": "CF-1.6,CF-1.7,ACDD1.1",
+        "naming_authority": "COARDS",
+        "comment": ""
+    },
+    "variables_from_header": {
+        "platform":  {"dictionary": ["CRUISE_HEADER","PLATFORM"], "format": "str"},
+        "cruise_name":  {"dictionary": ["CRUISE_HEADER","CRUISE_NAME"], "format": "str"},
+        "cruise_id": {"dictionary": ["CRUISE_HEADER","CRUISE_NUMBER"], "format": "str"},
+        "chief_scientist": {"dictionary": ["CRUISE_HEADER","CHIEF_SCIENTIST"], "format": "str"},
+        "time": {"dictionary": ["EVENT_HEADER", "START_DATE_TIME"], "format": "datetime[%d-%b-%Y %H:%M:%S.%f]"},
+        "start_time": {"dictionary": ["EVENT_HEADER", "START_DATE_TIME"], "format": "datetime[%d-%b-%Y %H:%M:%S.%f]"},
+        "end_time": {"dictionary": ["EVENT_HEADER", "END_DATE_TIME"], "format": "datetime[%d-%b-%Y %H:%M:%S.%f]"},
+        "latitude": {"dictionary": ["EVENT_HEADER", "INITIAL_LATITUDE"], "format": "float"},
+        "longitude": {"dictionary": ["EVENT_HEADER", "INITIAL_LONGITUDE"], "format": "float"}
+    },
+    "variables": {
+        "pressure": {"variable": "PRES_01", "attributes": {"standard_name": "sea_water_pressure"}}
+    },
+    "global_attributes_from_header": {
+        "project": {"dictionary": ["CRUISE_HEADER","CRUISE_NAME"]},
+        "institution:": {"dictionary": ["CRUISE_HEADER","ORGANIZATION"]},
+        "history": {"dictionary": ["HISTORY_HEADER"], "format": "json"}
+    }
 }

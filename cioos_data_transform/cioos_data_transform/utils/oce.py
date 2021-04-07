@@ -126,11 +126,12 @@ def retrieve_odf_data_from_oce(data,
     # Bring back original name to data and flags
     odf_data = {metadata['dataNamesOriginal'][var]: data[var] for var in data.keys()}
     odf_flag = {}
-    for flag_name, flags in metadata['flags'].items():
-        if flag_name in metadata['dataNamesOriginal']:
-            odf_flag[metadata['dataNamesOriginal'][flag_name]] = flags
-        else:
-            odf_flag[flag_name] = flags
+    if 'flags' in metadata and len(metadata['flags']) > 0:
+        for flag_name, flags in metadata['flags'].items():
+            if flag_name in metadata['dataNamesOriginal']:
+                odf_flag[metadata['dataNamesOriginal'][flag_name]] = flags
+            else:
+                odf_flag[flag_name] = flags
 
     data_out = {}
     for var, attributes in odf_variable_attributes.items():
