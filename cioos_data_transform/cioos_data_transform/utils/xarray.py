@@ -75,6 +75,10 @@ def add_variables_from_dict(ds,
         else:
             ds[var] = value
 
+        # Add attributes from config
+        if 'attributes' in info:
+            ds[var].attrs.update(info['attributes'])
+
     return ds
 
 
