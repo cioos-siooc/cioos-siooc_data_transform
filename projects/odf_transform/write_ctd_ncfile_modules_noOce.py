@@ -51,7 +51,7 @@ def write_ctd_ncfile(odf_path,
     # create unique ID for each profile
     # TODO This was in the previous code, not sure if we want to handle it that way. Different groups may have
     #  their own convention. A file Name variable is at least generated for now.
-    #profile_id = f"{metadata['cruiseNumber']}-{metadata['eventNumber']}-{metadata['eventQualifier']}"
+    # profile_id = f"{metadata['cruiseNumber']}-{metadata['eventNumber']}-{metadata['eventQualifier']}"
 
     # Let's convert to an xarray dataset.
     ds = raw_data.to_xarray()
@@ -78,8 +78,7 @@ def write_ctd_ncfile(odf_path,
         metadata_variable_list = []
 
     # geographic_area
-    ds['geographic_area'] = get_geo_code([ds['longitude'], ds['latitude']],
-        config["polygons_dict"])
+    ds['geographic_area'] = get_geo_code([ds['longitude'], ds['latitude']], config["polygons_dict"])
 
     # Add Variable Attributes
     # Convert metadata variable attributes list to dictionary
