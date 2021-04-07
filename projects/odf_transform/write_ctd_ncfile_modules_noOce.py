@@ -121,6 +121,10 @@ def write_ctd_ncfile(odf_path,
     variables_order = metadata_variable_list
     variables_order.extend(['geographic_area'])
     variables_order.extend(original_variables)
+    if 'variables' in config:
+        variables_order.extend(config['variables'])
+
+    # Save to NetCDF
     ds[variables_order].to_netcdf(output_path)
 
 
