@@ -42,8 +42,11 @@ def add_variables_from_dict(ds,
             if type(value) == dict and 'format' not in info and 'json' in info['format']:
                 warnings.warn('{0} is does not match a single value.  A json output is then recommended.'.format(var),
                               RuntimeWarning)
-        elif 'variable' in info and info['variable'] in ds:
-            value = ds[info['variable']]
+        elif 'variable' in info:
+            if info['variable'] in ds:
+                value = ds[info['variable']]
+            else:
+                break
         else:
             value = info
 
