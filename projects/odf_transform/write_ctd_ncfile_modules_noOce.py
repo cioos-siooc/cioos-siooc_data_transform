@@ -96,10 +96,14 @@ def write_ctd_ncfile(odf_path,
     for var, attrs in var_attributes.items():
         ds[var].attrs.update(attrs)
 
-        # Keep the original long_name and units for now, except if doesn't exist or None
-        if ds[var].attrs.get('original_NAME'):
+        # Keep the original long_name and units for now, except if it doesn't exist or
+        # None or was populated already (flags)
+        if 'long_name' not in ds[var].attrs and \
+                ds[var].attrs.get('original_NAME'):
             ds[var].attrs['long_name'] = ds[var].attrs.get('original_NAME')
-        if ds[var].attrs.get('original_UNITS') and ds[var].attrs['original_UNITS'] not in ['nan', '(none)', 'none']:
+        if 'units' not in ds[var].attrs and \
+                ds[var].attrs.get('original_UNITS') and \
+                ds[var].attrs['original_UNITS'] not in ['nan', '(none)', 'none']:
             ds[var].attrs['units'] = ds[var].attrs.get('original_UNITS')
 
     # Generate extra variables (BODC, Derived)
