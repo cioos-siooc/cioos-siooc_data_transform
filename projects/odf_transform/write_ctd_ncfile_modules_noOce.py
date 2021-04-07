@@ -6,7 +6,7 @@ import re
 import shutil
 
 import xarray as xr
-import utils.odf as odf
+import utils.odf_parser as odf
 import cioos_data_transform.utils.xarray_methods as xarray_methods
 from cioos_data_transform.utils.utils import fix_path
 from cioos_data_transform.utils.utils import get_geo_code, read_geojson
