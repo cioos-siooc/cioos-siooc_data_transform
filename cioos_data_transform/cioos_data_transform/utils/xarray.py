@@ -103,8 +103,8 @@ def convert_variables_to_erddap_format(ds):
 
             else:
                 # Should be a string
-                ds[var] = ds[var].astype(str).str.encode('utf-8').astype("|S")
-                ds[var].attrs['_Encoding'] = 'UTF-8'
+                ds[var] = ds[var].astype(str)  # .str.encode('utf-8')  # Force to encode in UTF-8
+                # ds[var].attrs['_Encoding'] = 'UTF-8'
     return ds
 
 
