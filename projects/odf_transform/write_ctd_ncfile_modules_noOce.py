@@ -105,6 +105,10 @@ def write_ctd_ncfile(odf_path,
                 ds[var].attrs['original_UNITS'] not in ['nan', '(none)', 'none']:
             ds[var].attrs['units'] = ds[var].attrs.get('original_UNITS')
 
+    # Generate Variables from Config
+    if 'variables' in config:
+        ds = xarray_methods.add_variables_from_dict(ds, config['variables'], 'original_file', dictionary=metadata)
+
     # Generate extra variables (BODC, Derived)
     # TODO This need to be added in the near future to make the data output fully usable
 
