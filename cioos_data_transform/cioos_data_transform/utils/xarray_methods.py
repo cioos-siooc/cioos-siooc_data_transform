@@ -155,3 +155,96 @@ def get_spatial_coverage_attributes(ds,
     ds.attrs.update(time_spatial_coverage)
     return ds
 
+
+def derive_cdm_data_type(ds,
+                         cdm_data_type=None,
+                         lat='latitude',
+                         lon='longitude',
+                         time='time',
+                         depth='depth',
+                         profile_id='profile_id',
+                         timeseries_id='timeseries_id',
+                         trajectory_id='trajectory_id'):
+
+    if cdm_data_type is None:
+        if lat in ds and lon in ds and \
+                ds[lat].ndim == 1 and ds[lon].ndim == 1 and \
+                ds[lat].size > 1 and ds[lon].size > 1:  # Trajectory
+            is_trajectory = True
+            cdm_data_type += 'Trajectory'
+        else:
+            is_trajectory = False
+
+        if time in ds and ds[time].ndim == 1 and ds[time].size > 1 and not is_trajectory:  # Time Series
+            cdm_data_type += 'TimeSeries'
+
+        if depth in ds and ds[depth].ndim == 1 and ds[depth].size > 1:  # Profile
+            cdm_data_type += 'Profile'
+
+        if cdm_data_type == '':  # If nothing else
+            cdm_data_type = 'Point'
+
+    # Add cdm_data_type attribute
+    ds.attrs['cdm_data_type'] = cdm_data_type
+
+    def _retrieve_cdm_variables(ds_review,
+                                var_id, type):
+        if var_id not in ds:
+            warnings('Missing a {0} variable'.format(type), RuntimeWarning)
+            return ds_review
+
+        ds[var_id].attrs['cf_role'] = type
+        cdm_attribute = 'cdm_{0}_variables'.format(type.replace('_id', ''))
+        if ds[var_id].size == 1:
+            ds.attrs[cdm_attribute] = ','.join([var for var in ds_review if ds[var].size == 1])
+        else:
+            warnings('derive_cdm_data_type isn''t yet compatible with collection datasets', RuntimeWarning)
+        return ds_review
+
+    # Trajectory
+    if 'Trajectory' in cdm_data_type:
+        ds = _retrieve_cdm_variables(ds, trajectory_id, 'trajectory_id')
+
+    # Time Series
+    if 'Timeseries' in cdm_data_type :
+        ds = _retrieve_cdm_variables(ds, timeseries_id)
+
+    # Profile
+    if 'Profile' in cdm_data_type:
+        ds = _retrieve_cdm_variables(ds, profile_id, 'profile_id')
+    return ds
+
+
+def define_index_dimensions(ds):
+    # If multiple dimensions exists but are really the same let's just keep index
+    if 'index' in ds.dims and len(ds.dims) > 1:
+        print('index')
+    # Handle dimension name if still default "index" from conversion of pandas to xarray
+    if 'index' in ds.dims and len(ds.dims.keys()) == 1:
+        # If dimension is index and is a table like data
+        if ds.attrs['cdm_data_type'] in ['Timeseries', 'Trajectory']:
+            ds = ds.swap_dims({'index': 'time'})
+            ds = ds.reset_coords('index')
+        elif 'Profile' == ds.attrs['cdm_data_type']:
+            ds = ds.swap_dims({'index': 'depth'})
+            ds = ds.reset_coords('index')
+
+    return ds
+
+
+def add_variable_attributes(ds,
+                            review_attributes=None,
+                            scales='IPTS\-*48|IPTS\-*68|ITS\-*90|PSS\-*78'):
+    if review_attributes is None:
+        review_attributes = ['units', 'long_name', 'standard_name', 'comments']
+    for var in ds:
+        # Scale attribute
+        if 'scale' not in ds[var].attrs:
+            scale = []
+            for att_to_review in review_attributes:
+                if att_to_review in ds[var].attrs and len(scale) == 0:
+                    scale = re.findall(scales.lower(), ds[var].attrs[att_to_review].lower())
+                if scale:
+                    ds[var].attrs['scale'] = scale[0].upper()
+                    break
+    return ds
