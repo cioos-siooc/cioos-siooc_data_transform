@@ -30,21 +30,6 @@
         "naming_authority": "COARDS",
         "comment": ""
     },
-    "variables_from_header": {
-        "platform":  {"dictionary": ["CRUISE_HEADER","PLATFORM"], "format": "str"},
-        "cruise_name":  {"dictionary": ["CRUISE_HEADER","CRUISE_NAME"], "format": "str"},
-        "cruise_id": {"dictionary": ["CRUISE_HEADER","CRUISE_NUMBER"], "format": "str"},
-        "chief_scientist": {"dictionary": ["CRUISE_HEADER","CHIEF_SCIENTIST"], "format": "str"},
-        "time": {"dictionary": ["EVENT_HEADER", "START_DATE_TIME"], "format": "datetime[%d-%b-%Y %H:%M:%S.%f]"},
-        "start_time": {"dictionary": ["EVENT_HEADER", "START_DATE_TIME"], "format": "datetime[%d-%b-%Y %H:%M:%S.%f]"},
-        "end_time": {"dictionary": ["EVENT_HEADER", "END_DATE_TIME"], "format": "datetime[%d-%b-%Y %H:%M:%S.%f]"},
-        "latitude": {"dictionary": ["EVENT_HEADER", "INITIAL_LATITUDE"], "format": "float"},
-        "longitude": {"dictionary": ["EVENT_HEADER", "INITIAL_LONGITUDE"], "format": "float"}
-    },
-    "variables": {
-        "sea_water_pressure": {"variable": "PRES_01", "attributes": {"standard_name": "sea_water_pressure"}},
-        "time": {"variable": "SYTM_01", "attributes": {"standard_name": "time"}}
-    },
     "global_attributes_from_header": {
         "project": {"dictionary": ["CRUISE_HEADER","CRUISE_NAME"]},
         "institution:": {"dictionary": ["CRUISE_HEADER","ORGANIZATION"]},
