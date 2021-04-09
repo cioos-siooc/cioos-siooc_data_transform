@@ -5,6 +5,7 @@ import warnings
 import datetime as dt
 import re
 import json
+import os
 
 
 def add_variables_from_dict(ds,
@@ -246,4 +247,91 @@ def add_variable_attributes(ds,
                 if scale:
                     ds[var].attrs['scale'] = scale[0].upper()
                     break
+        # Make sure coordinates have standard_names
+        if var in ['time', 'latitude', 'longitude', 'depth']:
+            ds[var].attrs['standard_name'] = str(var)
+    return ds
+
+
+def generate_bodc_variables(ds):
+    def _is_matching(bodc, variable):
+        if variable is None:
+            variable = ''
+        return pd.isna(bodc) or re.search(bodc, variable, re.IGNORECASE)
+
+    def _join_attributes(original, add):
+        return ','.join({original, add} - {'', None})
+
+    def _first_findall(pattern, input):
+        result = re.findall(pattern, input)
+        return result[0] if result else None
+
+    def _read_bodc(urn):
+
+        def _first_findall(pattern, input):
+            result = re.findall(pattern, input)
+            return result[0] if result else None
+
+        bodc = {
+            'source': _first_findall('^(\w*)\:', urn),
+            'vocab': _first_findall('\:(.*)\:\:', urn),
+            'code_full': _first_findall('[^\:]\w*$', urn),
+            'code_no_trailing': _first_findall('[^\:]\w*$', urn.strip()[:-1]),
+            'trailing_number': _first_findall('[1-9$]$', urn)
+        }
+        if bodc['code_full'] and re.match('[^1-9]', bodc['code_full'].strip()[-1]):
+            bodc['code_no_trailing'] = '{0}{1}'.format(bodc['code_no_trailing'], bodc['code_full'][-1])
+        return bodc
+
+    # Get Reference Document
+    bodc_var = pd.read_csv(os.path.join(os.path.split(__loader__.path)[0], 'bodc_generator.csv'))
+    bodc_var['SDN:P01::urn'] = bodc_var['SDN:P01::urn'].str.strip()
+
+    for var in ds:
+        standard_name = ds[var].attrs.get('standard_name', '')
+        sdn_parameter_urn = ds[var].attrs.get('sdn_parameter_urn', '')
+
+        # If no standard vocabulary exist ignore
+        if sdn_parameter_urn == '' and standard_name == '':
+            continue
+
+        # Find Matching Variables
+        sdn_parameter_urn_dict = _read_bodc(sdn_parameter_urn)
+        if sdn_parameter_urn_dict['code_no_trailing']:
+            matched_sdn_p01 = bodc_var['SDN:P01::urn'].str.contains(sdn_parameter_urn_dict['code_no_trailing'])
+        else:
+            matched_sdn_p01 = bodc_var['SDN:P01::urn'] == False
+
+        # Since CF is usually a broader term than P01 we'll copy the matching P01 term standard_name if not
+        # available in the data and available in the bodc list
+        if standard_name == '' and sdn_parameter_urn != '' and \
+                 sdn_parameter_urn_dict['code_full'] in bodc_var['SDN:P01::urn'].tolist():
+            standard_name = bodc_var[matched_sdn_p01]['standard_name'].tolist()[0]
+        matched_standard_name = bodc_var['standard_name'] == standard_name
+
+        # Loop through each field that matching either P01 or standard_name
+        matched_bodc = bodc_var[matched_standard_name | matched_sdn_p01]
+        for id, row in matched_bodc.iterrows():
+            match_units = _is_matching(row['unit'], ds[var].attrs.get('units'))
+            match_scale = _is_matching(row['scale'], ds[var].attrs.get('scale'))
+            match_instrument = _is_matching(row['instrument'], ds[var].attrs.get('instrument')) or \
+                               _is_matching(row['instrument'], ds.attrs.get('instrument'))
+
+            if match_units and match_scale and match_instrument:
+                # Update standard_name if empty
+                if ds[var].attrs.get('standard_name') is None:
+                    ds[var].attrs['standard_name'] = standard_name
+
+                # Append new matching sdn_parameter to other one
+                ds[var].attrs['matching_sdn_parameter_urn'] = _join_attributes(sdn_parameter_urn,
+                                                                               'SDN:P01::' + row['SDN:P01::urn'])
+
+                if row['Generate Variable']:
+                    # Deal with primary secondary sensor data
+                    new_var = _read_bodc(row['SDN:P01::urn'])['code_no_trailing']
+                    if sdn_parameter_urn_dict['trailing_number']:
+                        new_var = '{0}{1}'.format(new_var, sdn_parameter_urn_dict['trailing_number'])
+                    ds[new_var] = ds[var]
+                    ds[new_var].attrs['original_variable'] = \
+                        _join_attributes(ds[var].attrs.get('original_variable'), var)
     return ds
