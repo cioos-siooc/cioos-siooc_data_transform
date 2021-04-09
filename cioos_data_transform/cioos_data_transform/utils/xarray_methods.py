@@ -246,7 +246,7 @@ def add_variable_attributes(ds,
                     scale = re.findall(scales, ds[var].attrs[att_to_review], re.IGNORECASE)
                 if scale:
                     scale = scale[0]
-                    scale = re.sub("practical\ssalinity|psu", 'PSS-78', scale)
+                    scale = re.sub("practical\ssalinity|psu", 'PSS-78', scale, re.IGNORECASE)
                     ds[var].attrs['scale'] = scale.upper()
 
                     break
