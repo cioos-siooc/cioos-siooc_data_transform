@@ -1,0 +1,20 @@
+{
+    "raw_folder": "/home/pramod/code/hakai_code/cioos-siooc_data_transform/projects/ios_data_transform/tests/test_files/bot/",
+    "nc_folder": "/home/pramod/code/hakai_code/ios-erddap/datasets/IOS_BOT_profiles/",
+    "geojson_file": "/home/pramod/code/hakai_code/cioos-siooc_data_transform/projects/ios_data_transform/tests/test_files/ios_polygons.geojson",
+    "summary": "This dataset contains observations made by the Institute of Ocean Sciences of Fisheries and Oceans (DFO) using water samples.",
+    "title": "Data from Niskin bottle samples",
+    "infoUrl": "http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html",
+    "institution": "Institute of Ocean Sciences, 9860 West Saanich Road, Sidney, B.C., Canada",
+    "keywords": "temperature, salinity, depth, pressure, nutrients",
+    "keywords_vocabulary": "GCMD Science Keywords",
+    "standard_name_vocabulary": "CF Standard Name Table v29",
+    "creator_name": "Hakai Insitute",
+    "creator_email": "info@hakai.org",
+    "creator_url": "http://www.hakai.org",
+    "comment": "Data converted from IOS ASCII format",
+    "acknowledgement": "n/a",
+    "license": "canada open government license",
+    "Conventions": "COARDS, CF-1.7, ACDD1.3",
+    "processing_level": "5"
+}

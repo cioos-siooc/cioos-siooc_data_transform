@@ -13,7 +13,7 @@ import cioos_data_transform.utils as cioos_utils
 import subprocess
 
 
-def convert_files(env_vars, opt="all", ftype=None):
+def convert_files(config={}, opt="all", ftype=None):
     # path of raw files, path for nc files, and option
     # opt = 'new' for only new raw files
     # opt = 'all' for all files. default value;
@@ -21,29 +21,20 @@ def convert_files(env_vars, opt="all", ftype=None):
     #           'mctd' for mooring CTDs
     #           'cur' for current meters
     print("Option, ftype =", opt, ftype)
+    in_path = config.get("raw_folder")
+    # out_path = config.get("nc_folder")
+    # fgeo = config.get("geojson_file")
     if ftype == "ctd":
-        in_path = env_vars["ctd_raw_folder"]
-        out_path = env_vars["ctd_nc_folder"]
-        fgeo = env_vars["geojson_file"]
         flist = glob.glob(in_path + "**/*.[Cc][Tt][Dd]", recursive=True)
     elif ftype == "mctd":
-        in_path = env_vars["mctd_raw_folder"]
-        out_path = env_vars["mctd_nc_folder"]
-        fgeo = env_vars["geojson_file"]
         flist = []
         flist.extend(glob.glob(in_path + "**/*.[Cc][Tt][Dd]", recursive=True))
         flist.extend(glob.glob(in_path + "**/*.mctd", recursive=True))
     elif ftype == "bot":
-        in_path = env_vars["bot_raw_folder"]
-        out_path = env_vars["bot_nc_folder"]
-        fgeo = env_vars["geojson_file"]
         flist = []
         flist.extend(glob.glob(in_path + "**/*.[Bb][Oo][Tt]", recursive=True))
         flist.extend(glob.glob(in_path + "**/*.[Cc][Hh][Ee]", recursive=True))
     elif ftype == "cur":
-        in_path = env_vars["cur_raw_folder"]
-        out_path = env_vars["cur_nc_folder"]
-        fgeo = env_vars["geojson_file"]
         flist = glob.glob(in_path + "**/*.[Cc][Uu][Rr]", recursive=True)
     else:
         print("ERROR: Filetype not understood ...")
@@ -53,7 +44,7 @@ def convert_files(env_vars, opt="all", ftype=None):
     for i, fname in enumerate(flist[:]):
         # print('\nProcessing -> {} {}'.format(i, fname))
         p = Process(
-            target=(convert_files_threads), args=(ftype, fname, fgeo, out_path)
+            target=(convert_files_threads), args=(ftype, fname, config)
         )
         p.start()
         p.join()
@@ -68,7 +59,7 @@ def standardize_variable_names(ncfile):
     cioos_utils.add_standard_variables(ncfile)
 
 
-def convert_files_threads(ftype, fname, fgeo, out_path):
+def convert_files_threads(ftype, fname, config={}):
     # skip processing file if its older than 24 hours old
     if cioos_utils.file_mod_time(fname) < -24.0 and opt == "new":
         # print("Not converting file: ", fname)
@@ -89,7 +80,8 @@ def convert_files_threads(ftype, fname, fgeo, out_path):
     # if file class was created properly, try to import data
     if fdata.import_data():
         print("Imported data successfully!")
-        fdata.assign_geo_code(fgeo)
+        fdata.assign_geo_code(config.get("geojson_file"))
+        out_path = config.get("nc_folder")
         # now try to write the file...
         yy = fdata.start_date[0:4]
         if not os.path.exists(out_path + yy):
@@ -97,28 +89,28 @@ def convert_files_threads(ftype, fname, fgeo, out_path):
         ncFileName = out_path + yy + "/" + fname.split("/")[-1] + ".nc"
         if ftype == "ctd":
             try:
-                write_ctd_ncfile(ncFileName, fdata)
+                write_ctd_ncfile(ncFileName, fdata, config=config)
                 standardize_variable_names(ncFileName)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
                 subprocess.call(["rm", "-f", ncFileName])
         elif ftype == "mctd":
             try:
-                write_mctd_ncfile(ncFileName, fdata)
+                write_mctd_ncfile(ncFileName, fdata, config=config)
                 standardize_variable_names(ncFileName)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
                 subprocess.call(["rm", "-f", ncFileName])
         elif ftype == "bot":
             try:
-                write_ctd_ncfile(ncFileName, fdata)
+                write_ctd_ncfile(ncFileName, fdata, config=config)
                 standardize_variable_names(ncFileName)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
                 subprocess.call(["rm", "-f", ncFileName])
         elif ftype == "cur":
             try:
-                write_cur_ncfile(ncFileName, fdata)
+                write_cur_ncfile(ncFileName, fdata, config=config)
             except Exception as e:
                 print("Error: Unable to create netcdf file:", fname, e)
                 subprocess.call(["rm", "-f", ncFileName])
@@ -136,23 +128,19 @@ if len(sys.argv) > 1:
 else:  # default option. process all files !
     opt = "all"
     ftype = "ctd"
-config = cioos_utils.read_config("config.json")
-# env_vars = iod.import_env_variables("./.env")
-print("Inputs from .env file: ", config)
-
+config = cioos_utils.read_config(f"config_{ftype}.json")
+print("Inputs from config file: ", config)
 start = time()
-flist = convert_files(env_vars=config, opt=opt, ftype=ftype)
+flist = convert_files(config=config, opt=opt, ftype=ftype)
 print("Time taken to convert files: {:0.2f}".format(time() - start))
 # if any raw files have been removed, delete corresponding netCDF files
 if flist is not None:
     print("Checking if any netCDF files should be removed...")
-    ncfilelist = glob.glob(
-        config[ftype + "_nc_folder"] + "**/*.nc", recursive=True
-    )
+    ncfilelist = glob.glob(config.get("nc_folder") + "**/*.nc", recursive=True)
     for i, e in enumerate(
         cioos_utils.compare_file_list(sub_set=flist, global_set=ncfilelist)
     ):
-        filename = glob.glob(config[ftype + "_nc_folder"] + "**/{}.nc")
+        filename = glob.glob(config.get("nc_folder") + "**/{}.nc")
         print("deleting file:", e)
         subprocess.call(["rm", "-f", e])
 print("Total time taken:{:0.2f}".format(time() - start))

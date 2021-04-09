@@ -11,13 +11,11 @@ class OceanNcVar(object):
         vartype,
         varname,
         varunits,
-        varmin,
-        varmax,
         varval,
-        varclslist=[],
         vardim=(),
         varnull=float("nan"),
         conv_to_BODC=True,
+        attributes={},
     ):
         self.cf_role = None
         self.name = varname
@@ -25,19 +23,18 @@ class OceanNcVar(object):
         self.standard_name = None
         self.long_name = None
         self.units = varunits
-        self.maximum = varmin
-        self.minimum = varmax
         self.datatype = ""
         self.null_value = varnull
         self.dimensions = vardim
         self.data = varval
         self.conv_to_BODC = conv_to_BODC
+        self.attributes = attributes
         # from existing varlist. get all variables that are going to be written into the ncfile
         # this will be checked to make sure new variable name does not conflict with existing ones
-        varlist = []
-        for v in varclslist:
-            varlist.append(v.name)
-        self.add_var(varlist)
+        # varlist = []
+        # for v in varclslist:
+        #     varlist.append(v.name)
+        # self.add_var(varlist)
 
     def add_var(self, varlist):
         """
@@ -58,7 +55,6 @@ class OceanNcVar(object):
             self.datatype = str
         elif self.type == "profile":
             self.datatype = str
-            self.cf_role = "profile_id"
         elif self.type == "instr_depth":
             self.datatype = "float32"
             self.long_name = "Instrument Depth"
@@ -91,6 +87,7 @@ class OceanNcVar(object):
             self.long_name = "Depth below surface"
             self.standard_name = "depth"
             self.units = "m"
+            self.attributes = {"positive": "down", "axis": "Z"}
             self.__set_null_val()
         elif self.type == "pressure":
             if self.units.strip().lower() in ["kpascal", "kilopascal"]:
