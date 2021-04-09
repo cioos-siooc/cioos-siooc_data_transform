@@ -55,7 +55,7 @@ def write_ctd_ncfile(
 
     # Write global attributes
     ds.attrs.update(config["global_attributes"])  # From the config file
-    ds = odf.global_attributes_from_header(ds, metadata)  # From ODF header
+    ds.attrs.update(odf.global_attributes_from_header(metadata))  # From ODF header
 
     # Add New Variables
     ds = odf.generate_variables_from_header(ds, metadata, config['cdm_data_type'])  # From ODF header

@@ -313,18 +313,13 @@ def define_odf_variable_attributes(metadata,
     return metadata
 
 
-def global_attributes_from_header(ds,
-                                  odf_header):
+def global_attributes_from_header(odf_header):
     global_attributes = {"project": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
                          "institution": odf_header["CRUISE_HEADER"]["ORGANIZATION"],
                          "history": json.dumps(odf_header["HISTORY_HEADER"], ensure_ascii=False, indent=False),
-                         "comment": odf_header["EVENT_HEADER"]["EVENT_COMMENTS"]
-    }
-    ds.attrs.update(global_attributes)
-
-    # Copy the original header to a json dictionary
-    ds.attrs["header"] = json.dumps(odf_header, ensure_ascii=False, indent=False)
-    return ds
+                         "comment": odf_header["EVENT_HEADER"]["EVENT_COMMENTS"],
+                         "header": json.dumps(odf_header, ensure_ascii=False, indent=False)}
+    return global_attributes
 
 
 def generate_variables_from_header(ds,
