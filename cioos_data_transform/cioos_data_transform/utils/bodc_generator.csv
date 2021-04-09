@@ -1,0 +1,14 @@
+standard_name,SDN:P01::urn,SDN:P01:: Pref Label,unit,scale,instrument,Calibration Review,Generate Variable
+sea_water_temperature,TEMPPR01, The degree of hotness of the water column expressed against a standard scale. Includes both IPTS-68 and ITS-90 scales.,deg.*c,,,,TRUE
+sea_water_temperature,TEMPP681, Temperature (IPTS-68) of the water body,deg.*c,IPTS-68,,,TRUE
+sea_water_temperature,TEMPP901, Temperature (ITS-90) of the water body,deg.*c,ITS-90,,,TRUE
+sea_water_temperature,TEMPPP01, Temperature of the water body by YSI profiling oxygen and temperature probe,deg.*c,,YSI,,FALSE
+sea_water_temperature,TEMPMV01, Temperature of the water body by moving vessel profiler (MVP),deg.*c,,MVP,,FALSE
+sea_water_temperature,TEMPTC01, Temperature of the water body by in-situ thermistor,deg.*c,,,,FALSE
+sea_water_temperature,TEMPET01, Temperature of the water body by expendable bathythermograph (XBT),deg.*c,,XBT,,FALSE
+sea_water_temperature,TEMPSZ01, Temperature of the water body by thermosalinograph,deg.*c,,TSG|SBE\s+45,,FALSE
+sea_water_temperature,TEMPRTNX, Temperature of the water body by reversing thermometer,deg.*c,,reversing,,FALSE
+sea_water_temperature,TEMPR601, Temperature (IPTS-68) of the water body by reversing thermometer,deg.*c,IPTS-68,reversing,,FALSE
+sea_water_temperature,TEMPR901, Temperature (ITS-90) of the water body by reversing thermometer,deg.*c,ITS-90,reversing,,FALSE
+sea_water_temperature,TEMPS601, Temperature (IPTS-68) of the water body by CTD or STD,deg.*c,IPTS-68,CTD,,FALSE
+sea_water_temperature,TEMPS901, Temperature (ITS-90) of the water body by CTD or STD,deg.*c,ITS-90,CTD,,FALSE
