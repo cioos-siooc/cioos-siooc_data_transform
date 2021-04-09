@@ -16,7 +16,6 @@ def add_variables_from_dict(ds,
                             longitude='longitude',
                             depth='depth',
                             global_attribute=False):
-
     """
     This function adds new variables to an xarray dataset based from the configuration provided.
     It can retrieve data from a nested dictionary by providing one, it can the header of a file format which contains
@@ -59,8 +58,8 @@ def add_variables_from_dict(ds,
                     try:
                         value = dt.datetime.strptime(value, re.search(r'\[(.*)\]', info['format']).group(0)[1:-1])
                     except ValueError:
-                        warnings.warn('Failed to read date {0}: {1}. Will try to use pandas.to_datetime()'\
-                                             .format(var, value), RuntimeWarning)
+                        warnings.warn('Failed to read date {0}: {1}. Will try to use pandas.to_datetime()' \
+                                      .format(var, value), RuntimeWarning)
                         value = pd.to_datetime(value)
                 else:
                     # Try with Pandas
@@ -165,7 +164,6 @@ def derive_cdm_data_type(ds,
                          profile_id='profile_id',
                          timeseries_id='timeseries_id',
                          trajectory_id='trajectory_id'):
-
     if cdm_data_type is None:
         if lat in ds and lon in ds and \
                 ds[lat].ndim == 1 and ds[lon].ndim == 1 and \
@@ -206,7 +204,7 @@ def derive_cdm_data_type(ds,
         ds = _retrieve_cdm_variables(ds, trajectory_id, 'trajectory_id')
 
     # Time Series
-    if 'Timeseries' in cdm_data_type :
+    if 'Timeseries' in cdm_data_type:
         ds = _retrieve_cdm_variables(ds, timeseries_id)
 
     # Profile
