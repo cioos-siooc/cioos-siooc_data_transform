@@ -29,10 +29,5 @@
         "Conventions": "CF-1.6,CF-1.7,ACDD1.1",
         "naming_authority": "COARDS",
         "comment": ""
-    },
-    "global_attributes_from_header": {
-        "project": {"dictionary": ["CRUISE_HEADER","CRUISE_NAME"]},
-        "institution:": {"dictionary": ["CRUISE_HEADER","ORGANIZATION"]},
-        "history": {"dictionary": ["HISTORY_HEADER"], "format": "json"}
     }
 }
