@@ -233,7 +233,7 @@ def define_index_dimensions(ds):
 
 def add_variable_attributes(ds,
                             review_attributes=None,
-                            scales='IPTS\-*48|IPTS\-*68|ITS\-*90|PSS\-*78'):
+                            scales='IPTS\-*48|IPTS\-*68|ITS\-*90|PSS\-*78|practical\ssalinity|psu'):
     if review_attributes is None:
         review_attributes = ['units', 'long_name', 'standard_name', 'comments', 'sdn_parameter_name']
 
@@ -243,9 +243,12 @@ def add_variable_attributes(ds,
             scale = []
             for att_to_review in review_attributes:
                 if att_to_review in ds[var].attrs and len(scale) == 0:
-                    scale = re.findall(scales.lower(), ds[var].attrs[att_to_review].lower())
+                    scale = re.findall(scales, ds[var].attrs[att_to_review], re.IGNORECASE)
                 if scale:
-                    ds[var].attrs['scale'] = scale[0].upper()
+                    scale = scale[0]
+                    scale = re.sub("practical\ssalinity|psu", 'PSS-78', scale)
+                    ds[var].attrs['scale'] = scale.upper()
+
                     break
         # Make sure coordinates have standard_names
         if var in ['time', 'latitude', 'longitude', 'depth']:
