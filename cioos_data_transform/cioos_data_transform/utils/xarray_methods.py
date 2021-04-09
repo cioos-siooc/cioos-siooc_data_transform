@@ -236,7 +236,8 @@ def add_variable_attributes(ds,
                             review_attributes=None,
                             scales='IPTS\-*48|IPTS\-*68|ITS\-*90|PSS\-*78'):
     if review_attributes is None:
-        review_attributes = ['units', 'long_name', 'standard_name', 'comments']
+        review_attributes = ['units', 'long_name', 'standard_name', 'comments', 'sdn_parameter_name']
+
     for var in ds:
         # Scale attribute
         if 'scale' not in ds[var].attrs:
