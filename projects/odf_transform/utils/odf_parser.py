@@ -293,7 +293,7 @@ def define_odf_variable_attributes(metadata,
                 elif var['original_TYPE'] == 'INTE':
                     null_value = int(np.array(var['original_NULL_VALUE']).astype(float).round())
 
-                metadata[key]['null_value'] = null_value
+                metadata[key]['_FillValue'] = null_value
 
     # Update P01 name based on parameter_code number
     for var in metadata:
