@@ -317,8 +317,11 @@ def global_attributes_from_header(ds,
                                   odf_header):
     global_attributes = {"project": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
                          "institution": odf_header["CRUISE_HEADER"]["ORGANIZATION"],
-                         "history": json.dumps(odf_header["HISTORY_HEADER"], ensure_ascii=False, indent=False)
+                         "history": json.dumps(odf_header["HISTORY_HEADER"], ensure_ascii=False, indent=False),
+                         "comment": odf_header["EVENT_HEADER"]["EVENT_COMMENTS"]
     }
+    ds.attrs.update(global_attributes)
+
     # Copy the original header to a json dictionary
     ds.attrs["header"] = json.dumps(odf_header, ensure_ascii=False, indent=False)
     return ds
