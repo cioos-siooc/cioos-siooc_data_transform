@@ -326,8 +326,8 @@ def generate_bodc_variables(ds):
                     ds[var].attrs['standard_name'] = standard_name
 
                 # Append new matching sdn_parameter to other one
-                ds[var].attrs['matching_sdn_parameter_urn'] = _join_attributes(sdn_parameter_urn,
-                                                                               'SDN:P01::' + row['SDN:P01::urn'])
+                ds[var].attrs['matching_sdn_parameter_urn'] = _join_attributes(
+                    ds[var].attrs.get('matching_sdn_parameter_urn'), 'SDN:P01::' + row['SDN:P01::urn'])
 
                 if row['Generate Variable']:
                     # Deal with primary secondary sensor data
@@ -337,4 +337,5 @@ def generate_bodc_variables(ds):
                     ds[new_var] = ds[var]
                     ds[new_var].attrs['original_variable'] = \
                         _join_attributes(ds[var].attrs.get('original_variable'), var)
+                    ds[new_var].attrs.pop('matching_sdn_parameter_urn')
     return ds
