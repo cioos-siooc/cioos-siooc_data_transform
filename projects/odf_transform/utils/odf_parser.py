@@ -370,6 +370,9 @@ def generate_variables_from_header(ds,
     else:
         ds.coords["latitude"] = float(odf_header["EVENT_HEADER"]["INITIAL_LATITUDE"])
         ds["latitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LATITUDE"
+
+    ds['latitude'].attrs.update({'units': 'degrees_north',
+                                 'standard_name': 'latitude'})
     if "LOND_01" in ds.keys():
         if cdm_data_type in ['Profile', 'TimeSeries']:
             ds.coords["longitude"] = ds["LOND_01"][0].values
@@ -383,6 +386,8 @@ def generate_variables_from_header(ds,
         ds.coords["longitude"] = float(odf_header["EVENT_HEADER"]["INITIAL_LONGITUDE"])
         ds["longitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LONGITUDE"
 
+    ds['longitude'].attrs.update({'units': 'degrees_east',
+                                 'standard_name': 'longitude'})
     # Depth
     if 'DEPH_01' in ds:
         ds.coords['depth'] = ds['DEPH_01']
@@ -390,6 +395,9 @@ def generate_variables_from_header(ds,
     elif "PRES_01" in ds:
         ds.coords['depth'] = (ds['PRES_01'].dims, -gsw.z_from_p(ds['PRES_01'], ds['latitude']))
         ds['depth'].attrs[original_var_field] = "-gsw.z_from_p(PRES_01,latitude)"
+    ds['depth'].attrs.update({'units': 'm',
+                              'standard_name': 'depth',
+                              'positive': 'down'})
 
     # Reorder variables
     variable_list = [var for var in ds.keys() if var not in initial_variable_order]
