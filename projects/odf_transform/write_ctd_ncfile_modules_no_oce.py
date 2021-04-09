@@ -108,6 +108,7 @@ def write_ctd_ncfile(
     ds = xarray_methods.add_variable_attributes(ds)
 
     # Generate extra variables (BODC, Derived)
+    ds = xarray_methods.generate_bodc_variables(ds)
     # TODO This need to be added in the near future to make the data output fully usable
 
     # Add geospatial and geometry related global attributes
