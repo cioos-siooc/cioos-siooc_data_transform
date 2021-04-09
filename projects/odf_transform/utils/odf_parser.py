@@ -10,6 +10,10 @@ import gsw
 odf_dtypes = {'DOUB': 'float64', 'SING': 'float32', 'DOUBLE': 'float64',
               'SYTM': 'float64', 'INTE': 'int32', 'CHAR': str}
 
+# Commonly date place holder used within the ODF files
+odf_time_null_value = (dt.datetime.strptime("17-NOV-1858 00:00:00.00", '%d-%b-%Y %H:%M:%S.%f') - \
+                       dt.datetime(1970, 1, 1)).total_seconds()
+
 
 def read(filename,
          header_end='-- DATA --',
@@ -351,6 +355,11 @@ def generate_variables_from_header(ds,
         ds["time"].attrs[original_var_field] = "EVENT_HEADER:START_DATE_TIME"
     ds["start_time"] = pd.to_datetime(odf_header["EVENT_HEADER"]["START_DATE_TIME"], format=date_format)
     ds["end_time"] = pd.to_datetime(odf_header["EVENT_HEADER"]["END_DATE_TIME"], format=date_format)
+
+    ds["start_time"].attrs.update({'original_var_field': "EVENT_HEADER:START_DATE_TIME",
+                                   '_FillValue': odf_time_null_value})
+    ds["end_time"].attrs.update({'original_var_field': "EVENT_HEADER:END_DATE_TIME",
+                                 '_FillValue': odf_time_null_value})
 
     # Coordinate variables
     if "LATD_01" in ds.keys():
