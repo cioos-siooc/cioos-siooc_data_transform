@@ -190,8 +190,7 @@ def define_odf_variable_attributes(metadata,
     # Define vocabulary default list of variables to import as attributes
     if vocabulary_attribute_list is None:
         vocabulary_attribute_list = ['name', 'standard_name',
-                                     'sdn_parameter_urn', 'sdn_parameter_name',
-                                     'sdn_uom_urn', 'sdn_uom_name']
+                                     'sdn_parameter_urn', 'sdn_parameter_name']
     parameter_code_att = odf_var_header_prefix + odf_variable_name
 
     def _find_previous_key(key_list, key):
