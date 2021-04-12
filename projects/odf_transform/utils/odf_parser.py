@@ -3,10 +3,16 @@ import datetime as dt
 import numpy as np
 import warnings
 import pandas as pd
+import json
+import gsw
 
 # Dictionary with the mapping of the odf types to python types
 odf_dtypes = {'DOUB': 'float64', 'SING': 'float32', 'DOUBLE': 'float64',
               'SYTM': 'float64', 'INTE': 'int32', 'CHAR': str}
+
+# Commonly date place holder used within the ODF files
+odf_time_null_value = (dt.datetime.strptime("17-NOV-1858 00:00:00.00", '%d-%b-%Y %H:%M:%S.%f') - \
+                       dt.datetime(1970, 1, 1)).total_seconds()
 
 
 def read(filename,
@@ -151,7 +157,7 @@ def read(filename,
 
     # Make sure that there's the same amount of variables read versus what is suggested in the header
     if len(data_raw.columns) != len(metadata[parameter_section]):
-        raise RuntimeError('{0} variables were detected in the data versus {1} in the header.'\
+        raise RuntimeError('{0} variables were detected in the data versus {1} in the header.' \
                            .format(len(data_raw.columns), len(metadata[parameter_section])))
 
     if not_converted_columns:
@@ -184,8 +190,7 @@ def define_odf_variable_attributes(metadata,
     # Define vocabulary default list of variables to import as attributes
     if vocabulary_attribute_list is None:
         vocabulary_attribute_list = ['name', 'standard_name',
-                                     'sdn_parameter_urn', 'sdn_parameter_name',
-                                     'sdn_uom_urn', 'sdn_uom_name']
+                                     'sdn_parameter_urn', 'sdn_parameter_name']
     parameter_code_att = odf_var_header_prefix + odf_variable_name
 
     def _find_previous_key(key_list, key):
@@ -291,7 +296,7 @@ def define_odf_variable_attributes(metadata,
                 elif var['original_TYPE'] == 'INTE':
                     null_value = int(np.array(var['original_NULL_VALUE']).astype(float).round())
 
-                metadata[key]['null_value'] = null_value
+                metadata[key]['_FillValue'] = null_value
 
     # Update P01 name based on parameter_code number
     for var in metadata:
@@ -309,3 +314,111 @@ def define_odf_variable_attributes(metadata,
     # TODO Add Warning for missing information and attributes (maybe)
     #  Example: Standard Name, P01, P02
     return metadata
+
+
+def global_attributes_from_header(odf_header):
+    global_attributes = {"project": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
+                         "institution": odf_header["CRUISE_HEADER"]["ORGANIZATION"],
+                         "history": json.dumps(odf_header["HISTORY_HEADER"], ensure_ascii=False, indent=False),
+                         "comment": odf_header["EVENT_HEADER"]["EVENT_COMMENTS"],
+                         "header": json.dumps(odf_header, ensure_ascii=False, indent=False)}
+    return global_attributes
+
+
+def generate_variables_from_header(ds,
+                                   odf_header,
+                                   cdm_data_type,
+                                   date_format='%d-%b-%Y %H:%M:%S.%f',
+                                   original_var_field='original_variable'):
+    initial_variable_order = list(ds.keys())
+
+    # General Attributes
+    ds['file_id'] = odf_header['ODF_HEADER']['FILE_SPECIFICATION']
+    ds["institution"] = odf_header["CRUISE_HEADER"]["ORGANIZATION"]
+    ds["cruise_name"] = odf_header["CRUISE_HEADER"]["CRUISE_NAME"]
+    ds["cruise_id"] = odf_header["CRUISE_HEADER"]["CRUISE_NUMBER"]
+    ds["chief_scientist"] = odf_header["CRUISE_HEADER"]["CHIEF_SCIENTIST"]
+    ds['platform'] = odf_header["CRUISE_HEADER"]["PLATFORM"]
+
+    # Time Variables
+    if "SYTM_01" in ds.keys():
+        if cdm_data_type == 'Profile':
+            ds.coords["time"] = ds['SYTM_01'].min().values
+            ds["time_precise"] = ds['SYTM_01']
+            ds["time"].attrs[original_var_field] = 'min(SYTM_01)'
+            ds["time_precise"].attrs[original_var_field] = 'SYTM_01'
+        else:
+            ds.coords["time"] = ds['SYTM_01']
+            ds["time"].attrs[original_var_field] = 'SYTM_01'
+    else:
+        ds.coords["time"] = pd.to_datetime(odf_header["EVENT_HEADER"]["START_DATE_TIME"], format=date_format)
+        ds["time"].attrs[original_var_field] = "EVENT_HEADER:START_DATE_TIME"
+    ds["start_time"] = pd.to_datetime(odf_header["EVENT_HEADER"]["START_DATE_TIME"], format=date_format)
+    ds["end_time"] = pd.to_datetime(odf_header["EVENT_HEADER"]["END_DATE_TIME"], format=date_format)
+
+    ds["start_time"].attrs.update({original_var_field: "EVENT_HEADER:START_DATE_TIME",
+                                   '_FillValue': odf_time_null_value})
+    ds["end_time"].attrs.update({original_var_field: "EVENT_HEADER:END_DATE_TIME",
+                                 '_FillValue': odf_time_null_value})
+
+    # Coordinate variables
+    if "LATD_01" in ds.keys():
+        if cdm_data_type in ['Profile', 'TimeSeries']:
+            ds.coords["latitude"] = ds["LATD_01"][0].values
+            ds['latitude'].attrs[original_var_field] = 'LATD_01[0]'
+            ds['latitude_precise'] = ds["LATD_01"]
+            ds["latitude_precise"].attrs[original_var_field] = "LATD_01"
+            ds["latitude_precise"].attrs.update({
+                'units': 'degrees_north',
+                'standard_name': 'latitude',
+                '_FillValue': -99}
+            )
+        else:
+            ds.coords["latitude"] = ds["LATD_01"]
+            ds["latitude"].attrs[original_var_field] = "LATD_01"
+    else:
+        ds.coords["latitude"] = float(odf_header["EVENT_HEADER"]["INITIAL_LATITUDE"])
+        ds["latitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LATITUDE"
+
+    ds['latitude'].attrs.update({'units': 'degrees_north',
+                                 'standard_name': 'latitude',
+                                 '_FillValue': -99})
+    if "LOND_01" in ds.keys():
+        if cdm_data_type in ['Profile', 'TimeSeries']:
+            ds.coords["longitude"] = ds["LOND_01"][0].values
+            ds['longitude'].attrs[original_var_field] = 'LOND_01[0]'
+            ds['longitude_precise'] = ds["LOND_01"]
+            ds["longitude_precise"].attrs[original_var_field] = "LOND_01"
+            ds["longitude_precise"].attrs.update({
+                'units': 'degrees_east',
+                'standard_name': 'longitude',
+                '_FillValue': -999}
+            )
+
+        else:
+            ds.coords["longitude"] = ds["LOND_01"]
+            ds["longitude"].attrs[original_var_field] = "LOND_01"
+    else:
+        ds.coords["longitude"] = float(odf_header["EVENT_HEADER"]["INITIAL_LONGITUDE"])
+        ds["longitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LONGITUDE"
+
+    ds['longitude'].attrs.update({'units': 'degrees_east',
+                                  'standard_name': 'longitude',
+                                  '_FillValue': -999})
+    # Depth
+    if 'DEPH_01' in ds:
+        ds.coords['depth'] = ds['DEPH_01']
+        ds['depth'].attrs[original_var_field] = 'DEPH_01'
+    elif "PRES_01" in ds:
+        ds.coords['depth'] = (ds['PRES_01'].dims, -gsw.z_from_p(ds['PRES_01'], ds['latitude']))
+        ds['depth'].attrs[original_var_field] = "-gsw.z_from_p(PRES_01,latitude)"
+    ds['depth'].attrs.update({'units': 'm',
+                              'standard_name': 'depth',
+                              'positive': 'down'})
+
+    # Reorder variables
+    variable_list = [var for var in ds.keys() if var not in initial_variable_order]
+    variable_list.extend(list(ds.coords.keys()))
+    variable_list.extend(initial_variable_order)
+    ds = ds[variable_list]
+    return ds

@@ -5,6 +5,7 @@ import warnings
 import datetime as dt
 import re
 import json
+import os
 
 
 def add_variables_from_dict(ds,
@@ -16,7 +17,6 @@ def add_variables_from_dict(ds,
                             longitude='longitude',
                             depth='depth',
                             global_attribute=False):
-
     """
     This function adds new variables to an xarray dataset based from the configuration provided.
     It can retrieve data from a nested dictionary by providing one, it can the header of a file format which contains
@@ -42,8 +42,11 @@ def add_variables_from_dict(ds,
             if type(value) == dict and 'format' not in info and 'json' in info['format']:
                 warnings.warn('{0} is does not match a single value.  A json output is then recommended.'.format(var),
                               RuntimeWarning)
-        elif 'variable' in info and info['variable'] in ds:
-            value = ds[info['variable']]
+        elif 'variable' in info:
+            if info['variable'] in ds:
+                value = ds[info['variable']]
+            else:
+                break
         else:
             value = info
 
@@ -56,8 +59,8 @@ def add_variables_from_dict(ds,
                     try:
                         value = dt.datetime.strptime(value, re.search(r'\[(.*)\]', info['format']).group(0)[1:-1])
                     except ValueError:
-                        warnings.warn('Failed to read date {0}: {1}. Will try to use pandas.to_datetime()'\
-                                             .format(var, value), RuntimeWarning)
+                        warnings.warn('Failed to read date {0}: {1}. Will try to use pandas.to_datetime()' \
+                                      .format(var, value), RuntimeWarning)
                         value = pd.to_datetime(value)
                 else:
                     # Try with Pandas
@@ -152,3 +155,183 @@ def get_spatial_coverage_attributes(ds,
     ds.attrs.update(time_spatial_coverage)
     return ds
 
+
+def derive_cdm_data_type(ds,
+                         cdm_data_type=None,
+                         lat='latitude',
+                         lon='longitude',
+                         time='time',
+                         depth='depth',
+                         profile_id='profile_id',
+                         timeseries_id='timeseries_id',
+                         trajectory_id='trajectory_id'):
+    if cdm_data_type is None:
+        if lat in ds and lon in ds and \
+                ds[lat].ndim == 1 and ds[lon].ndim == 1 and \
+                ds[lat].size > 1 and ds[lon].size > 1:  # Trajectory
+            is_trajectory = True
+            cdm_data_type += 'Trajectory'
+        else:
+            is_trajectory = False
+
+        if time in ds and ds[time].ndim == 1 and ds[time].size > 1 and not is_trajectory:  # Time Series
+            cdm_data_type += 'TimeSeries'
+
+        if depth in ds and ds[depth].ndim == 1 and ds[depth].size > 1:  # Profile
+            cdm_data_type += 'Profile'
+
+        if cdm_data_type == '':  # If nothing else
+            cdm_data_type = 'Point'
+
+    # Add cdm_data_type attribute
+    ds.attrs['cdm_data_type'] = cdm_data_type
+
+    def _retrieve_cdm_variables(ds_review,
+                                var_id, type):
+        if var_id not in ds:
+            warnings('Missing a {0} variable'.format(type), RuntimeWarning)
+            return ds_review
+
+        ds[var_id].attrs['cf_role'] = type
+        cdm_attribute = 'cdm_{0}_variables'.format(type.replace('_id', ''))
+        if ds[var_id].size == 1:
+            ds.attrs[cdm_attribute] = ','.join([var for var in ds_review if ds[var].size == 1])
+        else:
+            warnings('derive_cdm_data_type isn''t yet compatible with collection datasets', RuntimeWarning)
+        return ds_review
+
+    # Trajectory
+    if 'Trajectory' in cdm_data_type:
+        ds = _retrieve_cdm_variables(ds, trajectory_id, 'trajectory_id')
+
+    # Time Series
+    if 'Timeseries' in cdm_data_type:
+        ds = _retrieve_cdm_variables(ds, timeseries_id)
+
+    # Profile
+    if 'Profile' in cdm_data_type:
+        ds = _retrieve_cdm_variables(ds, profile_id, 'profile_id')
+    return ds
+
+
+def define_index_dimensions(ds):
+    # If multiple dimensions exists but are really the same let's just keep index
+    if 'index' in ds.dims and len(ds.dims) > 1:
+        print('index')
+    # Handle dimension name if still default "index" from conversion of pandas to xarray
+    if 'index' in ds.dims and len(ds.dims.keys()) == 1:
+        # If dimension is index and is a table like data
+        if ds.attrs['cdm_data_type'] in ['Timeseries', 'Trajectory']:
+            ds = ds.swap_dims({'index': 'time'})
+            ds = ds.reset_coords('index')
+        elif 'Profile' == ds.attrs['cdm_data_type']:
+            ds = ds.swap_dims({'index': 'depth'})
+            ds = ds.reset_coords('index')
+
+    return ds
+
+
+def add_variable_attributes(ds,
+                            review_attributes=None,
+                            scales='IPTS\-*48|IPTS\-*68|ITS\-*90|PSS\-*78|practical\ssalinity|psu'):
+    if review_attributes is None:
+        review_attributes = ['units', 'long_name', 'standard_name', 'comments', 'sdn_parameter_name']
+
+    for var in ds:
+        # Scale attribute
+        if 'scale' not in ds[var].attrs:
+            scale = []
+            for att_to_review in review_attributes:
+                if att_to_review in ds[var].attrs and len(scale) == 0:
+                    scale = re.findall(scales, ds[var].attrs[att_to_review], re.IGNORECASE)
+                if scale:
+                    scale = scale[0]
+                    scale = re.sub("practical\ssalinity|psu", 'PSS-78', scale, re.IGNORECASE)
+                    ds[var].attrs['scale'] = scale.upper()
+
+                    break
+        # Make sure coordinates have standard_names
+        if var in ['time', 'latitude', 'longitude', 'depth']:
+            ds[var].attrs['standard_name'] = str(var)
+    return ds
+
+
+def generate_bodc_variables(ds):
+    def _is_matching(bodc, variable):
+        if variable is None:
+            variable = ''
+        return pd.isna(bodc) or re.search(bodc, variable, re.IGNORECASE)
+
+    def _join_attributes(original, add):
+        return ','.join({original, add} - {'', None})
+
+    def _first_findall(pattern, input):
+        result = re.findall(pattern, input)
+        return result[0] if result else None
+
+    def _read_bodc(urn):
+
+        bodc = {
+            'source': _first_findall('^(\w*)\:', urn),
+            'vocab': _first_findall('\:(.*)\:\:', urn),
+            'code_full': _first_findall('[^\:]\w*$', urn),
+            'code_no_trailing': _first_findall('[^\:]\w*$', urn.strip()[:-1]),
+            'trailing_number': _first_findall('[1-9$]$', urn)
+        }
+        if bodc['code_full'] and re.match('[^1-9]', bodc['code_full'].strip()[-1]):
+            bodc['code_no_trailing'] = '{0}{1}'.format(bodc['code_no_trailing'], bodc['code_full'][-1])
+        return bodc
+
+    # Get Reference Document
+    bodc_var = pd.read_csv(os.path.join(os.path.split(__loader__.path)[0], 'bodc_generator.csv'),encoding='ANSI')
+    bodc_var['SDN:P01::urn'] = bodc_var['SDN:P01::urn'].str.strip()
+
+    for var in ds:
+        standard_name = ds[var].attrs.get('standard_name', '')
+        sdn_parameter_urn = ds[var].attrs.get('sdn_parameter_urn', '')
+
+        # If no standard vocabulary exist ignore
+        if sdn_parameter_urn == '' and standard_name == '':
+            continue
+
+        # Find Matching Variables
+        sdn_parameter_urn_dict = _read_bodc(sdn_parameter_urn)
+        if sdn_parameter_urn_dict['code_no_trailing']:
+            matched_sdn_p01 = bodc_var['SDN:P01::urn'].str.contains(sdn_parameter_urn_dict['code_no_trailing'])
+        else:
+            matched_sdn_p01 = bodc_var['SDN:P01::urn'] == False
+
+        # Since CF is usually a broader term than P01 we'll copy the matching P01 term standard_name if not
+        # available in the data and available in the bodc list
+        if standard_name == '' and sdn_parameter_urn != '' and \
+                 sdn_parameter_urn_dict['code_full'] in bodc_var['SDN:P01::urn'].tolist():
+            standard_name = bodc_var[matched_sdn_p01]['standard_name'].tolist()[0]
+        matched_standard_name = bodc_var['standard_name'] == standard_name
+
+        # Loop through each field that matching either P01 or standard_name
+        matched_bodc = bodc_var[matched_standard_name | matched_sdn_p01]
+        for id, row in matched_bodc.iterrows():
+            match_units = _is_matching(row['unit'], ds[var].attrs.get('units'))
+            match_scale = _is_matching(row['scale'], ds[var].attrs.get('scale'))
+            match_instrument = _is_matching(row['instrument'], ds[var].attrs.get('instrument')) or \
+                               _is_matching(row['instrument'], ds.attrs.get('instrument'))
+
+            if match_units and match_scale and match_instrument:
+                # Update standard_name if empty
+                if ds[var].attrs.get('standard_name') is None:
+                    ds[var].attrs['standard_name'] = standard_name
+
+                # Append new matching sdn_parameter to other one
+                ds[var].attrs['matching_sdn_parameter_urn'] = _join_attributes(
+                    ds[var].attrs.get('matching_sdn_parameter_urn'), 'SDN:P01::' + row['SDN:P01::urn'])
+
+                if row['Generate Variable']:
+                    # Deal with primary secondary sensor data
+                    new_var = _read_bodc(row['SDN:P01::urn'])['code_no_trailing']
+                    if sdn_parameter_urn_dict['trailing_number']:
+                        new_var = '{0}{1}'.format(new_var, sdn_parameter_urn_dict['trailing_number'])
+                    ds[new_var] = ds[var]
+                    ds[new_var].attrs['original_variable'] = \
+                        _join_attributes(ds[var].attrs.get('original_variable'), var)
+                    ds[new_var].attrs.pop('matching_sdn_parameter_urn')
+    return ds

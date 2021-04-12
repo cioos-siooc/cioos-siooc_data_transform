@@ -45,50 +45,30 @@ def write_ctd_ncfile(
     # Parse the ODF file with the CIOOS python parsing tool
     metadata, raw_data = odf.read(odf_path)
 
-    # Add the file name as variable
-    raw_data["original_file"] = os.path.split(odf_path)[-1]
-    raw_data = raw_data.set_index("original_file")
-    original_variables = raw_data.columns
-
     # create unique ID for each profile
     # TODO This was in the previous code, not sure if we want to handle it that way. Different groups may have
     #  their own convention. A file Name variable is at least generated for now.
     # profile_id = f"{metadata['cruiseNumber']}-{metadata['eventNumber']}-{metadata['eventQualifier']}"
 
-    # Let's convert to an xarray dataset.
+    # Let's convert to an xarray dataset
     ds = raw_data.to_xarray()
 
-    # #### Write global attributes ####
-    # From the config file
-    ds.attrs.update(config["global_attributes"])
+    # Write global attributes
+    ds.attrs.update(config["global_attributes"])  # From the config file
+    ds.attrs.update(odf.global_attributes_from_header(metadata))  # From ODF header
 
-    # # From ODF header
-    ds = xarray_methods.add_variables_from_dict(
-        ds,
-        config["global_attributes_from_header"],
-        None,
-        metadata,
-        global_attribute=True,
-    )
-    # Add all the original header as a json string
-    ds.attrs["header"] = json.dumps(metadata, ensure_ascii=False, indent=False)
-
-    # Add Variable from Global Attributes
-    if "variables_from_header" in config:
-        ds = xarray_methods.add_variables_from_dict(
-            ds,
-            config["variables_from_header"],
-            "original_file",
-            dictionary=metadata,
-        )
-        metadata_variable_list = list(config["variables_from_header"].keys())
-    else:
-        metadata_variable_list = []
-
+    # Add New Variables
+    ds = odf.generate_variables_from_header(ds, metadata, config['cdm_data_type'])  # From ODF header
     # geographic_area
-    ds["geographic_area"] = get_geo_code(
-        [ds["longitude"], ds["latitude"]], config["polygons_dict"]
-    )
+    ds["geographic_area"] = get_geo_code([ds["longitude"].mean(), ds["latitude"].mean()], config["polygons_dict"])
+
+    # Add file name as a variable
+    if config.get('cdm_data_type') == 'Profile':
+        ds['profile_id'] = os.path.split(odf_path)[-1]
+    elif config.get('cdm_data_type') == 'TimeSeries':
+        ds['timeseries_id'] = os.path.split(odf_path)[-1]
+    elif config.get('cdm_data_type') == 'Trajectory':
+        ds['trajectory_id'] = os.path.split(odf_path)[-1]
 
     # Add Variable Attributes
     # Convert metadata variable attributes list to dictionary
@@ -124,34 +104,32 @@ def write_ctd_ncfile(
             not in ["nan", "(none)", "none"]
         ):
             ds[var].attrs["units"] = ds[var].attrs.get("original_UNITS")
-
-    # Generate Variables from Config
-    if "variables" in config:
-        ds = xarray_methods.add_variables_from_dict(
-            ds, config["variables"], "original_file", dictionary=metadata
-        )
+    ds = xarray_methods.add_variable_attributes(ds)
 
     # Generate extra variables (BODC, Derived)
-    # TODO This need to be added in the near future to make the data output fully usable
+    ds = xarray_methods.generate_bodc_variables(ds)
 
     # Add geospatial and geometry related global attributes
-    ds = xarray_methods.get_spatial_coverage_attributes(
-        ds
-    )  # Just add spatial/time range as attributes
-    ds = xarray_methods.convert_variables_to_erddap_format(
-        ds
-    )  # Add encoding information to netcdf and convert strings
+    ds = xarray_methods.get_spatial_coverage_attributes(ds)  # Just add spatial/time range as attributes
+    ds = xarray_methods.derive_cdm_data_type(ds, config['cdm_data_type'])  # Retrieve geometry information
+    ds = xarray_methods.convert_variables_to_erddap_format(ds)  # Add encoding information to xarray
+    ds = xarray_methods.define_index_dimensions(ds)  # Assign the right dimension
+
+    # Simplify dataset for erddap
+    ds = ds.reset_coords()
+    for var in ds:
+        original = {}
+        attrs = ds[var].attrs.copy()
+        for att in ds[var].attrs:
+            if att.startswith('original_') \
+                    and att not in ['original_variable', 'original_var_field']:
+                original[att] = attrs.pop(att)
+        ds[var].attrs = attrs
+        if original != {}:
+            ds[var].attrs['comments'] = json.dumps(original, indent=2)
 
     # Finally save the xarray dataset to a NetCDF file!!!
-    #  Make the global attribute variables preceding the original variables.
-    variables_order = metadata_variable_list
-    variables_order.extend(["geographic_area"])
-    variables_order.extend(original_variables)
-    if "variables" in config:
-        variables_order.extend(config["variables"])
-
-    # Save to NetCDF
-    ds[variables_order].to_netcdf(output_path)
+    ds.to_netcdf(output_path)
 
 
 def convert_test_files(config):
