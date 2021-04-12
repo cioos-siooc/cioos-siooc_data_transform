@@ -115,6 +115,19 @@ def write_ctd_ncfile(
     ds = xarray_methods.convert_variables_to_erddap_format(ds)  # Add encoding information to xarray
     ds = xarray_methods.define_index_dimensions(ds)  # Assign the right dimension
 
+    # Simplify dataset for erddap
+    ds = ds.reset_coords()
+    for var in ds:
+        original = {}
+        attrs = ds[var].attrs.copy()
+        for att in ds[var].attrs:
+            if att.startswith('original_') \
+                    and att not in ['original_variable', 'original_var_field']:
+                original[att] = attrs.pop(att)
+        ds[var].attrs = attrs
+        if original != {}:
+            ds[var].attrs['comments'] = json.dumps(original, indent=2)
+
     # Finally save the xarray dataset to a NetCDF file!!!
     ds.to_netcdf(output_path)
 
