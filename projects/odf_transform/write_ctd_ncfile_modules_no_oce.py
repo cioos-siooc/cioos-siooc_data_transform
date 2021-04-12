@@ -63,7 +63,6 @@ def write_ctd_ncfile(
     ds["geographic_area"] = get_geo_code([ds["longitude"].mean(), ds["latitude"].mean()], config["polygons_dict"])
 
     # Add file name as a variable
-    ds['file_id'] = os.path.split(odf_path)[-1]  # original file name
     if config.get('cdm_data_type') == 'Profile':
         ds['profile_id'] = os.path.split(odf_path)[-1]
     elif config.get('cdm_data_type') == 'TimeSeries':
