@@ -271,10 +271,6 @@ def generate_bodc_variables(ds):
 
     def _read_bodc(urn):
 
-        def _first_findall(pattern, input):
-            result = re.findall(pattern, input)
-            return result[0] if result else None
-
         bodc = {
             'source': _first_findall('^(\w*)\:', urn),
             'vocab': _first_findall('\:(.*)\:\:', urn),
