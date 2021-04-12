@@ -356,9 +356,9 @@ def generate_variables_from_header(ds,
     ds["start_time"] = pd.to_datetime(odf_header["EVENT_HEADER"]["START_DATE_TIME"], format=date_format)
     ds["end_time"] = pd.to_datetime(odf_header["EVENT_HEADER"]["END_DATE_TIME"], format=date_format)
 
-    ds["start_time"].attrs.update({'original_var_field': "EVENT_HEADER:START_DATE_TIME",
+    ds["start_time"].attrs.update({original_var_field: "EVENT_HEADER:START_DATE_TIME",
                                    '_FillValue': odf_time_null_value})
-    ds["end_time"].attrs.update({'original_var_field': "EVENT_HEADER:END_DATE_TIME",
+    ds["end_time"].attrs.update({original_var_field: "EVENT_HEADER:END_DATE_TIME",
                                  '_FillValue': odf_time_null_value})
 
     # Coordinate variables
@@ -368,6 +368,11 @@ def generate_variables_from_header(ds,
             ds['latitude'].attrs[original_var_field] = 'LATD_01[0]'
             ds['latitude_precise'] = ds["LATD_01"]
             ds["latitude_precise"].attrs[original_var_field] = "LATD_01"
+            ds["latitude_precise"].attrs.update({
+                'units': 'degrees_north',
+                'standard_name': 'latitude',
+                '_FillValue': -99}
+            )
         else:
             ds.coords["latitude"] = ds["LATD_01"]
             ds["latitude"].attrs[original_var_field] = "LATD_01"
@@ -376,13 +381,20 @@ def generate_variables_from_header(ds,
         ds["latitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LATITUDE"
 
     ds['latitude'].attrs.update({'units': 'degrees_north',
-                                 'standard_name': 'latitude'})
+                                 'standard_name': 'latitude',
+                                 '_FillValue': -99})
     if "LOND_01" in ds.keys():
         if cdm_data_type in ['Profile', 'TimeSeries']:
             ds.coords["longitude"] = ds["LOND_01"][0].values
             ds['longitude'].attrs[original_var_field] = 'LOND_01[0]'
             ds['longitude_precise'] = ds["LOND_01"]
             ds["longitude_precise"].attrs[original_var_field] = "LOND_01"
+            ds["longitude_precise"].attrs.update({
+                'units': 'degrees_east',
+                'standard_name': 'longitude',
+                '_FillValue': -999}
+            )
+
         else:
             ds.coords["longitude"] = ds["LOND_01"]
             ds["longitude"].attrs[original_var_field] = "LOND_01"
@@ -391,7 +403,8 @@ def generate_variables_from_header(ds,
         ds["longitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LONGITUDE"
 
     ds['longitude'].attrs.update({'units': 'degrees_east',
-                                 'standard_name': 'longitude'})
+                                  'standard_name': 'longitude',
+                                  '_FillValue': -999})
     # Depth
     if 'DEPH_01' in ds:
         ds.coords['depth'] = ds['DEPH_01']
@@ -409,4 +422,3 @@ def generate_variables_from_header(ds,
     variable_list.extend(initial_variable_order)
     ds = ds[variable_list]
     return ds
-
