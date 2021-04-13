@@ -1,4 +1,3 @@
-import xarray as xr
 import pandas as pd
 import numpy as np
 import warnings
@@ -233,7 +232,7 @@ def define_index_dimensions(ds):
 
 def add_variable_attributes(ds,
                             review_attributes=None,
-                            scales='IPTS\-*48|IPTS\-*68|ITS\-*90|PSS\-*78|practical\ssalinity|psu'):
+                            scales=r'IPTS\-*48|IPTS\-*68|ITS\-*90|PSS\-*78|practical\ssalinity|psu'):
     if review_attributes is None:
         review_attributes = ['units', 'long_name', 'standard_name', 'comments', 'sdn_parameter_name']
 
@@ -246,7 +245,7 @@ def add_variable_attributes(ds,
                     scale = re.findall(scales, ds[var].attrs[att_to_review], re.IGNORECASE)
                 if scale:
                     scale = scale[0]
-                    scale = re.sub("practical\ssalinity|psu", 'PSS-78', scale, re.IGNORECASE)
+                    scale = re.sub(r"practical\ssalinity|psu", 'PSS-78', scale, re.IGNORECASE)
                     ds[var].attrs['scale'] = scale.upper()
 
                     break
@@ -272,13 +271,13 @@ def generate_bodc_variables(ds):
     def _read_bodc(urn):
 
         bodc = {
-            'source': _first_findall('^(\w*)\:', urn),
-            'vocab': _first_findall('\:(.*)\:\:', urn),
-            'code_full': _first_findall('[^\:]\w*$', urn),
-            'code_no_trailing': _first_findall('[^\:]\w*$', urn.strip()[:-1]),
-            'trailing_number': _first_findall('[1-9$]$', urn)
+            'source': _first_findall(r'^(\w*)\:', urn),
+            'vocab': _first_findall(r'\:(.*)\:\:', urn),
+            'code_full': _first_findall(r'[^\:]\w*$', urn),
+            'code_no_trailing': _first_findall(r'[^\:]\w*$', urn.strip()[:-1]),
+            'trailing_number': _first_findall(r'[1-9$]$', urn)
         }
-        if bodc['code_full'] and re.match('[^1-9]', bodc['code_full'].strip()[-1]):
+        if bodc['code_full'] and re.match(r'[^1-9]', bodc['code_full'].strip()[-1]):
             bodc['code_no_trailing'] = '{0}{1}'.format(bodc['code_no_trailing'], bodc['code_full'][-1])
         return bodc
 

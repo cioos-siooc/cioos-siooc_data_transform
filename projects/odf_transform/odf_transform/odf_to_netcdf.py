@@ -4,6 +4,7 @@ import os
 import traceback
 import re
 import shutil
+import argparse
 
 import xarray as xr
 import odf_parser.odf_parser as odf
@@ -12,6 +13,9 @@ from cioos_data_transform.utils.utils import fix_path
 from cioos_data_transform.utils.utils import get_geo_code, read_geojson
 import datetime as dt
 import pandas as pd
+
+
+CONFIG_PATH = fix_path("./config.json")
 
 
 def read_config(config_file):
@@ -33,14 +37,11 @@ def write_ctd_ncfile(
     odf_path,
     output_path,
     config=None,
+    polygons={},
     variable_header_section="PARAMETER_HEADER",
     original_prefix_var_attribute="original_",
     variable_name_attribute="CODE",
 ):
-
-    if not os.path.isdir(config["TEST_FILES_OUTPUT"]):
-        os.mkdir(config["TEST_FILES_OUTPUT"])
-
     print(os.path.split(odf_path)[-1])
     # Parse the ODF file with the CIOOS python parsing tool
     metadata, raw_data = odf.read(odf_path)
@@ -60,7 +61,7 @@ def write_ctd_ncfile(
     # Add New Variables
     ds = odf.generate_variables_from_header(ds, metadata, config['cdm_data_type'])  # From ODF header
     # geographic_area
-    ds["geographic_area"] = get_geo_code([ds["longitude"].mean(), ds["latitude"].mean()], config["polygons_dict"])
+    ds["geographic_area"] = get_geo_code([ds["longitude"].mean(), ds["latitude"].mean()], polygons)
 
     # Add file name as a variable
     if config.get('cdm_data_type') == 'Profile':
@@ -110,10 +111,14 @@ def write_ctd_ncfile(
     ds = xarray_methods.generate_bodc_variables(ds)
 
     # Add geospatial and geometry related global attributes
-    ds = xarray_methods.get_spatial_coverage_attributes(ds)  # Just add spatial/time range as attributes
-    ds = xarray_methods.derive_cdm_data_type(ds, config['cdm_data_type'])  # Retrieve geometry information
-    ds = xarray_methods.convert_variables_to_erddap_format(ds)  # Add encoding information to xarray
-    ds = xarray_methods.define_index_dimensions(ds)  # Assign the right dimension
+    # Just add spatial/time range as attributes
+    ds = xarray_methods.get_spatial_coverage_attributes(ds) 
+    # Retrieve geometry information
+    ds = xarray_methods.derive_cdm_data_type(ds, config['cdm_data_type'])
+    # Add encoding information to xarray
+    ds = xarray_methods.convert_variables_to_erddap_format(ds)
+    # Assign the right dimension
+    ds = xarray_methods.define_index_dimensions(ds)
 
     # Simplify dataset for erddap
     ds = ds.reset_coords()
@@ -132,18 +137,19 @@ def write_ctd_ncfile(
     ds.to_netcdf(output_path)
 
 
-def convert_test_files(config):
-    flist = glob.glob(config["TEST_FILES_PATH"] + "/*.ODF")
+def convert_odf_files(config, odf_files_list=[], output_path=""):   
+    polygons = read_geojson_file_list(config['geojsonFileList'])
 
-    if not os.path.isdir(config["TEST_FILES_OUTPUT"]):
-        os.mkdir(config["TEST_FILES_OUTPUT"])
+    if not os.path.isdir(output_path):
+        os.mkdir(output_path)
 
-    for f in flist:
+    for f in odf_files_list:
         try:
             print(f)
             write_ctd_ncfile(
                 odf_path=f,
-                output_path=config["TEST_FILES_OUTPUT"]
+                polygons=polygons,
+                output_path=output_path
                 + "{}.nc".format(os.path.basename(f)),
                 config=config,
             )
@@ -172,23 +178,40 @@ def read_geojson_file_list(fileList):
     return polygons_dict
 
 
+
+
 #
 # make this file importable
 #
 if __name__ == "__main__":
-    CONFIG_PATH = fix_path("./config.json")
-    TEST_FILES_PATH = fix_path("../sample_data/test_files/")
-    TEST_FILES_OUTPUT = fix_path("./output/")
-
     config = read_config(CONFIG_PATH)
-    config.update(
-        {"polygons_dict": read_geojson_file_list(config["geojsonFileList"])}
-    )
-    config.update(
-        {
-            "TEST_FILES_PATH": TEST_FILES_PATH,
-            "TEST_FILES_OUTPUT": TEST_FILES_OUTPUT,
-        }
-    )
+    parser = argparse.ArgumentParser(prog='odf_to_netcdf',
+                                    
+                                     description="Convert ODF files to NetCDF")
 
-    convert_test_files(config)
+    parser.add_argument(
+        '-i', type=str, dest="odf_path",
+        default=config.get('odf_path'),
+        help="ODF file or directory with ODF files. Recursive")
+
+    parser.add_argument(
+        '-o', type=str, dest="output_path",
+        default=config.get('output_path', './output/'),
+        help="Enter the folder to write your NetCDF files to." +
+        "Defaults to 'output'", required=False)
+
+    args = parser.parse_args()
+    odf_path = args.odf_path
+    output_path = args.output_path + '/'
+
+    odf_files_list = []
+
+    if not odf_path:
+        raise Exception("No odf_path")
+
+    if os.path.isdir(odf_path):
+        odf_files_list = glob.glob(odf_path + "/*.ODF")
+    elif os.path.isfile(odf_path):
+        odf_files_list = [odf_path]
+
+    convert_odf_files(config, odf_files_list, output_path)

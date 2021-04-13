@@ -15,6 +15,23 @@ pip install -e projects
 ## Running
 
 ```shell
-cd projects/odf_transform
-python write_ctd_ncfile.py
+cd projects/odf_transform/odf_transform
+```
+
+Specifying input (ODF) and ouput (NetCDF) folders in the config file
+
+```shell
+python odf_to_netcdf.py
+```
+
+Specifying input and output file/directories using `-i` and `-o`
+
+```shell
+python odf_to_netcdf.py -i ../sample_data/test_files/ -o ./netcdf_files
+```
+
+Running on a single file:
+
+```shell
+python odf_to_netcdf.py ../sample_data/test_files/CTD_1994038_147_1_DN.ODF
 ```
