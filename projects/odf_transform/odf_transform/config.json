@@ -7,9 +7,9 @@
         "./geojson_files/csasAtlPhys_climatePolygons.geojson"
     ],
     "vocabularyFileList":[
-		"./vocabulary/all_vocabulary_list.json"
+		"./vocabulary/CIOOS_Vocabulary_List - Complete_Vocabulary.csv"
 	],
-    "organisationVocabulary": ["IML","BIO","GF3"],
+    "organisationVocabulary": ["GF3"],
     "cdm_data_type": "Profile",
     "global_attributes": {
         "title": "dataset title",
