@@ -1,4 +1,4 @@
-name: Test JSON to Netcdf conversion
+name: Test ODF to Netcdf conversion
 
 on:
   push:
@@ -15,6 +15,7 @@ jobs:
         with:
           python-version: "3.x" # Version range or exact version of a Python version to use, using SemVer's version range syntax
           architecture: "x64" # optional x64 or x86. Defaults to x64 if not specified
-      - run: python -m pip install -e cioos_data_transform/ios_data_transform
-      - working-directory: odf_transform/test
-        run: python test_odf.py
+      - run: python -m pip install -e cioos_data_transform
+      - run: python -m pip install -e projects
+      - working-directory: projects/odf_transform/odf_transform
+        run: python odf_to_netcdf.py

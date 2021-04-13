@@ -1,6 +1,5 @@
 {
   "type": "FeatureCollection",
-  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML",
   "features": [
 	{ "type": "Feature",
       "geometry": {
@@ -14,6 +13,7 @@
 				] ]
 		},
 		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 10",
 		   "Label": "10",
 		   "REGION": "Atlantic",
 		   "Legend": "10. Estuary \/ Estuaire"
@@ -31,6 +31,7 @@
 				] ]
 		},
 		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 13",
 		   "Label": "13",
 		   "REGION": "Atlantic",
 		   "Legend": "13. Upper Estuary \/ Estuaire supérieur"
@@ -52,6 +53,7 @@
 				] ]
 		},
 		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 11",
 		   "Label": "11",
 		   "REGION": "Atlantic",
 		   "Legend": "11. Northwest Gulf \/ Nord-ouest du Golfe"
@@ -79,6 +81,7 @@
 				] ]
 		},
 		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 02",
 		   "Label": "02",
 		   "REGION": "Atlantic",
 		   "Legend": "02. Northeast Gulf \/ Nord-est du Golfe"
@@ -101,6 +104,7 @@
 				] ]
 		},
 		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 30",
 		   "Label": "30",
 		   "REGION": "Atlantic",
 		   "Legend": "30. Centre Gulf \/ Centre du Golfe"
@@ -119,6 +123,7 @@
 				] ]
 		},
 		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 31",
 		   "Label": "31",
 		   "REGION": "Atlantic",
 		   "Legend": "31. Cabot Strait \/ Détroit de Cabot"
@@ -139,6 +144,7 @@
 				] ]
 		},
 		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 40",
 		   "Label": "40",
 		   "REGION": "Atlantic",
 		   "Legend": "40. Mecatina \/ Mécatina"
@@ -164,6 +170,7 @@
 				] ]
 		},
 		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 41",
 		   "Label": "41",
 		   "REGION": "Atlantic",
 		   "Legend": "41. Belle Isle Straite \/ Détroit de Belle Isle"
@@ -200,6 +207,7 @@
 				] ]
 		},
 		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 05",
 		   "Label": "05",
 		   "REGION": "Atlantic",
 		   "Legend": "05. Magdalen Shallows \/ Plateau madelinien"}},
@@ -221,6 +229,7 @@
 				] ]
 		},
 		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 06",
 		   "Label": "06",
 		   "REGION": "Atlantic",
 		   "Legend": "06. Northumberland \/ Northumberland"}},
@@ -242,6 +251,7 @@
 				] ]
 		},
 		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 07",
 		   "Label": "07",
 		   "REGION": "Atlantic",
 		   "Legend": "07. Laurentian Hermitage \/ Laurentien Hermitage"}},
@@ -257,6 +267,7 @@
 				] ]
 		},
 		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 12",
 		   "Label": "12",
 		   "REGION": "Atlantic",
 		   "Legend": "12. Laurentian Mouth \/ Laurentien Embouchure"}}

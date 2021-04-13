@@ -1,0 +1,21 @@
+standard_name,SDN:P01::urn,SDN:P01:: Pref Label,unit,scale,instrument,Calibration Review,Generate Variable
+sea_water_temperature,TEMPPR01, The degree of hotness of the water column expressed against a standard scale. Includes both IPTS-68 and ITS-90 scales.,deg.*c,,,,TRUE
+sea_water_temperature,TEMPP681, Temperature (IPTS-68) of the water body,deg.*c,IPTS-68,,,TRUE
+sea_water_temperature,TEMPP901, Temperature (ITS-90) of the water body,deg.*c,ITS-90,,,TRUE
+sea_water_temperature,TEMPPP01, Temperature of the water body by YSI profiling oxygen and temperature probe,deg.*c,,YSI,,FALSE
+sea_water_temperature,TEMPMV01, Temperature of the water body by moving vessel profiler (MVP),deg.*c,,MVP,,FALSE
+sea_water_temperature,TEMPTC01, Temperature of the water body by in-situ thermistor,deg.*c,,,,FALSE
+sea_water_temperature,TEMPET01, Temperature of the water body by expendable bathythermograph (XBT),deg.*c,,XBT,,FALSE
+sea_water_temperature,TEMPSZ01, Temperature of the water body by thermosalinograph,deg.*c,,TSG|SBE\s+45,,FALSE
+sea_water_temperature,TEMPRTNX, Temperature of the water body by reversing thermometer,deg.*c,,reversing,,FALSE
+sea_water_temperature,TEMPR601, Temperature (IPTS-68) of the water body by reversing thermometer,deg.*c,IPTS-68,reversing,,FALSE
+sea_water_temperature,TEMPR901, Temperature (ITS-90) of the water body by reversing thermometer,deg.*c,ITS-90,reversing,,FALSE
+sea_water_temperature,TEMPS601, Temperature (IPTS-68) of the water body by CTD or STD,deg.*c,IPTS-68,CTD,,FALSE
+sea_water_temperature,TEMPS901, Temperature (ITS-90) of the water body by CTD or STD,deg.*c,ITS-90,CTD,,FALSE
+sea_water_practical_salinity,PSLTZZ01,Practical salinity of the water body,,PSS-78|PSU,,,TRUE
+sea_water_practical_salinity,PSALST01,Practical salinity of the water body by CTD and computation using UNESCO 1983 algorithm,,PSS-78|PSU,CTD,,FALSE
+sea_water_salinity,SSALST01,Salinity of the water body by CTD,ppt,,CTD,,FALSE
+sea_water_salinity,ODSDM021,Salinity of the water body,ppt,,,,TRUE
+sea_water_electrical_conductivity,CNDCST01,Electrical conductivity of the water body by CTD,S/m,,,,TRUE
+mole_concentration_of_dissolved_molecular_oxygen_in_sea_water,DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,umol/l,,,,TRUE
+moles_of_oxygen_per_unit_mass_in_sea_water,DOXMZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit mass of the water body [dissolved plus reactive particulate phase],umol/kg,,,,TRUE
