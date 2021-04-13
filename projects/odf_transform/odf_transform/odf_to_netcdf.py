@@ -6,7 +6,7 @@ import re
 import shutil
 
 import xarray as xr
-import utils.odf_parser as odf
+import odf_parser.odf_parser as odf
 import cioos_data_transform.utils.xarray_methods as xarray_methods
 from cioos_data_transform.utils.utils import fix_path
 from cioos_data_transform.utils.utils import get_geo_code, read_geojson
@@ -177,8 +177,8 @@ def read_geojson_file_list(fileList):
 #
 if __name__ == "__main__":
     CONFIG_PATH = fix_path("./config.json")
-    TEST_FILES_PATH = fix_path("./test/test_files/")
-    TEST_FILES_OUTPUT = fix_path("./test/temp_noOce/")
+    TEST_FILES_PATH = fix_path("../sample_data/test_files/")
+    TEST_FILES_OUTPUT = fix_path("./output/")
 
     config = read_config(CONFIG_PATH)
     config.update(

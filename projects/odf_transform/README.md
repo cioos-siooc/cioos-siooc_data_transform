@@ -15,5 +15,6 @@ pip install -e projects
 ## Running
 
 ```shell
+cd projects/odf_transform
 python write_ctd_ncfile.py
 ```

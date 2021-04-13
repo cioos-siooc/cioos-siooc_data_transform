@@ -283,7 +283,7 @@ def generate_bodc_variables(ds):
         return bodc
 
     # Get Reference Document
-    bodc_var = pd.read_csv(os.path.join(os.path.split(__loader__.path)[0], 'bodc_generator.csv'),encoding='ANSI')
+    bodc_var = pd.read_csv(os.path.join(os.path.split(__loader__.path)[0], 'bodc_generator.csv'))
     bodc_var['SDN:P01::urn'] = bodc_var['SDN:P01::urn'].str.strip()
 
     for var in ds:

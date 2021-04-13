@@ -1,0 +1,774 @@
+ODF_HEADER,
+  FILE_SPECIFICATION = 'CTD_1994038_147_1_DN',
+CRUISE_HEADER,
+  COUNTRY_INSTITUTE_CODE = 1830,
+  CRUISE_NUMBER = '1994038',
+  ORGANIZATION = 'DPMM',
+  CHIEF_SCIENTIST = 'L. Savard et B. Morin',
+  START_DATE = '15-AUG-1994 00:00:00.00',
+  END_DATE = '09-SEP-1994 23:50:00.00',
+  PLATFORM = 'Alfred Needler',
+  CRUISE_NAME = 'Releve d'abondance des poissons de fond et de la crevette et evaluation oceanographique de l'etat du Golfe',
+  CRUISE_DESCRIPTION = '',
+EVENT_HEADER,
+  DATA_TYPE= 'CTD',
+  EVENT_NUMBER= '147',
+  EVENT_QUALIFIER1= '1',
+  EVENT_QUALIFIER2= 'DN',
+  CREATION_DATE= '20-JAN-2003 13:49:16.07',
+  ORIG_CREATION_DATE= '09-DEC-1998 18:12:19.00',
+  START_DATE_TIME= '02-SEP-1994 14:15:47.00',
+  END_DATE_TIME= '02-SEP-1994 14:29:55.00',
+  INITIAL_LATITUDE= 49.972500,
+  INITIAL_LONGITUDE= -65.143833,
+  END_LATITUDE= -99.000000,
+  END_LONGITUDE= -999.900000,
+  MIN_DEPTH= 1.69,
+  MAX_DEPTH= 175.34,
+  SAMPLING_INTERVAL= 1.0,
+  SOUNDING= -99.00,
+  DEPTH_OFF_BOTTOM= -99.00,
+  EVENT_COMMENTS= '',
+INSTRUMENT_HEADER,
+  INST_TYPE= 'Applied',
+  MODEL= 'STD-12 PLUS',
+  SERIAL_NUMBER= '0630',
+  DESCRIPTION= 'Q9438147.RL',
+QUALITY_HEADER,
+  QUALITY_DATE= '20-JAN-2003 13:46:14.98',
+  QUALITY_TESTS= 'Test 1.1: GTSPP Platform Identification',
+  QUALITY_TESTS= 'Test 1.2: GTSPP Impossible Date/Time',
+  QUALITY_TESTS= 'Test 1.3: GTSPP Impossible Location',
+  QUALITY_TESTS= 'Test 1.4: GTSPP Position on Land',
+  QUALITY_TESTS= 'Test 1.5: GTSPP Impossible Speed',
+  QUALITY_TESTS= 'Test 1.6: GTSPP Impossible Sounding',
+  QUALITY_TESTS= 'Test 5.1: GTSPP Cruise Track Visual Inspection',
+  QUALITY_TESTS= 'Test 2.0: IML Minimum Descent Rate (2) (0.10m/s)',
+  QUALITY_TESTS= 'Test 2.1: GTSPP Global Impossible Parameter Values (4)',
+  QUALITY_TESTS= 'Test 2.2: GTSPP Regional Impossible Parameter Values (8)',
+  QUALITY_TESTS= 'Test 2.3: GTSPP Increasing Depth (16)',
+  QUALITY_TESTS= 'Test 2.4: GTSPP Profile Envelope (Temperature and Salinity) (32)',
+  QUALITY_TESTS= 'Test 2.6: GTSPP Freezing Point (128)',
+  QUALITY_TESTS= 'Test 2.7: GTSPP Spike in Temperature and Salinity (one point) (256)',
+  QUALITY_TESTS= 'Test 2.8: GTSPP Top and Bottom Spike in Temperature and Salinity (512)',
+  QUALITY_TESTS= 'Test 2.9: GTSPP Gradient in Temperature and Salinity (1024)',
+  QUALITY_TESTS= 'Test 2.10: GTSPP Density Inversion (point to point) (2048)',
+  QUALITY_TESTS= 'Test 2.11: IML Spike in Pressure, Temperature and Salinity (one point or more) (4096)',
+  QUALITY_TESTS= 'Test 2.12: IML Density Inversion (overall profile) (8192)',
+  QUALITY_TESTS= 'Test 3.5: IML Petrie Monthly Climatology (Temperature, Salinity and Sigma-T)',
+  QUALITY_TESTS= 'Test 5.2: GTSPP Profile Visual Inspection',
+  QUALITY_COMMENTS= 'QCFF values are derived from tests of GTSPP stage 2',
+  QUALITY_COMMENTS= 'A quality flag modified by hand has a QCFF value of 1',
+GENERAL_CAL_HEADER,
+  PARAMETER_CODE= 'PRES_01',
+  CALIBRATION_TYPE= 'PRES01',
+  CALIBRATION_DATE= '17-NOV-1858 00:00:00.00',
+  APPLICATION_DATE= '17-NOV-1858 00:00:00.00',
+  NUMBER_COEFFICIENTS= 6,
+  COEFFICIENTS= -5.96105290e+002  2.98454300e-002  2.15441300e-008  0.00000000e+000  4.00000000e-001  1.00000000e+000 ,
+  CALIBRATION_EQUATION= 'PRES = C0 + C1*(C5*N) + C2*(C5*N)^2 + C3*(C5*N)^3 - C4',
+  CALIBRATION_COMMENTS= '',
+GENERAL_CAL_HEADER,
+  PARAMETER_CODE= 'TEMP_01',
+  CALIBRATION_TYPE= 'TEMP01',
+  CALIBRATION_DATE= '17-NOV-1858 00:00:00.00',
+  APPLICATION_DATE= '17-NOV-1858 00:00:00.00',
+  NUMBER_COEFFICIENTS= 4,
+  COEFFICIENTS= 3.34041790e+001  -1.09943900e-003  9.76897670e-009  -1.45254900e-013 ,
+  CALIBRATION_EQUATION= 'TEMP = C0 + C1*N + C2*N^2 + C3*N^3',
+  CALIBRATION_COMMENTS= '',
+GENERAL_CAL_HEADER,
+  PARAMETER_CODE= 'CNDC_01',
+  CALIBRATION_TYPE= 'COND01',
+  CALIBRATION_DATE= '17-NOV-1858 00:00:00.00',
+  APPLICATION_DATE= '17-NOV-1858 00:00:00.00',
+  NUMBER_COEFFICIENTS= 4,
+  COEFFICIENTS= -1.71998300e+000  8.61467630e-005  0.00000000e+000  0.00000000e+000 ,
+  CALIBRATION_EQUATION= 'CNDC = (C0 + C1*N + C2*N^2 + C3*N^3)*4.2914',
+  CALIBRATION_COMMENTS= '',
+HISTORY_HEADER,
+  CREATION_DATE= '09-DEC-1998 18:12:19.00',
+  PROCESS= ' 8                                          ;type de fichier',
+  PROCESS= 'Needler 94                                  ;nom du projet',
+  PROCESS= 'IML-94-38                                   ;numero de croisiere',
+  PROCESS= 'CG-2683              CSS Alfred Needler     ;indicatif d'appel (call sign) et nom du navire',
+  PROCESS= '18                                          ;identification de pays',
+  PROCESS= '30                                          ;identification d'institut',
+  PROCESS= 'L.Savard et B.Morin                         ;nom du chef de mission',
+  PROCESS= '                                            ;nom de la station',
+  PROCESS= '                                            ;# de passage sur la station (sequence)',
+  PROCESS= '  147                                       ;# de profil de la mission (consecutive)',
+  PROCESS= 'Q9438147.RL                                 ;nom du fichier de donnees brutes',
+  PROCESS= 'Q9438147.DAT                                ;nom du fichier de donnees physiques',
+  PROCESS= 'HAA                                         ;fuseau horaire',
+  PROCESS= '1994/09/02 11:15:47                         ;date et heure de mise a l'eau    (aaaa/mm/jj hh:mm:ss)',
+  PROCESS= '1994/09/02 11:29:55                         ;date et heure de sortie de l'eau (aaaa/mm/jj hh:mm:ss)',
+  PROCESS= ' 49 58.350 N                                ;latitude a la mise a l'eau  (ddd mm.mmm N)',
+  PROCESS= ' 65 08.630 W                                ;longitude a la mise a l'eau (ddd mm.mmm W)',
+  PROCESS= '                                            ;latitude a la sortie de l'eau (ddd mmm.mmm W)',
+  PROCESS= '                                            ;longitude a la sortie de l'eau (ddd mmm.mmm W)',
+  PROCESS= '                                            ;profondeur sondee (m)',
+  PROCESS= '                                            ;pression atmospherique (kPa)',
+  PROCESS= '                                            ;vitesse des vents (m/s)',
+  PROCESS= '                                            ;direction des vents (degres/nord magnetique, sens horaire)',
+  PROCESS= '                                            ;temperature de l'air (C)',
+  PROCESS= '                                            ;etat de la mer',
+  PROCESS= ' 7                                          ;semaphores d'identification des senseurs utilises',
+  PROCESS= '  0.000   1.000                             ;intervalle d'echantillonnage, metres et secs (0: n/a)',
+  PROCESS= '000643                                      ;nombre d'echantillons',
+  PROCESS= '                                            ;#debut #fin descente',
+  PROCESS= '                                            ;#debut #fin remontee',
+  PROCESS= ' 175.34                                     ;profondeur atteinte (m)',
+  PROCESS= '                                            ;version des tests de controle de qualite GTSPP',
+  PROCESS= 'SSSXSXSSFS XSSSSFXXXX XSX                   ;semaphore QCP QC-GTSPP',
+  PROCESS= '3                                           ;semaphore global de qualite des profils',
+  PROCESS= 'STD-12-PLUS Applied                         ;type d'appareil',
+  PROCESS= '0630                                        ;numero de serie',
+  PROCESS= '                                            ;numero de reference',
+  PROCESS= '                                            ;facteur multiplicatif de la sonde de pression',
+  PROCESS= '  0.40                                      ;correction de pression a la surface (decibars)',
+  PROCESS= '           -5.9610529e+002  2.9845430e-002  2.1544130e-008  0.0000000e+000 ;etalonnage pression (type, C0, C1, C2, C3) (decibars)',
+  PROCESS= '            3.3404179e+001 -1.0994390e-003  9.7689767e-009 -1.4525490e-013 ;etalonnage temperature (type, C0, C1, C2, C3) (C)',
+  PROCESS= '           -1.7199830e+000  8.6146763e-005  0.0000000e+000  0.0000000e+000 ;etalonnage conductivite (type, C0, C1, C2, C3) (rapport)',
+  PROCESS= '                                            ;valeurs des senseurs de temperature (C) et de O2 (brut) dans l'air',
+  PROCESS= '                                                                           ;etalonnage O2 dissous (type, S0, S1, S2, S3) (cf manuel)',
+  PROCESS= '                                                                           ;etalonnage O2 dissous (R0, R1, R2, R3) (cf manuel)',
+  PROCESS= '                                                                           ;etalonnage O2 dissous (Q0, Q1, Q2) (cf manuel)',
+  PROCESS= '                                            ;sensibilite du senseur de fluorescence (1, 3 ou 10), temps d'integration (secs)',
+  PROCESS= '                                                                           ;etalonnage fluorescence (type, C0, C1, C2, C3) (%)',
+  PROCESS= '                                                                           ;etalonnage turbidite (type, C0, C1, C2, C3) (%)',
+  PROCESS= '17                                          ;nombre de canaux',
+  PROCESS= 'temperature          C,IPTS-68              ;nom et unites du canal #1',
+  PROCESS= 'pression             MPa                    ;nom et unites du canal #2',
+  PROCESS= 'profondeur           m                      ;nom et unites du canal #3',
+  PROCESS= 'salinite             PSU,PSS-78             ;nom et unites du canal #4',
+  PROCESS= 'sigma(S,T,P)         kg/m3                  ;nom et unites du canal #5',
+  PROCESS= 'oxygene dissous      mg/l                   ;nom et unites du canal #6',
+  PROCESS= 'fluorescence         %                      ;nom et unites du canal #7',
+  PROCESS= 'turbidite            %                      ;nom et unites du canal #8',
+  PROCESS= 'sem. QCF QC-GTSPP                           ;nom du canal #9',
+  PROCESS= '(f7.3,1x,a1,1x,f7.4,1x,a1,1x,f7.2,1x,a1,1x,f6.3,1x,a1,1x,f8.4,1x,a1,1x,f6.3,1x,a1,1x,f6.2,1x,a1,1x,f6.2,1x,a1,1x,i7)    ;format ftn',
+  PROCESS= '75                                          ;nombre de lignes dans le bloc d'entete',
+  PROCESS= 'Ancien fichier CTD (type 6b, REAL STD-12-PLUS tel.) Q9438147.RL (par 43 calc. avec ech. #1)                             ;createur-1',
+  PROCESS= 'Recode en format TS le 16/09/94 a 10:33:08 avec le programme ctd2ts (version 1.4b 04/03/94)                             ;createur-2',
+  PROCESS= '                                                                                                                        ;comment-1',
+  PROCESS= '                                                                                                                        ;comment-2',
+  PROCESS= '                                                                                                                        ;comment-3',
+  PROCESS= '                                                                                                                        ;comment-4',
+  PROCESS= 'Profils standards                                                                                                       ;comment-5',
+  PROCESS= 'Donnees oxygene eliminees car absence de donnees de calibrations                                                        ;comment-6',
+  PROCESS= 'et connecteur inverse.                                                                                                  ;comment-7',
+  PROCESS= '                                                                                                                        ;comment-8',
+  PROCESS= '                                                                                                                        ;comment-9',
+  PROCESS= '                                                                                                                        ;comment-10',
+  PROCESS= '    ---- Date creation: 1998/12/09 15:12:19 Version librairie TS: 3.2 1998/02/23 Plateforme: WINDOWS 95/NT VC 4.0 ----',
+  PROCESS= '...Temp.Q...Press.Q....Prof.Q..Salin.Q..Sig-STP.Q.....O2.Q...Fluo.Q...Turb.Q.....QCF',
+HISTORY_HEADER,
+  CREATION_DATE= '20-JAN-2003 13:11:05.67',
+  PROCESS= 'Conversion from TS8 to ODF',
+  PROCESS= 'Add_Parameter: A.Data.SIGT_01 = evalin('caller','sw_dens(S(i).Data.PSAL_01,S(i).Data.TEMP_01,0)-1000');',
+PARAMETER_HEADER,
+  TYPE= 'DOUB',
+  NAME= 'Sea Temperature (IPTS-68)',
+  UNITS= 'degrees C',
+  CODE= 'TEMP_01',
+  NULL_VALUE= -9.900000E+001,
+  PRINT_FIELD_WIDTH= 10,
+  PRINT_DECIMAL_PLACES= 3,
+  ANGLE_OF_SECTION= 0.000000,
+  MAGNETIC_VARIATION= 0.000000,
+  DEPTH= 0.000000 ,
+  MINIMUM_VALUE= 0.011,
+  MAXIMUM_VALUE= 9.935,
+  NUMBER_VALID= 433,
+  NUMBER_NULL= 0,
+PARAMETER_HEADER,
+  TYPE= 'DOUB',
+  NAME= 'Quality flag: Sea Temperature (IPTS-68)',
+  UNITS= 'none',
+  CODE= 'QQQQ_01',
+  NULL_VALUE= -9.900000E+001,
+  PRINT_FIELD_WIDTH= 1,
+  PRINT_DECIMAL_PLACES= 0,
+  ANGLE_OF_SECTION= 0.000000,
+  MAGNETIC_VARIATION= 0.000000,
+  DEPTH= 0.000000 ,
+  MINIMUM_VALUE= 1,
+  MAXIMUM_VALUE= 1,
+  NUMBER_VALID= 433,
+  NUMBER_NULL= 0,
+PARAMETER_HEADER,
+  TYPE= 'DOUB',
+  NAME= 'Sea Pressure (sea surface - 0)',
+  UNITS= 'decibars',
+  CODE= 'PRES_01',
+  NULL_VALUE= -9.900000E+001,
+  PRINT_FIELD_WIDTH= 10,
+  PRINT_DECIMAL_PLACES= 2,
+  ANGLE_OF_SECTION= 0.000000,
+  MAGNETIC_VARIATION= 0.000000,
+  DEPTH= 0.000000 ,
+  MINIMUM_VALUE= 1.7,
+  MAXIMUM_VALUE= 176.9,
+  NUMBER_VALID= 433,
+  NUMBER_NULL= 0,
+PARAMETER_HEADER,
+  TYPE= 'DOUB',
+  NAME= 'Quality flag: Sea Pressure (sea surface - 0)',
+  UNITS= 'none',
+  CODE= 'QQQQ_02',
+  NULL_VALUE= -9.900000E+001,
+  PRINT_FIELD_WIDTH= 1,
+  PRINT_DECIMAL_PLACES= 0,
+  ANGLE_OF_SECTION= 0.000000,
+  MAGNETIC_VARIATION= 0.000000,
+  DEPTH= 0.000000 ,
+  MINIMUM_VALUE= 1,
+  MAXIMUM_VALUE= 3,
+  NUMBER_VALID= 433,
+  NUMBER_NULL= 0,
+PARAMETER_HEADER,
+  TYPE= 'DOUB',
+  NAME= 'Sensor Depth below Sea Surface',
+  UNITS= 'metres',
+  CODE= 'DEPH_01',
+  NULL_VALUE= -9.900000E+001,
+  PRINT_FIELD_WIDTH= 10,
+  PRINT_DECIMAL_PLACES= 2,
+  ANGLE_OF_SECTION= 0.000000,
+  MAGNETIC_VARIATION= 0.000000,
+  DEPTH= 0.000000 ,
+  MINIMUM_VALUE= 1.69,
+  MAXIMUM_VALUE= 175.34,
+  NUMBER_VALID= 433,
+  NUMBER_NULL= 0,
+PARAMETER_HEADER,
+  TYPE= 'DOUB',
+  NAME= 'Quality flag: Sensor Depth below Sea Surface',
+  UNITS= 'none',
+  CODE= 'QQQQ_03',
+  NULL_VALUE= -9.900000E+001,
+  PRINT_FIELD_WIDTH= 1,
+  PRINT_DECIMAL_PLACES= 0,
+  ANGLE_OF_SECTION= 0.000000,
+  MAGNETIC_VARIATION= 0.000000,
+  DEPTH= 0.000000 ,
+  MINIMUM_VALUE= 1,
+  MAXIMUM_VALUE= 3,
+  NUMBER_VALID= 433,
+  NUMBER_NULL= 0,
+PARAMETER_HEADER,
+  TYPE= 'DOUB',
+  NAME= 'Practical Salinity',
+  UNITS= 'psu',
+  CODE= 'PSAL_01',
+  NULL_VALUE= -9.900000E+001,
+  PRINT_FIELD_WIDTH= 10,
+  PRINT_DECIMAL_PLACES= 3,
+  ANGLE_OF_SECTION= 0.000000,
+  MAGNETIC_VARIATION= 0.000000,
+  DEPTH= 0.000000 ,
+  MINIMUM_VALUE= 28.462,
+  MAXIMUM_VALUE= 33.8969,
+  NUMBER_VALID= 433,
+  NUMBER_NULL= 0,
+PARAMETER_HEADER,
+  TYPE= 'DOUB',
+  NAME= 'Quality flag: Practical Salinity',
+  UNITS= 'none',
+  CODE= 'QQQQ_04',
+  NULL_VALUE= -9.900000E+001,
+  PRINT_FIELD_WIDTH= 1,
+  PRINT_DECIMAL_PLACES= 0,
+  ANGLE_OF_SECTION= 0.000000,
+  MAGNETIC_VARIATION= 0.000000,
+  DEPTH= 0.000000 ,
+  MINIMUM_VALUE= 1,
+  MAXIMUM_VALUE= 3,
+  NUMBER_VALID= 433,
+  NUMBER_NULL= 0,
+PARAMETER_HEADER,
+  TYPE= 'SING',
+  NAME= 'Sigma-T',
+  UNITS= 'kg/m**3',
+  CODE= 'SIGT_01',
+  NULL_VALUE= -99.00,
+  PRINT_FIELD_WIDTH= 10,
+  PRINT_DECIMAL_PLACES= 3,
+  ANGLE_OF_SECTION= 0.000000,
+  MAGNETIC_VARIATION= 0.000000,
+  DEPTH= 0.000000 ,
+  MINIMUM_VALUE= 21.8649,
+  MAXIMUM_VALUE= 26.9689,
+  NUMBER_VALID= 433,
+  NUMBER_NULL= 0,
+PARAMETER_HEADER,
+  TYPE= 'DOUB',
+  NAME= 'Quality flag: Sigma-T',
+  UNITS= 'none',
+  CODE= 'QQQQ_05',
+  NULL_VALUE= -99.00,
+  PRINT_FIELD_WIDTH= 1,
+  PRINT_DECIMAL_PLACES= 0,
+  ANGLE_OF_SECTION= 0.000000,
+  MAGNETIC_VARIATION= 0.000000,
+  DEPTH= 0.000000 ,
+  MINIMUM_VALUE= 1,
+  MAXIMUM_VALUE= 3,
+  NUMBER_VALID= 433,
+  NUMBER_NULL= 0,
+PARAMETER_HEADER,
+  TYPE= 'DOUB',
+  NAME= 'Quality flag: QCFF',
+  UNITS= 'none',
+  CODE= 'QCFF_01',
+  NULL_VALUE= -99.00,
+  PRINT_FIELD_WIDTH= 4,
+  PRINT_DECIMAL_PLACES= 0,
+  ANGLE_OF_SECTION= 0.000000,
+  MAGNETIC_VARIATION= 0.000000,
+  DEPTH= 0.000000 ,
+  MINIMUM_VALUE= 0,
+  MAXIMUM_VALUE= 6144,
+  NUMBER_VALID= 433,
+  NUMBER_NULL= 0,
+RECORD_HEADER,
+  NUM_CALIBRATION= 3,
+  NUM_SWING= 0,
+  NUM_HISTORY= 2,
+  NUM_CYCLE= 433,
+  NUM_PARAM= 11,
+ -- DATA -- 
+      9.921  1        1.70  1        1.69  1      28.463  1      21.866  1     0 
+      9.921  1        2.00  1        1.98  1      28.463  1      21.866  1     0 
+      9.922  1        2.50  1        2.48  1      28.462  1      21.865  1     0 
+      9.928  1        2.90  1        2.88  1      28.465  1      21.866  1     0 
+      9.928  1        3.30  1        3.27  1      28.465  1      21.866  1     0 
+      9.932  1        3.50  1        3.47  1      28.468  1      21.868  1     0 
+      9.933  1        3.90  1        3.87  1      28.467  1      21.868  1     0 
+      9.935  1        4.40  1        4.36  1      28.465  1      21.866  1     0 
+      9.928  1        4.90  1        4.86  1      28.465  1      21.866  1     0 
+      9.920  1        5.20  1        5.16  1      28.467  1      21.868  1     0 
+      9.922  1        5.40  1        5.35  1      28.467  1      21.868  1     0 
+      9.924  1        5.60  1        5.55  1      28.467  1      21.869  1     0 
+      9.925  1        6.20  1        6.15  1      28.469  1      21.870  1     0 
+      9.929  1        6.80  1        6.74  1      28.467  1      21.868  1     0 
+      9.921  1        7.30  1        7.24  1      28.466  1      21.868  1     0 
+      9.918  1        7.60  1        7.54  1      28.466  1      21.868  1     0 
+      9.924  1        8.00  1        7.93  1      28.469  1      21.870  1     0 
+      9.926  1        8.70  1        8.63  1      28.464  1      21.867  1     0 
+      9.921  1        9.30  1        9.22  1      28.463  1      21.866  1     0 
+      9.916  1        9.80  1        9.72  1      28.464  1      21.867  1     0 
+      9.907  1       10.10  1       10.01  1      28.468  1      21.872  1     0 
+      9.905  1       10.50  1       10.41  1      28.469  1      21.873  1     0 
+      9.899  1       11.00  1       10.91  1      28.470  1      21.875  1     0 
+      9.881  1       11.70  1       11.60  1      28.480  1      21.885  1     0 
+      9.843  1       12.20  1       12.10  1      28.488  1      21.897  1     0 
+      9.707  1       12.60  1       12.49  1      28.543  1      21.961  1     0 
+      9.538  1       12.90  1       12.79  1      28.563  1      22.003  1     0 
+      8.183  1       13.40  1       13.29  1      29.371  1      22.832  1     0 
+      7.272  1       14.00  1       13.88  1      29.748  1      23.250  1     0 
+      6.576  1       14.60  1       14.48  1      30.032  1      23.561  1     0 
+      5.695  1       15.10  1       14.97  1      30.317  1      23.889  1     0 
+      5.122  1       15.50  1       15.37  1      30.540  1      24.128  1     0 
+      4.852  1       16.10  1       15.96  1      30.666  1      24.257  1     0 
+      4.803  1       16.80  1       16.66  1      30.664  1      24.260  1     0 
+      4.749  1       17.30  1       17.15  1      30.650  1      24.254  1     0 
+      4.627  1       17.80  1       17.65  1      30.610  3      24.235  3  4096 
+      4.263  1       18.30  1       18.15  1      30.853  1      24.464  1     0 
+      4.226  1       18.80  1       18.64  1      30.854  1      24.467  1     0 
+      4.235  1       19.40  1       19.24  1      30.850  1      24.465  1     0 
+      4.146  1       19.90  1       19.73  1      30.916  1      24.525  1     0 
+      3.297  1       20.40  1       20.23  1      31.239  1      24.859  1     0 
+      2.894  1       21.00  1       20.82  1      31.279  3      24.924  3  4096 
+      2.610  1       21.60  1       21.42  1      31.259  1      24.931  1     0 
+      2.429  1       22.10  1       21.91  1      31.246  1      24.934  1     0 
+      2.423  1       22.60  1       22.41  1      31.175  3      24.878  3  6144 
+      2.428  1       23.10  1       22.90  1      31.143  3      24.852  3  6144 
+      1.870  1       23.70  1       23.50  1      31.350  1      25.057  1     0 
+      1.595  1       24.30  1       24.09  1      31.494  3      25.191  3  4096 
+      1.580  1       24.80  1       24.59  1      31.443  1      25.151  3  2048 
+      1.572  1       25.30  1       25.09  1      31.419  3      25.132  3  4096 
+      1.530  1       25.80  1       25.58  1      31.424  1      25.139  1     0 
+      1.271  1       26.50  1       26.28  1      31.497  1      25.213  1     0 
+      1.042  1       27.10  1       26.87  1      31.629  1      25.333  1     0 
+      0.977  1       27.50  1       27.27  1      31.653  3      25.356  3  4096 
+      0.970  1       27.90  1       27.66  1      31.632  1      25.339  1     0 
+      0.951  1       28.50  1       28.26  1      31.584  3      25.302  3  6144 
+      0.914  1       29.10  1       28.85  1      31.608  3      25.323  3  4096 
+      0.868  1       29.70  1       29.45  1      31.649  1      25.359  1     0 
+      0.840  1       30.10  1       29.84  1      31.644  1      25.356  1     0 
+      0.723  1       30.60  1       30.34  1      31.698  1      25.406  1     0 
+      0.610  1       31.10  1       30.84  1      31.736  1      25.443  1     0 
+      0.583  1       31.70  1       31.43  1      31.735  1      25.444  1     0 
+      0.549  1       32.30  1       32.03  1      31.770  1      25.473  1     0 
+      0.476  1       32.70  1       32.42  1      31.807  1      25.507  1     0 
+      0.437  1       33.20  1       32.92  1      31.833  1      25.530  1     0 
+      0.406  1       33.70  1       33.41  1      31.845  1      25.541  1     0 
+      0.382  1       34.20  1       33.91  1      31.855  1      25.550  1     0 
+      0.365  1       34.70  1       34.41  1      31.867  1      25.561  1     0 
+      0.360  1       35.30  1       35.00  1      31.863  1      25.558  1     0 
+      0.346  1       35.80  1       35.50  1      31.877  1      25.570  1     0 
+      0.327  1       36.20  1       35.89  1      31.892  1      25.583  1     0 
+      0.287  1       36.70  1       36.39  1      31.924  1      25.610  1     0 
+      0.262  1       37.30  1       36.98  1      31.949  1      25.632  1     0 
+      0.234  1       37.90  1       37.58  1      31.978  1      25.656  1     0 
+      0.211  1       38.40  1       38.07  1      31.997  1      25.673  1     0 
+      0.165  1       38.90  1       38.57  1      32.039  1      25.709  1     0 
+      0.127  1       39.40  1       39.06  1      32.055  1      25.723  1     0 
+      0.109  1       40.00  1       39.66  1      32.054  1      25.723  1     0 
+      0.076  1       40.50  1       40.16  1      32.083  1      25.748  1     0 
+      0.067  1       40.90  1       40.55  1      32.092  1      25.756  1     0 
+      0.063  1       41.40  1       41.05  1      32.092  1      25.756  1     0 
+      0.060  1       42.10  1       41.74  1      32.092  1      25.756  1     0 
+      0.066  1       42.60  1       42.24  1      32.102  1      25.764  1     0 
+      0.067  1       43.00  1       42.63  1      32.106  1      25.767  1     0 
+      0.068  1       43.40  1       43.03  1      32.106  1      25.767  1     0 
+      0.070  1       44.00  1       43.63  1      32.111  1      25.772  1     0 
+      0.051  1       44.80  1       44.42  1      32.132  1      25.789  1     0 
+      0.042  1       45.40  1       45.01  1      32.145  1      25.800  1     0 
+      0.039  1       45.70  1       45.31  1      32.148  1      25.802  1     0 
+      0.037  1       46.00  1       45.61  1      32.150  1      25.804  1     0 
+      0.033  1       46.80  1       46.40  1      32.183  1      25.831  1     0 
+      0.030  1       47.50  1       47.09  1      32.215  1      25.857  1     0 
+      0.024  1       47.90  1       47.49  1      32.236  1      25.874  1     0 
+      0.023  1       48.10  1       47.69  1      32.241  1      25.878  1     0 
+      0.022  1       48.60  1       48.19  1      32.246  1      25.883  1     0 
+      0.021  1       49.40  1       48.98  1      32.247  1      25.883  1     0 
+      0.020  1       50.10  1       49.67  1      32.248  1      25.884  1     0 
+      0.018  1       50.50  1       50.07  1      32.254  1      25.889  1     0 
+      0.019  1       50.80  1       50.37  1      32.259  1      25.893  1     0 
+      0.019  1       51.30  1       50.86  1      32.260  1      25.894  1     0 
+      0.011  1       52.10  1       51.66  1      32.270  1      25.902  1     0 
+      0.011  1       52.60  1       52.15  1      32.280  1      25.910  1     0 
+      0.011  1       53.00  1       52.55  1      32.280  1      25.910  1     0 
+      0.012  1       53.40  1       52.94  1      32.283  1      25.913  1     0 
+      0.012  1       53.90  1       53.44  1      32.289  1      25.917  1     0 
+      0.013  1       54.60  1       54.13  1      32.293  1      25.921  1     0 
+      0.013  1       55.10  1       54.63  1      32.301  1      25.927  1     0 
+      0.012  1       55.50  1       55.03  1      32.306  1      25.931  1     0 
+      0.015  1       56.00  1       55.52  1      32.323  1      25.945  1     0 
+      0.016  1       56.50  1       56.02  1      32.331  1      25.951  1     0 
+      0.017  1       56.90  1       56.41  1      32.330  1      25.950  1     0 
+      0.018  1       57.30  1       56.81  1      32.338  1      25.957  1     0 
+      0.018  1       58.00  1       57.50  1      32.343  1      25.961  1     0 
+      0.020  1       58.60  1       58.10  1      32.351  1      25.968  1     0 
+      0.019  1       58.90  1       58.40  1      32.351  1      25.967  1     0 
+      0.021  1       59.10  1       58.59  1      32.354  1      25.969  1     0 
+      0.022  1       59.70  1       59.19  1      32.357  1      25.972  1     0 
+      0.022  1       60.50  1       59.98  1      32.371  1      25.983  1     0 
+      0.022  1       60.90  1       60.38  1      32.371  1      25.983  1     0 
+      0.023  1       61.10  1       60.58  1      32.376  1      25.987  1     0 
+      0.022  1       61.50  1       60.97  1      32.379  1      25.990  1     0 
+      0.022  1       62.30  1       61.77  1      32.380  1      25.990  1     0 
+      0.021  1       62.90  1       62.36  1      32.384  1      25.994  1     0 
+      0.021  1       63.20  1       62.66  1      32.389  1      25.998  1     0 
+      0.022  1       63.40  1       62.86  1      32.390  1      25.998  1     0 
+      0.022  1       64.10  1       63.55  1      32.394  1      26.002  1     0 
+      0.023  1       64.80  1       64.24  1      32.402  1      26.008  1     0 
+      0.023  1       65.20  1       64.64  1      32.402  1      26.008  1     0 
+      0.023  1       65.40  1       64.84  1      32.406  1      26.012  1     0 
+      0.024  1       65.90  1       65.34  1      32.406  1      26.011  1     0 
+      0.025  1       66.70  1       66.13  1      32.413  1      26.017  1     0 
+      0.026  1       67.20  1       66.62  1      32.418  1      26.021  1     0 
+      0.025  1       67.40  1       66.82  1      32.418  1      26.021  1     0 
+      0.025  1       67.80  1       67.22  1      32.421  1      26.024  1     0 
+      0.024  1       68.50  1       67.91  1      32.428  1      26.029  1     0 
+      0.023  1       69.10  1       68.51  1      32.433  1      26.033  1     0 
+      0.023  1       69.40  1       68.80  1      32.433  1      26.033  1     0 
+      0.023  1       69.80  1       69.20  1      32.434  1      26.034  1     0 
+      0.022  1       70.30  1       69.70  1      32.453  1      26.049  1     0 
+      0.016  1       71.00  1       70.39  1      32.486  1      26.076  1     0 
+      0.039  1       71.40  1       70.79  1      32.498  1      26.085  1     0 
+      0.050  1       71.80  1       71.18  1      32.510  1      26.094  1     0 
+      0.085  1       72.30  1       71.68  1      32.550  1      26.125  1     0 
+      0.088  1       72.90  1       72.27  1      32.557  1      26.130  1     0 
+      0.088  1       73.40  1       72.77  1      32.557  1      26.130  1     0 
+      0.088  1       73.80  1       73.17  1      32.560  1      26.133  1     0 
+      0.088  1       74.20  1       73.56  1      32.565  1      26.137  1     0 
+      0.088  1       74.70  1       74.06  1      32.570  1      26.141  1     0 
+      0.088  1       75.30  1       74.65  1      32.570  1      26.141  1     0 
+      0.086  1       75.90  1       75.25  1      32.574  1      26.144  1     0 
+      0.091  1       76.30  1       75.64  1      32.581  1      26.149  1     0 
+      0.092  1       76.70  1       76.04  1      32.585  1      26.153  1     0 
+      0.097  1       77.20  1       76.54  1      32.588  1      26.155  1     0 
+      0.099  1       77.80  1       77.13  1      32.595  1      26.160  1     0 
+      0.104  1       78.30  1       77.63  1      32.595  1      26.160  1     0 
+      0.105  1       78.70  1       78.02  1      32.603  1      26.166  1     0 
+      0.110  1       79.10  1       78.42  1      32.597  1      26.162  1     0 
+      0.114  1       79.60  1       78.92  1      32.608  1      26.170  1     0 
+      0.119  1       80.20  1       79.51  1      32.617  1      26.177  1     0 
+      0.128  1       80.70  1       80.01  1      32.616  1      26.176  1     0 
+      0.130  1       81.10  1       80.40  1      32.623  1      26.181  1     0 
+      0.138  1       81.40  1       80.70  1      32.630  1      26.187  1     0 
+      0.152  1       81.90  1       81.19  1      32.633  1      26.188  1     0 
+      0.157  1       82.50  1       81.79  1      32.642  1      26.195  1     0 
+      0.174  1       83.10  1       82.38  1      32.663  1      26.212  1     0 
+      0.207  1       83.50  1       82.78  1      32.662  1      26.209  1     0 
+      0.226  1       83.80  1       83.08  1      32.665  1      26.211  1     0 
+      0.236  1       84.30  1       83.57  1      32.699  1      26.237  1     0 
+      0.243  1       84.90  1       84.17  1      32.700  1      26.238  1     0 
+      0.248  1       85.40  1       84.66  1      32.709  1      26.245  1     0 
+      0.252  1       85.90  1       85.16  1      32.704  1      26.241  1     0 
+      0.256  1       86.30  1       85.56  1      32.705  1      26.241  1     0 
+      0.263  1       86.80  1       86.05  1      32.717  1      26.251  1     0 
+      0.277  1       87.20  1       86.45  1      32.720  1      26.252  1     0 
+      0.293  1       87.70  1       86.94  1      32.727  1      26.257  1     0 
+      0.300  1       88.20  1       87.44  1      32.734  1      26.262  1     0 
+      0.303  1       88.70  1       87.93  1      32.745  1      26.271  1     0 
+      0.314  1       89.20  1       88.43  1      32.742  1      26.268  1     0 
+      0.322  1       89.70  1       88.93  1      32.763  1      26.285  1     0 
+      0.349  1       90.10  1       89.32  1      32.758  1      26.279  1     0 
+      0.356  1       90.60  1       89.82  1      32.761  1      26.281  1     0 
+      0.359  1       91.10  1       90.31  1      32.766  1      26.285  1     0 
+      0.360  1       91.60  1       90.81  1      32.770  1      26.288  1     0 
+      0.361  1       92.10  1       91.30  1      32.770  1      26.289  1     0 
+      0.360  1       92.50  1       91.70  1      32.773  1      26.291  1     0 
+      0.360  1       93.00  1       92.20  1      32.772  1      26.290  1     0 
+      0.361  1       93.40  1       92.59  1      32.777  1      26.294  1     0 
+      0.366  1       93.90  1       93.09  1      32.786  1      26.301  1     0 
+      0.378  1       94.50  1       93.68  1      32.787  1      26.301  1     0 
+      0.391  1       94.90  1       94.08  1      32.787  1      26.300  1     0 
+      0.399  1       95.20  1       94.38  1      32.789  1      26.302  1     0 
+      0.414  1       95.60  1       94.77  1      32.811  1      26.319  1     0 
+      0.448  1       96.20  1       95.37  1      32.818  1      26.322  1     0 
+      0.460  1       96.80  1       95.96  1      32.814  1      26.319  1     0 
+      0.461  1       97.10  1       96.26  1      32.818  1      26.322  1     0 
+      0.462  1       97.40  1       96.56  1      32.821  1      26.324  1     0 
+      0.462  1       97.90  1       97.05  1      32.826  1      26.328  1     0 
+      0.486  1       98.60  1       97.75  1      32.834  1      26.333  1     0 
+      0.496  1       99.00  1       98.14  1      32.828  1      26.328  1     0 
+      0.500  1       99.30  1       98.44  1      32.828  1      26.328  1     0 
+      0.500  1       99.70  1       98.84  1      32.838  1      26.336  1     0 
+      0.506  1      100.30  1       99.43  1      32.845  1      26.341  1     0 
+      0.519  1      100.90  1      100.03  1      32.840  1      26.336  1     0 
+      0.527  1      101.20  1      100.32  1      32.842  1      26.338  1     0 
+      0.528  1      101.50  1      100.62  1      32.850  1      26.344  1     0 
+      0.541  1      102.00  1      101.12  1      32.859  1      26.350  1     0 
+      0.559  1      102.70  1      101.81  1      32.869  1      26.358  1     0 
+      0.578  1      103.40  1      102.50  1      32.867  1      26.355  1     0 
+      0.587  1      103.70  1      102.80  1      32.873  1      26.359  1     0 
+      0.592  1      104.00  1      103.10  1      32.881  1      26.365  1     0 
+      0.599  1      104.70  1      103.79  1      32.892  1      26.374  1     0 
+      0.617  1      105.40  1      104.49  1      32.888  1      26.370  1     0 
+      0.630  1      105.90  1      104.98  1      32.883  1      26.365  1     0 
+      0.631  1      106.20  1      105.28  1      32.891  1      26.371  1     0 
+      0.638  1      106.60  1      105.68  1      32.907  1      26.384  1     0 
+      0.663  1      107.40  1      106.47  1      32.909  1      26.384  1     0 
+      0.676  1      108.00  1      107.06  1      32.904  1      26.379  1     0 
+      0.686  1      108.40  1      107.46  1      32.907  1      26.381  1     0 
+      0.693  1      108.80  1      107.86  1      32.915  1      26.387  1     0 
+      0.698  1      109.40  1      108.45  1      32.918  1      26.389  1     0 
+      0.708  1      110.00  1      109.05  1      32.922  1      26.392  1     0 
+      0.712  1      110.60  1      109.64  1      32.922  1      26.392  1     0 
+      0.715  1      111.00  1      110.04  1      32.928  1      26.396  1     0 
+      0.734  1      111.50  1      110.53  1      32.927  1      26.394  1     0 
+      0.763  1      112.20  1      111.23  1      32.948  1      26.410  1     0 
+      0.789  1      112.80  1      111.82  1      32.953  1      26.412  1     0 
+      0.833  1      113.10  1      112.12  1      32.969  1      26.422  1     0 
+      0.852  1      113.50  1      112.51  1      32.972  1      26.424  1     0 
+      0.872  1      114.10  1      113.11  1      32.984  1      26.432  1     0 
+      0.878  1      114.80  1      113.80  1      32.982  1      26.430  1     0 
+      0.879  1      115.40  1      114.40  1      32.984  1      26.432  1     0 
+      0.879  1      115.90  1      114.89  1      32.985  1      26.432  1     0 
+      0.880  1      116.30  1      115.29  1      32.988  1      26.435  1     0 
+      0.890  1      116.80  1      115.78  1      32.991  1      26.437  1     0 
+      0.906  1      117.40  1      116.38  1      32.988  1      26.433  1     0 
+      0.912  1      118.10  1      117.07  1      33.001  1      26.443  1     0 
+      0.945  1      118.70  1      117.67  1      33.004  1      26.444  1     0 
+      0.968  1      118.90  1      117.87  1      33.022  1      26.457  1     0 
+      0.973  1      119.20  1      118.16  1      33.025  1      26.459  1     0 
+      0.985  1      119.90  1      118.86  1      33.036  1      26.467  1     0 
+      1.018  1      120.70  1      119.65  1      33.029  1      26.460  1     0 
+      1.032  1      121.20  1      120.15  1      33.042  1      26.469  1     0 
+      1.032  1      121.20  3      120.15  3      33.042  3      26.469  3    16 
+      1.033  1      121.70  1      120.64  1      33.055  1      26.480  1     0 
+      1.055  1      122.60  1      121.53  1      33.059  1      26.481  1     0 
+      1.064  1      123.30  1      122.23  1      33.054  1      26.477  1     0 
+      1.066  1      123.60  1      122.52  1      33.061  1      26.482  1     0 
+      1.066  1      123.70  1      122.62  1      33.061  1      26.482  1     0 
+      1.090  1      124.40  1      123.32  1      33.083  1      26.498  1     0 
+      1.127  1      125.20  1      124.11  1      33.081  1      26.495  1     0 
+      1.149  1      125.80  1      124.70  1      33.086  1      26.497  1     0 
+      1.187  1      126.10  1      125.00  1      33.126  1      26.527  1     0 
+      1.232  1      126.50  1      125.40  1      33.120  1      26.519  1     0 
+      1.278  1      127.10  1      125.99  1      33.132  1      26.526  1     0 
+      1.304  1      127.80  1      126.69  1      33.133  1      26.525  1     0 
+      1.316  1      128.40  1      127.28  1      33.147  1      26.536  1     0 
+      1.312  1      128.80  1      127.68  1      33.152  1      26.540  1     0 
+      1.315  1      129.10  1      127.97  1      33.151  1      26.539  1     0 
+      1.312  1      129.80  1      128.67  1      33.149  1      26.537  1     0 
+      1.313  1      130.50  1      129.36  1      33.152  1      26.540  1     0 
+      1.317  1      131.10  1      129.96  1      33.154  1      26.541  1     0 
+      1.319  1      131.40  1      130.25  1      33.157  1      26.543  1     0 
+      1.319  1      131.80  1      130.65  1      33.157  1      26.543  1     0 
+      1.334  1      132.50  1      131.34  1      33.160  1      26.545  1     0 
+      1.337  1      133.20  1      132.04  1      33.160  1      26.544  1     0 
+      1.341  1      133.70  1      132.53  1      33.161  1      26.545  1     0 
+      1.344  1      134.00  1      132.83  1      33.166  1      26.549  1     0 
+      1.349  1      134.50  1      133.33  1      33.166  1      26.548  1     0 
+      1.381  1      135.20  1      134.02  1      33.183  1      26.560  1     0 
+      1.406  1      135.90  1      134.71  1      33.179  1      26.555  1     0 
+      1.436  1      136.50  1      135.31  1      33.175  1      26.550  1     0 
+      1.449  1      137.00  1      135.80  1      33.194  1      26.564  1     0 
+      1.456  1      137.50  1      136.30  1      33.197  1      26.566  1     0 
+      1.512  1      138.20  1      136.99  1      33.217  1      26.578  1     0 
+      1.573  1      138.80  1      137.59  1      33.216  1      26.573  1     0 
+      1.605  1      139.40  1      138.18  1      33.225  1      26.578  1     0 
+      1.629  1      139.90  1      138.68  1      33.236  1      26.585  1     0 
+      1.680  1      140.40  1      139.17  1      33.248  1      26.592  1     0 
+      1.723  1      141.00  1      139.77  1      33.248  1      26.588  1     0 
+      1.728  1      141.70  1      140.46  1      33.281  1      26.615  1     0 
+      1.743  1      142.30  1      141.05  1      33.287  1      26.618  1     0 
+      1.754  1      142.90  1      141.65  1      33.299  1      26.627  1     0 
+      1.779  1      143.30  1      142.05  1      33.300  1      26.626  1     0 
+      1.815  1      143.90  1      142.64  1      33.317  1      26.637  1     0 
+      1.845  1      144.60  1      143.33  1      33.331  1      26.646  1     0 
+      1.871  1      145.20  1      143.93  1      33.341  1      26.652  1     0 
+      1.915  1      145.70  1      144.42  1      33.344  1      26.651  1     0 
+      1.957  1      146.20  1      144.92  1      33.346  1      26.650  1     0 
+      1.995  1      146.90  1      145.61  1      33.385  1      26.678  1     0 
+      2.024  1      147.60  1      146.31  1      33.395  1      26.684  1     0 
+      2.068  1      148.20  1      146.90  1      33.390  1      26.677  1     0 
+      2.121  1      148.60  1      147.30  1      33.398  1      26.679  1     0 
+      2.139  1      149.00  1      147.69  1      33.425  1      26.699  1     0 
+      2.202  1      149.80  1      148.49  1      33.482  1      26.740  1     0 
+      2.265  1      150.50  1      149.18  1      33.472  1      26.727  1     0 
+      2.298  1      151.00  1      149.67  1      33.464  1      26.718  1     0 
+      2.308  1      151.40  1      150.07  1      33.499  1      26.745  1     0 
+      2.353  1      152.10  1      150.76  1      33.538  1      26.773  1     0 
+      2.441  1      152.70  1      151.36  1      33.545  1      26.771  1     0 
+      2.497  1      153.20  1      151.85  1      33.532  1      26.756  1     0 
+      2.518  1      153.60  1      152.25  1      33.542  1      26.763  1     0 
+      2.561  1      154.30  1      152.94  1      33.592  1      26.799  1     0 
+      2.583  1      155.10  1      153.74  1      33.600  1      26.804  1     0 
+      2.691  1      155.60  1      154.23  1      33.600  1      26.794  1     0 
+      2.738  1      155.80  1      154.43  1      33.646  1      26.827  1     0 
+      2.786  1      156.30  1      154.93  1      33.695  1      26.862  1     0 
+      2.834  1      157.20  1      155.82  1      33.729  3      26.885  3  4096 
+      2.890  1      157.80  1      156.41  1      33.692  1      26.851  3  2048 
+      2.887  1      157.90  1      156.51  1      33.698  1      26.855  1     0 
+      2.894  1      158.20  1      156.81  1      33.707  1      26.862  1     0 
+      2.924  1      159.10  1      157.70  1      33.811  3      26.943  3  4096 
+      3.014  1      160.00  1      158.59  1      33.738  1      26.876  3  2048 
+      3.016  1      160.30  1      158.89  1      33.746  1      26.883  1     0 
+      3.015  1      160.50  1      159.09  1      33.745  1      26.882  1     0 
+      3.016  1      161.10  1      159.68  1      33.758  1      26.892  1     0 
+      3.025  1      162.00  1      160.57  1      33.749  1      26.884  1     0 
+      3.024  1      162.50  1      161.07  1      33.748  1      26.883  1     0 
+      3.032  1      162.80  1      161.37  1      33.749  1      26.884  1     0 
+      3.033  1      162.90  1      161.47  1      33.753  1      26.887  1     0 
+      3.036  1      163.60  1      162.16  1      33.758  1      26.890  1     0 
+      3.046  1      164.40  1      162.95  1      33.761  1      26.892  1     0 
+      3.051  1      165.00  1      163.55  1      33.760  1      26.891  1     0 
+      3.051  1      165.10  1      163.65  1      33.757  3      26.889  3     2 
+      3.049  1      165.20  1      163.74  1      33.759  1      26.890  1     0 
+      3.045  1      166.00  1      164.54  1      33.760  1      26.890  1     0 
+      3.054  1      166.80  1      165.33  1      33.769  1      26.898  1     0 
+      3.075  1      167.10  1      165.63  1      33.755  1      26.885  1     0 
+      3.072  1      167.40  1      165.92  1      33.765  1      26.892  1     0 
+      3.082  1      167.90  1      166.42  1      33.771  1      26.897  1     0 
+      3.086  1      168.60  1      167.11  1      33.771  1      26.896  1     0 
+      3.082  1      169.30  1      167.81  1      33.770  1      26.896  1     0 
+      3.090  1      169.60  1      168.10  1      33.766  1      26.892  1     0 
+      3.098  1      169.80  1      168.30  1      33.775  1      26.898  1     0 
+      3.108  1      170.30  1      168.80  1      33.782  1      26.903  1     0 
+      3.119  1      171.20  1      169.69  1      33.783  1      26.903  1     0 
+      3.175  1      171.70  1      170.18  1      33.792  1      26.905  1     0 
+      3.187  1      171.80  1      170.28  1      33.802  1      26.912  1     0 
+      3.200  1      172.00  1      170.48  1      33.833  1      26.935  1     0 
+      3.260  1      172.80  1      171.27  1      33.846  1      26.940  1     0 
+      3.280  1      173.60  1      172.07  1      33.843  1      26.936  1     0 
+      3.295  1      174.00  1      172.46  1      33.840  1      26.932  1     0 
+      3.298  1      174.10  1      172.56  1      33.842  1      26.934  1     0 
+      3.317  1      174.50  1      172.96  1      33.866  1      26.951  1     0 
+      3.345  1      175.30  1      173.75  1      33.881  1      26.960  1     0 
+      3.385  1      176.00  1      174.45  1      33.883  1      26.958  1     0 
+      3.392  1      176.30  1      174.74  1      33.883  3      26.958  3     2 
+      3.389  1      176.10  3      174.54  3      33.883  3      26.958  3    18 
+      3.386  1      176.10  3      174.54  3      33.883  3      26.958  3    18 
+      3.378  1      176.10  3      174.54  3      33.881  3      26.957  3    18 
+      3.358  1      176.10  3      174.54  3      33.871  3      26.950  3    18 
+      3.358  1      176.00  3      174.45  3      33.871  3      26.950  3    18 
+      3.363  1      176.00  3      174.45  3      33.875  3      26.954  3    18 
+      3.367  1      176.00  3      174.45  3      33.866  3      26.947  3    18 
+      3.369  1      176.00  3      174.45  3      33.866  3      26.947  3    18 
+      3.363  1      176.10  3      174.54  3      33.866  3      26.947  3    18 
+      3.363  1      176.10  3      174.54  3      33.866  3      26.947  3    18 
+      3.363  1      176.20  3      174.64  3      33.866  3      26.947  3    18 
+      3.362  1      176.10  3      174.54  3      33.866  3      26.947  3    18 
+      3.361  1      176.00  3      174.45  3      33.866  3      26.947  3    18 
+      3.368  1      176.10  3      174.54  3      33.865  3      26.945  3    18 
+      3.377  1      176.10  3      174.54  3      33.874  3      26.952  3    18 
+      3.382  1      176.20  3      174.64  3      33.871  3      26.949  3    18 
+      3.399  1      176.20  3      174.64  3      33.874  3      26.951  3    18 
+      3.393  1      176.20  3      174.64  3      33.876  3      26.953  3    18 
+      3.380  1      176.10  3      174.54  3      33.873  3      26.950  3    18 
+      3.379  1      176.10  3      174.54  3      33.873  3      26.950  3    18 
+      3.386  1      176.20  3      174.64  3      33.873  3      26.950  3    18 
+      3.386  1      176.30  3      174.74  3      33.878  3      26.954  3    18 
+      3.388  1      176.30  3      174.74  3      33.885  3      26.959  3    18 
+      3.387  1      176.10  3      174.54  3      33.897  3      26.969  3    18 
+      3.388  1      176.10  3      174.54  3      33.897  3      26.969  3    18 
+      3.403  1      176.20  3      174.64  3      33.892  3      26.964  3    16 
+      3.404  1      176.40  1      174.84  1      33.887  3      26.960  3     2 
+      3.401  1      176.20  3      174.64  3      33.885  3      26.958  3    16 
+      3.393  1      176.10  3      174.54  3      33.880  3      26.955  3    18 
+      3.394  1      176.20  3      174.64  3      33.880  3      26.955  3    18 
+      3.396  1      176.30  3      174.74  3      33.882  3      26.956  3    18 
+      3.394  1      176.30  3      174.74  3      33.878  3      26.953  3    18 
+      3.397  1      176.30  3      174.74  3      33.878  3      26.953  3    18 
+      3.390  1      176.40  3      174.84  3      33.874  3      26.950  3    18 
+      3.394  1      176.30  3      174.74  3      33.878  3      26.954  3    16 
+      3.390  1      176.20  3      174.64  3      33.873  3      26.950  3    18 
+      3.389  1      176.30  3      174.74  3      33.874  3      26.951  3    16 
+      3.389  1      176.40  3      174.84  3      33.874  3      26.951  3    16 
+      3.389  1      176.50  1      174.94  1      33.874  3      26.951  3     2 
+      3.388  1      176.30  3      174.74  3      33.874  3      26.951  3    16 
+      3.387  1      176.30  3      174.74  3      33.874  3      26.951  3    16 
+      3.388  1      176.60  1      175.04  1      33.874  1      26.951  1     0 
+      3.389  1      176.60  3      175.04  3      33.879  3      26.954  3    18 
+      3.394  1      176.70  1      175.14  1      33.879  3      26.955  3     2 
+      3.390  1      176.40  3      174.84  3      33.878  3      26.954  3    16 
+      3.389  1      176.20  3      174.64  3      33.880  3      26.955  3    18 
+      3.392  1      176.40  3      174.84  3      33.882  3      26.956  3    16 
+      3.400  1      176.70  3      175.14  3      33.879  3      26.954  3    18 
+      3.403  1      176.60  3      175.04  3      33.879  3      26.954  3    16 
+      3.397  1      176.30  3      174.74  3      33.877  3      26.952  3    16 
+      3.397  1      176.30  3      174.74  3      33.876  3      26.951  3    16 
+      3.399  1      176.50  3      174.94  3      33.881  3      26.955  3    16 
+      3.401  1      176.60  3      175.04  3      33.881  3      26.955  3    18 
+      3.400  1      176.60  3      175.04  3      33.881  3      26.955  3    18 
+      3.401  1      176.50  3      174.94  3      33.880  3      26.954  3    18 
+      3.401  1      176.40  3      174.84  3      33.880  3      26.954  3    18 
+      3.398  1      176.50  3      174.94  3      33.880  3      26.954  3    18 
+      3.401  1      176.60  3      175.04  3      33.880  3      26.954  3    18 
+      3.402  1      176.60  3      175.04  3      33.880  3      26.954  3    18 
+      3.401  1      176.40  3      174.84  3      33.879  3      26.953  3    16 
+      3.402  1      176.30  3      174.74  3      33.882  3      26.956  3    18 
+      3.403  1      176.50  3      174.94  3      33.881  3      26.955  3    16 
+      3.408  1      176.70  3      175.14  3      33.881  3      26.955  3    18 
+      3.405  1      176.60  3      175.04  3      33.878  3      26.952  3    16 
+      3.404  1      176.40  3      174.84  3      33.877  3      26.952  3    18 
+      3.403  1      176.40  3      174.84  3      33.877  3      26.952  3    18 
+      3.403  1      176.60  3      175.04  3      33.878  3      26.952  3    16 
+      3.404  1      176.70  3      175.14  3      33.878  3      26.952  3    18 
+      3.402  1      176.60  3      175.04  3      33.879  3      26.953  3    18 
+      3.400  1      176.50  3      174.94  3      33.871  3      26.947  3    18 
+      3.389  1      176.40  3      174.84  3      33.878  3      26.954  3    18 
+      3.389  1      176.60  3      175.04  3      33.876  3      26.952  3    16 
+      3.392  1      176.70  3      175.14  3      33.871  3      26.948  3    18 
+      3.393  1      176.60  3      175.04  3      33.874  3      26.951  3    16 
+      3.392  1      176.40  3      174.84  3      33.874  3      26.951  3    18 
+      3.372  1      176.50  3      174.94  3      33.872  3      26.949  3    16 
+      3.387  1      176.70  3      175.14  3      33.873  3      26.951  3    16 
+      3.379  1      176.80  1      175.24  1      33.875  3      26.953  3     2 
+      3.381  1      176.50  3      174.94  3      33.875  3      26.953  3    16 
+      3.377  1      176.40  3      174.84  3      33.878  3      26.954  3    18 
+      3.377  1      176.60  3      175.04  3      33.878  3      26.954  3    16 
+      3.385  1      176.80  3      175.24  3      33.878  3      26.954  3    16 
+      3.402  1      176.80  3      175.24  3      33.877  3      26.953  3    16 
+      3.389  1      176.50  3      174.94  3      33.883  3      26.958  3    16 
+      3.378  1      176.40  3      174.84  3      33.883  3      26.957  3    18 
+      3.382  1      176.70  3      175.14  3      33.876  3      26.951  3    16 
+      3.405  1      176.90  1      175.34  1      33.883  1      26.958  1     0 
