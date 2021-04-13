@@ -1,4 +1,4 @@
-name: Test JSON to Netcdf conversion
+name: Test ODF to Netcdf conversion
 
 on:
   push:
