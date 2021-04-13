@@ -29,7 +29,6 @@
         "license": "standard license information here",
         "keywords_vocabulary": "GCMD Science Keywords",
         "Conventions": "CF-1.6,CF-1.7,ACDD1.1",
-        "naming_authority": "COARDS",
         "comment": ""
     }
 }
