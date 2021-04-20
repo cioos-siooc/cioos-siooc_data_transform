@@ -9,7 +9,7 @@
     "vocabularyFileList":[
 		"./vocabulary/CIOOS_Vocabulary_List - Complete_Vocabulary.csv"
 	],
-    "organisationVocabulary": ["GF3"],
+    "organisationVocabulary": ["QO","GF3"],
     "cdm_data_type": "Profile",
     "global_attributes": {
         "title": "dataset title",
