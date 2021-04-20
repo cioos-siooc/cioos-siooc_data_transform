@@ -207,51 +207,87 @@ def define_odf_variable_attributes(metadata,
         return previous_key
 
     # Find matching vocabulary
-    if type(vocabulary) is dict:
-        flag_dict = {}
-        for var in metadata.keys():
-            # Retrieve ODF CODE and Associated number
-            odf_parameter_code = metadata[var][parameter_code_att]
-            # Separate the parameter_code from the number at the end of the variable
-            parameter_code = odf_parameter_code.rsplit('_', 1)
 
-            # Retrieve trailing
-            # Parameter codes are generally associated with a trailing number the define the
-            # primary, secondary ,... data
-            metadata[var]['parameter_code'] = parameter_code[0]
-            if len(parameter_code) == 2 and parameter_code[1] != '':
-                metadata[var]['parameter_code_number'] = int(parameter_code[1])
-            else:
-                metadata[var]['parameter_code_number'] = 1
+    flag_dict = {}
+    for var in metadata.keys():
+        # Retrieve ODF CODE and Associated number
+        odf_parameter_code = metadata[var][parameter_code_att]
+        # Separate the parameter_code from the number at the end of the variable
+        parameter_code = odf_parameter_code.rsplit('_', 1)
 
-            # FLAG VARIABLES Detect if it is a flag column associated with another column
-            flag_column = False
-            if parameter_code[0].startswith('QQQQ'):  # MLI FLAG should apply to previous variable
-                flag_dict[odf_parameter_code] = _find_previous_key(metadata, var)
-                flag_column = True
-            elif parameter_code[0].startswith('Q') and odf_parameter_code[1:] in metadata.keys():
-                # BIO Format which Q+[PCODE] of the associated variable
-                flag_dict[odf_parameter_code] = odf_parameter_code[1:]
-                flag_column = True
-            # Make sure that the flag column relate to something
-            if flag_column and flag_dict[odf_parameter_code] not in metadata:
-                warnings.warn(odf_parameter_code + ' flag is refering to' + \
-                              flag_dict[odf_parameter_code] + ' which is not available as variable',
-                              UserWarning)
+        # Retrieve trailing
+        # Parameter codes are generally associated with a trailing number the define the
+        # primary, secondary ,... data
+        metadata[var]['parameter_code'] = parameter_code[0]
+        if len(parameter_code) == 2 and parameter_code[1] != '':
+            metadata[var]['parameter_code_number'] = int(parameter_code[1])
+        else:
+            metadata[var]['parameter_code_number'] = 1
 
-            # Loop through each organisations and find the matching parameter_code within the vocabulary
-            found_matching_vocab = False
-            for organization in organizations:
-                if parameter_code[0] in vocabulary[organization]:
-                    vocab_attributes = {key: value for key, value in vocabulary[organization][parameter_code[0]].items()
-                                        if key in vocabulary_attribute_list}
-                    metadata[var].update(vocab_attributes)
-                    found_matching_vocab = True
-                    break  # Stop after the first one detected
+        # FLAG VARIABLES Detect if it is a flag column associated with another column
+        flag_column = False
+        if parameter_code[0].startswith('QQQQ'):  # MLI FLAG should apply to previous variable
+            flag_dict[odf_parameter_code] = _find_previous_key(metadata, var)
+            flag_column = True
+        elif parameter_code[0].startswith('Q') and odf_parameter_code[1:] in metadata.keys():
+            # BIO Format which Q+[PCODE] of the associated variable
+            flag_dict[odf_parameter_code] = odf_parameter_code[1:]
+            flag_column = True
+        # Make sure that the flag column relate to something
+        if flag_column and flag_dict[odf_parameter_code] not in metadata:
+            warnings.warn(odf_parameter_code + ' flag is refering to' + \
+                          flag_dict[odf_parameter_code] + ' which is not available as variable',
+                          UserWarning)
 
-            # If will get there if no matching vocabulary exist
-            if not found_matching_vocab and not flag_column:
-                print(str(parameter_code) + ' not available in vocabularies: ' + str(organizations))
+        # Loop through each organisations and find the matching parameter_code within the vocabulary
+        found_matching_vocab = False
+        standardized_variables = False
+        if type(vocabulary) is pd.DataFrame:
+            # Find matching vocabularies and code and sort by given vocabularies
+            matching_terms = vocabulary[vocabulary.index.isin(organizations, level=0) &
+                       vocabulary.index.isin([parameter_code[0]], level=1)]
+
+            # Iterate over each matching vocabulary and review units
+            if len(matching_terms) > 0:
+                # Sort by given vocabulary order
+                matching_terms = matching_terms.reindex(organizations, level=0)
+
+                var_units = metadata[var].get('original_UNITS', '')
+                if var_units:
+                    var_units = standardize_odf_units(var_units)
+
+                found_matching_vocab = True
+                for id, row in matching_terms.iterrows():
+                    # Compare actual units to what's expected in the vocabulary
+                    if row.isna()['expected_units'] or \
+                        var_units in row['expected_units'].split('|') or \
+                        re.search('none|dimensionless', row['expected_units'], re.IGNORECASE) != None:
+
+                        # Add attributes from vocabulary
+                        metadata[var].update(row.filter(vocabulary_attribute_list).dropna().to_dict())
+
+                        # Standardize units
+                        if not flag_column:
+                            # Standardized units by selecting the very first possibility
+                            if type(row['expected_units']) is str:
+                                metadata[var]['units'] = row['expected_units'].split('|')[0]
+                            standardized_variables = True
+
+                            # No units available make sure it's the same in the data
+                            if row.isna()['expected_units'] and \
+                                metadata[var].get('original_UNITS') not in [None, 'none', 'None']:
+                                warnings.warn('Missing unit for {0} [{1}]'
+                                              .format(var, metadata[var]['original_UNITS']))
+                        break
+
+        # If will get there if no matching vocabulary exist
+        if not found_matching_vocab and not flag_column:
+            print(str(parameter_code) + ' not available in vocabularies: ' + str(organizations))
+        if not standardized_variables and not flag_column:
+            # If found matching term but no matching units
+            warnings.warn('No Matching unit found for {0} [{1}] in: {2}'
+                          .format(var, metadata[var].get('original_UNITS'),
+                                  matching_terms['expected_units'].to_dict()), UserWarning)
 
             # TODO compare expected units to units saved within the ODF file to make sure it is matching the vocabulary
 
@@ -314,6 +350,18 @@ def define_odf_variable_attributes(metadata,
     # TODO Add Warning for missing information and attributes (maybe)
     #  Example: Standard Name, P01, P02
     return metadata
+
+
+def standardize_odf_units(unit_string, escape=False):
+    # Units strings were manually written within the ODF files.
+    # We're trying to standardize all the different issues found.
+
+    unit_string = unit_string.replace('**', '^')
+    unit_string = unit_string.replace('µ', 'u')
+    unit_string = re.sub(' /|/ ', '/', unit_string)
+    unit_string = re.sub(' \^|\^ ', '^', unit_string)
+
+    return unit_string
 
 
 def global_attributes_from_header(odf_header):
