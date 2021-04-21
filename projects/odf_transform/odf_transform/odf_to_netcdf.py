@@ -24,13 +24,20 @@ def read_config(config_file):
         config = json.load(fid)
 
         # Read Vocabulary file
+        config["vocabulary"] = {}
         for vocab_file in config["vocabularyFileList"]:
-            config.update({"vocabulary": {}})
-            with open(vocab_file) as fid:
-                vocab = json.load(fid)
-            config["vocabulary"].update(vocab)
+            if vocab_file.endswith('json'):
+                with open(vocab_file) as fid:
+                    vocab = json.load(fid)
+                config["vocabulary"].update(vocab)
+            elif vocab_file.endswith('csv'):
+                vocab = pd.read_csv(vocab_file, index_col=['Vocabulary', 'name'])
+                if config["vocabulary"] == {}:
+                    config["vocabulary"] = vocab
+                elif type(config["vocabulary"]) is pd.DataFrame:
+                    config["vocabulary"].append(vocab)
 
-        return config
+    return config
 
 
 def write_ctd_ncfile(
