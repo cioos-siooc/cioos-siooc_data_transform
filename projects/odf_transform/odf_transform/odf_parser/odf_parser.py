@@ -240,9 +240,8 @@ def define_odf_variable_attributes(metadata,
                           UserWarning)
 
         # Loop through each organisations and find the matching parameter_code within the vocabulary
-        found_matching_vocab = False
         standardized_variables = False
-        if type(vocabulary) is pd.DataFrame:
+        if type(vocabulary) is pd.DataFrame and not flag_column and var not in ['SYTM_01']:
             # Find matching vocabularies and code and sort by given vocabularies
             matching_terms = vocabulary[vocabulary.index.isin(organizations, level=0) &
                        vocabulary.index.isin([parameter_code[0]], level=1)]
@@ -256,7 +255,6 @@ def define_odf_variable_attributes(metadata,
                 if var_units:
                     var_units = standardize_odf_units(var_units)
 
-                found_matching_vocab = True
                 for id, row in matching_terms.iterrows():
                     # Compare actual units to what's expected in the vocabulary
                     if row.isna()['expected_units'] or \
@@ -269,27 +267,28 @@ def define_odf_variable_attributes(metadata,
                         # Standardize units
                         if not flag_column:
                             # Standardized units by selecting the very first possibility
+                            #  or not giving unit attribute if none
                             if type(row['expected_units']) is str:
                                 metadata[var]['units'] = row['expected_units'].split('|')[0]
-                            standardized_variables = True
+                            elif var_units not in ['none']:
+                                metadata[var]['units'] = var_units
 
                             # No units available make sure it's the same in the data
                             if row.isna()['expected_units'] and \
-                                metadata[var].get('original_UNITS') not in [None, 'none', 'None']:
-                                warnings.warn('Missing unit for {0} [{1}]'
-                                              .format(var, metadata[var]['original_UNITS']))
+                                var_units not in [None, 'none']:
+                                warnings.warn('No units available within vocabularies {2} for term {0} [{1}]'
+                                              .format(var, metadata[var]['original_UNITS'],
+                                                      matching_terms['expected_units'].to_dict(), UserWarning))
                         break
 
-        # If will get there if no matching vocabulary exist
-        if not found_matching_vocab and not flag_column:
-            print(str(parameter_code) + ' not available in vocabularies: ' + str(organizations))
-        if not standardized_variables and not flag_column:
-            # If found matching term but no matching units
-            warnings.warn('No Matching unit found for {0} [{1}] in: {2}'
-                          .format(var, metadata[var].get('original_UNITS'),
-                                  matching_terms['expected_units'].to_dict()), UserWarning)
-
-            # TODO compare expected units to units saved within the ODF file to make sure it is matching the vocabulary
+                    # Will make it here if don't find any matching untis
+                    warnings.warn('No Matching unit found for {0} [{1}] in: {2}'
+                                  .format(var, metadata[var].get('original_UNITS'),
+                                          matching_terms['expected_units'].to_dict()), UserWarning)
+            else:
+                # If no matching vocabulary exist let it know
+                warnings.warn('{0} not available in vocabularies: {1}'.format(parameter_code[0], organizations),
+                              UserWarning)
 
     # Add Flag specific attributes
     for flag_column, data_column in flag_dict.items():
@@ -352,6 +351,19 @@ def define_odf_variable_attributes(metadata,
     return metadata
 
 
+def parse_odf_code_variable(var_name):
+    var_list = var_name.rsplit('_', 1)
+    var_dict = {'name': var_list[0]}
+    var_dict['standardized_name'] = var_dict['name']
+    if len(var_list) > 1 and var_list[1] not in ['']:
+        var_dict['index'] = int(var_list[1])
+        var_dict['standardized_name'] += '_{0:02.0f}'.format(var_dict['index'])
+    elif len(var_list) > 1 and var_list[1] == '':
+        var_dict['standardized_name'] += '_'
+
+    return var_dict
+
+
 def standardize_odf_units(unit_string, escape=False):
     # Units strings were manually written within the ODF files.
     # We're trying to standardize all the different issues found.
@@ -361,6 +373,8 @@ def standardize_odf_units(unit_string, escape=False):
     unit_string = re.sub(' /|/ ', '/', unit_string)
     unit_string = re.sub(' \^|\^ ', '^', unit_string)
 
+    if re.match('\(none\)|none|dimensionless', unit_string):
+        unit_string = 'none'
     return unit_string
 
 
