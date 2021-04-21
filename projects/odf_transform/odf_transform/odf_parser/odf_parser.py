@@ -229,14 +229,14 @@ def define_odf_variable_attributes(metadata,
         if parameter_code[0].startswith('QQQQ'):  # MLI FLAG should apply to previous variable
             flag_dict[odf_parameter_code] = _find_previous_key(metadata, var)
             flag_column = True
-        elif parameter_code[0:3] in ['QCFF','FFFF']:
+        elif parameter_code[0] in ['QCFF', 'FFFF']:
             flag_column = True
         elif parameter_code[0].startswith('Q') and odf_parameter_code[1:] in metadata.keys():
             # BIO Format which Q+[PCODE] of the associated variable
             flag_dict[odf_parameter_code] = odf_parameter_code[1:]
             flag_column = True
         # Make sure that the flag column relate to something
-        if flag_column and flag_dict[odf_parameter_code] not in metadata:
+        if flag_column and parameter_code[0] not in ['QCFF', 'FFFF'] and flag_dict[odf_parameter_code] not in metadata:
             warnings.warn(odf_parameter_code + ' flag is refering to' + \
                           flag_dict[odf_parameter_code] + ' which is not available as variable',
                           UserWarning)
