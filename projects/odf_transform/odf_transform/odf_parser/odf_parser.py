@@ -8,7 +8,7 @@ import gsw
 
 # Dictionary with the mapping of the odf types to python types
 odf_dtypes = {'DOUB': 'float64', 'SING': 'float32', 'DOUBLE': 'float64',
-              'SYTM': 'float64', 'INTE': 'int32', 'CHAR': str}
+              'SYTM': str, 'INTE': 'int32', 'CHAR': str, 'QQQQ': 'int32'}
 
 # Commonly date place holder used within the ODF files
 odf_time_null_value = (dt.datetime.strptime("17-NOV-1858 00:00:00.00", '%d-%b-%Y %H:%M:%S.%f') - \
