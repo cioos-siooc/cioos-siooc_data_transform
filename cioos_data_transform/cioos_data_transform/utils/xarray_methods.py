@@ -232,23 +232,38 @@ def define_index_dimensions(ds):
 
 def add_variable_attributes(ds,
                             review_attributes=None,
-                            scales=r'IPTS\-*48|IPTS\-*68|ITS\-*90|PSS\-*78|practical\ssalinity|psu'):
+                            overwrite=True):
+
+    def _get_scale(attributes):
+        scales = {
+            'Flag': 'Quality.*Flag|Flag',
+            'IPTS-48': 'IPTS-48',
+            'IPTS-68': 'IPTS-68|ITS-68',
+            'ITS-90': 'ITS-90|TE90',
+            'PSS-78': 'PSS-78|practical.*salinity|psal'
+        }
+        matched_scale = None
+        for scale_name in scales:
+            for att in review_attributes:
+                if att in ds[var].attrs:
+                    matched_scale = re.search(scales[scale_name], ds[var].attrs[att], re.IGNORECASE)
+
+                if matched_scale:
+                    if scale_name == 'Flag':
+                        return None
+                    else:
+                        return scale_name
+        return None
     if review_attributes is None:
         review_attributes = ['units', 'long_name', 'standard_name', 'comments', 'sdn_parameter_name']
 
     for var in ds:
         # Scale attribute
-        if 'scale' not in ds[var].attrs:
-            scale = []
-            for att_to_review in review_attributes:
-                if att_to_review in ds[var].attrs and len(scale) == 0:
-                    scale = re.findall(scales, ds[var].attrs[att_to_review], re.IGNORECASE)
-                if scale:
-                    scale = scale[0]
-                    scale = re.sub(r"practical\ssalinity|psu", 'PSS-78', scale, re.IGNORECASE)
-                    ds[var].attrs['scale'] = scale.upper()
+        if 'scale' not in ds[var].attrs or overwrite:
+            scale = _get_scale({key: ds[var].attrs.get(key, '') for key in review_attributes})
+            if scale:
+                ds[var].attrs['scale'] = scale
 
-                    break
         # Make sure coordinates have standard_names
         if var in ['time', 'latitude', 'longitude', 'depth']:
             ds[var].attrs['standard_name'] = str(var)
