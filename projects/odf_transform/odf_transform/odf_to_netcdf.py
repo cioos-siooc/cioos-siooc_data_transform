@@ -104,7 +104,10 @@ def write_ctd_ncfile(
         if "long_name" not in ds[var].attrs and \
                 ds[var].attrs.get("original_NAME"):
             ds[var].attrs["long_name"] = ds[var].attrs.get("original_NAME")
-    ds = xarray_methods.add_variable_attributes(ds)
+    ds = xarray_methods.add_variable_attributes(ds,
+                                                review_attributes=['units', 'long_name', 'standard_name',
+                                                                   'comments', 'sdn_parameter_name',
+                                                                   'original_NAME', 'original_UNITS', 'original_CODE'])
 
     # Generate extra variables (BODC, Derived)
     ds = xarray_methods.generate_bodc_variables(ds)
