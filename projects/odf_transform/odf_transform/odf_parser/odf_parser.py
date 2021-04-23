@@ -243,7 +243,7 @@ def define_odf_variable_attributes(metadata,
 
         # Loop through each organisations and find the matching parameter_code within the vocabulary
         standardized_variables = False
-        if type(vocabulary) is pd.DataFrame and not flag_column and var not in ['SYTM_01']:
+        if vocabulary is not None and not flag_column and var not in ['SYTM_01']:
             # Find matching vocabularies and code and sort by given vocabularies
             matching_terms = vocabulary[vocabulary.index.isin(organizations, level=0) &
                        vocabulary.index.isin([parameter_code[0]], level=1)]
