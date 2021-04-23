@@ -354,6 +354,11 @@ def define_odf_variable_attributes(metadata,
 
 
 def parse_odf_code_variable(var_name):
+    """
+    Method use to parse an ODF CODE terms to a dictionary. The tool will extract the name (GF3 code),
+    the index (01-99) and generate a standardized name with two digit index values if available.
+    Some historical data do not follow the same standard, this tool tries to handle the issues found.
+    """
     var_list = var_name.rsplit('_', 1)
     var_dict = {'name': var_list[0]}
     var_dict['standardized_name'] = var_dict['name']
