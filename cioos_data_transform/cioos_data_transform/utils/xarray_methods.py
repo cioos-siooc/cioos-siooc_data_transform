@@ -6,10 +6,13 @@ import re
 import json
 import os
 
+"""
+This Module regroup diverse methods used to handle xarray datasets and generate CIOOS/ERDDAP compliant datasets.
+"""
+
 
 def add_variables_from_dict(ds,
                             config,
-                            dim,
                             dictionary=None,
                             time='time',
                             latitude='latitude',
@@ -58,7 +61,7 @@ def add_variables_from_dict(ds,
                     try:
                         value = dt.datetime.strptime(value, re.search(r'\[(.*)\]', info['format']).group(0)[1:-1])
                     except ValueError:
-                        warnings.warn('Failed to read date {0}: {1}. Will try to use pandas.to_datetime()' \
+                        warnings.warn('Failed to read date {0}: {1}. Will try to use pandas.to_datetime()'
                                       .format(var, value), RuntimeWarning)
                         value = pd.to_datetime(value)
                 else:
@@ -164,6 +167,10 @@ def derive_cdm_data_type(ds,
                          profile_id='profile_id',
                          timeseries_id='timeseries_id',
                          trajectory_id='trajectory_id'):
+    """
+    Method use to determinate a dataset cdm_data_type based on the geospatial coordinates, profile,
+     timeseries and trajectories id. If one cf_role is identified, the associated global attributes are generated.
+    """
     if cdm_data_type is None:
         if lat in ds and lon in ds and \
                 ds[lat].ndim == 1 and ds[lon].ndim == 1 and \
@@ -186,17 +193,17 @@ def derive_cdm_data_type(ds,
     ds.attrs['cdm_data_type'] = cdm_data_type
 
     def _retrieve_cdm_variables(ds_review,
-                                var_id, type):
+                                var_id, cf_role):
         if var_id not in ds:
-            warnings('Missing a {0} variable'.format(type), RuntimeWarning)
+            warnings.warn('Missing a {0} variable'.format(cf_role), RuntimeWarning)
             return ds_review
 
-        ds[var_id].attrs['cf_role'] = type
-        cdm_attribute = 'cdm_{0}_variables'.format(type.replace('_id', ''))
+        ds[var_id].attrs['cf_role'] = cf_role
+        cdm_attribute = 'cdm_{0}_variables'.format(cf_role.replace('_id', ''))
         if ds[var_id].size == 1:
             ds.attrs[cdm_attribute] = ','.join([var for var in ds_review if ds[var].size == 1])
         else:
-            warnings('derive_cdm_data_type isn''t yet compatible with collection datasets', RuntimeWarning)
+            warnings.warn('derive_cdm_data_type isn''t yet compatible with collection datasets', RuntimeWarning)
         return ds_review
 
     # Trajectory
@@ -205,7 +212,7 @@ def derive_cdm_data_type(ds,
 
     # Time Series
     if 'Timeseries' in cdm_data_type:
-        ds = _retrieve_cdm_variables(ds, timeseries_id)
+        ds = _retrieve_cdm_variables(ds, timeseries_id, 'time_series_id')
 
     # Profile
     if 'Profile' in cdm_data_type:
@@ -214,6 +221,9 @@ def derive_cdm_data_type(ds,
 
 
 def define_index_dimensions(ds):
+    """
+    Method use to define xarray dataset dimensions based on cdm_data_type
+    """
     # If multiple dimensions exists but are really the same let's just keep index
     if 'index' in ds.dims and len(ds.dims) > 1:
         print('index')
@@ -233,8 +243,10 @@ def define_index_dimensions(ds):
 def add_variable_attributes(ds,
                             review_attributes=None,
                             overwrite=True):
-
-    def _get_scale(attributes):
+    """
+    Method use to retrieve common attributes from an variable values and attributes.
+    """
+    def _get_scale():
         scales = {
             'Flag': 'Quality.*Flag|Flag',
             'IPTS-48': 'IPTS-48',
@@ -260,7 +272,7 @@ def add_variable_attributes(ds,
     for var in ds:
         # Scale attribute
         if 'scale' not in ds[var].attrs or overwrite:
-            scale = _get_scale({key: ds[var].attrs.get(key, '') for key in review_attributes})
+            scale = _get_scale()
             if scale:
                 ds[var].attrs['scale'] = scale
 
@@ -271,6 +283,13 @@ def add_variable_attributes(ds,
 
 
 def generate_bodc_variables(ds):
+    """
+    Method to detect variables associated with some NERC NVS P01 terms listed within the bodc_generator.csv file.
+    P01 terms are detected based on identifying matching the following: standard_name or sdn_parameter_urn,
+    units, scale and instrument(variable or global). For each variables matching terms are listed within the
+    "matching_sdn_parameter_urn" attribute. Identified parameters are also copied to a new variable based on the
+    "Generate Variable" within the generate_bodc.csv
+    """
     def _is_matching(bodc, variable):
         if variable is None:
             variable = ''
@@ -279,8 +298,8 @@ def generate_bodc_variables(ds):
     def _join_attributes(original, add):
         return ','.join({original, add} - {'', None})
 
-    def _first_findall(pattern, input):
-        result = re.findall(pattern, input)
+    def _first_findall(pattern, input_str):
+        result = re.findall(pattern, input_str)
         return result[0] if result else None
 
     def _read_bodc(urn):
@@ -318,13 +337,13 @@ def generate_bodc_variables(ds):
         # Since CF is usually a broader term than P01 we'll copy the matching P01 term standard_name if not
         # available in the data and available in the bodc list
         if standard_name == '' and sdn_parameter_urn != '' and \
-                 sdn_parameter_urn_dict['code_full'] in bodc_var['SDN:P01::urn'].tolist():
+                sdn_parameter_urn_dict['code_full'] in bodc_var['SDN:P01::urn'].tolist():
             standard_name = bodc_var[matched_sdn_p01]['standard_name'].tolist()[0]
         matched_standard_name = bodc_var['standard_name'] == standard_name
 
         # Loop through each field that matching either P01 or standard_name
         matched_bodc = bodc_var[matched_standard_name | matched_sdn_p01]
-        for id, row in matched_bodc.iterrows():
+        for index, row in matched_bodc.iterrows():
             match_units = _is_matching(row['unit'], ds[var].attrs.get('units'))
             match_scale = _is_matching(row['scale'], ds[var].attrs.get('scale'))
             match_instrument = _is_matching(row['instrument'], ds[var].attrs.get('instrument')) or \
