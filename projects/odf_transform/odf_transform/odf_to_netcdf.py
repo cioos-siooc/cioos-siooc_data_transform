@@ -2,16 +2,14 @@ import glob
 import json
 import os
 import traceback
-import re
+
 import shutil
 import argparse
 
-import xarray as xr
 import odf_parser.odf_parser as odf
 import cioos_data_transform.utils.xarray_methods as xarray_methods
 from cioos_data_transform.utils.utils import fix_path
 from cioos_data_transform.utils.utils import get_geo_code, read_geojson
-import datetime as dt
 import pandas as pd
 
 
@@ -19,6 +17,7 @@ CONFIG_PATH = fix_path("./config.json")
 
 
 def read_config(config_file):
+    """ Function to load configuration json file and vocabulary file."""
     # read json file with information on dataset etc.
     with open(config_file) as fid:
         config = json.load(fid)
@@ -36,18 +35,11 @@ def write_ctd_ncfile(
     output_path,
     config=None,
     polygons={},
-    variable_header_section="PARAMETER_HEADER",
-    original_prefix_var_attribute="original_",
-    variable_name_attribute="CODE",
 ):
+    """ Method use to convert odf files to a CIOOS/ERDDAP compliant NetCDF format"""
     print(os.path.split(odf_path)[-1])
     # Parse the ODF file with the CIOOS python parsing tool
     metadata, raw_data = odf.read(odf_path)
-
-    # create unique ID for each profile
-    # TODO This was in the previous code, not sure if we want to handle it that way. Different groups may have
-    #  their own convention. A file Name variable is at least generated for now.
-    # profile_id = f"{metadata['cruiseNumber']}-{metadata['eventNumber']}-{metadata['eventQualifier']}"
 
     # Let's convert to an xarray dataset
     ds = raw_data.to_xarray()
@@ -69,19 +61,9 @@ def write_ctd_ncfile(
     elif config.get('cdm_data_type') == 'Trajectory':
         ds['trajectory_id'] = os.path.split(odf_path)[-1]
 
-    # Add Variable Attributes
-    # Convert metadata variable attributes list to dictionary
-    var_attributes = {
-        var[variable_name_attribute]: {
-            original_prefix_var_attribute + att: value
-            for att, value in var.items()
-        }
-        for var in metadata[variable_header_section]
-    }
-
     # Add Vocabulary attributes
     var_attributes = odf.define_odf_variable_attributes(
-        var_attributes,
+        metadata['variable_attributes'],
         organizations=config["organisationVocabulary"],
         vocabulary=config["vocabulary"],
     )
@@ -130,7 +112,8 @@ def write_ctd_ncfile(
     ds.to_netcdf(output_path)
 
 
-def convert_odf_files(config, odf_files_list=[], output_path=""):   
+def convert_odf_files(config, odf_files_list=[], output_path=""):
+    """Principal method to convert multiple ODF files to NetCDF"""
     polygons = read_geojson_file_list(config['geojsonFileList'])
 
     if not os.path.isdir(output_path):
@@ -163,14 +146,12 @@ def convert_odf_files(config, odf_files_list=[], output_path=""):
             print(traceback.print_exc())
 
 
-def read_geojson_file_list(fileList):
-    # read geojson files
+def read_geojson_file_list(file_list):
+    """ Read geojson files"""
     polygons_dict = {}
-    for fname in fileList:
+    for fname in file_list:
         polygons_dict.update(read_geojson(fname))
     return polygons_dict
-
-
 
 
 #
