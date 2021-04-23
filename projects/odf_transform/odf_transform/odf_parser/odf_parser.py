@@ -204,7 +204,7 @@ def define_odf_variable_attributes(metadata,
     flag_dict = {}
     for var in metadata.keys():
         # Retrieve ODF CODE and Associated number
-        odf_parameter_code = metadata[var][parameter_code_att]
+        odf_parameter_code = var
         # Separate the parameter_code from the number at the end of the variable
         parameter_code = odf_parameter_code.rsplit('_', 1)
 
