@@ -13,6 +13,8 @@ odf_dtypes = {'DOUB': 'float64', 'SING': 'float32', 'DOUBLE': 'float64',
 odf_time_null_value = (dt.datetime.strptime("17-NOV-1858 00:00:00.00", '%d-%b-%Y %H:%M:%S.%f') -
                        dt.datetime(1970, 1, 1)).total_seconds()
 
+flag_long_name_prefix = 'QualityFlag: '
+original_prefix_var_attribute = 'original_'
 
 def read(filename,
          encoding_format='Windows-1252'
@@ -163,26 +165,11 @@ def read(filename,
     return metadata, data_raw
 
 
-def define_odf_variable_attributes(metadata,
-                                   organizations=None,
-                                   vocabulary=None,
-                                   vocabulary_attribute_list=None,
-                                   odf_var_header_prefix='original_',
-                                   odf_variable_name="CODE",
-                                   flag_prefix='QualityFlag:'):
+def odf_flag_variables(metadata, flag_convention=None):
     """
-    This method is use to retrieve from an ODF file each variable code and corresponding related
-    vocabularies associated to the organization and variable name.
-    Flag columns are also reviewed and matched to the appropriate variable.
+    odf_flag_variables handle the different conventions used within the ODF files over the years and map them
+     to the CF standards.
     """
-    # Make sure organization is a list
-    if type(organizations) is str:
-        organizations = [organizations]
-    # Define vocabulary default list of variables to import as attributes
-    if vocabulary_attribute_list is None:
-        vocabulary_attribute_list = ['name', 'standard_name',
-                                     'sdn_parameter_urn', 'sdn_parameter_name']
-    parameter_code_att = odf_var_header_prefix + odf_variable_name
 
     def _find_previous_key(key_list, present_key):
         """
@@ -197,34 +184,99 @@ def define_odf_variable_attributes(metadata,
                 previous_key = i
         return previous_key
 
-    # Find matching vocabulary
+    # Loop through each variables and detect flag variables
+    for var, att in metadata.items():
+        # FLAG VARIABLES Detect if it is a flag column and find its related variable
+        flag_column = False
+        if var.startswith('QQQQ'):  # MLI FLAG should apply to previous variable
+            related_variable = _find_previous_key(metadata, var)
+            flag_column = True
+        elif var in ['QCFF', 'FFFF']:
+            flag_column = True
+        elif var.startswith('Q') and var[1:] in metadata.keys():
+            # BIO Format which Q+[PCODE] of the associated variable
+            related_variable = var[1:]
+            flag_column = True
 
-    flag_dict = {}
+        # Make sure that the flag column relates to a specific variable and try to make sure it's the right match.
+        odf_flag_name_prefix = ['Quality\s*Flag\:\s*', 'quality flag of ']
+        if flag_column and var not in ['QCFF', 'FFFF']:
+            if related_variable not in metadata:
+                warnings.warn('{0} flag is referring to {1} which is not available as variable'
+                              .format(var, related_variable), UserWarning)
+
+            # Drop odf flag name prefix
+            flag_name_with_no_prefix = re.sub(r"quality\sflag\:\s*|quality flag of ", '',
+                                              att['original_NAME'], 1,  re.IGNORECASE)
+            # Flag name do not match either variable name or code, give a warning.
+            if flag_name_with_no_prefix not in metadata[related_variable].get('original_NAME') and \
+                    flag_name_with_no_prefix not in metadata[related_variable].get('original_CODE'):
+                warnings.warn(
+                    '{0}[{4}] flag was matched to referring to {1} but odf variable name[{2}] or code[{3}] do not match'
+                        .format(var,
+                                related_variable,
+                                metadata[related_variable].get('original_NAME'),
+                                metadata[related_variable].get('original_CODE'),
+                                att['original_NAME']),
+                    UserWarning)
+
+        # Standardize Flag variable attributes, related variable and add convention attributes
+        if flag_column:
+            # Add long name attribute which is generally QUALITY_FLAG: [variable it affects]
+            if 'name' in metadata[related_variable]:
+                att['long_name'] = flag_long_name_prefix + metadata[related_variable]['name']
+            else:
+                att['long_name'] = flag_long_name_prefix + related_variable
+
+            # Add ancillary_variables attribute
+            if 'ancillary_variables' not in metadata[related_variable]:
+                metadata[related_variable]['ancillary_variables'] = var
+            elif 'ancillary_variables' in metadata[related_variable] and type(metadata[related_variable]) is str:
+                metadata[related_variable]['ancillary_variables'] += ',{0}'.format(var)
+            else:
+                warnings.warn('unknown ancillary flag format attribute', UserWarning)
+
+        # Add flag convention attributes if available within config file
+        if flag_convention:
+            if var in flag_convention:
+                att.update(flag_convention[var])
+            elif 'default' in flag_convention:
+                att.update(flag_convention['default'])
+
+        # TODO rename QQQQ_XX flag variables to Q[related_variables] so that ERDDAP can easily amalgamate them!
+
+    return metadata
+
+
+def get_vocabulary_attributes(metadata,
+                              organizations=None,
+                              vocabulary=None,
+                              vocabulary_attribute_list=None
+                              ):
+    """
+    This method is use to retrieve from an ODF file each variable code and corresponding related
+    vocabularies associated to the organization and variable name.
+    Flag columns are also reviewed and matched to the appropriate variable.
+    """
+    # Make sure organization is a list
+    if type(organizations) is str:
+        organizations = [organizations]
+    # Define vocabulary default list of variables to import as attributes
+    if vocabulary_attribute_list is None:
+        vocabulary_attribute_list = ['name', 'standard_name',
+                                     'sdn_parameter_urn', 'sdn_parameter_name']
+
+    # Find matching vocabulary
     for var, att in metadata.items():
         # Separate the parameter_code from the number at the end of the variable
         parameter_code = parse_odf_code_variable(var)
         att['parameter_code'] = parameter_code['name']
         att['parameter_code_number'] = parameter_code['index']
 
-        # FLAG VARIABLES Detect if it is a flag column associated with another column
-        flag_column = False
-        if parameter_code['name'].startswith('QQQQ'):  # MLI FLAG should apply to previous variable
-            flag_dict[var] = _find_previous_key(metadata, var)
-            flag_column = True
-        elif parameter_code['name'] in ['QCFF', 'FFFF']:
-            flag_column = True
-        elif parameter_code['name'].startswith('Q') and var[1:] in metadata.keys():
-            # BIO Format which Q+[PCODE] of the associated variable
-            flag_dict[var] = var[1:]
-            flag_column = True
-        # Make sure that the flag column relate to something
-        if flag_column and parameter_code['name'] not in ['QCFF', 'FFFF'] and flag_dict[var] not in metadata:
-            warnings.warn(var + ' flag is refering to' +
-                          flag_dict[var] + ' which is not available as variable',
-                          UserWarning)
+        flag_column = att.get('long_name', '').startswith(flag_long_name_prefix)
 
         # Loop through each organisations and find the matching parameter_code within the vocabulary
-        if vocabulary is not None and not flag_column and var not in ['SYTM_01']:
+        if vocabulary is not None and var not in ['SYTM_01']:
             # Find matching vocabularies and code and sort by given vocabularies
             matching_terms = vocabulary[vocabulary.index.isin(organizations, level=0) &
                                         vocabulary.index.isin([parameter_code['name']], level=1)]
@@ -273,40 +325,17 @@ def define_odf_variable_attributes(metadata,
                 warnings.warn('{0} not available in vocabularies: {1}'.format(parameter_code['name'], organizations),
                               UserWarning)
 
-    # Add Flag specific attributes
-    for flag_column, data_column in flag_dict.items():
-        if data_column in metadata:
-            # Add long name attribute which is generally QUALITY_FLAG: [variable it affects]
-            if 'name' in metadata[data_column]:
-                metadata[flag_column]['long_name'] = flag_prefix + metadata[data_column]['name']
-            else:
-                metadata[flag_column]['long_name'] = flag_prefix + data_column
-
-            # Add ancillary_variables attribute
-            if 'ancillary_variables' not in metadata[data_column]:
-                metadata[data_column]['ancillary_variables'] = flag_column
-            elif 'ancillary_variables' in metadata[data_column] and type(metadata[data_column]) is str:
-                metadata[data_column]['ancillary_variables'] += ',' + flag_column
-            else:
-                warnings.warn('unknown ancillary flag format attribute', UserWarning)
-        # TODO improve flag parameters default documentation
-        #  - add flag_values, flag_masks and flag_meanings to flag attributes
-        #       http://cfconventions.org/cf-conventions/cf-conventions.html#flags
-        #       we would need to know the convention used by the organization if there's any.
-        #       Otherwise, this should be implemented within the erddap dataset.
-
-    # Update P01 name based on parameter_code number
-    for var in metadata:
-        if 'sdn_parameter_urn' in att and \
-                type(att['sdn_parameter_urn']) is str:
-            att['sdn_parameter_urn'] = re.sub(r'\d\d$',
-                                                        '%02d' % att['parameter_code_number'],
-                                                        att['sdn_parameter_urn'])
-        if 'name' in att and \
-                type(att['name']) is str:
-            att['name'] = re.sub(r'\d\d$',
-                                           '%02d' % att['parameter_code_number'],
-                                           att['name'])
+            # Update sdn_parameter_urn term available to match trailing number with variable itself.
+            if 'sdn_parameter_urn' in att and \
+                    type(att['sdn_parameter_urn']) is str:
+                att['sdn_parameter_urn'] = re.sub(r'\d\d$',
+                                                  '%02d' % att['parameter_code_number'],
+                                                  att['sdn_parameter_urn'])
+            if 'name' in att and \
+                    type(att['name']) is str:
+                att['name'] = re.sub(r'\d\d$',
+                                     '%02d' % att['parameter_code_number'],
+                                     att['name'])
 
     # TODO Add Warning for missing information and attributes (maybe)
     #  Example: Standard Name, P01, P02

@@ -28,5 +28,11 @@
         "keywords_vocabulary": "GCMD Science Keywords",
         "Conventions": "CF-1.6,CF-1.7,ACDD1.1",
         "comment": ""
+    },
+    "flag_convention": {
+        "default": {
+            "flag_values": [0, 1, 2, 3, 4, 9],
+            "flag_meaning": "not_evaluated correct inconsistent_with_other_values doubtful erroneous modified missing"
+        }
     }
 }

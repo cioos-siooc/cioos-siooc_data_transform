@@ -49,6 +49,8 @@ def write_ctd_ncfile(
     ds.attrs.update(odf.global_attributes_from_header(metadata))  # From ODF header
 
     # Add New Variables
+    metadata['variable_attributes'] = odf.odf_flag_variables(metadata['variable_attributes'],
+                                                             config.get('flag_convention'))
     ds = odf.generate_variables_from_header(ds, metadata, config['cdm_data_type'])  # From ODF header
     # geographic_area
     ds["geographic_area"] = get_geo_code([ds["longitude"].mean(), ds["latitude"].mean()], polygons)
@@ -62,7 +64,7 @@ def write_ctd_ncfile(
         ds['trajectory_id'] = os.path.split(odf_path)[-1]
 
     # Add Vocabulary attributes
-    var_attributes = odf.define_odf_variable_attributes(
+    var_attributes = odf.get_vocabulary_attributes(
         metadata['variable_attributes'],
         organizations=config["organisationVocabulary"],
         vocabulary=config["vocabulary"],
