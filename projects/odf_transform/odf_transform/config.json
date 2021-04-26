@@ -6,10 +6,8 @@
         "./geojson_files/MLI_St-LawrenceBoxes.geojson",
         "./geojson_files/csasAtlPhys_climatePolygons.geojson"
     ],
-    "vocabularyFileList":[
-		"./vocabulary/all_vocabulary_list.json"
-	],
-    "organisationVocabulary": ["IML","BIO","GF3"],
+    "vocabularyFile": "./vocabulary/CIOOS_Vocabulary_List - Complete_Vocabulary.csv",
+    "organisationVocabulary": ["QO","GF3"],
     "cdm_data_type": "Profile",
     "global_attributes": {
         "title": "dataset title",
