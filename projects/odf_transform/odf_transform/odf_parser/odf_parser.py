@@ -202,50 +202,41 @@ def define_odf_variable_attributes(metadata,
     # Find matching vocabulary
 
     flag_dict = {}
-    for var in metadata.keys():
-        # Retrieve ODF CODE and Associated number
-        odf_parameter_code = var
+    for var, att in metadata.items():
         # Separate the parameter_code from the number at the end of the variable
-        parameter_code = odf_parameter_code.rsplit('_', 1)
-
-        # Retrieve trailing
-        # Parameter codes are generally associated with a trailing number the define the
-        # primary, secondary ,... data
-        metadata[var]['parameter_code'] = parameter_code[0]
-        if len(parameter_code) == 2 and parameter_code[1] != '':
-            metadata[var]['parameter_code_number'] = int(parameter_code[1])
-        else:
-            metadata[var]['parameter_code_number'] = 1
+        parameter_code = parse_odf_code_variable(var)
+        att['parameter_code'] = parameter_code['name']
+        att['parameter_code_number'] = parameter_code['index']
 
         # FLAG VARIABLES Detect if it is a flag column associated with another column
         flag_column = False
-        if parameter_code[0].startswith('QQQQ'):  # MLI FLAG should apply to previous variable
-            flag_dict[odf_parameter_code] = _find_previous_key(metadata, var)
+        if parameter_code['name'].startswith('QQQQ'):  # MLI FLAG should apply to previous variable
+            flag_dict[var] = _find_previous_key(metadata, var)
             flag_column = True
-        elif parameter_code[0] in ['QCFF', 'FFFF']:
+        elif parameter_code['name'] in ['QCFF', 'FFFF']:
             flag_column = True
-        elif parameter_code[0].startswith('Q') and odf_parameter_code[1:] in metadata.keys():
+        elif parameter_code['name'].startswith('Q') and var[1:] in metadata.keys():
             # BIO Format which Q+[PCODE] of the associated variable
-            flag_dict[odf_parameter_code] = odf_parameter_code[1:]
+            flag_dict[var] = var[1:]
             flag_column = True
         # Make sure that the flag column relate to something
-        if flag_column and parameter_code[0] not in ['QCFF', 'FFFF'] and flag_dict[odf_parameter_code] not in metadata:
-            warnings.warn(odf_parameter_code + ' flag is refering to' +
-                          flag_dict[odf_parameter_code] + ' which is not available as variable',
+        if flag_column and parameter_code['name'] not in ['QCFF', 'FFFF'] and flag_dict[var] not in metadata:
+            warnings.warn(var + ' flag is refering to' +
+                          flag_dict[var] + ' which is not available as variable',
                           UserWarning)
 
         # Loop through each organisations and find the matching parameter_code within the vocabulary
         if vocabulary is not None and not flag_column and var not in ['SYTM_01']:
             # Find matching vocabularies and code and sort by given vocabularies
             matching_terms = vocabulary[vocabulary.index.isin(organizations, level=0) &
-                                        vocabulary.index.isin([parameter_code[0]], level=1)]
+                                        vocabulary.index.isin([parameter_code['name']], level=1)]
 
             # Iterate over each matching vocabulary and review units
             if len(matching_terms) > 0:
                 # Sort by given vocabulary order
                 matching_terms = matching_terms.reindex(organizations, level=0)
 
-                var_units = metadata[var].get('original_UNITS', '')
+                var_units = att.get('original_UNITS', '')
                 if var_units:
                     var_units = standardize_odf_units(var_units)
 
@@ -256,32 +247,32 @@ def define_odf_variable_attributes(metadata,
                             re.search('none|dimensionless', row['expected_units'], re.IGNORECASE) is not None:
 
                         # Add attributes from vocabulary
-                        metadata[var].update(row.filter(vocabulary_attribute_list).dropna().to_dict())
+                        att.update(row.filter(vocabulary_attribute_list).dropna().to_dict())
 
                         # Standardize units
                         if not flag_column:
                             # Standardized units by selecting the very first possibility
                             # or not giving unit attribute if none
                             if type(row['expected_units']) is str:
-                                metadata[var]['units'] = row['expected_units'].split('|')[0]
+                                att['units'] = row['expected_units'].split('|')[0]
                             elif var_units not in ['none']:
-                                metadata[var]['units'] = var_units
+                                att['units'] = var_units
 
                             # No units available make sure it's the same in the data
                             if row.isna()['expected_units'] and \
                                     var_units not in [None, 'none']:
                                 warnings.warn('No units available within vocabularies {2} for term {0} [{1}]'
-                                              .format(var, metadata[var]['original_UNITS'],
+                                              .format(var, att['original_UNITS'],
                                                       matching_terms['expected_units'].to_dict(), UserWarning))
                         break
 
                     # Will make it here if don't find any matching untis
                     warnings.warn('No Matching unit found for {0} [{1}] in: {2}'
-                                  .format(var, metadata[var].get('original_UNITS'),
+                                  .format(var, att.get('original_UNITS'),
                                           matching_terms['expected_units'].to_dict()), UserWarning)
             else:
                 # If no matching vocabulary exist let it know
-                warnings.warn('{0} not available in vocabularies: {1}'.format(parameter_code[0], organizations),
+                warnings.warn('{0} not available in vocabularies: {1}'.format(parameter_code['name'], organizations),
                               UserWarning)
 
     # Add Flag specific attributes
@@ -308,16 +299,16 @@ def define_odf_variable_attributes(metadata,
 
     # Update P01 name based on parameter_code number
     for var in metadata:
-        if 'sdn_parameter_urn' in metadata[var] and \
-                type(metadata[var]['sdn_parameter_urn']) is str:
-            metadata[var]['sdn_parameter_urn'] = re.sub(r'\d\d$',
-                                                        '%02d' % metadata[var]['parameter_code_number'],
-                                                        metadata[var]['sdn_parameter_urn'])
-        if 'name' in metadata[var] and \
-                type(metadata[var]['name']) is str:
-            metadata[var]['name'] = re.sub(r'\d\d$',
-                                           '%02d' % metadata[var]['parameter_code_number'],
-                                           metadata[var]['name'])
+        if 'sdn_parameter_urn' in att and \
+                type(att['sdn_parameter_urn']) is str:
+            att['sdn_parameter_urn'] = re.sub(r'\d\d$',
+                                                        '%02d' % att['parameter_code_number'],
+                                                        att['sdn_parameter_urn'])
+        if 'name' in att and \
+                type(att['name']) is str:
+            att['name'] = re.sub(r'\d\d$',
+                                           '%02d' % att['parameter_code_number'],
+                                           att['name'])
 
     # TODO Add Warning for missing information and attributes (maybe)
     #  Example: Standard Name, P01, P02
