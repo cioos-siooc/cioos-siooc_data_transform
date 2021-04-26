@@ -47,18 +47,16 @@ def read(filename,
     variable_type = 'TYPE'
     null_value = 'NULL_VALUE'
     section_items_minimum_whitespaces = 2
-    original_prefix_var_attribute = 'original_'
 
     def _convert_to_number(value):
         """ Simple method to try to convert values to float or integer."""
-        try:  # Try float first
-            output_value = float(value)
+        try:
+            floated = float(value)
+            if floated.is_integer():
+                return int(floated)
+            return floated
         except ValueError:
-            try:  # Then try integer
-                output_value = int(value)
-            except ValueError:  # If nothing works just keep it as is
-                output_value = re.sub(r'^\s*|\s*$', '', value)
-        return output_value
+            return value
 
     metadata = {}  # Start with an empty dictionary
     with open(filename, encoding=encoding_format) as f:
