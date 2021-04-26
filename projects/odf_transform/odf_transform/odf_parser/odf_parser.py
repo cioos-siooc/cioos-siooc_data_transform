@@ -50,12 +50,12 @@ def read(filename,
     original_prefix_var_attribute = 'original_'
 
     def _convert_to_number(value):
-        """ Simple method to try to convert values to integer or float."""
-        try:  # Try Integer first
-            output_value = int(value)
+        """ Simple method to try to convert values to float or integer."""
+        try:  # Try float first
+            output_value = float(value)
         except ValueError:
-            try:  # Then try float
-                output_value = float(value)
+            try:  # Then try integer
+                output_value = int(value)
             except ValueError:  # If nothing works just keep it as is
                 output_value = re.sub(r'^\s*|\s*$', '', value)
         return output_value
