@@ -1,3 +1,8 @@
+"""
+odf_parser is a module that regroup a different set of tools used to parse the ODF format which is use, maintain
+and developped by the DFO offices BIO and MLI.
+"""
+
 import re
 import datetime as dt
 import warnings
@@ -15,6 +20,7 @@ odf_time_null_value = (dt.datetime.strptime("17-NOV-1858 00:00:00.00", '%d-%b-%Y
 
 flag_long_name_prefix = 'QualityFlag: '
 original_prefix_var_attribute = 'original_'
+
 
 def read(filename,
          encoding_format='Windows-1252'
@@ -51,7 +57,7 @@ def read(filename,
     section_items_minimum_whitespaces = 2
 
     def _convert_to_number(value):
-        """ Simple method to try to convert values to float or integer."""
+        """ Simple method to try to convert input (string, literals) to float or integer."""
         try:
             floated = float(value)
             if floated.is_integer():
@@ -186,12 +192,15 @@ def odf_flag_variables(metadata, flag_convention=None):
 
     # Loop through each variables and detect flag variables
     for var, att in metadata.items():
+        # Retrieve information from variable name
+        odf_var_name = parse_odf_code_variable(var)
         # FLAG VARIABLES Detect if it is a flag column and find its related variable
         flag_column = False
-        if var.startswith('QQQQ'):  # MLI FLAG should apply to previous variable
+        related_variable = None
+        if odf_var_name['name'] == 'QQQQ':  # MLI FLAG should apply to previous variable
             related_variable = _find_previous_key(metadata, var)
             flag_column = True
-        elif var in ['QCFF', 'FFFF']:
+        elif odf_var_name['name'] in ['QCFF', 'FFFF']:
             flag_column = True
         elif var.startswith('Q') and var[1:] in metadata.keys():
             # BIO Format which Q+[PCODE] of the associated variable
@@ -199,17 +208,17 @@ def odf_flag_variables(metadata, flag_convention=None):
             flag_column = True
 
         # Make sure that the flag column relates to a specific variable and try to make sure it's the right match.
-        odf_flag_name_prefix = ['Quality\s*Flag\:\s*', 'quality flag of ']
         if flag_column and var not in ['QCFF', 'FFFF']:
-            if related_variable not in metadata:
+            if related_variable and related_variable not in metadata:
                 warnings.warn('{0} flag is referring to {1} which is not available as variable'
                               .format(var, related_variable), UserWarning)
 
             # Drop odf flag name prefix
-            flag_name_with_no_prefix = re.sub(r"quality\sflag\:\s*|quality flag of ", '',
-                                              att['original_NAME'], 1,  re.IGNORECASE)
+            flag_name_with_no_prefix = re.sub(r"quality\sflag.*:\s*|quality flag of ", '',
+                                              att['original_NAME'], 1, re.IGNORECASE)
             # Flag name do not match either variable name or code, give a warning.
-            if flag_name_with_no_prefix not in metadata[related_variable].get('original_NAME') and \
+            if related_variable and \
+                    flag_name_with_no_prefix not in metadata[related_variable].get('original_NAME') and \
                     flag_name_with_no_prefix not in metadata[related_variable].get('original_CODE'):
                 warnings.warn(
                     '{0}[{4}] flag was matched to referring to {1} but odf variable name[{2}] or code[{3}] do not match'
@@ -221,7 +230,7 @@ def odf_flag_variables(metadata, flag_convention=None):
                     UserWarning)
 
         # Standardize Flag variable attributes, related variable and add convention attributes
-        if flag_column:
+        if related_variable:
             # Add long name attribute which is generally QUALITY_FLAG: [variable it affects]
             if 'name' in metadata[related_variable]:
                 att['long_name'] = flag_long_name_prefix + metadata[related_variable]['name']
@@ -263,8 +272,8 @@ def get_vocabulary_attributes(metadata,
         organizations = [organizations]
     # Define vocabulary default list of variables to import as attributes
     if vocabulary_attribute_list is None:
-        vocabulary_attribute_list = ['name', 'standard_name',
-                                     'sdn_parameter_urn', 'sdn_parameter_name']
+        vocabulary_attribute_list = ('name', 'standard_name',
+                                     'sdn_parameter_urn', 'sdn_parameter_name')
 
     # Find matching vocabulary
     for var, att in metadata.items():
@@ -273,7 +282,8 @@ def get_vocabulary_attributes(metadata,
         att['parameter_code'] = parameter_code['name']
         att['parameter_code_number'] = parameter_code['index']
 
-        flag_column = att.get('long_name', '').startswith(flag_long_name_prefix)
+        flag_column = att.get('long_name', '').startswith(flag_long_name_prefix) or \
+                      parameter_code['name'] in ['QCFF', 'FFFF']
 
         # Loop through each organisations and find the matching parameter_code within the vocabulary
         if vocabulary is not None and var not in ['SYTM_01']:
@@ -320,7 +330,7 @@ def get_vocabulary_attributes(metadata,
                     warnings.warn('No Matching unit found for {0} [{1}] in: {2}'
                                   .format(var, att.get('original_UNITS'),
                                           matching_terms['expected_units'].to_dict()), UserWarning)
-            else:
+            elif not flag_column:
                 # If no matching vocabulary exist let it know
                 warnings.warn('{0} not available in vocabularies: {1}'.format(parameter_code['name'], organizations),
                               UserWarning)
@@ -383,7 +393,7 @@ def global_attributes_from_header(odf_header):
     global_attributes = {"project": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
                          "institution": odf_header["CRUISE_HEADER"]["ORGANIZATION"],
                          "history": json.dumps(odf_header["HISTORY_HEADER"], ensure_ascii=False, indent=False),
-                         "comment": odf_header["EVENT_HEADER"]["EVENT_COMMENTS"],
+                         "comment": odf_header["EVENT_HEADER"].get("EVENT_COMMENTS", ''),
                          "header": json.dumps(odf_header, ensure_ascii=False, indent=False)}
     return global_attributes
 
@@ -401,7 +411,7 @@ def generate_variables_from_header(ds,
     ds['file_id'] = odf_header['ODF_HEADER']['FILE_SPECIFICATION']
     ds["institution"] = odf_header["CRUISE_HEADER"]["ORGANIZATION"]
     ds["cruise_name"] = odf_header["CRUISE_HEADER"]["CRUISE_NAME"]
-    ds["cruise_id"] = odf_header["CRUISE_HEADER"]["CRUISE_NUMBER"]
+    ds["cruise_id"] = odf_header["CRUISE_HEADER"].get("CRUISE_NUMBER", '')
     ds["chief_scientist"] = odf_header["CRUISE_HEADER"]["CHIEF_SCIENTIST"]
     ds['platform'] = odf_header["CRUISE_HEADER"]["PLATFORM"]
 
@@ -477,9 +487,10 @@ def generate_variables_from_header(ds,
     elif "PRES_01" in ds:
         ds.coords['depth'] = (ds['PRES_01'].dims, -gsw.z_from_p(ds['PRES_01'], ds['latitude']))
         ds['depth'].attrs[original_var_field] = "-gsw.z_from_p(PRES_01,latitude)"
-    ds['depth'].attrs.update({'units': 'm',
-                              'standard_name': 'depth',
-                              'positive': 'down'})
+    if 'depth' in ds:
+        ds['depth'].attrs.update({'units': 'm',
+                                  'standard_name': 'depth',
+                                  'positive': 'down'})
 
     # Reorder variables
     variable_list = [var for var in ds.keys() if var not in initial_variable_order]
