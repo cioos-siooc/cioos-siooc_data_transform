@@ -267,9 +267,6 @@ def get_vocabulary_attributes(metadata,
     vocabularies associated to the organization and variable name.
     Flag columns are also reviewed and matched to the appropriate variable.
     """
-    # Make sure organization is a list
-    if type(organizations) is str:
-        organizations = [organizations]
     # Define vocabulary default list of variables to import as attributes
     if vocabulary_attribute_list is None:
         vocabulary_attribute_list = ('name', 'standard_name',
