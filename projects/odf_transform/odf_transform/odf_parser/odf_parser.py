@@ -325,7 +325,9 @@ def get_vocabulary_attributes(metadata,
                                           matching_terms['expected_units'].to_dict()), UserWarning)
             elif not flag_column:
                 # If no matching vocabulary exist let it know
-                warnings.warn('{0} not available in vocabularies: {1}'.format(parameter_code['name'], organizations),
+                warnings.warn('{0}[{1}] not available in vocabularies: {2}'.format(parameter_code['name'],
+                                                                                   att['original_UNITS'],
+                                                                                   organizations),
                               UserWarning)
 
             # Update sdn_parameter_urn term available to match trailing number with variable itself.
