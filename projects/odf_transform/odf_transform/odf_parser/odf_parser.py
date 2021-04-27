@@ -207,23 +207,27 @@ def odf_flag_variables(metadata, flag_convention=None):
 
         # Make sure that the flag column relates to a specific variable and try to make sure it's the right match.
         # Try to confirm by matching either name or code
-        if is_flag_column:
-            if not is_general_flag and related_variable:
+        if not is_flag_column:
+            continue
+        elif is_flag_column:
+            # If flag is specific to a variable, try to confirm if the odf name of the related variable match the
+            # flag name
+            if not is_general_flag:
                 # Drop odf flag name prefix
-                flag_name_with_no_prefix = re.sub(r"quality\sflag.*:\s*|quality flag of ", '',
-                                                  att['original_NAME'], 1, re.IGNORECASE)
+                related_variable_name = re.sub(r"quality\sflag.*:\s*|quality flag of ", '',
+                                               att['original_NAME'], 1, re.IGNORECASE)
                 # Flag name do not match either variable name or code, give a warning.
                 if related_variable and \
-                        flag_name_with_no_prefix not in metadata[related_variable].get('original_NAME') and \
-                        flag_name_with_no_prefix not in metadata[related_variable].get('original_CODE'):
+                        related_variable_name not in metadata[related_variable].get('original_NAME') and \
+                        related_variable_name not in metadata[related_variable].get('original_CODE'):
                     warnings.warn(
-                        '{0}[{4}] flag was matched to referring to {1} but odf variable name[{2}] or code[{3}] do not match'
+                        '{0}[{1}] flag was matched to the variable {2} but ODF attributes {3} do not match'
                             .format(var,
+                                    att['original_NAME'],
                                     related_variable,
-                                    metadata[related_variable].get('original_NAME'),
-                                    metadata[related_variable].get('original_CODE'),
-                                    att['original_NAME']),
-                        UserWarning)
+                                    {key: metadata[related_variable].get(key)
+                                     for key in ['original_NAME', 'original_CODE']}),
+                                    UserWarning)
 
             # Standardize Flag variable attributes, related variable and add convention attributes
             if related_variable:
