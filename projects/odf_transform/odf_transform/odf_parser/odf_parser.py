@@ -177,80 +177,76 @@ def odf_flag_variables(metadata, flag_convention=None):
      to the CF standards.
     """
 
-    def _find_previous_key(key_list, present_key):
-        """
-        For some ODF format, a flag column is related to the variable prior to it. This tool is use to retrieve
-        the name of this variable situated prior to a given column.
-        """
-        previous_key = ''
-        for i in key_list.keys():
-            if i == present_key:
-                break
-            else:
-                previous_key = i
-        return previous_key
-
     # Loop through each variables and detect flag variables
+    previous_key = None
     for var, att in metadata.items():
         # Retrieve information from variable name
         odf_var_name = parse_odf_code_variable(var)
-        # FLAG VARIABLES Detect if it is a flag column and find its related variable
-        flag_column = False
         related_variable = None
-        if odf_var_name['name'] == 'QQQQ':  # MLI FLAG should apply to previous variable
-            related_variable = _find_previous_key(metadata, var)
-            flag_column = True
-        elif odf_var_name['name'] in ['QCFF', 'FFFF']:
-            flag_column = True
-        elif var.startswith('Q') and var[1:] in metadata.keys():
-            # BIO Format which Q+[PCODE] of the associated variable
-            related_variable = var[1:]
-            flag_column = True
 
-        # Make sure that the flag column relates to a specific variable and try to make sure it's the right match.
-        if flag_column and var not in ['QCFF', 'FFFF']:
-            if related_variable and related_variable not in metadata:
+        # FLAG VARIABLES Detect if it is a flag column
+        is_q_flag = var.startswith("Q") and var[:1] in metadata.keys()
+        is_qqqq_flag = odf_var_name['name'] == 'QQQQ'
+        is_general_flag = odf_var_name['name'] in ['QCFF', 'FFFF']
+        is_flag_column = is_q_flag or is_qqqq_flag or is_general_flag
+
+        # Find related variable
+        if is_qqqq_flag:
+            # MLI FLAG QQQQ should apply to previous variable
+            related_variable = previous_key
+        elif is_q_flag:
+            # Q  Format is usually Q+[PCODE] of the associated variable
+            related_variable = var[1:]
+            # Make sure that related_variable do exist!
+            if related_variable not in metadata:
                 warnings.warn('{0} flag is referring to {1} which is not available as variable'
                               .format(var, related_variable), UserWarning)
 
-            # Drop odf flag name prefix
-            flag_name_with_no_prefix = re.sub(r"quality\sflag.*:\s*|quality flag of ", '',
-                                              att['original_NAME'], 1, re.IGNORECASE)
-            # Flag name do not match either variable name or code, give a warning.
-            if related_variable and \
-                    flag_name_with_no_prefix not in metadata[related_variable].get('original_NAME') and \
-                    flag_name_with_no_prefix not in metadata[related_variable].get('original_CODE'):
-                warnings.warn(
-                    '{0}[{4}] flag was matched to referring to {1} but odf variable name[{2}] or code[{3}] do not match'
-                        .format(var,
-                                related_variable,
-                                metadata[related_variable].get('original_NAME'),
-                                metadata[related_variable].get('original_CODE'),
-                                att['original_NAME']),
-                    UserWarning)
+        # Set previous key for the next run
+        previous_key = var
 
-        # Standardize Flag variable attributes, related variable and add convention attributes
-        if related_variable:
-            # Add long name attribute which is generally QUALITY_FLAG: [variable it affects]
-            if 'name' in metadata[related_variable]:
-                att['long_name'] = flag_long_name_prefix + metadata[related_variable]['name']
-            else:
-                att['long_name'] = flag_long_name_prefix + related_variable
+        # Make sure that the flag column relates to a specific variable and try to make sure it's the right match.
+        # Try to confirm by matching either name or code
+        if is_flag_column:
+            if not is_general_flag and related_variable:
+                # Drop odf flag name prefix
+                flag_name_with_no_prefix = re.sub(r"quality\sflag.*:\s*|quality flag of ", '',
+                                                  att['original_NAME'], 1, re.IGNORECASE)
+                # Flag name do not match either variable name or code, give a warning.
+                if related_variable and \
+                        flag_name_with_no_prefix not in metadata[related_variable].get('original_NAME') and \
+                        flag_name_with_no_prefix not in metadata[related_variable].get('original_CODE'):
+                    warnings.warn(
+                        '{0}[{4}] flag was matched to referring to {1} but odf variable name[{2}] or code[{3}] do not match'
+                            .format(var,
+                                    related_variable,
+                                    metadata[related_variable].get('original_NAME'),
+                                    metadata[related_variable].get('original_CODE'),
+                                    att['original_NAME']),
+                        UserWarning)
 
-            # Add ancillary_variables attribute
-            if 'ancillary_variables' not in metadata[related_variable]:
-                metadata[related_variable]['ancillary_variables'] = var
-            elif 'ancillary_variables' in metadata[related_variable] and type(metadata[related_variable]) is str:
-                metadata[related_variable]['ancillary_variables'] += ',{0}'.format(var)
-            else:
-                warnings.warn('unknown ancillary flag format attribute', UserWarning)
+            # Standardize Flag variable attributes, related variable and add convention attributes
+            if related_variable:
+                # Add long name attribute which is generally QUALITY_FLAG: [variable it affects]
+                if 'name' in metadata[related_variable]:
+                    att['long_name'] = flag_long_name_prefix + metadata[related_variable]['name']
+                else:
+                    att['long_name'] = flag_long_name_prefix + related_variable
 
-        # Add flag convention attributes if available within config file
-        if flag_convention:
-            if var in flag_convention:
-                att.update(flag_convention[var])
-            elif 'default' in flag_convention:
-                att.update(flag_convention['default'])
+                # Add ancillary_variables attribute
+                if 'ancillary_variables' not in metadata[related_variable]:
+                    metadata[related_variable]['ancillary_variables'] = var
+                elif 'ancillary_variables' in metadata[related_variable]:
+                    metadata[related_variable]['ancillary_variables'] += ',{0}'.format(var)
+                else:
+                    warnings.warn('unknown ancillary flag format attribute', UserWarning)
+
+            # Add flag convention attributes if available within config file
+            if flag_convention:
+                if var in flag_convention:
+                    att.update(flag_convention[var])
+                elif 'default' in flag_convention:
+                    att.update(flag_convention['default'])
 
         # TODO rename QQQQ_XX flag variables to Q[related_variables] so that ERDDAP can easily amalgamate them!
 
