@@ -403,7 +403,6 @@ def generate_variables_from_header(ds,
     initial_variable_order = list(ds.keys())
 
     # General Attributes
-    ds['file_id'] = odf_header['ODF_HEADER']['FILE_SPECIFICATION']
     ds["institution"] = odf_header["CRUISE_HEADER"]["ORGANIZATION"]
     ds["cruise_name"] = odf_header["CRUISE_HEADER"]["CRUISE_NAME"]
     ds["cruise_id"] = odf_header["CRUISE_HEADER"].get("CRUISE_NUMBER", '')
