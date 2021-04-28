@@ -22,10 +22,6 @@ odf_dtypes = {
 }
 
 # Commonly date place holder used within the ODF files
-odf_time_null_value = (
-        dt.datetime.strptime("17-NOV-1858 00:00:00.00", '%d-%b-%Y %H:%M:%S.%f') - dt.datetime(1970, 1, 1)
-).total_seconds()
-
 flag_long_name_prefix = 'Quality_Flag: '
 original_prefix_var_attribute = 'original_'
 
@@ -405,6 +401,14 @@ def global_attributes_from_header(odf_header):
     return global_attributes
 
 
+def convert_odf_time(time_string):
+    """Simple tool to convert ODF timestamps to a datetime object"""
+    if time_string == "17-NOV-1858 00:00:00.00":
+        return pd.NaT
+    else:
+        return pd.to_datetime(time_string, utc=True)
+
+
 def generate_variables_from_header(ds,
                                    odf_header,
                                    cdm_data_type,
@@ -432,15 +436,14 @@ def generate_variables_from_header(ds,
             ds.coords["time"] = ds['SYTM_01']
             ds["time"].attrs[original_var_field] = 'SYTM_01'
     else:
-        ds.coords["time"] = pd.to_datetime(odf_header["EVENT_HEADER"]["START_DATE_TIME"])
+        ds.coords["time"] = convert_odf_time(odf_header["EVENT_HEADER"]["START_DATE_TIME"])
         ds["time"].attrs[original_var_field] = "EVENT_HEADER:START_DATE_TIME"
-    ds["start_time"] = pd.to_datetime(odf_header["EVENT_HEADER"]["START_DATE_TIME"])
-    ds["end_time"] = pd.to_datetime(odf_header["EVENT_HEADER"]["END_DATE_TIME"])
 
-    ds["start_time"].attrs.update({original_var_field: "EVENT_HEADER:START_DATE_TIME",
-                                   '_FillValue': odf_time_null_value})
-    ds["end_time"].attrs.update({original_var_field: "EVENT_HEADER:END_DATE_TIME",
-                                 '_FillValue': odf_time_null_value})
+    ds["start_time"] = convert_odf_time(odf_header["EVENT_HEADER"]["START_DATE_TIME"])
+    ds["start_time"].attrs[original_var_field] = "EVENT_HEADER:START_DATE_TIME"
+
+    ds["end_time"] = convert_odf_time(odf_header["EVENT_HEADER"]["END_DATE_TIME"])
+    ds["end_time"].attrs[original_var_field] = "EVENT_HEADER:END_DATE_TIME"
 
     # Coordinate variables
     if "LATD_01" in ds.keys():
