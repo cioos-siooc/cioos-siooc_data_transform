@@ -11,12 +11,20 @@ import json
 import gsw
 
 # Dictionary with the mapping of the odf types to python types
-odf_dtypes = {'DOUB': 'float64', 'SING': 'float32', 'DOUBLE': 'float64',
-              'SYTM': str, 'INTE': 'int32', 'CHAR': str, 'QQQQ': 'int32'}
+odf_dtypes = {
+    'DOUB': 'float64',
+    'SING': 'float32',
+    'DOUBLE': 'float64',
+    'SYTM': str,
+    'INTE': 'int32',
+    'CHAR': str,
+    'QQQQ': 'int32'
+}
 
 # Commonly date place holder used within the ODF files
-odf_time_null_value = (dt.datetime.strptime("17-NOV-1858 00:00:00.00", '%d-%b-%Y %H:%M:%S.%f') -
-                       dt.datetime(1970, 1, 1)).total_seconds()
+odf_time_null_value = (
+        dt.datetime.strptime("17-NOV-1858 00:00:00.00", '%d-%b-%Y %H:%M:%S.%f') - dt.datetime(1970, 1, 1)
+).total_seconds()
 
 flag_long_name_prefix = 'Quality_Flag: '
 original_prefix_var_attribute = 'original_'
@@ -48,12 +56,12 @@ def read(filename,
      start of the data.
     :return:
     """
-    header_end = '-- DATA --'
-    data_delimiter = r'\s+'
+    header_end = "-- DATA --"
+    data_delimiter = r"\s+"
     quotechar = '\''
-    parameter_section = 'PARAMETER_HEADER'
-    variable_type = 'TYPE'
-    null_value = 'NULL_VALUE'
+    parameter_section = "PARAMETER_HEADER"
+    variable_type = "TYPE"
+    null_value = "NULL_VALUE"
     section_items_minimum_whitespaces = 2
 
     def _convert_to_number(value):
@@ -68,7 +76,7 @@ def read(filename,
 
     metadata = {}  # Start with an empty dictionary
     with open(filename, encoding=encoding_format) as f:
-        line = ''
+        line = ""
         original_header = []
         # Read header one line at the time
         while header_end not in line:
@@ -387,11 +395,13 @@ def global_attributes_from_header(odf_header):
     """
     Method use to define the standard global attributes from an ODF Header parsed by the read function.
     """
-    global_attributes = {"project": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
-                         "institution": odf_header["CRUISE_HEADER"]["ORGANIZATION"],
-                         "history": json.dumps(odf_header["HISTORY_HEADER"], ensure_ascii=False, indent=False),
-                         "comment": odf_header["EVENT_HEADER"].get("EVENT_COMMENTS", ''),
-                         "header": json.dumps(odf_header, ensure_ascii=False, indent=False)}
+    global_attributes = {
+        "project": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
+        "institution": odf_header["CRUISE_HEADER"]["ORGANIZATION"],
+        "history": json.dumps(odf_header["HISTORY_HEADER"], ensure_ascii=False, indent=False),
+        "comment": odf_header["EVENT_HEADER"].get("EVENT_COMMENTS", ''),
+        "header": json.dumps(odf_header, ensure_ascii=False, indent=False)
+    }
     return global_attributes
 
 
