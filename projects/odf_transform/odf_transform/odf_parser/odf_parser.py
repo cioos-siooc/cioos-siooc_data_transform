@@ -557,7 +557,7 @@ def generate_variables_from_header(
 
     # Longitude
     initial_longitude = odf_header["EVENT_HEADER"].get("INITIAL_LONGITUDE")
-    initial_longitude = None if initial_longitude == -99 else initial_longitude
+    initial_longitude = None if initial_longitude == -999 else initial_longitude
     if cdm_data_type in ["Profile", "TimeSeries"]:
         if initial_longitude:
             ds.coords["longitude"] = initial_longitude
