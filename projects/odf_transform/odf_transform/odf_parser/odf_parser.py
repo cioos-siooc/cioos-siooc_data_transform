@@ -73,7 +73,7 @@ def read(filename, encoding_format="Windows-1252"):
         line = ""
         original_header = []
         # Read header one line at the time
-        while header_end not in line:
+        while "-- DATA --" not in line:
             line = f.readline()
             # Drop some characters that aren't useful
             line = re.sub(r"\n|,$", "", line)
@@ -81,15 +81,8 @@ def read(filename, encoding_format="Windows-1252"):
             # Collect each original odf header lines
             original_header.append(line)
 
-            # Detect the end of the header
-            if header_end in line:
-                # May also be stop by the while condition
-                break
-
             # Sections
-            if re.match(
-                r"^\s{0," + str(section_items_minimum_whitespaces - 1) + r"}\w", line
-            ):
+            if re.match(r"^\s?\w", line):
                 section = line.replace("\n", "").replace(",", "")
                 section = re.sub(
                     r"^\s*|\s$", "", section
@@ -100,9 +93,7 @@ def read(filename, encoding_format="Windows-1252"):
                     metadata[section].append({})
 
             # Dictionary type lines (key=value)
-            elif re.match(
-                r"^\s{" + str(section_items_minimum_whitespaces) + r"}\s*\w", line
-            ):  # Something=This
+            elif re.match(r"^\s{2}\s*\w", line):  # Something=This
                 dict_line = re.split(
                     r"=", line, maxsplit=1
                 )  # Make sure that only the first = is use to split
@@ -139,7 +130,7 @@ def read(filename, encoding_format="Windows-1252"):
         # Define first the variable names and the type.
         variable_attributes = {}
         # Variable names and related attributes
-        for att in metadata[parameter_section]:
+        for att in metadata["PARAMETER_HEADER"]:
             if "CODE" in att:
                 var_name = parse_odf_code_variable(att["CODE"])
             elif (
@@ -166,26 +157,26 @@ def read(filename, encoding_format="Windows-1252"):
         # Read Data with Pandas
         data_raw = pd.read_csv(
             f,
-            delimiter=data_delimiter,
-            quotechar=quotechar,
+            delimiter= r"\s+",
+            quotechar="'",
             header=None,
             names=variable_attributes.keys(),
             dtype={
-                key: odf_dtypes[att.get(variable_type)]
+                key: odf_dtypes[att.get("TYPE")]
                 for key, att in variable_attributes.items()
             },
             na_values={
-                key: att.get(null_value) for key, att in variable_attributes.items()
+                key: att.get("NULL_VALUE") for key, att in variable_attributes.items()
             },
             parse_dates=time_columns,
             encoding=encoding_format,
         )
 
     # Make sure that there's the same amount of variables read versus what is suggested in the header
-    if len(data_raw.columns) != len(metadata[parameter_section]):
+    if len(data_raw.columns) != len(metadata["PARAMETER_HEADER"]):
         raise RuntimeError(
             "{0} variables were detected in the data versus {1} in the header.".format(
-                len(data_raw.columns), len(metadata[parameter_section])
+                len(data_raw.columns), len(metadata["PARAMETER_HEADER"])
             )
         )
 
