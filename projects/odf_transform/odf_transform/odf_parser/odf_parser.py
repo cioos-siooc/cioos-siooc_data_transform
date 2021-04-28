@@ -18,7 +18,7 @@ odf_dtypes = {'DOUB': 'float64', 'SING': 'float32', 'DOUBLE': 'float64',
 odf_time_null_value = (dt.datetime.strptime("17-NOV-1858 00:00:00.00", '%d-%b-%Y %H:%M:%S.%f') -
                        dt.datetime(1970, 1, 1)).total_seconds()
 
-flag_long_name_prefix = 'QualityFlag: '
+flag_long_name_prefix = 'Quality_Flag: '
 original_prefix_var_attribute = 'original_'
 
 
@@ -188,69 +188,69 @@ def odf_flag_variables(metadata, flag_convention=None):
         is_q_flag = var.startswith("Q") and var[:1] in metadata.keys()
         is_qqqq_flag = odf_var_name['name'] == 'QQQQ'
         is_general_flag = odf_var_name['name'] in ['QCFF', 'FFFF']
+
         is_flag_column = is_q_flag or is_qqqq_flag or is_general_flag
 
         # Find related variable
         if is_qqqq_flag:
             # MLI FLAG QQQQ should apply to previous variable
             related_variable = previous_key
-        elif is_q_flag:
+        if is_q_flag:
             # Q  Format is usually Q+[PCODE] of the associated variable
             related_variable = var[1:]
-            # Make sure that related_variable do exist!
-            if related_variable not in metadata:
-                warnings.warn('{0} flag is referring to {1} which is not available as variable'
-                              .format(var, related_variable), UserWarning)
 
-        # Set previous key for the next run
+        # Set previous key for the next iteration
         previous_key = var
 
-        # Make sure that the flag column relates to a specific variable and try to make sure it's the right match.
-        # Try to confirm by matching either name or code
+        # If the variable isn't a flag variable, go to the next iteration
         if not is_flag_column:
             continue
-        elif is_flag_column:
-            # If flag is specific to a variable, try to confirm if the odf name of the related variable match the
-            # flag name
-            if not is_general_flag:
-                # Drop odf flag name prefix
-                related_variable_name = re.sub(r"quality\sflag.*:\s*|quality flag of ", '',
-                                               att['original_NAME'], 1, re.IGNORECASE)
-                # Flag name do not match either variable name or code, give a warning.
-                if related_variable and \
-                        related_variable_name not in metadata[related_variable].get('original_NAME') and \
-                        related_variable_name not in metadata[related_variable].get('original_CODE'):
-                    warnings.warn(
-                        '{0}[{1}] flag was matched to the variable {2} but ODF attributes {3} do not match'
-                            .format(var,
-                                    att['original_NAME'],
-                                    related_variable,
-                                    {key: metadata[related_variable].get(key)
-                                     for key in ['original_NAME', 'original_CODE']}),
-                                    UserWarning)
 
-            # Standardize Flag variable attributes, related variable and add convention attributes
-            if related_variable:
-                # Add long name attribute which is generally QUALITY_FLAG: [variable it affects]
-                if 'name' in metadata[related_variable]:
-                    att['long_name'] = flag_long_name_prefix + metadata[related_variable]['name']
-                else:
-                    att['long_name'] = flag_long_name_prefix + related_variable
+        # If flag is specific to a variable, try to confirm if the odf name of the related variable match the
+        # flag name. If yes, add this flag variable to the ancillary_attribute of the related variable
+        if related_variable:
+            # FIRST MAKE SURE THE RELATED VARIABLE IS THE RIGHT ONE
+            # Make sure that the related variable exist
+            if related_variable not in metadata:
+                raise KeyError(
+                    '{0} flag is referring to {1} which is not available as variable'.format(
+                        var, related_variable),
+                    )
 
-                # Add ancillary_variables attribute
-                if 'ancillary_variables' not in metadata[related_variable]:
-                    metadata[related_variable]['ancillary_variables'] = var
-                elif 'ancillary_variables' in metadata[related_variable]:
-                    metadata[related_variable]['ancillary_variables'] += ',{0}'.format(var)
-                else:
-                    warnings.warn('unknown ancillary flag format attribute', UserWarning)
+            # Try to see if the related_variable and flag have matching name or code in odf
+            related_variable_name = re.sub(r"quality\sflag.*:\s*|quality flag of ", '',
+                                           att['original_NAME'], 1, re.IGNORECASE)
+            # Flag name do not match either variable name or code, give a warning.
+            if related_variable_name not in metadata[related_variable].get('original_NAME') and \
+                    related_variable_name not in metadata[related_variable].get('original_CODE'):
+                warnings.warn(
+                    '{0}[{1}] flag was matched to the variable {2} but ODF attributes {3} do not match'.format(
+                        var,
+                        att['original_NAME'],
+                        related_variable,
+                        {key: metadata[related_variable].get(key) for key in ['original_NAME', 'original_CODE']}
+                    ),
+                    UserWarning
+                )
 
-            # Add flag convention attributes if available within config file
-            if flag_convention:
-                if var in flag_convention:
-                    att.update(flag_convention[var])
-                elif 'default' in flag_convention:
-                    att.update(flag_convention['default'])
+            # Standardize long name attribute
+            if 'name' in metadata[related_variable]:
+                att['long_name'] = flag_long_name_prefix + metadata[related_variable]['name']
+            else:
+                att['long_name'] = flag_long_name_prefix + related_variable
+
+            # Add ancillary_variables attribute
+            if 'ancillary_variables' not in metadata[related_variable]:
+                metadata[related_variable]['ancillary_variables'] = var
+            elif 'ancillary_variables' in metadata[related_variable]:
+                metadata[related_variable]['ancillary_variables'] += ',{0}'.format(var)
+
+        # Add flag convention attributes if available within config file
+        if flag_convention:
+            if var in flag_convention:
+                att.update(flag_convention[var])
+            elif 'default' in flag_convention:
+                att.update(flag_convention['default'])
 
         # TODO rename QQQQ_XX flag variables to Q[related_variables] so that ERDDAP can easily amalgamate them!
 
