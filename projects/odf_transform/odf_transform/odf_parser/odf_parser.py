@@ -124,7 +124,7 @@ def read(filename,
                     type(metadata[section][0]) is dict:
                 metadata[section] = metadata[section][0]
 
-        # READ ODF DATA SECTION
+        # READ PARAMETER_HEADER
         # Define first the variable names and the type.
         variable_attributes = {}
         # Variable names and related attributes
@@ -144,7 +144,7 @@ def read(filename,
         if not time_columns:
             time_columns = False
 
-        # Read with Pandas
+        # Read Data with Pandas
         data_raw = pd.read_csv(f, delimiter=data_delimiter, quotechar=quotechar, header=None,
                                names=variable_attributes.keys(),
                                dtype={key: odf_dtypes[att.get(variable_type)]
@@ -197,7 +197,7 @@ def odf_flag_variables(metadata, flag_convention=None):
 
         # Find related variable
         if is_qqqq_flag:
-            # MLI FLAG QQQQ should apply to previous variable
+            # FLAG QQQQ should apply to previous variable
             related_variable = previous_key
         if is_q_flag:
             # Q  Format is usually Q+[PCODE] of the associated variable
@@ -287,7 +287,7 @@ def get_vocabulary_attributes(metadata,
                       parameter_code['name'] in ['QCFF', 'FFFF']
 
         # Loop through each organisations and find the matching parameter_code within the vocabulary
-        if vocabulary and var not in ['SYTM_01']:
+        if vocabulary is not None and var not in ['SYTM_01']:
             # Find matching vocabularies and code and sort by given vocabularies
             matching_terms = vocabulary[vocabulary.index.isin(organizations, level=0) &
                                         vocabulary.index.isin([parameter_code['name']], level=1)]
@@ -404,7 +404,7 @@ def global_attributes_from_header(odf_header):
 def convert_odf_time(time_string):
     """Simple tool to convert ODF timestamps to a datetime object"""
     if time_string == "17-NOV-1858 00:00:00.00":
-        return pd.NaT
+        return None
     else:
         return pd.to_datetime(time_string, utc=True)
 
@@ -426,69 +426,87 @@ def generate_variables_from_header(ds,
     ds['platform'] = odf_header["CRUISE_HEADER"]["PLATFORM"]
 
     # Time Variables
-    if "SYTM_01" in ds.keys():
-        if cdm_data_type == 'Profile':
+    if odf_header["EVENT_HEADER"]["START_DATE_TIME"]:
+        ds["start_time"] = convert_odf_time(odf_header["EVENT_HEADER"]["START_DATE_TIME"])
+        ds["start_time"].attrs[original_var_field] = "EVENT_HEADER:START_DATE_TIME"
+
+    if convert_odf_time(odf_header["EVENT_HEADER"]["END_DATE_TIME"]):
+        ds["end_time"] = convert_odf_time(odf_header["EVENT_HEADER"]["END_DATE_TIME"])
+        ds["end_time"].attrs[original_var_field] = "EVENT_HEADER:END_DATE_TIME"
+
+    # Time is handled differently for profile variables since there's not always a time variable within the ODF.
+    # Time series and trajectory data should both have a time variable in the ODF.
+    if cdm_data_type == 'Profile':
+        # Time variable
+        if "start_time" in ds and ds["start_time"].item():
+            ds["time"] = ds["start_time"].copy()
+        elif "SYTM_01" in ds.keys():
             ds.coords["time"] = ds['SYTM_01'].min().values
-            ds["time_precise"] = ds['SYTM_01']
-            ds["time"].attrs[original_var_field] = 'min(SYTM_01)'
-            ds["time_precise"].attrs[original_var_field] = 'SYTM_01'
+            ds["time"].attrs[original_var_field] = "min(SYMT_01)"
         else:
-            ds.coords["time"] = ds['SYTM_01']
-            ds["time"].attrs[original_var_field] = 'SYTM_01'
+            raise RuntimeError('No time available for this profile.')
+        # precise time
+        if "SYTM_01" in ds.keys():
+            ds["precise_time"] = ds["SYTM_01"].copy()
     else:
-        ds.coords["time"] = convert_odf_time(odf_header["EVENT_HEADER"]["START_DATE_TIME"])
-        ds["time"].attrs[original_var_field] = "EVENT_HEADER:START_DATE_TIME"
-
-    ds["start_time"] = convert_odf_time(odf_header["EVENT_HEADER"]["START_DATE_TIME"])
-    ds["start_time"].attrs[original_var_field] = "EVENT_HEADER:START_DATE_TIME"
-
-    ds["end_time"] = convert_odf_time(odf_header["EVENT_HEADER"]["END_DATE_TIME"])
-    ds["end_time"].attrs[original_var_field] = "EVENT_HEADER:END_DATE_TIME"
+        ds.coords["time"] = ds['SYTM_01']
+        ds["time"].attrs[original_var_field] = 'SYTM_01'
 
     # Coordinate variables
-    if "LATD_01" in ds.keys():
-        if cdm_data_type in ['Profile', 'TimeSeries']:
+    # Latitude
+    initial_latitude = odf_header["EVENT_HEADER"].get("INITIAL_LATITUDE")
+    initial_latitude = None if initial_latitude == -99 else initial_latitude
+    if cdm_data_type in ['Profile', 'TimeSeries']:
+        if initial_latitude:
+            ds.coords["latitude"] = initial_latitude
+            ds["latitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LATITUDE"
+        elif "LATD_01" in ds:
             ds.coords["latitude"] = ds["LATD_01"][0].values
             ds['latitude'].attrs[original_var_field] = 'LATD_01[0]'
-            ds['latitude_precise'] = ds["LATD_01"]
+
+        if "LATD_01" in ds:
+            ds['latitude_precise'] = ds["LATD_01"].copy()
             ds["latitude_precise"].attrs[original_var_field] = "LATD_01"
             ds["latitude_precise"].attrs.update({
                 'units': 'degrees_north',
-                'standard_name': 'latitude',
-                '_FillValue': -99}
+                'standard_name': 'latitude'}
             )
-        else:
-            ds.coords["latitude"] = ds["LATD_01"]
-            ds["latitude"].attrs[original_var_field] = "LATD_01"
+    elif "LATD_01" in ds:
+        ds.coords["latitude"] = ds["LATD_01"]
+        ds["latitude"].attrs[original_var_field] = "LATD_01"
     else:
-        ds.coords["latitude"] = float(odf_header["EVENT_HEADER"]["INITIAL_LATITUDE"])
-        ds["latitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LATITUDE"
-
+        raise RuntimeError('Missing Latitude input')
+    # Add latitude attributes
     ds['latitude'].attrs.update({'units': 'degrees_north',
-                                 'standard_name': 'latitude',
-                                 '_FillValue': -99})
-    if "LOND_01" in ds.keys():
-        if cdm_data_type in ['Profile', 'TimeSeries']:
+                                 'standard_name': 'latitude'})
+
+    # Longitude
+    initial_longitude = odf_header["EVENT_HEADER"].get("INITIAL_LONGITUDE")
+    initial_longitude = None if initial_longitude == -99 else initial_longitude
+    if cdm_data_type in ['Profile', 'TimeSeries']:
+        if initial_longitude:
+            ds.coords["longitude"] = initial_longitude
+            ds["longitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LONGITUDE"
+        elif "LOND_01" in ds:
             ds.coords["longitude"] = ds["LOND_01"][0].values
             ds['longitude'].attrs[original_var_field] = 'LOND_01[0]'
-            ds['longitude_precise'] = ds["LOND_01"]
+
+        if "LOND_01" in ds:
+            ds['longitude_precise'] = ds["LOND_01"].copy()
             ds["longitude_precise"].attrs[original_var_field] = "LOND_01"
             ds["longitude_precise"].attrs.update({
-                'units': 'degrees_east',
-                'standard_name': 'longitude',
-                '_FillValue': -999}
+                'units': 'degrees_north',
+                'standard_name': 'longitude'}
             )
-
-        else:
-            ds.coords["longitude"] = ds["LOND_01"]
-            ds["longitude"].attrs[original_var_field] = "LOND_01"
+    elif "LOND_01" in ds:
+        ds.coords["longitude"] = ds["LOND_01"]
+        ds["longitude"].attrs[original_var_field] = "LOND_01"
     else:
-        ds.coords["longitude"] = float(odf_header["EVENT_HEADER"]["INITIAL_LONGITUDE"])
-        ds["longitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LONGITUDE"
+        raise RuntimeError('Missing Longitude input')
+    # Add longitude attributes
+    ds['longitude'].attrs.update({'units': 'degrees_north',
+                                 'standard_name': 'longitude'})
 
-    ds['longitude'].attrs.update({'units': 'degrees_east',
-                                  'standard_name': 'longitude',
-                                  '_FillValue': -999})
     # Depth
     if 'DEPH_01' in ds:
         ds.coords['depth'] = ds['DEPH_01']
