@@ -2,6 +2,7 @@ import glob
 import json
 import os
 import traceback
+import numpy as np
 
 import shutil
 import argparse
@@ -26,7 +27,7 @@ def read_config(config_file):
     if config["vocabularyFile"] and config["vocabularyFile"].endswith('csv'):
         vocab = pd.read_csv(config["vocabularyFile"],
                             index_col=['Vocabulary', 'name'])
-        config["vocabulary"] = vocab
+        config["vocabulary"] = vocab.fillna(np.nan).replace({np.nan: None})
     return config
 
 

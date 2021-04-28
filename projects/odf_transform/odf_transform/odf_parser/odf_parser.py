@@ -215,7 +215,7 @@ def odf_flag_variables(metadata, flag_convention=None):
                 raise KeyError(
                     '{0} flag is referring to {1} which is not available as variable'.format(
                         var, related_variable),
-                    )
+                )
 
             # Try to see if the related_variable and flag have matching name or code in odf
             related_variable_name = re.sub(r"quality\sflag.*:\s*|quality flag of ", '',
@@ -240,10 +240,10 @@ def odf_flag_variables(metadata, flag_convention=None):
                 att['long_name'] = flag_long_name_prefix + related_variable
 
             # Add ancillary_variables attribute
-            if 'ancillary_variables' not in metadata[related_variable]:
-                metadata[related_variable]['ancillary_variables'] = var
-            elif 'ancillary_variables' in metadata[related_variable]:
+            if 'ancillary_variables' in metadata[related_variable]:
                 metadata[related_variable]['ancillary_variables'] += ',{0}'.format(var)
+            else:
+                metadata[related_variable]['ancillary_variables'] = var
 
         # Add flag convention attributes if available within config file
         if flag_convention:
@@ -283,7 +283,7 @@ def get_vocabulary_attributes(metadata,
                       parameter_code['name'] in ['QCFF', 'FFFF']
 
         # Loop through each organisations and find the matching parameter_code within the vocabulary
-        if vocabulary is not None and var not in ['SYTM_01']:
+        if vocabulary and var not in ['SYTM_01']:
             # Find matching vocabularies and code and sort by given vocabularies
             matching_terms = vocabulary[vocabulary.index.isin(organizations, level=0) &
                                         vocabulary.index.isin([parameter_code['name']], level=1)]
@@ -299,7 +299,7 @@ def get_vocabulary_attributes(metadata,
 
                 for index, row in matching_terms.iterrows():
                     # Compare actual units to what's expected in the vocabulary
-                    if row.isna()['expected_units'] or \
+                    if row['expected_units'] is None or \
                             var_units in row['expected_units'].split('|') or \
                             re.search('none|dimensionless', row['expected_units'], re.IGNORECASE) is not None:
 
@@ -310,13 +310,13 @@ def get_vocabulary_attributes(metadata,
                         if not flag_column:
                             # Standardized units by selecting the very first possibility
                             # or not giving unit attribute if none
-                            if type(row['expected_units']) is str:
+                            if row['expected_units']:
                                 att['units'] = row['expected_units'].split('|')[0]
                             elif var_units not in ['none']:
                                 att['units'] = var_units
 
                             # No units available make sure it's the same in the data
-                            if row.isna()['expected_units'] and \
+                            if row['expected_units'] is None and \
                                     var_units not in [None, 'none']:
                                 warnings.warn('No units available within vocabularies {2} for term {0} [{1}]'
                                               .format(var, att['original_UNITS'],
@@ -335,13 +335,11 @@ def get_vocabulary_attributes(metadata,
                               UserWarning)
 
             # Update sdn_parameter_urn term available to match trailing number with variable itself.
-            if 'sdn_parameter_urn' in att and \
-                    type(att['sdn_parameter_urn']) is str:
+            if att.get('sdn_parameter_urn'):
                 att['sdn_parameter_urn'] = re.sub(r'\d\d$',
                                                   '%02d' % att['parameter_code_number'],
                                                   att['sdn_parameter_urn'])
-            if 'name' in att and \
-                    type(att['name']) is str:
+            if att.get('name'):
                 att['name'] = re.sub(r'\d\d$',
                                      '%02d' % att['parameter_code_number'],
                                      att['name'])
