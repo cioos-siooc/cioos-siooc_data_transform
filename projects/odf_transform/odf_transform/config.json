@@ -32,7 +32,7 @@
     "flag_convention": {
         "default": {
             "flag_values": [0, 1, 2, 3, 4, 5, 9],
-            "flag_meaning": "not_evaluated correct inconsistent_with_other_values doubtful erroneous modified missing"
+            "flag_meanings": "not_evaluated correct inconsistent_with_other_values doubtful erroneous modified missing"
         }
     }
 }
