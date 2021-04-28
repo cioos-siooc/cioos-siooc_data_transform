@@ -1,6 +1,6 @@
 {
-    "odf_path":"../sample_data/test_files/",
-    "output_path":"./output/",
+    "odf_path":"D:\\review_ODF",
+    "output_path":"D:\\review_ODF\\output",
     "geojsonFileList": [
         "./geojson_files/ios_polygons.geojson",
         "./geojson_files/MLI_St-LawrenceBoxes.geojson",
@@ -33,6 +33,8 @@
         "default": {
             "flag_values": [0, 1, 2, 3, 4, 5, 9],
             "flag_meanings": "not_evaluated correct inconsistent_with_other_values doubtful erroneous modified missing"
-        }
+        },
+        "QCFF": {},
+        "FFFF": {}
     }
 }
