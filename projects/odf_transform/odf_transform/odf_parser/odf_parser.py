@@ -153,7 +153,8 @@ def read(filename, encoding_format="Windows-1252"):
 
             # Make sure that the variable name is GF3 term (opt: two digit number)
             variable_attributes[var_name["standardized_name"]] = att
-            # Retrieve list of time variables
+
+        # Retrieve list of time variables
         time_columns = [
             key
             for key, att in variable_attributes.items()
@@ -188,12 +189,12 @@ def read(filename, encoding_format="Windows-1252"):
             )
         )
 
-        # Add a original_ before each variable attributes from the ODF
+    # Add a original_ before each variable attributes from the ODF
     metadata["variable_attributes"] = {
         var: {original_prefix_var_attribute + key: value for key, value in att.items()}
         for var, att in variable_attributes.items()
     }
-    # # Make sure that timezone is UTC, GMT or None
+    # Make sure that timezone is UTC, GMT or None
     if time_columns:
         for parm in time_columns:
             units = metadata["variable_attributes"][parm].get(
@@ -281,7 +282,7 @@ def odf_flag_variables(metadata, flag_convention=None):
                     UserWarning,
                 )
 
-            # Standardize long name attribute
+            # Standardize long name attribute of flag variables
             if "name" in metadata[related_variable]:
                 att["long_name"] = (
                     flag_long_name_prefix + metadata[related_variable]["name"]
@@ -502,9 +503,7 @@ def generate_variables_from_header(
 
     # Time Variables
     if odf_header["EVENT_HEADER"]["START_DATE_TIME"]:
-        ds["start_time"] = convert_odf_time(
-            odf_header["EVENT_HEADER"]["START_DATE_TIME"]
-        )
+        ds["start_time"] = convert_odf_time(odf_header["EVENT_HEADER"]["START_DATE_TIME"])
         ds["start_time"].attrs[original_var_field] = "EVENT_HEADER:START_DATE_TIME"
 
     if convert_odf_time(odf_header["EVENT_HEADER"]["END_DATE_TIME"]):
