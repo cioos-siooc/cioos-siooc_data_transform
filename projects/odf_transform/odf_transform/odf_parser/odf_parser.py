@@ -201,7 +201,7 @@ def odf_flag_variables(metadata, flag_convention=None):
         related_variable = None
 
         # FLAG VARIABLES Detect if it is a flag column
-        is_q_flag = var.startswith("Q") and var[:1] in metadata.keys()
+        is_q_flag = var.startswith("Q") and var[1:] in metadata.keys()
         is_qqqq_flag = odf_var_name["name"] == "QQQQ"
         is_general_flag = odf_var_name["name"] in ["QCFF", "FFFF"]
 
