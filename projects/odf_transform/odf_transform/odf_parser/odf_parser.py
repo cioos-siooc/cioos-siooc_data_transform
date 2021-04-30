@@ -29,7 +29,7 @@ original_prefix_var_attribute = "original_"
 def read(filename, encoding_format="Windows-1252"):
     """
     Read_odf
-    Read_odf parse the odf format used by some DFO organisation to python list of diectionary format and
+    Read_odf parse the odf format used by some DFO organisation to python list of dictionaryformat and
     pandas dataframe. Once converted, the output can easily be converted to netcdf format.
 
     Steps applied:
@@ -50,13 +50,6 @@ def read(filename, encoding_format="Windows-1252"):
      start of the data.
     :return:
     """
-    header_end = "-- DATA --"
-    data_delimiter = r"\s+"
-    quotechar = "'"
-    parameter_section = "PARAMETER_HEADER"
-    variable_type = "TYPE"
-    null_value = "NULL_VALUE"
-    section_items_minimum_whitespaces = 2
 
     def _convert_to_number(value):
         """Simple method to try to convert input (string, literals) to float or integer."""
@@ -102,7 +95,7 @@ def read(filename, encoding_format="Windows-1252"):
                 ]  # Remove trailing white spaces
 
                 if re.match(
-                    r"\'.*\'", dict_line[1]
+                        r"\'.*\'", dict_line[1]
                 ):  # Is delimited by double quotes, definitely a string
                     # Drop the quote signs and the white spaces before and after
                     dict_line[1] = str(re.sub(r"^\s*|\s*$", "", dict_line[1][1:-1]))
@@ -113,11 +106,6 @@ def read(filename, encoding_format="Windows-1252"):
                 # Add to the metadata as a dictionary
                 metadata[section][-1][dict_line[0]] = dict_line[1]
 
-            elif re.match(
-                r"^\s+.+", line
-            ):  # Unknown line format (likely comments) doesn't seem to have any examples
-                # TODO this hasn't been tested yet I haven't try an example with not a dictionary like line
-                metadata[section].append(line)
             else:
                 assert RuntimeError, "Can't understand the line: " + line
 
@@ -134,9 +122,9 @@ def read(filename, encoding_format="Windows-1252"):
             if "CODE" in att:
                 var_name = parse_odf_code_variable(att["CODE"])
             elif (
-                "NAME" in att
-                and "WMO_CODE" in att
-                and att["NAME"].startswith(att["WMO_CODE"])
+                    "NAME" in att
+                    and "WMO_CODE" in att
+                    and att["NAME"].startswith(att["WMO_CODE"])
             ):
                 var_name = parse_odf_code_variable(att["NAME"])
             else:
@@ -157,7 +145,7 @@ def read(filename, encoding_format="Windows-1252"):
         # Read Data with Pandas
         data_raw = pd.read_csv(
             f,
-            delimiter= r"\s+",
+            delimiter=r"\s+",
             quotechar="'",
             header=None,
             names=variable_attributes.keys(),
