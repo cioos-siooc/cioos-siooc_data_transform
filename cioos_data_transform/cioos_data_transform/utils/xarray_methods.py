@@ -128,6 +128,7 @@ def get_spatial_coverage_attributes(ds,
     """
     This method generates the geospatial and time coverage attributes associated to an xarray dataset.
     """
+    # TODO add resolution attributes
     time_spatial_coverage = {}
     # time
     if time in ds:
@@ -142,15 +143,19 @@ def get_spatial_coverage_attributes(ds,
         time_spatial_coverage.update({
             'geospatial_lat_min': ds[lat].min().values,
             'geospatial_lat_max': ds[lat].max().values,
+            'geospatial_lat_units': ds[lat].attrs.get('units'),
             'geospatial_lon_min': ds[lon].min().values,
-            'geospatial_lon_max': ds[lon].max().values
+            'geospatial_lon_max': ds[lon].max().values,
+            'geospatial_lon_units': ds[lon].attrs.get('units'),
         })
 
     # depth coverage
     if depth in ds:
         time_spatial_coverage.update({
             'geospatial_vertical_min': ds[depth].min().values,
-            'geospatial_vertical_max': ds[depth].max().values
+            'geospatial_vertical_max': ds[depth].max().values,
+            'geospatial_vertical_units': ds[depth].attrs['units'],
+            'geospatial_vertical_positive': 'down'
         })
 
     # Add to global attributes
