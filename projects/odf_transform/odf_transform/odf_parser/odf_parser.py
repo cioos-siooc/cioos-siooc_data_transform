@@ -95,7 +95,7 @@ def read(filename, encoding_format="Windows-1252"):
                 ]  # Remove trailing white spaces
 
                 if re.match(
-                        r"\'.*\'", dict_line[1]
+                    r"\'.*\'", dict_line[1]
                 ):  # Is delimited by double quotes, definitely a string
                     # Drop the quote signs and the white spaces before and after
                     dict_line[1] = str(re.sub(r"^\s*|\s*$", "", dict_line[1][1:-1]))
@@ -122,9 +122,9 @@ def read(filename, encoding_format="Windows-1252"):
             if "CODE" in att:
                 var_name = parse_odf_code_variable(att["CODE"])
             elif (
-                    "NAME" in att
-                    and "WMO_CODE" in att
-                    and att["NAME"].startswith(att["WMO_CODE"])
+                "NAME" in att
+                and "WMO_CODE" in att
+                and att["NAME"].startswith(att["WMO_CODE"])
             ):
                 var_name = parse_odf_code_variable(att["NAME"])
             else:
@@ -497,7 +497,9 @@ def generate_variables_from_header(
 
     # Time Variables
     if odf_header["EVENT_HEADER"]["START_DATE_TIME"]:
-        ds["start_time"] = convert_odf_time(odf_header["EVENT_HEADER"]["START_DATE_TIME"])
+        ds["start_time"] = convert_odf_time(
+            odf_header["EVENT_HEADER"]["START_DATE_TIME"]
+        )
         ds["start_time"].attrs[original_var_field] = "EVENT_HEADER:START_DATE_TIME"
 
     if convert_odf_time(odf_header["EVENT_HEADER"]["END_DATE_TIME"]):
@@ -510,11 +512,10 @@ def generate_variables_from_header(
         # Time variable
         if "start_time" in ds and ds["start_time"].item():
             ds["time"] = ds["start_time"].copy()
-        elif "SYTM_01" in ds.keys():
-            ds.coords["time"] = ds["SYTM_01"].min().values
-            ds["time"].attrs[original_var_field] = "min(SYMT_01)"
-        else:
-            raise RuntimeError("No time available for this profile.")
+        # elif "SYTM_01" in ds.keys():
+        #     ds.coords["time"] = ds["SYTM_01"].min().values
+        #     ds["time"].attrs[original_var_field] = "min(SYMT_01)"
+
         # precise time
         if "SYTM_01" in ds.keys():
             ds["precise_time"] = ds["SYTM_01"].copy()
@@ -522,57 +523,77 @@ def generate_variables_from_header(
         ds.coords["time"] = ds["SYTM_01"]
         ds["time"].attrs[original_var_field] = "SYTM_01"
 
+    # Make sure there's a time variable
+    if "time" not in ds:
+        raise RuntimeError("No time available.")
+
     # Coordinate variables
-    # Latitude
-    initial_latitude = odf_header["EVENT_HEADER"].get("INITIAL_LATITUDE")
-    initial_latitude = None if initial_latitude == -99 else initial_latitude
+    # Latitude (ODF uses a place holder -99 in some of their header for latitude)
+    initial_latitude = odf_header["EVENT_HEADER"].get("INITIAL_LATITUDE", -99)
+    has_latitude_timeseries = "LATD_01" in ds
+
     if cdm_data_type in ["Profile", "TimeSeries"]:
-        if initial_latitude:
+        # Let's define latitude first, use start latitude if available
+        if initial_latitude != -99:
             ds.coords["latitude"] = initial_latitude
             ds["latitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LATITUDE"
-        elif "LATD_01" in ds:
-            ds.coords["latitude"] = ds["LATD_01"][0].values
-            ds["latitude"].attrs[original_var_field] = "LATD_01[0]"
+        # elif has_latitude_timeseries:
+        #     ds.coords["latitude"] = ds["LATD_01"][0].values
+        #     ds["latitude"].attrs[original_var_field] = "LATD_01[0]"
 
-        if "LATD_01" in ds:
-            ds["latitude_precise"] = ds["LATD_01"].copy()
-            ds["latitude_precise"].attrs[original_var_field] = "LATD_01"
-            ds["latitude_precise"].attrs.update(
+        # If a latitude time series is available, copy it to a preciseLat variable as suggested by ERDDAP
+        if has_latitude_timeseries:
+            ds["preciseLat"] = ds["LATD_01"].copy()
+            ds["preciseLat"].attrs[original_var_field] = "LATD_01"
+            ds["preciseLat"].attrs.update(
                 {"units": "degrees_north", "standard_name": "latitude"}
             )
-    elif "LATD_01" in ds:
+    elif has_latitude_timeseries:
         ds.coords["latitude"] = ds["LATD_01"]
         ds["latitude"].attrs[original_var_field] = "LATD_01"
-    else:
-        raise RuntimeError("Missing Latitude input")
-    # Add latitude attributes
-    ds["latitude"].attrs.update({"units": "degrees_north", "standard_name": "latitude"})
 
-    # Longitude
-    initial_longitude = odf_header["EVENT_HEADER"].get("INITIAL_LONGITUDE")
-    initial_longitude = None if initial_longitude == -999 else initial_longitude
+    # Make sure there's a latitude
+    if "latitude" not in ds:
+        raise RuntimeError("Missing Latitude input")
+
+    # Add latitude attributes
+    ds["latitude"].attrs.update(
+        {"long_name": "Latitude", "units": "degrees_north", "standard_name": "latitude"}
+    )
+
+    # Longitude (ODF uses a place holder -999 in some of their header for longitude)
+    initial_longitude = odf_header["EVENT_HEADER"].get("INITIAL_LONGITUDE", -999)
+    has_longitude_time_series = "LOND_01" in ds
+
     if cdm_data_type in ["Profile", "TimeSeries"]:
-        if initial_longitude:
+        if initial_longitude != -999:
             ds.coords["longitude"] = initial_longitude
             ds["longitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LONGITUDE"
-        elif "LOND_01" in ds:
-            ds.coords["longitude"] = ds["LOND_01"][0].values
-            ds["longitude"].attrs[original_var_field] = "LOND_01[0]"
+        # elif has_longitude_time_series:
+        #     ds.coords["longitude"] = ds["LOND_01"][0].values
+        #     ds["longitude"].attrs[original_var_field] = "LOND_01[0]"
 
-        if "LOND_01" in ds:
-            ds["longitude_precise"] = ds["LOND_01"].copy()
-            ds["longitude_precise"].attrs[original_var_field] = "LOND_01"
-            ds["longitude_precise"].attrs.update(
-                {"units": "degrees_north", "standard_name": "longitude"}
+        # If a longitude time series is available, copy it to a preciseLat variable as suggested by ERDDAP
+        if has_longitude_time_series:
+            ds["preciseLon"] = ds["LOND_01"].copy()
+            ds["preciseLon"].attrs[original_var_field] = "LOND_01"
+            ds["preciseLon"].attrs.update(
+                {"units": "degrees_east", "standard_name": "longitude"}
             )
-    elif "LOND_01" in ds:
+    elif has_longitude_time_series:
         ds.coords["longitude"] = ds["LOND_01"]
         ds["longitude"].attrs[original_var_field] = "LOND_01"
-    else:
+
+    # Make sure there's a longitude
+    if "longitude" not in ds:
         raise RuntimeError("Missing Longitude input")
     # Add longitude attributes
     ds["longitude"].attrs.update(
-        {"units": "degrees_north", "standard_name": "longitude"}
+        {
+            "long_name": "Longitude",
+            "units": "degrees_north",
+            "standard_name": "longitude",
+        }
     )
 
     # Depth
@@ -585,6 +606,10 @@ def generate_variables_from_header(
             -gsw.z_from_p(ds["PRES_01"], ds["latitude"]),
         )
         ds["depth"].attrs[original_var_field] = "-gsw.z_from_p(PRES_01,latitude)"
+    else:
+        # If no depth variable is available we'll assume it's not suppose to happen for now.
+        raise RuntimeError("Missing a depth information")
+
     if "depth" in ds:
         ds["depth"].attrs.update(
             {"units": "m", "standard_name": "depth", "positive": "down"}
