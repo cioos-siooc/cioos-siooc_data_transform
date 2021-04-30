@@ -295,6 +295,36 @@ def get_vocabulary_attributes(
     vocabularies associated to the organization and variable name.
     Flag columns are also reviewed and matched to the appropriate variable.
     """
+    def _compare_units(unit, vocab_units):
+        """Simple tool to compare "|" separated units in the Vocabulary expected unit list.
+        Return first unit if any is matching.
+        - None if empty or expected to be empty
+        - False if not matching untis
+        - standard unit string if matching any of the terms listed.
+        """
+        if vocab_units:
+            # Split unit list and convert None or dimensionless to None
+            unit_list = []
+            for item in vocab_units.split("|"):
+                if item.lower() in ['none', 'dimensionless']:
+                    unit_list.append(None)
+                else:
+                    unit_list.append(item)
+
+            standard_unit = unit_list[0]
+        else:
+            unit_list = []
+            standard_unit = None
+
+        if unit in unit_list:
+            return standard_unit
+        elif unit is None and standard_unit is None:
+            return None
+        elif unit and standard_unit is None:
+            return 'unknown'
+        elif unit not in unit_list:
+            return False
+
     # Define vocabulary default list of variables to import as attributes
     if vocabulary_attribute_list is None:
         vocabulary_attribute_list = (
@@ -305,102 +335,87 @@ def get_vocabulary_attributes(
         )
 
     # Find matching vocabulary
-    for var, att in metadata.items():
+    for var, attributes in metadata.items():
         # Separate the parameter_code from the number at the end of the variable
         parameter_code = parse_odf_code_variable(var)
-        att["parameter_code"] = parameter_code["name"]
-        att["parameter_code_number"] = parameter_code["index"]
 
-        flag_column = att.get("long_name", "").startswith(
+        # We already standardized all the flags with the standard long_name attribute. Let's detect them with that.
+        flag_column = attributes.get("long_name", "").startswith(
             flag_long_name_prefix
         ) or parameter_code["name"] in ["QCFF", "FFFF"]
 
-        # Loop through each organisations and find the matching parameter_code within the vocabulary
-        if vocabulary is not None and var not in ["SYTM_01"]:
-            # Find matching vocabularies and code and sort by given vocabularies
-            matching_terms = vocabulary[
-                vocabulary.index.isin(organizations, level=0)
-                & vocabulary.index.isin([parameter_code["name"]], level=1)
-            ]
+        # Get ODF variable units and make some simple standardization
+        var_units = attributes.get("original_UNITS", "none")
+        var_units = standardize_odf_units(var_units)
 
-            # Iterate over each matching vocabulary and review units
-            if len(matching_terms) > 0:
-                # Sort by given vocabulary order
-                matching_terms = matching_terms.reindex(organizations, level=0)
+        # Find matching vocabularies and code and sort by given vocabularies
+        matching_terms = vocabulary[
+            vocabulary.index.isin(organizations, level=0)
+            & vocabulary.index.isin([parameter_code["name"]], level=1)
+        ].copy()
 
-                var_units = att.get("original_UNITS", "")
-                if var_units:
-                    var_units = standardize_odf_units(var_units)
+        # Among these matching terms compare units
+        matching_terms['standardize_units'] = matching_terms['expected_units'].apply(
+            lambda x: _compare_units(var_units, x)
+        )
 
-                for index, row in matching_terms.iterrows():
-                    # Compare actual units to what's expected in the vocabulary
-                    if (
-                        row["expected_units"] is None
-                        or var_units in row["expected_units"].split("|")
-                        or re.search(
-                            "none|dimensionless", row["expected_units"], re.IGNORECASE
-                        )
-                        is not None
-                    ):
+        # Drop the terms with no matching units
+        matching_terms_and_units = matching_terms[~matching_terms['standardize_units'].isin([False])]
 
-                        # Add attributes from vocabulary
-                        att.update(
-                            row.filter(vocabulary_attribute_list).dropna().to_dict()
-                        )
-
-                        # Standardize units
-                        if not flag_column:
-                            # Standardized units by selecting the very first possibility
-                            # or not giving unit attribute if none
-                            if row["expected_units"]:
-                                att["units"] = row["expected_units"].split("|")[0]
-                            elif var_units not in ["none"]:
-                                att["units"] = var_units
-
-                            # No units available make sure it's the same in the data
-                            if row["expected_units"] is None and var_units not in [
-                                None,
-                                "none",
-                            ]:
-                                warnings.warn(
-                                    "No units available within vocabularies {2} for term {0} [{1}]".format(
-                                        var,
-                                        att["original_UNITS"],
-                                        matching_terms["expected_units"].to_dict(),
-                                        UserWarning,
-                                    )
-                                )
-                        break
-
-                    # Will make it here if don't find any matching untis
-                    warnings.warn(
-                        "No Matching unit found for {0} [{1}] in: {2}".format(
-                            var,
-                            att.get("original_UNITS"),
-                            matching_terms["expected_units"].to_dict(),
-                        ),
-                        UserWarning,
-                    )
-            elif not flag_column:
-                # If no matching vocabulary exist let it know
+        # No matching term, give a warning if not a flag and move on to the next iteration
+        if len(matching_terms_and_units) == 0:
+            if flag_column:
+                continue
+            elif len(matching_terms) == 0:
                 warnings.warn(
                     "{0}[{1}] not available in vocabularies: {2}".format(
-                        parameter_code["name"], att["original_UNITS"], organizations
+                        parameter_code["name"], attributes["original_UNITS"], organizations
                     ),
                     UserWarning,
                 )
+            elif len(matching_terms_and_units) == 0:
+                # If it has found a matching terms but not unit.
+                warnings.warn(
+                    "No Matching unit found for {0} [{1}] in: {2}".format(
+                        var,
+                        attributes.get("original_UNITS"),
+                        matching_terms["expected_units"].to_dict(),
+                    ),
+                    UserWarning,
+                )
+            continue
 
-            # Update sdn_parameter_urn term available to match trailing number with variable itself.
-            if att.get("sdn_parameter_urn"):
-                att["sdn_parameter_urn"] = re.sub(
-                    r"\d\d$",
-                    "%02d" % att["parameter_code_number"],
-                    att["sdn_parameter_urn"],
+        # Sort matching terms by vocabulary order given and pick the very first one
+        matched_terms = matching_terms_and_units.reindex(organizations, level=0).iloc[0]
+
+        # Update variable attributes with vocabulary terms
+        for item in vocabulary_attribute_list:
+            if item in matched_terms.dropna():
+                attributes[item] = matched_terms[item]
+
+        # Update units attribute to match vocabulary
+        if matched_terms['standardize_units'] == 'unknown':
+            warnings.warn(
+                "No units available within vocabularies {2} for term {0} [{1}]".format(
+                    var,
+                    attributes["original_UNITS"],
+                    matching_terms["expected_units"].to_dict(),
+                    UserWarning,
                 )
-            if att.get("name"):
-                att["name"] = re.sub(
-                    r"\d\d$", "%02d" % att["parameter_code_number"], att["name"]
-                )
+            )
+            attributes['units'] = var_units
+        elif matched_terms['standardize_units']:
+            attributes['units'] = matched_terms['standardize_units']
+        elif matching_terms['standardize_units'] is None and 'units' in attributes:
+            attributes.pop('units')
+
+        # Update sdn_parameter_urn term available to match trailing number with variable itself.
+        if attributes.get("sdn_parameter_urn"):
+            attributes["sdn_parameter_urn"] = re.sub(
+                r"\d\d$",
+                "%02d" % parameter_code["index"],
+                attributes["sdn_parameter_urn"],
+            )
 
     # TODO Add Warning for missing information and attributes (maybe)
     #  Example: Standard Name, P01, P02
