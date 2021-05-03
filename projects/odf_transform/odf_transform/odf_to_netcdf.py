@@ -79,24 +79,7 @@ def write_ctd_ncfile(
     # Add variable attributes to ds variables
     for var, attrs in var_attributes.items():
         ds[var].attrs.update(attrs)
-
-        # Keep the original long_name and units for now, except if it doesn't exist or
-        # None or was populated already (flags)
-        if "long_name" not in ds[var].attrs and ds[var].attrs.get("original_NAME"):
-            ds[var].attrs["long_name"] = ds[var].attrs.get("original_NAME")
-    ds = xarray_methods.add_variable_attributes(
-        ds,
-        review_attributes=[
-            "units",
-            "long_name",
-            "standard_name",
-            "comments",
-            "sdn_parameter_name",
-            "original_NAME",
-            "original_UNITS",
-            "original_CODE",
-        ],
-    )
+    ds = xarray_methods.add_variable_attributes(ds)
 
     # Generate extra variables (BODC, Derived)
     ds = xarray_methods.generate_bodc_variables(ds)
@@ -110,21 +93,6 @@ def write_ctd_ncfile(
     ds = xarray_methods.convert_variables_to_erddap_format(ds)
     # Assign the right dimension
     ds = xarray_methods.define_index_dimensions(ds)
-
-    # Simplify dataset for erddap
-    ds = ds.reset_coords()
-    for var in ds:
-        original = {}
-        attrs = ds[var].attrs.copy()
-        for att in ds[var].attrs:
-            if att.startswith("original_") and att not in [
-                "original_variable",
-                "original_var_field",
-            ]:
-                original[att] = attrs.pop(att)
-        ds[var].attrs = attrs
-        if original != {}:
-            ds[var].attrs["comments"] = json.dumps(original, indent=2)
 
     # Finally save the xarray dataset to a NetCDF file!!!
     ds.to_netcdf(output_path)

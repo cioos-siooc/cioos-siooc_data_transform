@@ -115,10 +115,12 @@ def read(filename, encoding_format="Windows-1252"):
                 metadata[section] = metadata[section][0]
 
         # READ PARAMETER_HEADER
-        # Define first the variable names and the type.
-        variable_attributes = {}
+        # Define first the variable name and attributes and the type.
+        metadata["variable_attributes"] = {}
+        time_columns = []
         # Variable names and related attributes
         for att in metadata["PARAMETER_HEADER"]:
+            # Generate variable name
             if "CODE" in att:
                 var_name = parse_odf_code_variable(att["CODE"])
             elif (
@@ -130,15 +132,26 @@ def read(filename, encoding_format="Windows-1252"):
             else:
                 raise RuntimeError("Unrecognizable ODF variable attributes")
 
-            # Make sure that the variable name is GF3 term (opt: two digit number)
-            variable_attributes[var_name["standardized_name"]] = att
+            attribute = {
+                "long_name": att.get("NAME"),
+                "units": att.get("UNITS"),
+                "gf3_code": var_name["standardized_name"],
+                "type": att["TYPE"],
+                "null_value": att["NULL_VALUE"],
+                "comments": json.dumps(
+                    {"odf_variable_attributes": att}, ensure_ascii=False, indent=False
+                ),
+            }
+            # Generate variable attributes
+            output_variable_name = var_name["standardized_name"]
 
-        # Retrieve list of time variables
-        time_columns = [
-            key
-            for key, att in variable_attributes.items()
-            if key.startswith("SYTM") or att["TYPE"] == "SYTM"
-        ]
+            # Add those variable attributes to the metadata output
+            metadata["variable_attributes"].update({output_variable_name: attribute})
+            # Time type column add to time variables to parse by pd.read_csv()
+            if output_variable_name.startswith("SYTM") or att["type"] == "SYTM":
+                time_columns.append(output_variable_name)
+
+        # If not time column replace by False
         if not time_columns:
             time_columns = False
 
@@ -148,13 +161,14 @@ def read(filename, encoding_format="Windows-1252"):
             delimiter=r"\s+",
             quotechar="'",
             header=None,
-            names=variable_attributes.keys(),
+            names=metadata["variable_attributes"].keys(),
             dtype={
-                key: odf_dtypes[att.get("TYPE")]
-                for key, att in variable_attributes.items()
+                key: odf_dtypes[att.pop("type")]
+                for key, att in metadata["variable_attributes"].items()
             },
             na_values={
-                key: att.get("NULL_VALUE") for key, att in variable_attributes.items()
+                key: att.pop("null_value")
+                for key, att in metadata["variable_attributes"].items()
             },
             parse_dates=time_columns,
             encoding=encoding_format,
@@ -168,12 +182,8 @@ def read(filename, encoding_format="Windows-1252"):
             )
         )
 
-    # Add a original_ before each variable attributes from the ODF
-    metadata["variable_attributes"] = {
-        var: {original_prefix_var_attribute + key: value for key, value in att.items()}
-        for var, att in variable_attributes.items()
-    }
     # Make sure that timezone is UTC, GMT or None
+    # (This may not be necessary since we're looking at the units alter now)
     if time_columns:
         for parm in time_columns:
             units = metadata["variable_attributes"][parm].get(
@@ -184,6 +194,7 @@ def read(filename, encoding_format="Windows-1252"):
                     "{0} has UNITS(timezone) of {1}".format(parm, units), UserWarning
                 )
 
+    # TODO review if the count of flagged values versus good is the same as ODF attributes NUMBER_VALID NUMBER_NULL
     return metadata, data_raw
 
 
@@ -225,7 +236,6 @@ def odf_flag_variables(metadata, flag_convention=None):
         # If flag is specific to a variable, try to confirm if the odf name of the related variable match the
         # flag name. If yes, add this flag variable to the ancillary_attribute of the related variable
         if related_variable:
-            # FIRST MAKE SURE THE RELATED VARIABLE IS THE RIGHT ONE
             # Make sure that the related variable exist
             if related_variable not in metadata:
                 raise KeyError(
@@ -238,24 +248,24 @@ def odf_flag_variables(metadata, flag_convention=None):
             related_variable_name = re.sub(
                 r"quality\sflag.*:\s*|quality flag of ",
                 "",
-                att["original_NAME"],
+                att["long_name"],
                 1,
                 re.IGNORECASE,
             )
             # Flag name do not match either variable name or code, give a warning.
             if related_variable_name not in metadata[related_variable].get(
-                "original_NAME"
+                "long_name"
             ) and related_variable_name not in metadata[related_variable].get(
-                "original_CODE"
+                "gf3_code"
             ):
                 warnings.warn(
                     "{0}[{1}] flag was matched to the variable {2} but ODF attributes {3} do not match".format(
                         var,
-                        att["original_NAME"],
+                        att["long_name"],
                         related_variable,
                         {
                             key: metadata[related_variable].get(key)
-                            for key in ["original_NAME", "original_CODE"]
+                            for key in ["long_name", "gf3_code"]
                         },
                     ),
                     UserWarning,
@@ -283,7 +293,6 @@ def odf_flag_variables(metadata, flag_convention=None):
                 att.update(flag_convention["default"])
 
         # TODO rename QQQQ_XX flag variables to Q[related_variables] so that ERDDAP can easily amalgamate them!
-
     return metadata
 
 
@@ -293,35 +302,38 @@ def get_vocabulary_attributes(
     """
     This method is use to retrieve from an ODF file each variable code and corresponding related
     vocabularies associated to the organization and variable name.
-    Flag columns are also reviewed and matched to the appropriate variable.
     """
-    def _compare_units(unit, vocab_units):
+
+    def _compare_units(unit, expected_units):
         """Simple tool to compare "|" separated units in the Vocabulary expected unit list.
         Return first unit if any is matching.
         - None if empty or expected to be empty
         - False if not matching untis
         - standard unit string if matching any of the terms listed.
         """
-        if vocab_units:
+        if expected_units:
             # Split unit list and convert None or dimensionless to None
             unit_list = []
-            for item in vocab_units.split("|"):
-                if item.lower() in ['none', 'dimensionless']:
+            for unit_item in expected_units.split("|"):
+                if unit_item.lower() in ["none", "dimensionless"]:
                     unit_list.append(None)
                 else:
-                    unit_list.append(item)
+                    unit_list.append(unit_item)
 
             standard_unit = unit_list[0]
         else:
             unit_list = []
             standard_unit = None
 
+        if unit in ["none", "dimensionaless"]:
+            unit = None
+
         if unit in unit_list:
             return standard_unit
         elif unit is None and standard_unit is None:
             return None
         elif unit and standard_unit is None:
-            return 'unknown'
+            return "unknown"
         elif unit not in unit_list:
             return False
 
@@ -345,8 +357,7 @@ def get_vocabulary_attributes(
         ) or parameter_code["name"] in ["QCFF", "FFFF"]
 
         # Get ODF variable units and make some simple standardization
-        var_units = attributes.get("original_UNITS", "none")
-        var_units = standardize_odf_units(var_units)
+        var_units = standardize_odf_units(attributes.get("units", "none"))
 
         # Find matching vocabularies and code and sort by given vocabularies
         matching_terms = vocabulary[
@@ -354,13 +365,15 @@ def get_vocabulary_attributes(
             & vocabulary.index.isin([parameter_code["name"]], level=1)
         ].copy()
 
-        # Among these matching terms compare units
-        matching_terms['standardize_units'] = matching_terms['expected_units'].apply(
+        # Among these matching terms find matching units
+        matching_terms["standardize_units"] = matching_terms["expected_units"].apply(
             lambda x: _compare_units(var_units, x)
         )
 
-        # Drop the terms with no matching units
-        matching_terms_and_units = matching_terms[~matching_terms['standardize_units'].isin([False])]
+        # Drop the terms with no matching units (=False)
+        matching_terms_and_units = matching_terms[
+            ~matching_terms["standardize_units"].isin([False])
+        ]
 
         # No matching term, give a warning if not a flag and move on to the next iteration
         if len(matching_terms_and_units) == 0:
@@ -369,7 +382,7 @@ def get_vocabulary_attributes(
             elif len(matching_terms) == 0:
                 warnings.warn(
                     "{0}[{1}] not available in vocabularies: {2}".format(
-                        parameter_code["name"], attributes["original_UNITS"], organizations
+                        parameter_code["name"], attributes["units"], organizations
                     ),
                     UserWarning,
                 )
@@ -378,7 +391,7 @@ def get_vocabulary_attributes(
                 warnings.warn(
                     "No Matching unit found for {0} [{1}] in: {2}".format(
                         var,
-                        attributes.get("original_UNITS"),
+                        attributes.get("units"),
                         matching_terms["expected_units"].to_dict(),
                     ),
                     UserWarning,
@@ -393,21 +406,21 @@ def get_vocabulary_attributes(
             if item in matched_terms.dropna():
                 attributes[item] = matched_terms[item]
 
-        # Update units attribute to match vocabulary
-        if matched_terms['standardize_units'] == 'unknown':
+        # Update units attribute to match vocabulary firs unit listed
+        if matched_terms["standardize_units"] == "unknown":
             warnings.warn(
                 "No units available within vocabularies {2} for term {0} [{1}]".format(
                     var,
-                    attributes["original_UNITS"],
+                    attributes["units"],
                     matching_terms["expected_units"].to_dict(),
                     UserWarning,
                 )
             )
-            attributes['units'] = var_units
-        elif matched_terms['standardize_units']:
-            attributes['units'] = matched_terms['standardize_units']
-        elif matching_terms['standardize_units'] is None and 'units' in attributes:
-            attributes.pop('units')
+            attributes["units"] = var_units
+        elif matched_terms["standardize_units"]:
+            attributes["units"] = matched_terms["standardize_units"]
+        elif matching_terms["standardize_units"] is None and "units" in attributes:
+            attributes.pop("units")
 
         # Update sdn_parameter_urn term available to match trailing number with variable itself.
         if attributes.get("sdn_parameter_urn"):
