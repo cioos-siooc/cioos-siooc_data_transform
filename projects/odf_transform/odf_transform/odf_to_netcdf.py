@@ -94,6 +94,12 @@ def write_ctd_ncfile(
     # Assign the right dimension
     ds = xarray_methods.define_index_dimensions(ds)
 
+    # Standardize variable attributes
+    for var in ds.keys():
+        sorted_attributes = xarray_methods.standardize_variable_attributes(ds[var].values, ds[var].attrs)
+        if sorted_attributes:
+            ds[var].attrs = sorted_attributes
+
     # Finally save the xarray dataset to a NetCDF file!!!
     ds.to_netcdf(output_path)
 

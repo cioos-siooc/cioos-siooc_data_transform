@@ -119,6 +119,32 @@ def convert_variables_to_erddap_format(ds):
     return ds
 
 
+def standardize_variable_attributes(values, attributes={}):
+    """
+    Method to generate simple generic variable attributes and reorder attributes in a consistent order.
+    """
+    attribute_order = ['long_name', 'units', 'scale', 'standard_name', 'sdn_parameter_name',
+                       'source', 'reference', 'cell_method', 'value_min', 'value_max'
+                       'grid_mapping']
+    if values.dtype in [float, int, 'float32', 'float64', 'int64', 'int32']:
+        attributes.update({
+            "valid_min": values.min().item(0),
+            "valid_max": values.max().item(0)
+        })
+
+    # Sort attributes by order provided
+    sorted_attributes = {key: attributes[key] for key in attribute_order if key in attributes}
+
+    # If any left over add the rest
+    sorted_attributes.update(attributes)
+
+    # Drop empty attributes
+    empty_att = [key for key, att in sorted_attributes.items() if att==None]
+    for key in empty_att:
+        sorted_attributes.pop(key)
+    return sorted_attributes
+
+
 def get_spatial_coverage_attributes(ds,
                                     time='time',
                                     lat='latitude',
