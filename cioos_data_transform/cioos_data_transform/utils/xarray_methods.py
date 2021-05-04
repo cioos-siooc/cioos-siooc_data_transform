@@ -261,7 +261,7 @@ def define_index_dimensions(ds):
     # Handle dimension name if still default "index" from conversion of pandas to xarray
     if 'index' in ds.dims and len(ds.dims.keys()) == 1:
         # If dimension is index and is a table like data
-        if ds.attrs['cdm_data_type'] in ['Timeseries', 'Trajectory']:
+        if ds.attrs['cdm_data_type'] in ['TimeSeries', 'Trajectory']:
             ds = ds.swap_dims({'index': 'time'})
             ds = ds.reset_coords('index')
         elif 'Profile' == ds.attrs['cdm_data_type']:
@@ -288,7 +288,7 @@ def add_variable_attributes(ds,
         matched_scale = None
         for scale_name in scales:
             for att in review_attributes:
-                if att in ds[var].attrs:
+                if att in ds[var].attrs and ds[var].attrs[att]:
                     matched_scale = re.search(scales[scale_name], ds[var].attrs[att], re.IGNORECASE)
 
                 if matched_scale:

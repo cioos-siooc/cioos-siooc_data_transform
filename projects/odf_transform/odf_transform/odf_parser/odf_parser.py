@@ -148,7 +148,7 @@ def read(filename, encoding_format="Windows-1252"):
             # Add those variable attributes to the metadata output
             metadata["variable_attributes"].update({output_variable_name: attribute})
             # Time type column add to time variables to parse by pd.read_csv()
-            if output_variable_name.startswith("SYTM") or att["type"] == "SYTM":
+            if output_variable_name.startswith("SYTM") or att["TYPE"] == "SYTM":
                 time_columns.append(output_variable_name)
 
         # If not time column replace by False
@@ -183,7 +183,7 @@ def read(filename, encoding_format="Windows-1252"):
         )
 
     # Make sure that timezone is UTC, GMT or None
-    # (This may not be necessary since we're looking at the units alter now)
+    # (This may not be necessary since we're looking at the units later now)
     if time_columns:
         for parm in time_columns:
             units = metadata["variable_attributes"][parm].get(
@@ -300,16 +300,14 @@ def get_vocabulary_attributes(
     metadata, organizations=None, vocabulary=None, vocabulary_attribute_list=None
 ):
     """
-    This method is use to retrieve from an ODF file each variable code and corresponding related
-    vocabularies associated to the organization and variable name.
+    This method is use to retrieve from an ODF variable code, units and units, matching vocabulary terms available.
     """
 
     def _compare_units(unit, expected_units):
         """Simple tool to compare "|" separated units in the Vocabulary expected unit list.
-        Return first unit if any is matching.
+        - First unit if any is matching.
         - None if empty or expected to be empty
-        - False if not matching untis
-        - standard unit string if matching any of the terms listed.
+        - False if not matching units
         """
         if expected_units:
             # Split unit list and convert None or dimensionless to None
@@ -458,14 +456,14 @@ def standardize_odf_units(unit_string):
     Units strings were manually written within the ODF files.
     We're trying to standardize all the different issues found.
     """
+    if type(unit_string) is str:
+        unit_string = unit_string.replace("**", "^")
+        unit_string = unit_string.replace("µ", "u")
+        unit_string = re.sub(r" /|/ ", "/", unit_string)
+        unit_string = re.sub(r" \^|\^ ", "^", unit_string)
 
-    unit_string = unit_string.replace("**", "^")
-    unit_string = unit_string.replace("µ", "u")
-    unit_string = re.sub(r" /|/ ", "/", unit_string)
-    unit_string = re.sub(r" \^|\^ ", "^", unit_string)
-
-    if re.match(r"\(none\)|none|dimensionless", unit_string):
-        unit_string = "none"
+        if re.match(r"\(none\)|none|dimensionless", unit_string):
+            unit_string = "none"
     return unit_string
 
 
