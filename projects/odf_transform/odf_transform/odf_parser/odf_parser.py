@@ -492,7 +492,7 @@ def convert_odf_time(time_string):
 
 
 def generate_variables_from_header(
-    ds, odf_header, cdm_data_type, original_var_field="original_variable"
+    ds, odf_header, cdm_data_type, original_var_field="source"
 ):
     """
     Method use to generate metadata variables from the ODF Header to a xarray Dataset.
@@ -617,6 +617,11 @@ def generate_variables_from_header(
             -gsw.z_from_p(ds["PRES_01"], ds["latitude"]),
         )
         ds["depth"].attrs[original_var_field] = "-gsw.z_from_p(PRES_01,latitude)"
+    elif 'MIN_DEPTH' in odf_header['EVENT_HEADER'] and \
+        'MAX_DEPTH' in odf_header['EVENT_HEADER'] and \
+        odf_header["EVENT_HEADER"]["MAX_DEPTH"]- odf_header["EVENT_HEADER"]["MIN_DEPTH"] == 0:
+        ds.coords["depth"] = odf_header["EVENT_HEADER"]["MAX_DEPTH"]
+        ds["depth"].attrs[original_var_field] = "EVENT_HEADER:MIN|MAX_DEPTH"
     else:
         # If no depth variable is available we'll assume it's not suppose to happen for now.
         raise RuntimeError("Missing a depth information")
