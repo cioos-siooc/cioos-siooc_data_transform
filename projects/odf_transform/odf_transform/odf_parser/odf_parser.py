@@ -522,7 +522,7 @@ def generate_variables_from_header(
     if cdm_data_type == "Profile":
         # Time variable
         if "start_time" in ds and ds["start_time"].item():
-            ds["time"] = ds["start_time"].copy()
+            ds.coords["time"] = ds["start_time"].copy()
         # elif "SYTM_01" in ds.keys():
         #     ds.coords["time"] = ds["SYTM_01"].min().values
         #     ds["time"].attrs[original_var_field] = "min(SYMT_01)"
