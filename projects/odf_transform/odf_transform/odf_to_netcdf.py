@@ -61,13 +61,13 @@ def write_ctd_ncfile(
     )
 
     # Add file name as a variable
-    ds["file_id"] = os.path.split(odf_path)[-1]
-    if config.get("cdm_data_type") == "Profile":
-        ds["profile_id"] = os.path.split(odf_path)[-1]
-    elif config.get("cdm_data_type") == "TimeSeries":
-        ds["timeseries_id"] = os.path.split(odf_path)[-1]
-    elif config.get("cdm_data_type") == "Trajectory":
-        ds["trajectory_id"] = os.path.split(odf_path)[-1]
+    cdm_data_type = config.get("cdm_data_type")
+    file_id = os.path.split(odf_path)[-1]
+    ds["file_id"] = file_id
+    if cdm_data_type in ["Profile", "TimeSeries", "Trajectory", "TimeSeriesProfiles"]:
+        ds[cdm_data_type.lower() + "_id"] = file_id
+    else:
+        raise ValueError("Unknown cdm_data_type: {0}".format(cdm_data_type))
 
     # Add Vocabulary attributes
     var_attributes = odf.get_vocabulary_attributes(
@@ -96,7 +96,9 @@ def write_ctd_ncfile(
 
     # Standardize variable attributes
     for var in ds.keys():
-        sorted_attributes = xarray_methods.standardize_variable_attributes(ds[var].values, ds[var].attrs)
+        sorted_attributes = xarray_methods.standardize_variable_attributes(
+            ds[var].values, ds[var].attrs
+        )
         if sorted_attributes:
             ds[var].attrs = sorted_attributes
 
