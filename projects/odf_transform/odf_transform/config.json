@@ -1,0 +1,32 @@
+{
+    "odf_path":"../sample_data/test_files/",
+    "output_path":"./output/",
+    "geojsonFileList": [
+        "./geojson_files/ios_polygons.geojson",
+        "./geojson_files/MLI_St-LawrenceBoxes.geojson",
+        "./geojson_files/csasAtlPhys_climatePolygons.geojson"
+    ],
+    "vocabularyFile": "./vocabulary/CIOOS_Vocabulary_List - Complete_Vocabulary.csv",
+    "organisationVocabulary": ["QO","GF3"],
+    "cdm_data_type": "Profile",
+    "global_attributes": {
+        "title": "dataset title",
+        "title_fra": "title in french here",
+        "summary": "brief summary of dataset",
+        "summary_fra": " summary in french here",
+        "description": "detailed description",
+        "description_fra": "description in french",
+        "infoUrl": "http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html",
+        "keywords": "temperature, salinity",
+        "keywords_fra": "salinite",
+        "acknowledgement": "thanks etc ...",
+        "naming_authority": "CF Standard Name Table v29",
+        "creator_name": "CIOOS",
+        "creator_email": "cioos email here",
+        "creator_url": "http://www.someurlhere.com",
+        "license": "standard license information here",
+        "keywords_vocabulary": "GCMD Science Keywords",
+        "Conventions": "CF-1.6,CF-1.7,ACDD1.1",
+        "comment": ""
+    }
+}

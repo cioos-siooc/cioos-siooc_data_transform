@@ -1,0 +1,2309 @@
+{
+    "metadata": {
+        "units": {
+            "IDEN": {
+                "unit": [],
+                "scale": ""
+            },
+            "scan": {
+                "unit": [],
+                "scale": ""
+            },
+            "NUM_": {
+                "unit": [],
+                "scale": ""
+            },
+            "pressure": {
+                "unit": [
+                    "dbar"
+                ],
+                "scale": ""
+            },
+            "SDEV": {
+                "unit": [
+                    "dbar"
+                ],
+                "scale": ""
+            },
+            "temperature": {
+                "unit": [
+                    [
+                        "*",
+                        "degree",
+                        "C"
+                    ]
+                ],
+                "scale": "ITS-90"
+            },
+            "SDEV2": {
+                "unit": [
+                    [
+                        "*",
+                        "degree",
+                        "C"
+                    ]
+                ],
+                "scale": "ITS-90"
+            },
+            "salinity": {
+                "unit": [],
+                "scale": "PSS-78"
+            },
+            "sigmat": {
+                "unit": [
+                    [
+                        "/",
+                        "kg",
+                        [
+                            "^",
+                            "m",
+                            3
+                        ]
+                    ]
+                ],
+                "scale": ""
+            },
+            "fluorometer": {
+                "unit": [
+                    [
+                        "/",
+                        "mg",
+                        [
+                            "^",
+                            "m",
+                            3
+                        ]
+                    ]
+                ],
+                "scale": ""
+            },
+            "oxygen": {
+                "unit": [
+                    [
+                        "/",
+                        "ml",
+                        "l"
+                    ]
+                ],
+                "scale": ""
+            },
+            "PHT_": {
+                "unit": "Total scale",
+                "scale": ""
+            },
+            "TRB_": {
+                "unit": [
+                    "NTU"
+                ],
+                "scale": ""
+            },
+            "SECC": {
+                "unit": [
+                    "m"
+                ],
+                "scale": ""
+            },
+            "salinity2": {
+                "unit": [],
+                "scale": "PSS-78"
+            },
+            "  NAME= 'quality flag of bottle sample salinity',Flag": {
+                "unit": [],
+                "scale": ""
+            },
+            "oxygen2": {
+                "unit": [
+                    [
+                        "/",
+                        "ml",
+                        "l"
+                    ]
+                ],
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample oxygen',Flag": {
+                "unit": [],
+                "scale": ""
+            },
+            "oxygen3": {
+                "unit": [
+                    [
+                        "/",
+                        "ml",
+                        "l"
+                    ]
+                ],
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample oxygen',Flag2": {
+                "unit": [],
+                "scale": ""
+            },
+            "CPHL": {
+                "unit": [
+                    [
+                        "/",
+                        "mg",
+                        [
+                            "^",
+                            "m",
+                            3
+                        ]
+                    ]
+                ],
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample chlorophyll content',Flag": {
+                "unit": [],
+                "scale": ""
+            },
+            "CPHL2": {
+                "unit": [
+                    [
+                        "/",
+                        "mg",
+                        [
+                            "^",
+                            "m",
+                            3
+                        ]
+                    ]
+                ],
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample chlorophyll content',Flag2": {
+                "unit": [],
+                "scale": ""
+            },
+            "PHA_": {
+                "unit": [
+                    [
+                        "/",
+                        "mg",
+                        [
+                            "^",
+                            "m",
+                            3
+                        ]
+                    ]
+                ],
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample phaeopigment content',Flag": {
+                "unit": [],
+                "scale": ""
+            },
+            "PHA_2": {
+                "unit": [
+                    [
+                        "/",
+                        "mg",
+                        [
+                            "^",
+                            "m",
+                            3
+                        ]
+                    ]
+                ],
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample phaeopigment content',Flag2": {
+                "unit": [],
+                "scale": ""
+            },
+            "AMON": {
+                "unit": [
+                    [
+                        "/",
+                        "mmol",
+                        [
+                            "^",
+                            "m",
+                            3
+                        ]
+                    ]
+                ],
+                "scale": ""
+            },
+            "AMON2": {
+                "unit": [
+                    [
+                        "/",
+                        "mmol",
+                        [
+                            "^",
+                            "m",
+                            3
+                        ]
+                    ]
+                ],
+                "scale": ""
+            },
+            "LABT": {
+                "unit": "Degrees C",
+                "scale": ""
+            },
+            "LPHT": {
+                "unit": "Total scale",
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample pH, lab measurement',Flag": {
+                "unit": [],
+                "scale": ""
+            },
+            "LPHT2": {
+                "unit": "Total scale",
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample pH, lab measurement',Flag2": {
+                "unit": [],
+                "scale": ""
+            },
+            "PHT_2": {
+                "unit": "Total scale",
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample pH, in situ calc',Flag": {
+                "unit": [],
+                "scale": ""
+            },
+            "PHT_3": {
+                "unit": "Total scale",
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample pH, in situ calc',Flag2": {
+                "unit": [],
+                "scale": ""
+            },
+            "ALKW": {
+                "unit": [
+                    [
+                        "/",
+                        "umol",
+                        "kg"
+                    ]
+                ],
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample alkalinity',Flag": {
+                "unit": [],
+                "scale": ""
+            },
+            "TICW": {
+                "unit": [
+                    [
+                        "/",
+                        "umol",
+                        "kg"
+                    ]
+                ],
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample total inorganic carbon',Flag": {
+                "unit": [],
+                "scale": ""
+            },
+            "NTRI": {
+                "unit": [
+                    [
+                        "/",
+                        "mmol",
+                        [
+                            "^",
+                            "m",
+                            3
+                        ]
+                    ]
+                ],
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample nitrite (NO2-N) content',Flag": {
+                "unit": [],
+                "scale": ""
+            },
+            "NTRI2": {
+                "unit": [
+                    [
+                        "/",
+                        "mmol",
+                        [
+                            "^",
+                            "m",
+                            3
+                        ]
+                    ]
+                ],
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample nitrite (NO2-N) content',Flag2": {
+                "unit": [],
+                "scale": ""
+            },
+            "NTRZ": {
+                "unit": [
+                    [
+                        "/",
+                        "mmol",
+                        [
+                            "^",
+                            "m",
+                            3
+                        ]
+                    ]
+                ],
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample nitrate (NO3-N) + nitrite (NO2-N) content',Flag": {
+                "unit": [],
+                "scale": ""
+            },
+            "NTRZ2": {
+                "unit": [
+                    [
+                        "/",
+                        "mmol",
+                        [
+                            "^",
+                            "m",
+                            3
+                        ]
+                    ]
+                ],
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample nitrate (NO3-N) + nitrite (NO2-N) content',Flag2": {
+                "unit": [],
+                "scale": ""
+            },
+            "PHOS": {
+                "unit": [
+                    [
+                        "/",
+                        "mmol",
+                        [
+                            "^",
+                            "m",
+                            3
+                        ]
+                    ]
+                ],
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample phosphate (PO4-P) content',Flag": {
+                "unit": [],
+                "scale": ""
+            },
+            "PHOS2": {
+                "unit": [
+                    [
+                        "/",
+                        "mmol",
+                        [
+                            "^",
+                            "m",
+                            3
+                        ]
+                    ]
+                ],
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample phosphate (PO4-P) content',Flag2": {
+                "unit": [],
+                "scale": ""
+            },
+            "SLCA": {
+                "unit": [
+                    [
+                        "/",
+                        "mmol",
+                        [
+                            "^",
+                            "m",
+                            3
+                        ]
+                    ]
+                ],
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample silicate (SIO4-SI) content',Flag": {
+                "unit": [],
+                "scale": ""
+            },
+            "SLCA2": {
+                "unit": [
+                    [
+                        "/",
+                        "mmol",
+                        [
+                            "^",
+                            "m",
+                            3
+                        ]
+                    ]
+                ],
+                "scale": ""
+            },
+            "  NAME= 'quality flag of bottle sample silicate (SIO4-SI) content',Flag2": {
+                "unit": [],
+                "scale": ""
+            },
+            "CFlagFlag": {
+                "unit": [],
+                "scale": ""
+            }
+        },
+        "flags": {
+            "  NAME= 'quality flag of bottle sample salinity',": [
+                1,
+                9,
+                1,
+                9,
+                9,
+                1,
+                1,
+                1,
+                1
+            ],
+            "  NAME= 'quality flag of bottle sample oxygen',": [
+                9,
+                9,
+                1,
+                9,
+                9,
+                9,
+                1,
+                9,
+                1
+            ],
+            "  NAME= 'quality flag of bottle sample oxygen',2": [
+                9,
+                9,
+                1,
+                9,
+                9,
+                9,
+                1,
+                9,
+                1
+            ],
+            "  NAME= 'quality flag of bottle sample chlorophyll content',": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                9,
+                9
+            ],
+            "  NAME= 'quality flag of bottle sample chlorophyll content',2": [
+                1,
+                1,
+                9,
+                1,
+                1,
+                1,
+                1,
+                9,
+                9
+            ],
+            "  NAME= 'quality flag of bottle sample phaeopigment content',": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                9,
+                9
+            ],
+            "  NAME= 'quality flag of bottle sample phaeopigment content',2": [
+                0,
+                0,
+                9,
+                0,
+                0,
+                0,
+                0,
+                9,
+                9
+            ],
+            "  NAME= 'quality flag of bottle sample pH, lab measurement',": [
+                0,
+                9,
+                0,
+                9,
+                9,
+                0,
+                0,
+                0,
+                0
+            ],
+            "  NAME= 'quality flag of bottle sample pH, lab measurement',2": [
+                0,
+                9,
+                0,
+                9,
+                9,
+                0,
+                0,
+                0,
+                0
+            ],
+            "  NAME= 'quality flag of bottle sample pH, in situ calc',": [
+                1,
+                9,
+                2,
+                9,
+                9,
+                2,
+                1,
+                1,
+                1
+            ],
+            "  NAME= 'quality flag of bottle sample pH, in situ calc',2": [
+                1,
+                9,
+                2,
+                9,
+                9,
+                2,
+                1,
+                1,
+                1
+            ],
+            "  NAME= 'quality flag of bottle sample alkalinity',": [
+                0,
+                9,
+                0,
+                9,
+                9,
+                0,
+                0,
+                0,
+                0
+            ],
+            "  NAME= 'quality flag of bottle sample total inorganic carbon',": [
+                0,
+                9,
+                0,
+                9,
+                9,
+                0,
+                0,
+                0,
+                0
+            ],
+            "  NAME= 'quality flag of bottle sample nitrite (NO2-N) content',": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            "  NAME= 'quality flag of bottle sample nitrite (NO2-N) content',2": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            "  NAME= 'quality flag of bottle sample nitrate (NO3-N) + nitrite (NO2-N) content',": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            "  NAME= 'quality flag of bottle sample nitrate (NO3-N) + nitrite (NO2-N) content',2": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            "  NAME= 'quality flag of bottle sample phosphate (PO4-P) content',": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            "  NAME= 'quality flag of bottle sample phosphate (PO4-P) content',2": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            "  NAME= 'quality flag of bottle sample silicate (SIO4-SI) content',": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            "  NAME= 'quality flag of bottle sample silicate (SIO4-SI) content',2": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            "QC": [
+                0,
+                0,
+                256,
+                0,
+                2048,
+                256,
+                0,
+                0,
+                0
+            ]
+        },
+        "filename": "/Users/nate.rosenstock/dev/cioos-siooc_data_transform/odf_transform/sample_data/mli_data/2020-12-23/ODF_files_MLI/BOTL_2019004_1_1A_.ODF",
+        "deploymentType": "unknown",
+        "header": {
+            "ODF_HEADER": {
+                "FILE_SPECIFICATION _1": "BOTL_2019004_1_1A_"
+            },
+            "CRUISE_HEADER": {
+                "COUNTRY_INSTITUTE_CODE _1": "CaIML",
+                "CRUISE_NUMBER _1": "2019004",
+                "ORGANIZATION _1": "IML",
+                "CHIEF_SCIENTIST _1": "Francois Villeneuve",
+                "START_DATE _1": "01-JAN-2019 00:00:00.00",
+                "END_DATE _1": "31-DEC-2019 23:50:00.00",
+                "PLATFORM _1": "Beluga II",
+                "CRUISE_NAME _1": "Echantillonnage à une station fixe dans l'ESL",
+                "CRUISE_DESCRIPTION _1": "Monitorage des communautes planctoniques (zoo et phyto) et de l'environnement marin dans le chenal Laurentien au large de Rimouski"
+            },
+            "EVENT_HEADER": {
+                "DATA_TYPE_1": "BOTL",
+                "EVENT_NUMBER_1": "1",
+                "EVENT_QUALIFIER1_1": "1A",
+                "EVENT_QUALIFIER2_1": "",
+                "CREATION_DATE_1": "08-NOV-2020 14:07:31.85",
+                "ORIG_CREATION_DATE_1": "08-NOV-2020 13:19:32.00",
+                "START_DATE_TIME_1": "12-APR-2019 12:11:27.00",
+                "END_DATE_TIME_1": "12-APR-2019 12:28:00.00",
+                "INITIAL_LATITUDE_1": "48.663667",
+                "INITIAL_LONGITUDE_1": "-68.583167",
+                "END_LATITUDE_1": "48.663800",
+                "END_LONGITUDE_1": "-68.585500",
+                "MIN_DEPTH_1": "1.29",
+                "MAX_DEPTH_1": "327.94",
+                "SAMPLING_INTERVAL_1": "-99.0",
+                "SOUNDING_1": "330.00",
+                "DEPTH_OFF_BOTTOM_1": "2.00",
+                "EVENT_COMMENTS_1": "Station RIKI-01",
+                "EVENT_COMMENTS_2": "Secchi(m): 4.5"
+            },
+            "METEO_HEADER": {
+                "AIR_TEMPERATURE_1": "5.00",
+                "ATMOSPHERIC_PRESSURE_1": "-99.00",
+                "WIND_SPEED_1": "4.63",
+                "WIND_DIRECTION_1": "0.00",
+                "SEA_STATE_1": "2",
+                "CLOUD_COVER_1": "2",
+                "ICE_THICKNESS_1": "-99.00",
+                "METEO_COMMENTS_1": "Air_Temperature: degrees C",
+                "METEO_COMMENTS_2": "Wind_Speed: m/s",
+                "METEO_COMMENTS_3": "Wind_Direction(0-360): True North degrees",
+                "METEO_COMMENTS_4": "Atmospheric_Pressure: hpa",
+                "METEO_COMMENTS_5": "Sea_State(0->9): WMO code table 3700",
+                "METEO_COMMENTS_6": "Cloud_Cover(0->9): WMO code table 2700",
+                "METEO_COMMENTS_7": "Ice_Thickness: m"
+            },
+            "QUALITY_HEADER": {
+                "QUALITY_DATE_1": "08-NOV-2020 14:02:35.57",
+                "QUALITY_TESTS_1": "Test 1.1: GTSPP Platform Identification",
+                "QUALITY_TESTS_2": "Test 1.2: GTSPP Impossible Date/Time",
+                "QUALITY_TESTS_3": "Test 1.3: GTSPP Impossible Location",
+                "QUALITY_TESTS_4": "Test 1.4: GTSPP Position on Land",
+                "QUALITY_TESTS_5": "Test 1.5: GTSPP Impossible Speed",
+                "QUALITY_TESTS_6": "Test 1.6: GTSPP Impossible Sounding",
+                "QUALITY_TESTS_7": "Test 1.7: IML Unlikely Position - Outside Canadian Waters",
+                "QUALITY_TESTS_8": "Test 5.1: Cruise Track Visual Inspection",
+                "QUALITY_TESTS_9": "Test 2.1: Global Impossible Parameter Values (2)",
+                "QUALITY_TESTS_10": "Test 2.2: Regional Impossible Parameter Values (4)",
+                "QUALITY_TESTS_11": "Test 2.4: Profile Envelope (16)",
+                "QUALITY_TESTS_12": "Test 2.5: Constant Profile (32)",
+                "QUALITY_TESTS_13": "Test 2.7: Replicate Comparisons (128)",
+                "QUALITY_TESTS_14": "Test 2.8: Bottle versus CTD Measurements (TEMP, PSAL, DOXY, PHPH) (256)",
+                "QUALITY_TESTS_15": "Test 2.9: Excessive Gradient or Inversion (TEMP, PSAL, NTRZ, PHOS, PHPH, TALK) (512)",
+                "QUALITY_TESTS_16": "Test 2.10: Surface Dissolved Oxygen Data versus Percent Saturation (1024)",
+                "QUALITY_TESTS_17": "Test 3.5: Petrie Monthly Climatology (TEMP, PSAL, SIGT)",
+                "QUALITY_TESTS_18": "Test 3.6: Brickman Monthly Climatology (NTRA, PHOS, SLCA)",
+                "QUALITY_TESTS_19": "Test 5.2: Ratio and Profile Visual Inspection (station data)",
+                "QUALITY_TESTS_20": "Test 5.3: Replicates Visual Inspection (whole cruise data)",
+                "QUALITY_TESTS_21": "Test 5.4: Bottle Versus CTD Measurements Visual Inspection (whole cruise data)",
+                "QUALITY_TESTS_22": "Test 5.5: Ratio and Profile Visual Inspection (whole cruise data)",
+                "QUALITY_TESTS_23": "Test 5.6: Variable patterns with time (whole cruise data)",
+                "QUALITY_COMMENTS_1": "QCFF values are derived from tests of the bottle quality control stage 2",
+                "QUALITY_COMMENTS_2": "A quality flag modified by hand has a QCFF value of 1"
+            },
+            "HISTORY_HEADER": {
+                "CREATION_DATE_2": "08-NOV-2020 13:46:49.25",
+                "PROCESS_1": "CTD data treatment",
+                "PROCESS_2": "CTD_INST_TYPE= Sea-Bird",
+                "PROCESS_3": "CTD_MODEL= SBE 19plus V2",
+                "PROCESS_4": "CTD_SERIAL_NUMBER= 6786",
+                "PROCESS_5": "CTD_DESCRIPTION= IML201904001A.hex Riki_1a6_O2pHTcal.xmlcon"
+            },
+            "HISTORY_HEADER2": {
+                "CREATION_DATE_3": "08-NOV-2020 14:02:34.67",
+                "PROCESS_6": "BOTL-files from CTD_2019004_1_1A_DN.odf and QC_BTL_2019004.xlsx"
+            },
+            "HISTORY_HEADER3": {
+                "CREATION_DATE_4": "08-NOV-2020 14:02:34.69",
+                "PROCESS_7": "Parameter / Method CODE / Description",
+                "PROCESS_8": "IDEN_01 / Echantillon / unique sample number",
+                "PROCESS_9": "CNTR_01 / CNTR / scan number: CTD",
+                "PROCESS_10": "NUM__01 / nCNTR / number of scans averaged: CTD",
+                "PROCESS_11": "PRES_01 / PRES / pressure: CTD",
+                "PROCESS_12": "SDEV_01 / PRES_SDEV / standard deviation pressure: CTD",
+                "PROCESS_13": "TE90_01 / TE90 / temperature: CTD",
+                "PROCESS_14": "SDEV_02 / TE90_SDEV / standard deviation temperature: CTD",
+                "PROCESS_15": "PSAL_01 / PSAL / salinity: CTD",
+                "PROCESS_16": "SIGT_01 / SIGT / sigma-t: CTD",
+                "PROCESS_17": "FLOR_01 / FLOR / fluorescence: CTD",
+                "PROCESS_18": "DOXY_01 / DOXY / oxygen: CTD",
+                "PROCESS_19": "PHT__01 / PHPH_T / pH: CTD/Calibrated to total scale",
+                "PROCESS_20": "TRB__01 / TRB_ / turbidity: CTD",
+                "PROCESS_21": "SECC_01 / SECC / secchi depth measurement",
+                "PROCESS_22": "PSAL_02 / PSAL_BS / autoSAL salinity measurement",
+                "PROCESS_23": "QQQQ_01 / Q_PSAL / quality flag of bottle sample salinity",
+                "PROCESS_24": "DOXY_02 / OXY_02 / Winkler automated dissolved oxygen titration method: Jones, Zemlyak and Stewart (1992)",
+                "PROCESS_25": "QQQQ_02 / Q_OXY / quality flag of bottle sample oxygen",
+                "PROCESS_26": "DOXY_03 / OXY_02 / Winkler automated dissolved oxygen titration method: Jones, Zemlyak and Stewart (1992)",
+                "PROCESS_27": "QQQQ_03 / Q_OXY / quality flag of bottle sample oxygen",
+                "PROCESS_28": "CPHL_01 / CHL_01 / chlorophyll-a content: fluorometric method of Holm-Hansen, Lorenzen, Holmes and Strickland (1965)",
+                "PROCESS_29": "QQQQ_04 / Q_CHL / quality flag of bottle sample chlorophyll content",
+                "PROCESS_30": "CPHL_02 / CHL_01 / chlorophyll-a content: fluorometric method of Holm-Hansen, Lorenzen, Holmes and Strickland (1965)",
+                "PROCESS_31": "QQQQ_05 / Q_CHL / quality flag of bottle sample chlorophyll content",
+                "PROCESS_32": "PHA__01 / PHA_01 / phaeopigment content: fluorometric method of Holm-Hansen, Lorenzen, Holmes and Strickland (1965)",
+                "PROCESS_33": "QQQQ_06 / Q_PHA / quality flag of bottle sample phaeopigment content",
+                "PROCESS_34": "PHA__02 / PHA_01 / phaeopigment content: fluorometric method of Holm-Hansen, Lorenzen, Holmes and Strickland (1965)",
+                "PROCESS_35": "QQQQ_07 / Q_PHA / quality flag of bottle sample phaeopigment content",
+                "PROCESS_36": "AMON_01 / NH4_03 / ammonium content: Kérouel & Aminot (1997), autoanalyzer with frozen sample",
+                "PROCESS_37": "AMON_02 / NH4_03 / ammonium content: Kérouel & Aminot (1997), autoanalyzer with frozen sample",
+                "PROCESS_38": "LABT_01 / LABT_01 / lab temperature for calculation of pH",
+                "PROCESS_39": "LPHT_01 / LBPHT_02 / pH: mesuré au laboratoire/spectrophotometric determination(SOP6b in Dickson et al. 2007) BUT on preserved sample",
+                "PROCESS_40": "QQQQ_08 / Q_LBPHT / quality flag water pH, lab measurement",
+                "PROCESS_41": "LPHT_02 / LBPHT_02 / pH: mesuré au laboratoire/spectrophotometric determination(SOP6b in Dickson et al. 2007) BUT on preserved sample",
+                "PROCESS_42": "QQQQ_09 / Q_LBPHT / quality flag water pH, lab measurement",
+                "PROCESS_43": "PHT__02 / pHT_02 / pH: mesuré au laboratoire/spectrophotometric determination(SOP6b in Dickson et al. 2007)BUT on preserved sample/converti au pH in situ selon Lewis&Wallace 1998",
+                "PROCESS_44": "QQQQ_10 / Q_pHT / quality flag water pH, in situ calc",
+                "PROCESS_45": "PHT__03 / pHT_02 / pH: mesuré au laboratoire/spectrophotometric determination(SOP6b in Dickson et al. 2007)BUT on preserved sample/converti au pH in situ selon Lewis&Wallace 1998",
+                "PROCESS_46": "QQQQ_11 / Q_pHT / quality flag water pH, in situ calc",
+                "PROCESS_47": "ALKW_01 / ALKW_02 / alkalinity: Determination of total alkalinity in seawater using an closed cell titration (SOP 3a in Dickson et al. 2007)",
+                "PROCESS_48": "QQQQ_12 / Q_ALKW / quality flag of bottle sample alkalinity",
+                "PROCESS_49": "TICW_01 / TICW_01 / TIC: Determination of total dissolved inorganic carbon in seawater (SOP 2 in Dickson et al. 2007)",
+                "PROCESS_50": "QQQQ_13 / Q_TICW / quality flag of bottle sample total inorganic carbon",
+                "PROCESS_51": "NTRI_01 / NO2_03 / nitrite content: AA3; American Public Health Association (1971)",
+                "PROCESS_52": "QQQQ_14 / Q_NO2 / quality flag of bottle sample nitrite (NO2-N) content",
+                "PROCESS_53": "NTRI_02 / NO2_03 / nitrite content: AA3; American Public Health Association (1971)",
+                "PROCESS_54": "QQQQ_15 / Q_NO2 / quality flag of bottle sample nitrite (NO2-N) content",
+                "PROCESS_55": "NTRZ_01 / NOx_03 / nitrate + nitrite content: AA3; Armstrong, Stearns and Strickland (1967)",
+                "PROCESS_56": "QQQQ_16 / Q_NOx / quality flag of bottle sample nitrate (NO3-N) + nitrite (NO2-N) content",
+                "PROCESS_57": "NTRZ_02 / NOx_03 / nitrate + nitrite content: AA3; Armstrong, Stearns and Strickland (1967)",
+                "PROCESS_58": "QQQQ_17 / Q_NOx / quality flag of bottle sample nitrate (NO3-N) + nitrite (NO2-N) content",
+                "PROCESS_59": "PHOS_01 / PO4_03 / phosphate content: AA3; Murphy and Riley (1962)",
+                "PROCESS_60": "QQQQ_18 / Q_PO4 / quality flag of bottle sample phosphate (PO4-P) content",
+                "PROCESS_61": "PHOS_02 / PO4_03 / phosphate content: AA3; Murphy and Riley (1962)",
+                "PROCESS_62": "QQQQ_19 / Q_PO4 / quality flag of bottle sample phosphate (PO4-P) content",
+                "PROCESS_63": "SLCA_01 / Si_03 / silicate content: AA3; Strickland and Parsons (1972)",
+                "PROCESS_64": "QQQQ_20 / Q_Si / quality flag of bottle sample silicate (SIO4-SI) content",
+                "PROCESS_65": "SLCA_02 / Si_03 / silicate content: AA3; Strickland and Parsons (1972)",
+                "PROCESS_66": "QQQQ_21 / Q_Si / quality flag of bottle sample silicate (SIO4-SI) content",
+                "PROCESS_67": "QCFF_01 / QCFF / quality flag: QCFF"
+            },
+            "PARAMETER_HEADER": {
+                "TYPE_1": "DOUB",
+                "NAME_1": "unique sample number",
+                "UNITS_1": "(none)",
+                "CODE_1": "IDEN_01",
+                "NULL_VALUE_1": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_1": "10",
+                "PRINT_DECIMAL_PLACES_1": "0",
+                "ANGLE_OF_SECTION_1": "0.000000",
+                "MAGNETIC_VARIATION_1": "0.000000",
+                "DEPTH_1": "0.000000 ",
+                "MINIMUM_VALUE_1": "422469",
+                "MAXIMUM_VALUE_1": "422477",
+                "NUMBER_VALID_1": "9",
+                "NUMBER_NULL_1": "0"
+            },
+            "PARAMETER_HEADER2": {
+                "TYPE_2": "DOUB",
+                "NAME_2": "scan number",
+                "UNITS_2": "(none)",
+                "CODE_2": "CNTR_01",
+                "NULL_VALUE_2": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_2": "10",
+                "PRINT_DECIMAL_PLACES_2": "0",
+                "ANGLE_OF_SECTION_2": "0.000000",
+                "MAGNETIC_VARIATION_2": "0.000000",
+                "DEPTH_2": "0.000000 ",
+                "MINIMUM_VALUE_2": "735",
+                "MAXIMUM_VALUE_2": "4071",
+                "NUMBER_VALID_2": "9",
+                "NUMBER_NULL_2": "0"
+            },
+            "PARAMETER_HEADER3": {
+                "TYPE_3": "DOUB",
+                "NAME_3": "number of scans averaged",
+                "UNITS_3": "(none)",
+                "CODE_3": "NUM__01",
+                "NULL_VALUE_3": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_3": "10",
+                "PRINT_DECIMAL_PLACES_3": "0",
+                "ANGLE_OF_SECTION_3": "0.000000",
+                "MAGNETIC_VARIATION_3": "0.000000",
+                "DEPTH_3": "0.000000 ",
+                "MINIMUM_VALUE_3": "20",
+                "MAXIMUM_VALUE_3": "20",
+                "NUMBER_VALID_3": "9",
+                "NUMBER_NULL_3": "0"
+            },
+            "PARAMETER_HEADER4": {
+                "TYPE_4": "DOUB",
+                "NAME_4": "CTD pressure",
+                "UNITS_4": "decibars",
+                "CODE_4": "PRES_01",
+                "NULL_VALUE_4": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_4": "10",
+                "PRINT_DECIMAL_PLACES_4": "1",
+                "ANGLE_OF_SECTION_4": "0.000000",
+                "MAGNETIC_VARIATION_4": "0.000000",
+                "DEPTH_4": "0.000000 ",
+                "MINIMUM_VALUE_4": "1.3",
+                "MAXIMUM_VALUE_4": "331",
+                "NUMBER_VALID_4": "9",
+                "NUMBER_NULL_4": "0"
+            },
+            "PARAMETER_HEADER5": {
+                "TYPE_5": "DOUB",
+                "NAME_5": "CTD standard deviation pressure",
+                "UNITS_5": "decibars",
+                "CODE_5": "SDEV_01",
+                "NULL_VALUE_5": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_5": "10",
+                "PRINT_DECIMAL_PLACES_5": "2",
+                "ANGLE_OF_SECTION_5": "0.000000",
+                "MAGNETIC_VARIATION_5": "0.000000",
+                "DEPTH_5": "0.000000 ",
+                "MINIMUM_VALUE_5": "0.08",
+                "MAXIMUM_VALUE_5": "0.29",
+                "NUMBER_VALID_5": "9",
+                "NUMBER_NULL_5": "0"
+            },
+            "PARAMETER_HEADER6": {
+                "TYPE_6": "DOUB",
+                "NAME_6": "CTD temperature ITS-90",
+                "UNITS_6": "degrees C",
+                "CODE_6": "TE90_01",
+                "NULL_VALUE_6": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_6": "10",
+                "PRINT_DECIMAL_PLACES_6": "2",
+                "ANGLE_OF_SECTION_6": "0.000000",
+                "MAGNETIC_VARIATION_6": "0.000000",
+                "DEPTH_6": "0.000000 ",
+                "MINIMUM_VALUE_6": "0.56",
+                "MAXIMUM_VALUE_6": "5.89",
+                "NUMBER_VALID_6": "9",
+                "NUMBER_NULL_6": "0"
+            },
+            "PARAMETER_HEADER7": {
+                "TYPE_7": "DOUB",
+                "NAME_7": "CTD standard deviation temperature",
+                "UNITS_7": "degrees C",
+                "CODE_7": "SDEV_02",
+                "NULL_VALUE_7": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_7": "10",
+                "PRINT_DECIMAL_PLACES_7": "3",
+                "ANGLE_OF_SECTION_7": "0.000000",
+                "MAGNETIC_VARIATION_7": "0.000000",
+                "DEPTH_7": "0.000000 ",
+                "MINIMUM_VALUE_7": "0",
+                "MAXIMUM_VALUE_7": "0.029",
+                "NUMBER_VALID_7": "9",
+                "NUMBER_NULL_7": "0"
+            },
+            "PARAMETER_HEADER8": {
+                "TYPE_8": "DOUB",
+                "NAME_8": "CTD salinity PSS-78",
+                "UNITS_8": "psu",
+                "CODE_8": "PSAL_01",
+                "NULL_VALUE_8": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_8": "10",
+                "PRINT_DECIMAL_PLACES_8": "2",
+                "ANGLE_OF_SECTION_8": "0.000000",
+                "MAGNETIC_VARIATION_8": "0.000000",
+                "DEPTH_8": "0.000000 ",
+                "MINIMUM_VALUE_8": "28.13",
+                "MAXIMUM_VALUE_8": "34.55",
+                "NUMBER_VALID_8": "9",
+                "NUMBER_NULL_8": "0"
+            },
+            "PARAMETER_HEADER9": {
+                "TYPE_9": "DOUB",
+                "NAME_9": "CTD sigma-t",
+                "UNITS_9": "kg/m**3",
+                "CODE_9": "SIGT_01",
+                "NULL_VALUE_9": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_9": "10",
+                "PRINT_DECIMAL_PLACES_9": "2",
+                "ANGLE_OF_SECTION_9": "0.000000",
+                "MAGNETIC_VARIATION_9": "0.000000",
+                "DEPTH_9": "0.000000 ",
+                "MINIMUM_VALUE_9": "22.46",
+                "MAXIMUM_VALUE_9": "27.21",
+                "NUMBER_VALID_9": "9",
+                "NUMBER_NULL_9": "0"
+            },
+            "PARAMETER_HEADER10": {
+                "TYPE_10": "DOUB",
+                "NAME_10": "CTD fluorescence",
+                "UNITS_10": "mg/m**3",
+                "CODE_10": "FLOR_01",
+                "NULL_VALUE_10": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_10": "10",
+                "PRINT_DECIMAL_PLACES_10": "3",
+                "ANGLE_OF_SECTION_10": "0.000000",
+                "MAGNETIC_VARIATION_10": "0.000000",
+                "DEPTH_10": "0.000000 ",
+                "MINIMUM_VALUE_10": "0.015",
+                "MAXIMUM_VALUE_10": "0.704",
+                "NUMBER_VALID_10": "9",
+                "NUMBER_NULL_10": "0"
+            },
+            "PARAMETER_HEADER11": {
+                "TYPE_11": "DOUB",
+                "NAME_11": "CTD oxygen",
+                "UNITS_11": "ml/l",
+                "CODE_11": "DOXY_01",
+                "NULL_VALUE_11": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_11": "10",
+                "PRINT_DECIMAL_PLACES_11": "3",
+                "ANGLE_OF_SECTION_11": "0.000000",
+                "MAGNETIC_VARIATION_11": "0.000000",
+                "DEPTH_11": "0.000000 ",
+                "MINIMUM_VALUE_11": "1.143",
+                "MAXIMUM_VALUE_11": "7.171",
+                "NUMBER_VALID_11": "9",
+                "NUMBER_NULL_11": "0"
+            },
+            "PARAMETER_HEADER12": {
+                "TYPE_12": "DOUB",
+                "NAME_12": "CTD pH",
+                "UNITS_12": "Total scale",
+                "CODE_12": "PHT__01",
+                "NULL_VALUE_12": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_12": "10",
+                "PRINT_DECIMAL_PLACES_12": "3",
+                "ANGLE_OF_SECTION_12": "0.000000",
+                "MAGNETIC_VARIATION_12": "0.000000",
+                "DEPTH_12": "0.000000 ",
+                "MINIMUM_VALUE_12": "7.543",
+                "MAXIMUM_VALUE_12": "7.753",
+                "NUMBER_VALID_12": "9",
+                "NUMBER_NULL_12": "0"
+            },
+            "PARAMETER_HEADER13": {
+                "TYPE_13": "DOUB",
+                "NAME_13": "CTD turbidity",
+                "UNITS_13": "NTU",
+                "CODE_13": "TRB__01",
+                "NULL_VALUE_13": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_13": "10",
+                "PRINT_DECIMAL_PLACES_13": "3",
+                "ANGLE_OF_SECTION_13": "0.000000",
+                "MAGNETIC_VARIATION_13": "0.000000",
+                "DEPTH_13": "0.000000 ",
+                "MINIMUM_VALUE_13": "0.166",
+                "MAXIMUM_VALUE_13": "1.031",
+                "NUMBER_VALID_13": "9",
+                "NUMBER_NULL_13": "0"
+            },
+            "PARAMETER_HEADER14": {
+                "TYPE_14": "DOUB",
+                "NAME_14": "secchi depth",
+                "UNITS_14": "m",
+                "CODE_14": "SECC_01",
+                "NULL_VALUE_14": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_14": "10",
+                "PRINT_DECIMAL_PLACES_14": "1",
+                "ANGLE_OF_SECTION_14": "0.000000",
+                "MAGNETIC_VARIATION_14": "0.000000",
+                "DEPTH_14": "0.000000 ",
+                "MINIMUM_VALUE_14": "4.5",
+                "MAXIMUM_VALUE_14": "4.5",
+                "NUMBER_VALID_14": "9",
+                "NUMBER_NULL_14": "0"
+            },
+            "PARAMETER_HEADER15": {
+                "TYPE_15": "DOUB",
+                "NAME_15": "bottle sample salinity PSS-78",
+                "UNITS_15": "psu",
+                "CODE_15": "PSAL_02",
+                "NULL_VALUE_15": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_15": "10",
+                "PRINT_DECIMAL_PLACES_15": "2",
+                "ANGLE_OF_SECTION_15": "0.000000",
+                "MAGNETIC_VARIATION_15": "0.000000",
+                "DEPTH_15": "0.000000 ",
+                "MINIMUM_VALUE_15": "28.2",
+                "MAXIMUM_VALUE_15": "34.59",
+                "NUMBER_VALID_15": "6",
+                "NUMBER_NULL_15": "3"
+            },
+            "PARAMETER_HEADER16": {
+                "TYPE_16": "DOUB",
+                "NAME_16": "quality flag of bottle sample salinity",
+                "UNITS_16": "none",
+                "CODE_16": "QQQQ_01",
+                "NULL_VALUE_16": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_16": "10",
+                "PRINT_DECIMAL_PLACES_16": "0",
+                "ANGLE_OF_SECTION_16": "0.000000",
+                "MAGNETIC_VARIATION_16": "0.000000",
+                "DEPTH_16": "0.000000 ",
+                "MINIMUM_VALUE_16": "1",
+                "MAXIMUM_VALUE_16": "9",
+                "NUMBER_VALID_16": "9",
+                "NUMBER_NULL_16": "0"
+            },
+            "PARAMETER_HEADER17": {
+                "TYPE_17": "DOUB",
+                "NAME_17": "bottle sample oxygen",
+                "UNITS_17": "ml/l",
+                "CODE_17": "DOXY_02",
+                "NULL_VALUE_17": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_17": "10",
+                "PRINT_DECIMAL_PLACES_17": "3",
+                "ANGLE_OF_SECTION_17": "0.000000",
+                "MAGNETIC_VARIATION_17": "0.000000",
+                "DEPTH_17": "0.000000 ",
+                "MINIMUM_VALUE_17": "1.223",
+                "MAXIMUM_VALUE_17": "7.576",
+                "NUMBER_VALID_17": "3",
+                "NUMBER_NULL_17": "6"
+            },
+            "PARAMETER_HEADER18": {
+                "TYPE_18": "DOUB",
+                "NAME_18": "quality flag of bottle sample oxygen",
+                "UNITS_18": "none",
+                "CODE_18": "QQQQ_02",
+                "NULL_VALUE_18": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_18": "10",
+                "PRINT_DECIMAL_PLACES_18": "0",
+                "ANGLE_OF_SECTION_18": "0.000000",
+                "MAGNETIC_VARIATION_18": "0.000000",
+                "DEPTH_18": "0.000000 ",
+                "MINIMUM_VALUE_18": "1",
+                "MAXIMUM_VALUE_18": "9",
+                "NUMBER_VALID_18": "9",
+                "NUMBER_NULL_18": "0"
+            },
+            "PARAMETER_HEADER19": {
+                "TYPE_19": "DOUB",
+                "NAME_19": "bottle sample oxygen",
+                "UNITS_19": "ml/l",
+                "CODE_19": "DOXY_03",
+                "NULL_VALUE_19": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_19": "10",
+                "PRINT_DECIMAL_PLACES_19": "3",
+                "ANGLE_OF_SECTION_19": "0.000000",
+                "MAGNETIC_VARIATION_19": "0.000000",
+                "DEPTH_19": "0.000000 ",
+                "MINIMUM_VALUE_19": "1.181",
+                "MAXIMUM_VALUE_19": "7.566",
+                "NUMBER_VALID_19": "3",
+                "NUMBER_NULL_19": "6"
+            },
+            "PARAMETER_HEADER20": {
+                "TYPE_20": "DOUB",
+                "NAME_20": "quality flag of bottle sample oxygen",
+                "UNITS_20": "none",
+                "CODE_20": "QQQQ_03",
+                "NULL_VALUE_20": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_20": "10",
+                "PRINT_DECIMAL_PLACES_20": "0",
+                "ANGLE_OF_SECTION_20": "0.000000",
+                "MAGNETIC_VARIATION_20": "0.000000",
+                "DEPTH_20": "0.000000 ",
+                "MINIMUM_VALUE_20": "1",
+                "MAXIMUM_VALUE_20": "9",
+                "NUMBER_VALID_20": "9",
+                "NUMBER_NULL_20": "0"
+            },
+            "PARAMETER_HEADER21": {
+                "TYPE_21": "DOUB",
+                "NAME_21": "bottle sample chlorophyll content",
+                "UNITS_21": "mg/m**3",
+                "CODE_21": "CPHL_01",
+                "NULL_VALUE_21": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_21": "10",
+                "PRINT_DECIMAL_PLACES_21": "2",
+                "ANGLE_OF_SECTION_21": "0.000000",
+                "MAGNETIC_VARIATION_21": "0.000000",
+                "DEPTH_21": "0.000000 ",
+                "MINIMUM_VALUE_21": "0.09",
+                "MAXIMUM_VALUE_21": "0.75",
+                "NUMBER_VALID_21": "7",
+                "NUMBER_NULL_21": "2"
+            },
+            "PARAMETER_HEADER22": {
+                "TYPE_22": "DOUB",
+                "NAME_22": "quality flag of bottle sample chlorophyll content",
+                "UNITS_22": "none",
+                "CODE_22": "QQQQ_04",
+                "NULL_VALUE_22": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_22": "10",
+                "PRINT_DECIMAL_PLACES_22": "0",
+                "ANGLE_OF_SECTION_22": "0.000000",
+                "MAGNETIC_VARIATION_22": "0.000000",
+                "DEPTH_22": "0.000000 ",
+                "MINIMUM_VALUE_22": "1",
+                "MAXIMUM_VALUE_22": "9",
+                "NUMBER_VALID_22": "9",
+                "NUMBER_NULL_22": "0"
+            },
+            "PARAMETER_HEADER23": {
+                "TYPE_23": "DOUB",
+                "NAME_23": "bottle sample chlorophyll content",
+                "UNITS_23": "mg/m**3",
+                "CODE_23": "CPHL_02",
+                "NULL_VALUE_23": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_23": "10",
+                "PRINT_DECIMAL_PLACES_23": "2",
+                "ANGLE_OF_SECTION_23": "0.000000",
+                "MAGNETIC_VARIATION_23": "0.000000",
+                "DEPTH_23": "0.000000 ",
+                "MINIMUM_VALUE_23": "0.01",
+                "MAXIMUM_VALUE_23": "0.63",
+                "NUMBER_VALID_23": "6",
+                "NUMBER_NULL_23": "3"
+            },
+            "PARAMETER_HEADER24": {
+                "TYPE_24": "DOUB",
+                "NAME_24": "quality flag of bottle sample chlorophyll content",
+                "UNITS_24": "none",
+                "CODE_24": "QQQQ_05",
+                "NULL_VALUE_24": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_24": "10",
+                "PRINT_DECIMAL_PLACES_24": "0",
+                "ANGLE_OF_SECTION_24": "0.000000",
+                "MAGNETIC_VARIATION_24": "0.000000",
+                "DEPTH_24": "0.000000 ",
+                "MINIMUM_VALUE_24": "1",
+                "MAXIMUM_VALUE_24": "9",
+                "NUMBER_VALID_24": "9",
+                "NUMBER_NULL_24": "0"
+            },
+            "PARAMETER_HEADER25": {
+                "TYPE_25": "DOUB",
+                "NAME_25": "bottle sample phaeopigment content",
+                "UNITS_25": "mg/m**3",
+                "CODE_25": "PHA__01",
+                "NULL_VALUE_25": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_25": "10",
+                "PRINT_DECIMAL_PLACES_25": "2",
+                "ANGLE_OF_SECTION_25": "0.000000",
+                "MAGNETIC_VARIATION_25": "0.000000",
+                "DEPTH_25": "0.000000 ",
+                "MINIMUM_VALUE_25": "-0.11",
+                "MAXIMUM_VALUE_25": "0.12",
+                "NUMBER_VALID_25": "7",
+                "NUMBER_NULL_25": "2"
+            },
+            "PARAMETER_HEADER26": {
+                "TYPE_26": "DOUB",
+                "NAME_26": "quality flag of bottle sample phaeopigment content",
+                "UNITS_26": "none",
+                "CODE_26": "QQQQ_06",
+                "NULL_VALUE_26": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_26": "10",
+                "PRINT_DECIMAL_PLACES_26": "0",
+                "ANGLE_OF_SECTION_26": "0.000000",
+                "MAGNETIC_VARIATION_26": "0.000000",
+                "DEPTH_26": "0.000000 ",
+                "MINIMUM_VALUE_26": "0",
+                "MAXIMUM_VALUE_26": "9",
+                "NUMBER_VALID_26": "9",
+                "NUMBER_NULL_26": "0"
+            },
+            "PARAMETER_HEADER27": {
+                "TYPE_27": "DOUB",
+                "NAME_27": "bottle sample phaeopigment content",
+                "UNITS_27": "mg/m**3",
+                "CODE_27": "PHA__02",
+                "NULL_VALUE_27": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_27": "10",
+                "PRINT_DECIMAL_PLACES_27": "2",
+                "ANGLE_OF_SECTION_27": "0.000000",
+                "MAGNETIC_VARIATION_27": "0.000000",
+                "DEPTH_27": "0.000000 ",
+                "MINIMUM_VALUE_27": "0.01",
+                "MAXIMUM_VALUE_27": "0.12",
+                "NUMBER_VALID_27": "6",
+                "NUMBER_NULL_27": "3"
+            },
+            "PARAMETER_HEADER28": {
+                "TYPE_28": "DOUB",
+                "NAME_28": "quality flag of bottle sample phaeopigment content",
+                "UNITS_28": "none",
+                "CODE_28": "QQQQ_07",
+                "NULL_VALUE_28": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_28": "10",
+                "PRINT_DECIMAL_PLACES_28": "0",
+                "ANGLE_OF_SECTION_28": "0.000000",
+                "MAGNETIC_VARIATION_28": "0.000000",
+                "DEPTH_28": "0.000000 ",
+                "MINIMUM_VALUE_28": "0",
+                "MAXIMUM_VALUE_28": "9",
+                "NUMBER_VALID_28": "9",
+                "NUMBER_NULL_28": "0"
+            },
+            "PARAMETER_HEADER29": {
+                "TYPE_29": "DOUB",
+                "NAME_29": "bottle sample ammonium (NH4-N) content",
+                "UNITS_29": "mmol/m**3",
+                "CODE_29": "AMON_01",
+                "NULL_VALUE_29": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_29": "10",
+                "PRINT_DECIMAL_PLACES_29": "2",
+                "ANGLE_OF_SECTION_29": "0.000000",
+                "MAGNETIC_VARIATION_29": "0.000000",
+                "DEPTH_29": "0.000000 ",
+                "MINIMUM_VALUE_29": "0.04",
+                "MAXIMUM_VALUE_29": "0.47",
+                "NUMBER_VALID_29": "9",
+                "NUMBER_NULL_29": "0"
+            },
+            "PARAMETER_HEADER30": {
+                "TYPE_30": "DOUB",
+                "NAME_30": "bottle sample ammonium (NH4-N) content",
+                "UNITS_30": "mmol/m**3",
+                "CODE_30": "AMON_02",
+                "NULL_VALUE_30": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_30": "10",
+                "PRINT_DECIMAL_PLACES_30": "2",
+                "ANGLE_OF_SECTION_30": "0.000000",
+                "MAGNETIC_VARIATION_30": "0.000000",
+                "DEPTH_30": "0.000000 ",
+                "MINIMUM_VALUE_30": "0.02",
+                "MAXIMUM_VALUE_30": "0.46",
+                "NUMBER_VALID_30": "9",
+                "NUMBER_NULL_30": "0"
+            },
+            "PARAMETER_HEADER31": {
+                "TYPE_31": "DOUB",
+                "NAME_31": "lab temperature for pH calculation",
+                "UNITS_31": "Degrees C",
+                "CODE_31": "LABT_01",
+                "NULL_VALUE_31": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_31": "10",
+                "PRINT_DECIMAL_PLACES_31": "4",
+                "ANGLE_OF_SECTION_31": "0.000000",
+                "MAGNETIC_VARIATION_31": "0.000000",
+                "DEPTH_31": "0.000000 ",
+                "MINIMUM_VALUE_31": "23.9",
+                "MAXIMUM_VALUE_31": "25.7",
+                "NUMBER_VALID_31": "6",
+                "NUMBER_NULL_31": "3"
+            },
+            "PARAMETER_HEADER32": {
+                "TYPE_32": "DOUB",
+                "NAME_32": "bottle sample pH, lab measurement",
+                "UNITS_32": "Total scale",
+                "CODE_32": "LPHT_01",
+                "NULL_VALUE_32": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_32": "10",
+                "PRINT_DECIMAL_PLACES_32": "4",
+                "ANGLE_OF_SECTION_32": "0.000000",
+                "MAGNETIC_VARIATION_32": "0.000000",
+                "DEPTH_32": "0.000000 ",
+                "MINIMUM_VALUE_32": "7.306",
+                "MAXIMUM_VALUE_32": "7.526",
+                "NUMBER_VALID_32": "6",
+                "NUMBER_NULL_32": "3"
+            },
+            "PARAMETER_HEADER33": {
+                "TYPE_33": "DOUB",
+                "NAME_33": "quality flag of bottle sample pH, lab measurement",
+                "UNITS_33": "none",
+                "CODE_33": "QQQQ_08",
+                "NULL_VALUE_33": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_33": "10",
+                "PRINT_DECIMAL_PLACES_33": "0",
+                "ANGLE_OF_SECTION_33": "0.000000",
+                "MAGNETIC_VARIATION_33": "0.000000",
+                "DEPTH_33": "0.000000 ",
+                "MINIMUM_VALUE_33": "0",
+                "MAXIMUM_VALUE_33": "9",
+                "NUMBER_VALID_33": "9",
+                "NUMBER_NULL_33": "0"
+            },
+            "PARAMETER_HEADER34": {
+                "TYPE_34": "DOUB",
+                "NAME_34": "bottle sample pH, lab measurement",
+                "UNITS_34": "Total scale",
+                "CODE_34": "LPHT_02",
+                "NULL_VALUE_34": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_34": "10",
+                "PRINT_DECIMAL_PLACES_34": "4",
+                "ANGLE_OF_SECTION_34": "0.000000",
+                "MAGNETIC_VARIATION_34": "0.000000",
+                "DEPTH_34": "0.000000 ",
+                "MINIMUM_VALUE_34": "7.306",
+                "MAXIMUM_VALUE_34": "7.526",
+                "NUMBER_VALID_34": "6",
+                "NUMBER_NULL_34": "3"
+            },
+            "PARAMETER_HEADER35": {
+                "TYPE_35": "DOUB",
+                "NAME_35": "quality flag of bottle sample pH, lab measurement",
+                "UNITS_35": "none",
+                "CODE_35": "QQQQ_09",
+                "NULL_VALUE_35": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_35": "10",
+                "PRINT_DECIMAL_PLACES_35": "0",
+                "ANGLE_OF_SECTION_35": "0.000000",
+                "MAGNETIC_VARIATION_35": "0.000000",
+                "DEPTH_35": "0.000000 ",
+                "MINIMUM_VALUE_35": "0",
+                "MAXIMUM_VALUE_35": "9",
+                "NUMBER_VALID_35": "9",
+                "NUMBER_NULL_35": "0"
+            },
+            "PARAMETER_HEADER36": {
+                "TYPE_36": "DOUB",
+                "NAME_36": "bottle sample pH, in situ calc",
+                "UNITS_36": "Total scale",
+                "CODE_36": "PHT__02",
+                "NULL_VALUE_36": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_36": "10",
+                "PRINT_DECIMAL_PLACES_36": "4",
+                "ANGLE_OF_SECTION_36": "0.000000",
+                "MAGNETIC_VARIATION_36": "0.000000",
+                "DEPTH_36": "0.000000 ",
+                "MINIMUM_VALUE_36": "7.535",
+                "MAXIMUM_VALUE_36": "7.856",
+                "NUMBER_VALID_36": "6",
+                "NUMBER_NULL_36": "3"
+            },
+            "PARAMETER_HEADER37": {
+                "TYPE_37": "DOUB",
+                "NAME_37": "quality flag of bottle sample pH, in situ calc",
+                "UNITS_37": "none",
+                "CODE_37": "QQQQ_10",
+                "NULL_VALUE_37": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_37": "10",
+                "PRINT_DECIMAL_PLACES_37": "0",
+                "ANGLE_OF_SECTION_37": "0.000000",
+                "MAGNETIC_VARIATION_37": "0.000000",
+                "DEPTH_37": "0.000000 ",
+                "MINIMUM_VALUE_37": "1",
+                "MAXIMUM_VALUE_37": "9",
+                "NUMBER_VALID_37": "9",
+                "NUMBER_NULL_37": "0"
+            },
+            "PARAMETER_HEADER38": {
+                "TYPE_38": "DOUB",
+                "NAME_38": "bottle sample pH, in situ calc",
+                "UNITS_38": "Total scale",
+                "CODE_38": "PHT__03",
+                "NULL_VALUE_38": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_38": "10",
+                "PRINT_DECIMAL_PLACES_38": "4",
+                "ANGLE_OF_SECTION_38": "0.000000",
+                "MAGNETIC_VARIATION_38": "0.000000",
+                "DEPTH_38": "0.000000 ",
+                "MINIMUM_VALUE_38": "7.535",
+                "MAXIMUM_VALUE_38": "7.856",
+                "NUMBER_VALID_38": "6",
+                "NUMBER_NULL_38": "3"
+            },
+            "PARAMETER_HEADER39": {
+                "TYPE_39": "DOUB",
+                "NAME_39": "quality flag of bottle sample pH, in situ calc",
+                "UNITS_39": "none",
+                "CODE_39": "QQQQ_11",
+                "NULL_VALUE_39": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_39": "10",
+                "PRINT_DECIMAL_PLACES_39": "0",
+                "ANGLE_OF_SECTION_39": "0.000000",
+                "MAGNETIC_VARIATION_39": "0.000000",
+                "DEPTH_39": "0.000000 ",
+                "MINIMUM_VALUE_39": "1",
+                "MAXIMUM_VALUE_39": "9",
+                "NUMBER_VALID_39": "9",
+                "NUMBER_NULL_39": "0"
+            },
+            "PARAMETER_HEADER40": {
+                "TYPE_40": "DOUB",
+                "NAME_40": "bottle sample alkalinity",
+                "UNITS_40": "umol/kg",
+                "CODE_40": "ALKW_01",
+                "NULL_VALUE_40": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_40": "10",
+                "PRINT_DECIMAL_PLACES_40": "2",
+                "ANGLE_OF_SECTION_40": "0.000000",
+                "MAGNETIC_VARIATION_40": "0.000000",
+                "DEPTH_40": "0.000000 ",
+                "MINIMUM_VALUE_40": "2098.42",
+                "MAXIMUM_VALUE_40": "2300.06",
+                "NUMBER_VALID_40": "6",
+                "NUMBER_NULL_40": "3"
+            },
+            "PARAMETER_HEADER41": {
+                "TYPE_41": "DOUB",
+                "NAME_41": "quality flag of bottle sample alkalinity",
+                "UNITS_41": "none",
+                "CODE_41": "QQQQ_12",
+                "NULL_VALUE_41": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_41": "10",
+                "PRINT_DECIMAL_PLACES_41": "0",
+                "ANGLE_OF_SECTION_41": "0.000000",
+                "MAGNETIC_VARIATION_41": "0.000000",
+                "DEPTH_41": "0.000000 ",
+                "MINIMUM_VALUE_41": "0",
+                "MAXIMUM_VALUE_41": "9",
+                "NUMBER_VALID_41": "9",
+                "NUMBER_NULL_41": "0"
+            },
+            "PARAMETER_HEADER42": {
+                "TYPE_42": "DOUB",
+                "NAME_42": "bottle sample total inorganic carbon",
+                "UNITS_42": "umol/kg",
+                "CODE_42": "TICW_01",
+                "NULL_VALUE_42": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_42": "10",
+                "PRINT_DECIMAL_PLACES_42": "2",
+                "ANGLE_OF_SECTION_42": "0.000000",
+                "MAGNETIC_VARIATION_42": "0.000000",
+                "DEPTH_42": "0.000000 ",
+                "MINIMUM_VALUE_42": "2046.22",
+                "MAXIMUM_VALUE_42": "2281.83",
+                "NUMBER_VALID_42": "6",
+                "NUMBER_NULL_42": "3"
+            },
+            "PARAMETER_HEADER43": {
+                "TYPE_43": "DOUB",
+                "NAME_43": "quality flag of bottle sample total inorganic carbon",
+                "UNITS_43": "none",
+                "CODE_43": "QQQQ_13",
+                "NULL_VALUE_43": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_43": "10",
+                "PRINT_DECIMAL_PLACES_43": "0",
+                "ANGLE_OF_SECTION_43": "0.000000",
+                "MAGNETIC_VARIATION_43": "0.000000",
+                "DEPTH_43": "0.000000 ",
+                "MINIMUM_VALUE_43": "0",
+                "MAXIMUM_VALUE_43": "9",
+                "NUMBER_VALID_43": "9",
+                "NUMBER_NULL_43": "0"
+            },
+            "PARAMETER_HEADER44": {
+                "TYPE_44": "DOUB",
+                "NAME_44": "bottle sample nitrite (NO2-N) content",
+                "UNITS_44": "mmol/m**3",
+                "CODE_44": "NTRI_01",
+                "NULL_VALUE_44": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_44": "10",
+                "PRINT_DECIMAL_PLACES_44": "2",
+                "ANGLE_OF_SECTION_44": "0.000000",
+                "MAGNETIC_VARIATION_44": "0.000000",
+                "DEPTH_44": "0.000000 ",
+                "MINIMUM_VALUE_44": "0.01",
+                "MAXIMUM_VALUE_44": "0.07",
+                "NUMBER_VALID_44": "9",
+                "NUMBER_NULL_44": "0"
+            },
+            "PARAMETER_HEADER45": {
+                "TYPE_45": "DOUB",
+                "NAME_45": "quality flag of bottle sample nitrite (NO2-N) content",
+                "UNITS_45": "none",
+                "CODE_45": "QQQQ_14",
+                "NULL_VALUE_45": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_45": "10",
+                "PRINT_DECIMAL_PLACES_45": "0",
+                "ANGLE_OF_SECTION_45": "0.000000",
+                "MAGNETIC_VARIATION_45": "0.000000",
+                "DEPTH_45": "0.000000 ",
+                "MINIMUM_VALUE_45": "1",
+                "MAXIMUM_VALUE_45": "1",
+                "NUMBER_VALID_45": "9",
+                "NUMBER_NULL_45": "0"
+            },
+            "PARAMETER_HEADER46": {
+                "TYPE_46": "DOUB",
+                "NAME_46": "bottle sample nitrite (NO2-N) content",
+                "UNITS_46": "mmol/m**3",
+                "CODE_46": "NTRI_02",
+                "NULL_VALUE_46": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_46": "10",
+                "PRINT_DECIMAL_PLACES_46": "2",
+                "ANGLE_OF_SECTION_46": "0.000000",
+                "MAGNETIC_VARIATION_46": "0.000000",
+                "DEPTH_46": "0.000000 ",
+                "MINIMUM_VALUE_46": "0.02",
+                "MAXIMUM_VALUE_46": "0.08",
+                "NUMBER_VALID_46": "9",
+                "NUMBER_NULL_46": "0"
+            },
+            "PARAMETER_HEADER47": {
+                "TYPE_47": "DOUB",
+                "NAME_47": "quality flag of bottle sample nitrite (NO2-N) content",
+                "UNITS_47": "none",
+                "CODE_47": "QQQQ_15",
+                "NULL_VALUE_47": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_47": "10",
+                "PRINT_DECIMAL_PLACES_47": "0",
+                "ANGLE_OF_SECTION_47": "0.000000",
+                "MAGNETIC_VARIATION_47": "0.000000",
+                "DEPTH_47": "0.000000 ",
+                "MINIMUM_VALUE_47": "1",
+                "MAXIMUM_VALUE_47": "1",
+                "NUMBER_VALID_47": "9",
+                "NUMBER_NULL_47": "0"
+            },
+            "PARAMETER_HEADER48": {
+                "TYPE_48": "DOUB",
+                "NAME_48": "bottle sample nitrate (NO3-N) + nitrite (NO2-N) content",
+                "UNITS_48": "mmol/m**3",
+                "CODE_48": "NTRZ_01",
+                "NULL_VALUE_48": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_48": "10",
+                "PRINT_DECIMAL_PLACES_48": "2",
+                "ANGLE_OF_SECTION_48": "0.000000",
+                "MAGNETIC_VARIATION_48": "0.000000",
+                "DEPTH_48": "0.000000 ",
+                "MINIMUM_VALUE_48": "13.75",
+                "MAXIMUM_VALUE_48": "24.04",
+                "NUMBER_VALID_48": "9",
+                "NUMBER_NULL_48": "0"
+            },
+            "PARAMETER_HEADER49": {
+                "TYPE_49": "DOUB",
+                "NAME_49": "quality flag of bottle sample nitrate (NO3-N) + nitrite (NO2-N) content",
+                "UNITS_49": "none",
+                "CODE_49": "QQQQ_16",
+                "NULL_VALUE_49": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_49": "10",
+                "PRINT_DECIMAL_PLACES_49": "0",
+                "ANGLE_OF_SECTION_49": "0.000000",
+                "MAGNETIC_VARIATION_49": "0.000000",
+                "DEPTH_49": "0.000000 ",
+                "MINIMUM_VALUE_49": "1",
+                "MAXIMUM_VALUE_49": "1",
+                "NUMBER_VALID_49": "9",
+                "NUMBER_NULL_49": "0"
+            },
+            "PARAMETER_HEADER50": {
+                "TYPE_50": "DOUB",
+                "NAME_50": "bottle sample nitrate (NO3-N) + nitrite (NO2-N) content",
+                "UNITS_50": "mmol/m**3",
+                "CODE_50": "NTRZ_02",
+                "NULL_VALUE_50": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_50": "10",
+                "PRINT_DECIMAL_PLACES_50": "2",
+                "ANGLE_OF_SECTION_50": "0.000000",
+                "MAGNETIC_VARIATION_50": "0.000000",
+                "DEPTH_50": "0.000000 ",
+                "MINIMUM_VALUE_50": "13.67",
+                "MAXIMUM_VALUE_50": "23.92",
+                "NUMBER_VALID_50": "9",
+                "NUMBER_NULL_50": "0"
+            },
+            "PARAMETER_HEADER51": {
+                "TYPE_51": "DOUB",
+                "NAME_51": "quality flag of bottle sample nitrate (NO3-N) + nitrite (NO2-N) content",
+                "UNITS_51": "none",
+                "CODE_51": "QQQQ_17",
+                "NULL_VALUE_51": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_51": "10",
+                "PRINT_DECIMAL_PLACES_51": "0",
+                "ANGLE_OF_SECTION_51": "0.000000",
+                "MAGNETIC_VARIATION_51": "0.000000",
+                "DEPTH_51": "0.000000 ",
+                "MINIMUM_VALUE_51": "1",
+                "MAXIMUM_VALUE_51": "1",
+                "NUMBER_VALID_51": "9",
+                "NUMBER_NULL_51": "0"
+            },
+            "PARAMETER_HEADER52": {
+                "TYPE_52": "DOUB",
+                "NAME_52": "bottle sample phosphate (PO4-P) content",
+                "UNITS_52": "mmol/m**3",
+                "CODE_52": "PHOS_01",
+                "NULL_VALUE_52": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_52": "10",
+                "PRINT_DECIMAL_PLACES_52": "2",
+                "ANGLE_OF_SECTION_52": "0.000000",
+                "MAGNETIC_VARIATION_52": "0.000000",
+                "DEPTH_52": "0.000000 ",
+                "MINIMUM_VALUE_52": "1.3",
+                "MAXIMUM_VALUE_52": "2.41",
+                "NUMBER_VALID_52": "9",
+                "NUMBER_NULL_52": "0"
+            },
+            "PARAMETER_HEADER53": {
+                "TYPE_53": "DOUB",
+                "NAME_53": "quality flag of bottle sample phosphate (PO4-P) content",
+                "UNITS_53": "none",
+                "CODE_53": "QQQQ_18",
+                "NULL_VALUE_53": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_53": "10",
+                "PRINT_DECIMAL_PLACES_53": "0",
+                "ANGLE_OF_SECTION_53": "0.000000",
+                "MAGNETIC_VARIATION_53": "0.000000",
+                "DEPTH_53": "0.000000 ",
+                "MINIMUM_VALUE_53": "1",
+                "MAXIMUM_VALUE_53": "1",
+                "NUMBER_VALID_53": "9",
+                "NUMBER_NULL_53": "0"
+            },
+            "PARAMETER_HEADER54": {
+                "TYPE_54": "DOUB",
+                "NAME_54": "bottle sample phosphate (PO4-P) content",
+                "UNITS_54": "mmol/m**3",
+                "CODE_54": "PHOS_02",
+                "NULL_VALUE_54": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_54": "10",
+                "PRINT_DECIMAL_PLACES_54": "2",
+                "ANGLE_OF_SECTION_54": "0.000000",
+                "MAGNETIC_VARIATION_54": "0.000000",
+                "DEPTH_54": "0.000000 ",
+                "MINIMUM_VALUE_54": "1.34",
+                "MAXIMUM_VALUE_54": "2.47",
+                "NUMBER_VALID_54": "9",
+                "NUMBER_NULL_54": "0"
+            },
+            "PARAMETER_HEADER55": {
+                "TYPE_55": "DOUB",
+                "NAME_55": "quality flag of bottle sample phosphate (PO4-P) content",
+                "UNITS_55": "none",
+                "CODE_55": "QQQQ_19",
+                "NULL_VALUE_55": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_55": "10",
+                "PRINT_DECIMAL_PLACES_55": "0",
+                "ANGLE_OF_SECTION_55": "0.000000",
+                "MAGNETIC_VARIATION_55": "0.000000",
+                "DEPTH_55": "0.000000 ",
+                "MINIMUM_VALUE_55": "1",
+                "MAXIMUM_VALUE_55": "1",
+                "NUMBER_VALID_55": "9",
+                "NUMBER_NULL_55": "0"
+            },
+            "PARAMETER_HEADER56": {
+                "TYPE_56": "DOUB",
+                "NAME_56": "bottle sample silicate (SIO4-SI) content",
+                "UNITS_56": "mmol/m**3",
+                "CODE_56": "SLCA_01",
+                "NULL_VALUE_56": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_56": "10",
+                "PRINT_DECIMAL_PLACES_56": "2",
+                "ANGLE_OF_SECTION_56": "0.000000",
+                "MAGNETIC_VARIATION_56": "0.000000",
+                "DEPTH_56": "0.000000 ",
+                "MINIMUM_VALUE_56": "17.8",
+                "MAXIMUM_VALUE_56": "57.57",
+                "NUMBER_VALID_56": "9",
+                "NUMBER_NULL_56": "0"
+            },
+            "PARAMETER_HEADER57": {
+                "TYPE_57": "DOUB",
+                "NAME_57": "quality flag of bottle sample silicate (SIO4-SI) content",
+                "UNITS_57": "none",
+                "CODE_57": "QQQQ_20",
+                "NULL_VALUE_57": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_57": "10",
+                "PRINT_DECIMAL_PLACES_57": "0",
+                "ANGLE_OF_SECTION_57": "0.000000",
+                "MAGNETIC_VARIATION_57": "0.000000",
+                "DEPTH_57": "0.000000 ",
+                "MINIMUM_VALUE_57": "1",
+                "MAXIMUM_VALUE_57": "1",
+                "NUMBER_VALID_57": "9",
+                "NUMBER_NULL_57": "0"
+            },
+            "PARAMETER_HEADER58": {
+                "TYPE_58": "DOUB",
+                "NAME_58": "bottle sample silicate (SIO4-SI) content",
+                "UNITS_58": "mmol/m**3",
+                "CODE_58": "SLCA_02",
+                "NULL_VALUE_58": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_58": "10",
+                "PRINT_DECIMAL_PLACES_58": "2",
+                "ANGLE_OF_SECTION_58": "0.000000",
+                "MAGNETIC_VARIATION_58": "0.000000",
+                "DEPTH_58": "0.000000 ",
+                "MINIMUM_VALUE_58": "17.33",
+                "MAXIMUM_VALUE_58": "57",
+                "NUMBER_VALID_58": "9",
+                "NUMBER_NULL_58": "0"
+            },
+            "PARAMETER_HEADER59": {
+                "TYPE_59": "DOUB",
+                "NAME_59": "quality flag of bottle sample silicate (SIO4-SI) content",
+                "UNITS_59": "none",
+                "CODE_59": "QQQQ_21",
+                "NULL_VALUE_59": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_59": "10",
+                "PRINT_DECIMAL_PLACES_59": "0",
+                "ANGLE_OF_SECTION_59": "0.000000",
+                "MAGNETIC_VARIATION_59": "0.000000",
+                "DEPTH_59": "0.000000 ",
+                "MINIMUM_VALUE_59": "1",
+                "MAXIMUM_VALUE_59": "1",
+                "NUMBER_VALID_59": "9",
+                "NUMBER_NULL_59": "0"
+            },
+            "PARAMETER_HEADER60": {
+                "TYPE_60": "DOUB",
+                "NAME_60": "quality flag: QCFF",
+                "UNITS_60": "(none)",
+                "CODE_60": "QCFF_01",
+                "NULL_VALUE_60": "-9.900000E+01",
+                "PRINT_FIELD_WIDTH_60": "10",
+                "PRINT_DECIMAL_PLACES_60": "0",
+                "ANGLE_OF_SECTION_60": "0.000000",
+                "MAGNETIC_VARIATION_60": "0.000000",
+                "DEPTH_60": "0.000000 ",
+                "MINIMUM_VALUE_60": "0",
+                "MAXIMUM_VALUE_60": "2048",
+                "NUMBER_VALID_60": "9",
+                "NUMBER_NULL_60": "0"
+            },
+            "RECORD_HEADER": {
+                "NUM_CALIBRATION_1": "0",
+                "NUM_SWING_1": "0",
+                "NUM_HISTORY_1": "3",
+                "NUM_CYCLE_1": "9",
+                "NUM_PARAM_1": "60"
+            }
+        },
+        "depthOffBottom": "2.00",
+        "initialLatitude": "48.663667",
+        "initialLongitude": "-68.583167",
+        "endLatitude": "48.663800",
+        "endLongitude": "-68.585500",
+        "samplingInterval": "-99.0",
+        "scientist": "Francois Villeneuve",
+        "ship": "Beluga II",
+        "institute": "IML",
+        "station": "1",
+        "latitude": 48.66367,
+        "longitude": -68.58317,
+        "cruise": "Echantillonnage à une station fixe dans lESL",
+        "countryInstituteCode": "CaIML",
+        "cruiseNumber": "2019004",
+        "startTime": 1555071000.0,
+        "eventNumber": "1",
+        "eventQualifier": "1A",
+        "depthMin": 1.29,
+        "depthMax": 327.94,
+        "sounding": 330,
+        "waterDepth": 330,
+        "dataNamesOriginal": {
+            "IDEN": "IDEN_01",
+            "scan": "CNTR_01",
+            "NUM_": "NUM__01",
+            "pressure": "PRES_01",
+            "SDEV": "SDEV_01",
+            "temperature": "TE90_01",
+            "SDEV2": "SDEV_02",
+            "salinity": "PSAL_01",
+            "sigmat": "SIGT_01",
+            "fluorometer": "FLOR_01",
+            "oxygen": "DOXY_01",
+            "PHT_": "PHT__01",
+            "TRB_": "TRB__01",
+            "SECC": "SECC_01",
+            "salinity2": "PSAL_02",
+            "oxygen2": "DOXY_02",
+            "oxygen3": "DOXY_03",
+            "CPHL": "CPHL_01",
+            "CPHL2": "CPHL_02",
+            "PHA_": "PHA__01",
+            "PHA_2": "PHA__02",
+            "AMON": "AMON_01",
+            "AMON2": "AMON_02",
+            "LABT": "LABT_01",
+            "LPHT": "LPHT_01",
+            "LPHT2": "LPHT_02",
+            "PHT_2": "PHT__02",
+            "PHT_3": "PHT__03",
+            "ALKW": "ALKW_01",
+            "TICW": "TICW_01",
+            "NTRI": "NTRI_01",
+            "NTRI2": "NTRI_02",
+            "NTRZ": "NTRZ_01",
+            "NTRZ2": "NTRZ_02",
+            "PHOS": "PHOS_01",
+            "PHOS2": "PHOS_02",
+            "SLCA": "SLCA_01",
+            "SLCA2": "SLCA_02"
+        },
+        "sampleInterval": null
+    },
+    "data": {
+        "IDEN": [
+            422477,
+            422476,
+            422475,
+            422474,
+            422473,
+            422472,
+            422471,
+            422470,
+            422469
+        ],
+        "scan": [
+            1202,
+            902,
+            735,
+            4071,
+            3833,
+            3652,
+            3347,
+            2712,
+            2077
+        ],
+        "NUM_": [
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20
+        ],
+        "pressure": [
+            1.3,
+            5.3,
+            10.1,
+            15.8,
+            26.1,
+            51.5,
+            100.5,
+            202.3,
+            331
+        ],
+        "SDEV": [
+            0.08,
+            0.1,
+            0.17,
+            0.1,
+            0.18,
+            0.13,
+            0.22,
+            0.09,
+            0.29
+        ],
+        "temperature": [
+            2.23,
+            2.22,
+            2.09,
+            1.77,
+            2.46,
+            0.56,
+            3.16,
+            5.18,
+            5.89
+        ],
+        "SDEV2": [
+            0.002,
+            0.005,
+            0.029,
+            0.003,
+            0.007,
+            0.002,
+            0.016,
+            0.001,
+            0
+        ],
+        "salinity": [
+            28.13,
+            28.7,
+            28.99,
+            29.62,
+            30.58,
+            32.44,
+            33.39,
+            34.23,
+            34.55
+        ],
+        "sigmat": [
+            22.46,
+            22.91,
+            23.15,
+            23.68,
+            24.4,
+            26.01,
+            26.59,
+            27.04,
+            27.21
+        ],
+        "fluorometer": [
+            0.25,
+            0.693,
+            0.704,
+            0.577,
+            0.16,
+            0.107,
+            0.015,
+            0.043,
+            0.044
+        ],
+        "oxygen": [
+            7.17,
+            7.171,
+            7.163,
+            6.651,
+            5.082,
+            5.852,
+            3.485,
+            1.491,
+            1.143
+        ],
+        "PHT_": [
+            7.753,
+            7.75,
+            7.749,
+            7.719,
+            7.653,
+            7.715,
+            7.62,
+            7.543,
+            7.544
+        ],
+        "TRB_": [
+            1.031,
+            0.855,
+            0.801,
+            0.776,
+            0.614,
+            0.249,
+            0.166,
+            0.21,
+            0.592
+        ],
+        "SECC": [
+            4.5,
+            4.5,
+            4.5,
+            4.5,
+            4.5,
+            4.5,
+            4.5,
+            4.5,
+            4.5
+        ],
+        "salinity2": [
+            28.2,
+            null,
+            28.99,
+            null,
+            null,
+            32.5,
+            33.52,
+            34.31,
+            34.59
+        ],
+        "oxygen2": [
+            null,
+            null,
+            7.576,
+            null,
+            null,
+            null,
+            3.731,
+            null,
+            1.223
+        ],
+        "oxygen3": [
+            null,
+            null,
+            7.566,
+            null,
+            null,
+            null,
+            3.731,
+            null,
+            1.181
+        ],
+        "CPHL": [
+            0.75,
+            0.6,
+            0.67,
+            0.45,
+            0.09,
+            0.12,
+            0.14,
+            null,
+            null
+        ],
+        "CPHL2": [
+            0.63,
+            0.61,
+            null,
+            0.56,
+            0.14,
+            0.05,
+            0.01,
+            null,
+            null
+        ],
+        "PHA_": [
+            0.12,
+            0.07,
+            0.07,
+            0.04,
+            0.05,
+            0.05,
+            -0.11,
+            null,
+            null
+        ],
+        "PHA_2": [
+            0.11,
+            0.12,
+            null,
+            0.09,
+            0.01,
+            0.04,
+            0.02,
+            null,
+            null
+        ],
+        "AMON": [
+            0.47,
+            0.37,
+            0.33,
+            0.35,
+            0.43,
+            0.05,
+            0.05,
+            0.04,
+            0.04
+        ],
+        "AMON2": [
+            0.46,
+            0.36,
+            0.32,
+            0.42,
+            0.41,
+            0.04,
+            0.03,
+            0.02,
+            0.05
+        ],
+        "LABT": [
+            24.6,
+            null,
+            25.7,
+            null,
+            null,
+            24.2,
+            24.2,
+            23.9,
+            24.8
+        ],
+        "LPHT": [
+            7.526,
+            null,
+            7.524,
+            null,
+            null,
+            7.495,
+            7.397,
+            7.306,
+            7.312
+        ],
+        "LPHT2": [
+            7.526,
+            null,
+            7.524,
+            null,
+            null,
+            7.495,
+            7.396,
+            7.306,
+            7.313
+        ],
+        "PHT_2": [
+            7.839,
+            null,
+            7.856,
+            null,
+            null,
+            7.827,
+            7.675,
+            7.535,
+            7.539
+        ],
+        "PHT_3": [
+            7.839,
+            null,
+            7.856,
+            null,
+            null,
+            7.827,
+            7.674,
+            7.535,
+            7.54
+        ],
+        "ALKW": [
+            2098.42,
+            null,
+            2115.1,
+            null,
+            null,
+            2199.56,
+            2240.08,
+            2282.31,
+            2300.06
+        ],
+        "TICW": [
+            2046.22,
+            null,
+            2063.93,
+            null,
+            null,
+            2145.52,
+            2214.98,
+            2278.8,
+            2281.83
+        ],
+        "NTRI": [
+            0.06,
+            0.06,
+            0.05,
+            0.07,
+            0.05,
+            0.03,
+            0.02,
+            0.01,
+            0.02
+        ],
+        "NTRI2": [
+            0.08,
+            0.08,
+            0.07,
+            0.08,
+            0.06,
+            0.03,
+            0.02,
+            0.02,
+            0.02
+        ],
+        "NTRZ": [
+            18.9,
+            18.35,
+            18.13,
+            17.96,
+            18.95,
+            13.75,
+            18.97,
+            23.3,
+            24.04
+        ],
+        "NTRZ2": [
+            18.88,
+            18.33,
+            18.16,
+            17.02,
+            18.97,
+            13.67,
+            19.03,
+            23.37,
+            23.92
+        ],
+        "PHOS": [
+            1.34,
+            1.35,
+            1.36,
+            1.43,
+            1.56,
+            1.3,
+            1.72,
+            2.28,
+            2.41
+        ],
+        "PHOS2": [
+            1.4,
+            1.4,
+            1.39,
+            1.4,
+            1.59,
+            1.34,
+            1.74,
+            2.29,
+            2.47
+        ],
+        "SLCA": [
+            28.81,
+            27.59,
+            27.11,
+            27.72,
+            29.54,
+            17.8,
+            27.06,
+            49.28,
+            57.57
+        ],
+        "SLCA2": [
+            28.6,
+            28.08,
+            27.09,
+            25.63,
+            28.82,
+            17.33,
+            26.48,
+            48.24,
+            57
+        ]
+    }
+}

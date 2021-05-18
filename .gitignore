@@ -107,3 +107,10 @@ cioos_data_transform/ios_data_transform/\.idea/
 cioos_data_transform/\.idea/
 \.idea
 *.nc
+
+.vscode/
+
+
+.DS_Store
+
+cioos_data_transform/cioos_data_transform/utils/.dir_stats

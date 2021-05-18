@@ -1,0 +1,181 @@
+"seq_dict_md","arbr_gen_dict_md","cle_dict_md","acr_dict_md","arbr_simpl_dic_md","abr_feuil_dict_md","def_dict_md","stat_dict_md","mot_cle_dict_md","seq_dict_md_pere","arbr_gen_pere_dict_md","id_ty_md","seq_dom","seq_dict_md_prop","acr_sn_md","acron_mot_dict","verr_dict_md","det_equiv_dict_md","det_categ_dict_md","det_mc_dict_md","det_fils_dict_md"
+1,"MPO.BEAM","MPO.BEAM","BEAM","MPO.BEAM","MPO.BEAM","Intensité de l`écho d`un faisceau d`un ADCP",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","BEAM",0,0,0,0,0
+2,"MPO.EWCS","MPO.EWCS","EWCS","MPO.EWCS","MPO.EWCS","East (true) Component of Current (mm/s)",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","EWCS",0,0,0,2,0
+3,"MPO.NSCS","MPO.NSCS","NSCS","MPO.NSCS","MPO.NSCS","North (true) Component of Current (mm/s)",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","NSCS",0,0,0,2,0
+4,"MPO.UDCS","MPO.UDCS","UDCS","MPO.UDCS","MPO.UDCS","Vertical Current Speed (positive up) Unit: mm/s",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","UDCS",0,0,0,2,0
+5,"MPO.EVEL","MPO.EVEL","EVEL","MPO.EVEL","MPO.EVEL","Error Velocity (ADCP). Unit: mm/s",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","EVEL",0,0,0,2,0
+6,"QO.BEAM_1","QO.BEAM_1","BEAM_1","QO.BEAM_1","QO.BEAM_1","",-1,NULL,NULL,NULL,1,NULL,NULL,"QO","BEAM_1",0,0,0,0,0
+7,"QO.BEAM_2","QO.BEAM_2","BEAM_2","QO.BEAM_2","QO.BEAM_2","Intensité de l`écho du faisceau 2",-1,NULL,NULL,NULL,1,NULL,NULL,"QO","BEAM_2",0,0,0,0,0
+8,"QO.BEAM_3","QO.BEAM_3","BEAM_3","QO.BEAM_3","QO.BEAM_3","Intensité de l`écho du faisceau 3",-1,NULL,NULL,NULL,1,NULL,NULL,"QO","BEAM_3",0,0,0,0,0
+9,"QO.BEAM_4","QO.BEAM_4","BEAM_4","QO.BEAM_4","QO.BEAM_4","Intensité de l`écho du faisceau 4",-1,NULL,NULL,NULL,1,NULL,NULL,"QO","BEAM_4",0,0,0,0,0
+10,"QO.RPOT","QO.RPOT","RPOT","QO.RPOT","QO.RPOT","Potentiel d`oxydoréduction. Unité: `mV`",-1,NULL,NULL,NULL,1,NULL,NULL,"QO","RPOT",0,0,0,0,0
+11,"QO.HEIG","QO.HEIG","HEIG","QO.HEIG","QO.HEIG","Hauteur au dessus du fond. Unité: m",-1,NULL,NULL,NULL,1,NULL,NULL,"QO","HEIG",0,0,0,0,0
+12,"MPO.BATH","MPO.BATH","BATH","MPO.BATH","MPO.BATH","Bathymetric deph in meter.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","BATH",0,0,0,0,0
+14,"QO.PCO2","MPO.PCO2","PCO2","QO.PCO2","QO.PCO2","In situ dissolved CO2",-1,NULL,NULL,NULL,1,NULL,NULL,"QO","PCO2",0,0,0,0,0
+1977,"MPO.CNDC","MPO.CNDC","CNDC","MPO.CNDC","MPO.CNDC","Conductivité électrique de l'eau de mer.  unités: 'mmhos/m'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","CNDC",NULL,0,3,0,0
+1978,"MPO.CRAT","MPO.CRAT","CRAT","MPO.CRAT","MPO.CRAT","Rapport de conductivité de l'eau de mer.  Unités: ' '",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","CRAT",NULL,0,3,0,0
+1979,"MPO.DENS","MPO.DENS","DENS","MPO.DENS","MPO.DENS","Densité de l'eau de mer.  Unités: 'kg/m**3'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","DENS",NULL,0,3,3,0
+1980,"MPO.DEPH","MPO.DEPH","DEPH","MPO.DEPH","MPO.DEPH","Profondeur d'immersion sous la surface de la mer.  Unités: 'metres'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","DEPH",NULL,0,3,0,0
+1981,"MPO.DOXY","MPO.DOXY","DOXY","MPO.DOXY","MPO.DOXY","Concentration d'oxygène dissous dans l'eau de mer.  Unités: 'ml/l'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","DOXY",NULL,0,3,3,0
+1985,"MPO.OCUR","MPO.OCUR","OCUR","MPO.OCUR","MPO.OCUR","Courant mesuré par le senseur d'oxygène.  Unités: 'uA'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","OCUR",NULL,0,3,3,0
+1986,"MPO.OTMP","MPO.OTMP","OTMP","MPO.OTMP","MPO.OTMP","Température interne du senseur d'oxygène.  Unités: 'degrees C'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","OTMP",NULL,0,3,3,0
+1987,"MPO.PRES","MPO.PRES","PRES","MPO.PRES","MPO.PRES","Pression mesurée par le senseur de pression à profondeur d'immersion.  Unités: 'decibars'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","PRES",NULL,0,3,3,0
+1988,"MPO.PSAL","MPO.PSAL","PSAL","MPO.PSAL","MPO.PSAL","Salinité pratique de l'eau de mer.  Unités: ' '",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","PSAL",NULL,0,3,3,0
+1989,"MPO.QQQQ","MPO.QQQQ","QQQQ","MPO.QQQQ","MPO.QQQQ","Sémaphore de contrôle de qualité.  Unités: ' '",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","QQQQ",NULL,0,3,0,0
+1990,"MPO.SIGT","MPO.SIGT","SIGT","MPO.SIGT","MPO.SIGT","Sigmat-t de l'eau de mer.  Unités: 'kg/m**3'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","SIGT",NULL,0,3,3,0
+1991,"MPO.SYTM","MPO.SYTM","SYTM","MPO.SYTM","MPO.SYTM","Temps système formaté selon la chaîne suivante:  'DD-MMM-YYYY HH:MM:SS.ss'  Unités: ' '",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","SYTM",NULL,0,3,0,0
+1992,"MPO.TEMP","MPO.TEMP","TEMP","MPO.TEMP","MPO.TEMP","Température de l'eau de mer exprimée selon l'échelle IPTS68.  Unités: 'degrees C'    Unités: ' '",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","TEMP",NULL,1,3,3,0
+1993,"MPO.DPDT","MPO.DPDT","DPDT","MPO.DPDT","MPO.DPDT","Taux de descente de l'appareil.  Unités: 'metres/s'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","DPDT",NULL,0,3,0,0
+1994,"MPO.CNTR","MPO.CNTR","CNTR","MPO.CNTR","MPO.CNTR","Numéro de ligne dans un fichier MPO.  Unités: ' '",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","CNTR",NULL,0,3,0,0
+1995,"MPO.TE90","MPO.TE90","TE90","MPO.TE90","MPO.TE90","Température de l'eau de mer exprimée selon l'échelle ITS90.  Unités: 'degrees C'  ",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","TE90",NULL,0,3,3,0
+1996,"MPO.QCFF","MPO.QCFF","QCFF","MPO.QCFF","MPO.QCFF","Sémaphore de contrôle de qualité pour un enregistrement.  En décomposant ce nombre, il est possible de connaître quel test a échoué ligne par ligne.  Unités: ' '",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","QCFF",NULL,0,3,0,0
+1997,"MPO.FLOR","MPO.FLOR","FLOR","MPO.FLOR","MPO.FLOR","Fluorescence mesurée par un senseur.  Unités: ' '",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","FLOR",NULL,0,3,3,0
+1998,"MPO.OXYG","MPO.OXYG","OXYG","MPO.OXYG","MPO.OXYG","Concentration d'oxygène dissous dans l'eau de mer.  Unités: 'umol/kg'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","OXYG",NULL,0,3,3,0
+1999,"MPO.OSAT","MPO.OSAT","OSAT","MPO.OSAT","MPO.OSAT","Pourcentage de saturation de l'oxygène dans l'eau de mer'  Unités: '%'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","OSAT",NULL,0,3,3,0
+2032,"MPO.POTM","MPO.POTM","POTM","MPO.POTM","MPO.POTM","Température potentielle de l'eau de mer exprimée selon l'échelle IPTS68.  Unités: 'degrees C'    Unités: ' '",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","POTM",NULL,0,3,3,0
+2033,"MPO.SIGP","MPO.SIGP","SIGP","MPO.SIGP","MPO.SIGP","Sigmat-theta de l'eau de mer.  Unités: 'kg/m**3'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","SIGP",NULL,0,3,3,0
+2034,"MPO.PSAR","MPO.PSAR","PSAR","MPO.PSAR","MPO.PSAR","Radiation photosynthétique active ou   'Photosynthetic active radiation'  unités: 'microEinstein/s/m**2'  Unités: 'kg/m**3'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","PSAR",NULL,0,3,0,0
+2052,"MPO.TRAN","MPO.TRAN","TRAN","MPO.TRAN","MPO.TRAN","Transmissivité.  Unités: '%'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","TRAN",NULL,0,3,0,0
+2072,"MPO.SVEL","SVEL","SVEL","MPO.SVEL","MPO.SVEL","Vitesse du son  unités: 'm/s'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","SVEL",NULL,0,3,0,0
+2092,"MPO.CPHL","MPO.CPHL","CPHL","MPO.CPHL","MPO.CPHL","Contenu en chlorophylle a de l'eau de mer.  unités: 'mg/m**3'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","CPHL",NULL,0,3,3,0
+2093,"MPO.POC_","MPO.POC_","POC_","MPO.POC_","MPO.POC_","Contenu en carbone organique particulaire de l'eau de mer.  unités: 'mmol/m**3'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","POC_",NULL,0,3,3,0
+2096,"MPO.PON_","MPO.PON_","PON_","MPO.PON_","MPO.PON_","Contenu en azote organique particulaire de l'eau de mer.  unités: 'mmol/m**3'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","PON_",NULL,0,3,3,0
+2097,"MPO.NTRZ","MPO.NTRZ","NTRZ","MPO.NTRZ","MPO.NTRZ","Contenu en nitrate et nitrite de l'eau de mer.  unités: 'mmol/m**3'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","NTRZ",NULL,0,3,3,0
+2098,"MPO.NTRI","MPO.NTRI","NTRI","MPO.NTRI","MPO.NTRI","Contenu en nitrite de l'eau de mer.  unités: 'mmol/m**3'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","NTRI",NULL,0,3,3,0
+2099,"MPO.NTRA","MPO.NTRA","NTRA","MPO.NTRA","MPO.NTRA","Contenu en nitrate de l'eau de mer.  unités: 'mmol/m**3'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","NTRA",NULL,0,3,3,0
+2100,"MPO.PHOS","MPO.PHOS","PHOS","MPO.PHOS","MPO.PHOS","Contenu en phosphate de l'eau de mer.  unités: 'mmol/m**3'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","PHOS",NULL,0,3,3,0
+2101,"MPO.SLCA","MPO.SLCA","SLCA","MPO.SLCA","MPO.SLCA","Contenu en silicate de l'eau de mer.  unités: 'mmol/m**3'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","SLCA",NULL,0,3,3,0
+2102,"MPO.AMON","MPO.AMON","AMON","MPO.AMON","MPO.AMON","Contenu en ammoniac de l'eau de mer.  unités: 'mmol/m**3'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","AMON",NULL,0,3,3,0
+2103,"MPO.URE_","MPO.URE_","URE_","MPO.URE_","MPO.URE_","Contenu en urée de l'eau de mer.  unités: 'mmol/m**3'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","URE_",NULL,0,3,3,0
+2104,"MPO.IDEN","MPO.IDEN","IDEN","MPO.IDEN","MPO.IDEN","Numéro unique d'échantillon",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","IDEN",NULL,0,3,0,0
+2105,"MPO.NUM_","MPO.NUM_","NUM_","MPO.NUM_","MPO.NUM_","Nombre d'échantillon",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","NUM_",NULL,0,3,0,0
+2106,"MPO.PHA_","MPO.PHA_","PHA_","MPO.PHA_","MPO.PHA_","Contenu en phaeopigment de l'eau de mer.  unités: 'mg/m**3'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","PHA_",NULL,0,3,3,0
+2107,"MPO.SDEV","MPO.SDEV","SDEV","MPO.SDEV","MPO.SDEV","Déviation standard d'une donnée",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","SDEV",NULL,0,3,0,0
+2108,"MPO.SECC","MPO.SECC","SECC","MPO.SECC","MPO.SECC","Profondeur Secchi  Unité: 'm'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","SECC",NULL,0,3,0,0
+2112,"MPO.FFFF","MPO.FFFF","FFFF","MPO.FFFF","MPO.FFFF","Sémaphore de contrôle de qualité.  Unités: ' '",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","FFFF",NULL,0,3,0,0
+2132,"MPO.HCDT","MPO.HCDT","HCDT","MPO.HCDT","MPO.HCDT","Direction du courant dans le plan horizontal (nord vrai)  unité: 'degré'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","HCDT",NULL,0,3,3,0
+2133,"MPO.HCSP","MPO.HCSP","HCSP","MPO.HCSP","MPO.HCSP","Vitesse du courant dans le plan horizontal  unité: 'm/s'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","HCSP",NULL,0,3,3,0
+2134,"MPO.EWCT","MPO.EWCT","EWCT","MPO.EWCT","MPO.EWCT","Composante Est du courant (nord vrai)  unité: 'm/s'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","EWCT",NULL,0,3,3,0
+2135,"MPO.NSCT","MPO.NSCT","NSCT","MPO.NSCT","MPO.NSCT","Composante Nord du courant (nord vrai)  unité: 'm/s'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","NSCT",NULL,0,3,3,0
+2152,"MPO.LATD","MPO.LATD","LATD","MPO.LATD","MPO.LATD","Latitude (positive nord) d'un échantillon.  unités: 'degrés'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","LATD",NULL,0,3,0,0
+2153,"MPO.LOND","MPO.LOND","LOND","MPO.LOND","MPO.LOND","Longitude (positive est) d'un échantillon.  unités: 'degrés'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","LOND",NULL,0,3,0,0
+2172,"MPO.EWCM","MPO.EWCM","EWCM","MPO.EWCM","MPO.EWCM","Composante Est du courant (nordmagnétique)  unité: 'm/s'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","EWCM",NULL,0,3,3,0
+2173,"MPO.NSCM","MPO.NSCM","NSCM","MPO.NSCM","MPO.NSCM","Composante Nord du courant (nord magnétique)  unité: 'm/s'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","NSCM",NULL,0,3,3,0
+2174,"MPO.HCDM","MPO.HCDM","HCDM","MPO.HCDM","MPO.HCDM","Direction du courant dans le plan horizontal (nord magnétique)  unité: 'degré'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","HCDM",NULL,0,3,3,0
+2192,"NUL.CICERO","NUL.CICERO","CICERO","NUL.CICERO","NUL.CICERO","Relatif aux données amassées le long de la route du navire Cicero",-1,NULL,NULL,NULL,1,NULL,NULL,"NUL","CICERO",NULL,0,0,0,0
+2193,"NUL.NORDIK_EXPRESS","NUL.NORDIK_EXPRESS","NORDIK_EXPRESS","NUL.NORDIK_EXPRESS","NUL.NORDIK_EXPRESS","Relatif aux données amassées le long de la route du navire Nordik Express",-1,NULL,NULL,NULL,1,NULL,NULL,"NUL","NORDIK_EXPRESS",NULL,0,0,0,0
+2212,"MPO.PIM_","MPO.PIM_","PIM_","MPO.PIM_","MPO.PIM_","Particulate Inorganic Matter",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","PIM_",NULL,0,3,3,0
+2215,"MPO.TSM_","MPO.TSM_","TSM_","MPO.TSM_","MPO.TSM_","total suspended matter",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","TSM_",NULL,0,3,3,0
+2216,"MPO.POM_","MPO.POM_","POM_","MPO.POM_","MPO.POM_","Particulate Organic Matter",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","POM_",NULL,0,3,3,0
+2232,"MPO.OXV_","MPO.OXV_","OXV_","MPO.OXV_","MPO.OXV_","Tension d'oxygène brute.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","OXV_",NULL,0,3,3,0
+2252,"MPO.GEAR","MPO.GEAR","GEAR","MPO.GEAR","MPO.GEAR","stores information on the equipment used to collect samples or measure properties in situ.",-1,NULL,NULL,NULL,1,847,NULL,"MPO","GEAR",0,0,3,0,0
+2254,"MPO.UNIT","MPO.UNIT","UNIT","MPO.UNIT","MPO.UNIT","Stores information of units used to report measurement results.",-1,NULL,NULL,NULL,1,856,NULL,"MPO","UNIT",0,0,3,0,0
+2255,"MPO.WVOL","MPO.WVOL","WVOL","MPO.WVOL","MPO.WVOL","Volume of water filtered through net (cubic meters).",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","WVOL",0,0,3,0,0
+2256,"MPO.VMET","MPO.VMET","VMET","MPO.VMET","MPO.VMET","Stores the methods for the calculation of volumes.",-1,NULL,NULL,NULL,1,848,NULL,"MPO","VMET",0,0,3,0,0
+2257,"MPO.LPLR","MPO.LPLR","LPLR","MPO.LPLR","MPO.LPLR","Procedure includes removal of large plankton ie. jellyfish.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","LPLR",0,0,3,0,0
+2258,"MPO.CMET","MPO.CMET","CMET","MPO.CMET","MPO.CMET","Stores information pertaining to the kind of tow: oblique, horizontal, vertical, unknown.",-1,NULL,NULL,NULL,1,849,NULL,"MPO","CMET",0,0,3,0,0
+2259,"MPO.MSIZ","MPO.MSIZ","MSIZ","MPO.MSIZ","MPO.MSIZ","Net mesh size (microns).",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","MSIZ",0,0,3,0,0
+2260,"MPO.PHDL","MPO.PHDL","PHDL","MPO.PHDL","MPO.PHDL","Used to identify the state or phase of the day (i.e. day-light, moonlight, twilight, etc.)",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","PHDL",0,0,3,0,0
+2261,"MPO.CDID","MPO.CDID","CDID","MPO.CDID","MPO.CDID","Original label as provided by the data provider eg. IML95028CTD5",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","CDID",0,0,3,0,0
+2262,"MPO.CSID","MPO.CSID","CSID","MPO.CSID","MPO.CSID","Secondary sample label ie. common identifier label.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","CSID",0,0,3,0,0
+2263,"MPO.PROC","MPO.PROC","PROC","MPO.PROC","MPO.PROC","Identifies the state of the analysis.",-1,NULL,NULL,NULL,1,850,NULL,"MPO","PROC",0,0,3,0,0
+2264,"MPO.PRSV","MPO.PRSV","PRSV","MPO.PRSV","MPO.PRSV","Stores information on how a sample is preserved.",-1,NULL,NULL,NULL,1,851,NULL,"MPO","PRSV",0,0,3,0,0
+2265,"MPO.STOR","MPO.STOR","STOR","MPO.STOR","MPO.STOR","Contains information on how sample was stored between collection and analysis.",-1,NULL,NULL,NULL,1,852,NULL,"MPO","STOR",0,0,3,0,0
+2266,"MPO.MSQD","MPO.MSQD","MSQD","MPO.MSQD","MPO.MSQD","Meters squared flag [Y or N] Ok to use for standing stock calc.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","MSQD",0,0,3,0,0
+2268,"MPO.TAXN","MPO.TAXN","TAXN","MPO.TAXN","MPO.TAXN","Name of beast or group.",-1,NULL,NULL,NULL,1,844,NULL,"MPO","TAXN",0,0,6,0,0
+2269,"MPO.TSN_","MPO.TSN_","TSN_","MPO.TSN_","MPO.TSN_","Standard ITIS code if applicable.",-1,NULL,NULL,NULL,1,843,NULL,"MPO","TSN_",0,0,6,0,0
+2270,"MPO.BNO7","MPO.BNO7","BNO7","MPO.BNO7","MPO.BNO7","User specified 7 digit taxonomic reference number for organisms not yet classified.",-1,NULL,NULL,NULL,1,845,NULL,"MPO","BNO7",0,0,6,0,0
+2271,"MPO.AUTH","MPO.AUTH","AUTH","MPO.AUTH","MPO.AUTH","Name of the individual credited with the discovery of an organism.",-1,NULL,NULL,NULL,1,846,NULL,"MPO","AUTH",0,0,6,0,0
+2272,"MPO.CTAX","MPO.CTAX","CTAX","MPO.CTAX","MPO.CTAX","Nom de l'organisme selon le producteur de données",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","CTAX",0,0,6,0,0
+2273,"MPO.LHIS","MPO.LHIS","LHIS","MPO.LHIS","MPO.LHIS","Stores the references to the life stage and molt code that describes an organism.",-1,NULL,NULL,NULL,1,853,NULL,"MPO","LHIS",0,0,3,0,0
+2274,"MPO.TRPH","MPO.TRPH","TRPH","MPO.TRPH","MPO.TRPH","Stores the description of an organism position in the food chain.",-1,NULL,NULL,NULL,1,854,NULL,"MPO","TRPH",0,0,6,0,0
+2275,"MPO.MNSV","MPO.MNSV","MNSV","MPO.MNSV","MPO.MNSV","Retention filter size (microns).",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","MNSV",0,0,6,0,0
+2276,"MPO.MXSV","MPO.MXSV","MXSV","MPO.MXSV","MPO.MXSV","Largest sieve used (microns).",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","MXSV",0,0,6,0,0
+2277,"MPO.SPFR","MPO.SPFR","SPFR","MPO.SPFR","MPO.SPFR","Fraction of sample (0.0-1.0)",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","SPFR",0,0,6,0,0
+2278,"MPO.SEX_","MPO.SEX_","SEX_","MPO.SEX_","MPO.SEX_","Stores a listing of possible observed organism sex definitions.",-1,NULL,NULL,NULL,1,855,NULL,"MPO","SEX_",0,0,6,0,0
+2279,"MPO.CNTS","MPO.CNTS","CNTS","MPO.CNTS","MPO.CNTS","Number of organisms counted.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","CNTS",0,0,6,3,0
+2280,"MPO.CPCT","MPO.CPCT","CPCT","MPO.CPCT","MPO.CPCT","Identifies the percentage of specified plankton.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","CPCT",0,0,6,0,0
+2281,"MPO.WTWT","MPO.WTWT","WTWT","MPO.WTWT","MPO.WTWT","Wet weight of organisms (grams).",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","WTWT",0,0,6,3,0
+2282,"MPO.DRWT","MPO.DRWT","DRWT","MPO.DRWT","MPO.DRWT","Dry weight of organisms (grams).",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","DRWT",0,0,6,3,0
+2283,"MPO.BIOV","MPO.BIOV","BIOV","MPO.BIOV","MPO.BIOV"," Volume of Organisms (ml)",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","BIOV",0,0,6,3,0
+2284,"MPO.PRSN","MPO.PRSN","PRSN","MPO.PRSN","MPO.PRSN","Indicates presence (1) or absence (0) of organism(s) if not counted.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","PRSN",0,0,6,0,0
+2285,"MPO.LBSZ","MPO.LBSZ","LBSZ","MPO.LBSZ","MPO.LBSZ","Lower size fractioned bin size.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","LBSZ",0,0,3,0,0
+2286,"MPO.UBSZ","MPO.UBSZ","UBSZ","MPO.UBSZ","MPO.UBSZ","Size fractioned bin size (upper limit)",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","UBSZ",0,0,3,0,0
+2287,"MPO.BCNT","MPO.BCNT","BCNT","MPO.BCNT","MPO.BCNT","Number of bugs in extracted sub-sample.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","BCNT",0,0,3,0,0
+2288,"MPO.BNUM","MPO.BNUM","BNUM","MPO.BNUM","MPO.BNUM","Sequential number to track individual bugs.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","BNUM",0,0,3,0,0
+2292,"MPO.DOC_","MPO.DOC_","DOC_","MPO.DOC_","MPO.DOC_","Contenu en carbone organique dissous de l''eau de mer  Unité: ''mmol/m**3''",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","DOC_",0,0,3,3,0
+2312,"MPO.SPAR","MPO.SPAR","SPAR","MPO.SPAR","MPO.SPAR","Radiation photosynthétique active à la surface de l'eau ou   ''Surface Photosynthetic active radiation''  unités: ''microEinstein/s/m**2'' ",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","SPAR",0,0,3,0,0
+2332,"MPO.LPHA","MPO.LPHA","LPHA","MPO.LPHA","MPO.LPHA","Contenu en phaeopigments des cellules > 5um de l'eau de mer  Unité: 'mg/m**3'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","LPHA",0,0,3,3,0
+2333,"MPO.LCHL","MPO.LCHL","LCHL","MPO.LCHL","MPO.LCHL","Contenu en chlorophylle a des cellules > 5um de l'eau de mer  Unité: 'mg/m**3'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","LCHL",0,0,3,3,0
+2334,"MPO.FLU_","MPO.FLU_","FLU_","MPO.FLU_","MPO.FLU_","Fluorescence mesurée par un senseur.  Unités: '%'",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","FLU_",0,0,3,3,0
+2352,"MPO.PHY_","MPO.PHY_","PHY_","MPO.PHY_","MPO.PHY_","Number of phytoplanktonic cells counted [10**3cells/L]",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","PHY_",0,0,6,3,0
+2353,"MPO.ZOO_","MPO.ZOO_","ZOO_","MPO.ZOO_","MPO.ZOO_","Number of zooplanktonic organisms counted",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","ZOO_",0,0,6,3,0
+2354,"MPO.BAC_","MPO.BAC_","BAC_","MPO.BAC_","MPO.BAC_","Number of bactéria counted [10**6cells/L]",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","BAC_",0,0,6,3,0
+2355,"MPO.VIR_","MPO.VIR_","VIR_","MPO.VIR_","MPO.VIR_","Number of virus counted",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","VIR_",0,0,6,3,0
+2356,"MPO.CMNT","MPO.CMNT","CMNT","MPO.CMNT","MPO.CMNT","Commentaire",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","CMNT",0,0,6,0,0
+2357,"MPO.MNSZ","MPO.MNSZ","MNSZ","MPO.MNSZ","MPO.MNSZ","Minimum size of organisms (microns)",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","MNSZ",0,0,6,0,0
+2358,"MPO.MXSZ","MPO.MXSZ","MXSZ","MPO.MXSZ","MPO.MXSZ","Maximum size of organisms (microns)",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","MXSZ",0,0,6,0,0
+2359,"MPO.MMPO","MPO.MMPO","MMPO","MPO.MMPO","MPO.MMPO","Information taxonomique additionnelle",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","MMPO",0,0,6,0,0
+2372,"MPO.PLT_","MPO.PLT_","PLT_","MPO.PLT_","MPO.PLT_","Pourcentage de la lumière incidente observé à la profondeur de la bouteille",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","PLT_",0,0,3,0,0
+2392,"MPO.SSAL","MPO.SSAL","SSAL","MPO.SSAL","MPO.SSAL","Salinité de l`eau de mer. Unités: [g/kg ou o/oo]",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","SSAL",0,0,3,3,0
+2393,"MPO.PRP_","MPO.PRP_","PRP_","MPO.PRP_","MPO.PRP_","Production primaire à partir d`incubation. Unités: [mgC/m³/h]",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","PRP_",0,0,3,3,0
+2394,"MPO.ALKY","MPO.ALKY","ALKY","MPO.ALKY","MPO.ALKY","Alcalinité de l`eau de mer. Unités: [mmol/m**3]",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","ALKY",0,0,3,3,0
+2412,"MPO.PHPH","MPO_PHPH","PHPH","MPO.PHPH","MPO.PHPH","ph eau de mer",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","PHPH",0,0,2,3,0
+2432,"MPO.ACCM","MPO ACCM","ACCM","MPO.ACCM","MPO.ACCM","",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","ACCM",0,0,2,0,0
+2453,"MPO.412E","MPO.412E","412E","MPO.412E","MPO.412E","Irradiance à 412nm. Unité: uW/cm**2/nm",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","412E",0,0,2,0,0
+2454,"MPO.490E","MPO.490E","490E","MPO.490E","MPO.490E","Irradiance à 490nm. Unité: uW/cm**2/nm",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","490E",0,0,0,0,0
+2456,"MPO.443E","MPO.443E","443E","MPO.443E","MPO.443E","Irradiance à 443nm. Unité: uW/cm**2/nm",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","443E",0,0,0,0,0
+2457,"MPO.510E","MPO.510E","510E","MPO.510E","MPO.510E","Irradiance à  510nm. Unité: uW/cm**2/nm",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","510E",0,0,0,0,0
+2458,"MPO.555E","MPO.555E","555E","MPO.555E","MPO.555E","Irradiance à 555nm. Unité: uW/cm**2/nm",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","555E",0,0,0,0,0
+2459,"MPO.669E","MPO.669E","669E","MPO.669E","MPO.669E","Irradiance à 669nm. Unité: uW/cm**2/nm",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","669E",0,0,0,0,0
+2460,"MPO.683E","MPO.683E","683E","MPO.683E","MPO.683E","Irradiance à 683nm. Unité: uW/cm**2/nm",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","683E",0,0,0,0,0
+2461,"MPO.412ESDEV","MPO.412ESDEV","412ESDEV","MPO.412ESDEV","MPO.412ESDEV","Irradiance 412nm standard deviation. Unité: uW/cm**2/nm",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","412ESDEV",0,0,0,3,0
+2462,"MPO.443ESDEV","MPO.443ESDEV","443ESDEV","MPO.443ESDEV","MPO.443ESDEV","Irradiance 443nm Standard Deviation. Unité: uW/cm**2/nm",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","443ESDEV",0,0,0,3,0
+2463,"MPO.490ESDEV","MPO.490ESDEV","490ESDEV","MPO.490ESDEV","MPO.490ESDEV","Irradiance 490nm standard deviation. Unité: uW/cm**2/nm",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","490ESDEV",0,0,0,3,0
+2464,"MPO.510ESDEV","MPO.510ESDEV","510ESDEV","MPO.510ESDEV","MPO.510ESDEV","Irradiance 510nm. Unité: uW/cm**2/nm",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","510ESDEV",0,0,0,3,0
+2465,"MPO.555ESDEV","MPO.555ESDEV","555ESDEV","MPO.555ESDEV","MPO.555ESDEV","Irradiance 555nm standard deviation. Unité: uW/cm**2/nm",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","555ESDEV",0,0,0,3,0
+2466,"MPO.669ESDEV","MPO.669ESDEV","669ESDEV","MPO.669ESDEV","MPO.669ESDEV","Irradiance 669nm Standard Deviation. Unité: uW/cm**2/nm",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","669ESDEV",0,0,0,3,0
+2467,"MPO.683ESDEV","MPO.683ESDEV","683ESDEV","MPO.683ESDEV","MPO.683ESDEV","Irradiance 683nm Standard Deviation. Unité: uW/cm**2/nm",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","683ESDEV",0,0,0,3,0
+2468,"MPO.412L","MPO.412L","412L","MPO.412L","MPO.412L","Radiance 412nm. Unité: uW/cm**2/nm/sr",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","412L",0,0,0,3,0
+2469,"MPO.443L","MPO.443L","443L","MPO.443L","MPO.443L","Radiance 443nm. Unité: uW/cm**2/nm/sr",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","443L",0,0,2,3,0
+2470,"MPO.490L","MPO.490L","490L","MPO.490L","MPO.490L","Radiance 490nm. Unité: uW/cm**2/nm/sr",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","490L",0,0,0,3,0
+2471,"MPO.510L","MPO.510L","510L","MPO.510L","MPO.510L","Radiance 510nm. Unité: uW/cm**2/nm/sr",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","510L",0,0,0,3,0
+2472,"MPO.555L","MPO.555L","555L","MPO.555L","MPO.555L","Radiance 555nm. Unité: uW/cm**2/nm/sr",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","555L",0,0,2,3,0
+2473,"MPO.669L","MPO.669L","669L","MPO.669L","MPO.669L","Radiance 669nm. Unité: uW/cm**2/nm/sr",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","669L",0,0,4,3,0
+2474,"MPO.683L","MPO.683L","683L","MPO.683L","MPO.683L","Radiance 683nm. Unité: uW/cm**2/nm/sr",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","683L",0,0,4,3,0
+2475,"MPO.412LSDEV","MPO.412LSDEV","412LSDEV","MPO.412LSDEV","MPO.412LSDEV","Radiance 412nm standard deviation. Unité: uW/cm**2/nm/sr",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","412LSDEV",0,0,2,3,0
+2476,"MPO.443LSDEV","MPO.443LSDEV","443LSDEV","MPO.443LSDEV","MPO.443LSDEV","Radiance 443nm standard deviation. Unité: uW/cm**2/nm/sr",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","443LSDEV",0,0,2,3,0
+2477,"MPO.490LSDEV","MPO.490LSDEV","490LSDEV","MPO.490LSDEV","MPO.490LSDEV","Radiance 490nm standard deviation. Unité: uW/cm**2/nm/sr",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","490LSDEV",0,0,4,3,0
+2478,"MPO.510LSDEV","MPO.510LSDEV","510LSDEV","MPO.510LSDEV","MPO.510LSDEV","Radiance 510nm standard deviation. Unité: uW/cm**2/nm/sr",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","510LSDEV",0,0,4,3,0
+2481,"MPO.555LSDEV","MPO.555LSDEV","555LSDEV","MPO.555LSDEV","MPO.555LSDEV","Radiance 555nm standard deviation. Unité: uW/cm**2/nm/sr",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","555LSDEV",0,0,2,3,0
+2482,"MPO.669LSDEV","MPO.669LSDEV","669LSDEV","MPO.669LSDEV","MPO.669LSDEV","Radiance 669nm standard deviation. Unité: uW/cm**2/nm/sr",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","669LSDEV",0,0,0,3,0
+2483,"MPO.683LSDEV","MPO.683LSDEV","683LSDEV","MPO.683LSDEV","MPO.683LSDEV","Radiance 683nm standard deviation. Unité: uW/cm**2/nm/sr",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","683LSDEV",0,0,0,3,0
+2484,"MPO.ATMP","MPO.ATMP","ATMP","MPO.ATMP","MPO.ATMP","Pression atmosphérique (hpa)",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","ATMP",0,0,2,0,0
+2492,"MPO.CDOM","MPO.CDOM","CDOM","MPO.CDOM","MPO.CDOM","Fluorescence of CDOM (Coloured Dissolved Organic Matter). Unité: mg/m3.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","CDOM",0,0,2,3,0
+2493,"MPO.CDOMSDEV","MPO.CDOMSDEV","CDOMSDEV","MPO.CDOMSDEV","MPO.CDOMSDEV","Écart-type de la fluorescence du CDOM (Coloured Dissolved Organic Matter). Unité: mg/m3.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","CDOMSDEV",0,0,0,3,0
+2494,"MPO.DRYT","MPO.DRYT","DRYT","MPO.DRYT","MPO.DRYT","Température du bulbe sec. Unité: degrés Celsius.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","DRYT",0,0,0,3,0
+2495,"MPO.FLORSDEV","MPO.FLORSDEV","FLORSDEV","MPO.FLORSDEV","MPO.FLORSDEV","Écart-type de la fluorescence de l eau de mer. Unité: mg/m3.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","FLORSDEV",0,0,2,3,0
+2496,"MPO.GSPD","MPO.GSPD","GSPD","MPO.GSPD","MPO.GSPD","Vitesse des rafales de vent. Unité: m/s.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","GSPD",0,0,2,0,0
+2497,"MPO.HEAD","MPO.HEAD","HEAD","MPO.HEAD","MPO.HEAD","Heading. Units: true degrees.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","HEAD",0,0,2,0,0
+2498,"MPO.PTCH","MPO.PTCH","PTCH","MPO.PTCH","MPO.PTCH","Angle de tangage. Unité: degrés.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","PTCH",0,0,2,0,0
+2499,"MPO.PTCHSDEV","MPO.PTCHSDEV","PTCHSDEV","MPO.PTCHSDEV","MPO.PTCHSDEV","Écart-type de l angle du tangage. Unité: degrées.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","PTCHSDEV",0,0,2,0,0
+2500,"MPO.RELH","MPO.RELH","RELH","MPO.RELH","MPO.RELH","Humidité relative. Unité: pourcentage.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","RELH",0,0,2,0,0
+2501,"MPO.ROLL","MPO.ROLL","ROLL","MPO.ROLL","MPO.ROLL","Angle du roulis. Unité: degrés.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","ROLL",0,0,2,0,0
+2502,"MPO.ROLLSDEV","MPO.ROLLSDEV","ROLLSDEV","MPO.ROLLSDEV","MPO.ROLLSDEV","Écart-type de l angle de roulis. Unité: degrés.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","ROLLSDEV",0,0,2,0,0
+2503,"MPO.SPARSDEV","MPO.SPARSDEV","SPARSDEV","MPO.SPARSDEV","MPO.SPARSDEV","Radiation photosynthétique active à la surface de l eau Surface photosynthetic active radiation.  Unités: microEinstein/s/m**2.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","SPARSDEV",0,0,2,0,0
+2504,"MPO.TILT","MPO.TILT","TILT","MPO.TILT","MPO.TILT","Angle d inclinaison. Unité: degrés.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","TILT",0,0,2,0,0
+2505,"MPO.TILTSDEV","MPO.TILTSDEV","TILTSDEV","MPO.TILTSDEV","MPO.TILTSDEV","Écart-type de l angle d inclinaison. Unité: degrés.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","TILTSDEV",0,0,2,0,0
+2506,"MPO.WDIR","MPO.WDIR","WDIR","MPO.WDIR","MPO.WDIR","Direction du vent. Unité: degrés.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","WDIR",0,0,2,0,0
+2507,"MPO.WSPD","MPO.WSPD","WSPD","MPO.WSPD","MPO.WSPD","Vitesse du vent horizontal. Unité: m/s.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","WSPD",0,0,2,0,0
+2512,"MPO.ERRV","MPO.ERRV","ERRV","MPO.ERRV","MPO.ERRV","Erreur de vitesse pour un ADCP. Unité: m/s",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","ERRV",0,0,2,3,0
+2513,"MPO.VCSP","MPO.VCSP","VCSP","MPO.VCSP","MPO.VCSP","Vitesse verticale (w) du courant. Positive vers le haut. Unité: m/s.",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","VCSP",0,0,2,3,0
+2514,"MPO.TRB_","MPO TRB_","TRB_","MPO.TRB_","MPO.TRB_","",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","TRB_",0,0,0,3,0
+2515,"MPO.TRB2","MPO TRB2","TRB2","MPO.TRB2","MPO.TRB2","",-1,NULL,NULL,NULL,1,NULL,NULL,"MPO","TRB2",0,0,0,3,0
+2519,"QO.ICOV","QO.ICOV","ICOV","QO.ICOV","QO.ICOV","Sea ice index",-1,NULL,NULL,NULL,1,NULL,NULL,"QO","ICOV",0,0,0,0,0
+2520,"QO.MEIK","QO.MEIK","MEIK","QO.MEIK","QO.MEIK","Mean Sea Ice thickness",-1,NULL,NULL,NULL,1,NULL,NULL,"QO","MEIK",0,0,0,0,0
+2521,"QO.VDIR","QO.VDIR","VDIR","QO.VDIR","QO.VDIR","Wave direction",-1,NULL,NULL,NULL,1,NULL,NULL,"QO","VDIR",0,0,0,0,0
+2522,"GF3.VSMC","QO.VSMC","VSMC","GF3.VSMC","GF3.VSMC","Wave period",-1,NULL,NULL,NULL,1,NULL,NULL,"GF3","VSMC",0,0,0,0,0
+2523,"GF3.VTDH","QO.VTDH","VTDH","GF3.VTDH","GF3.VTDH","Significant wave height",-1,NULL,NULL,NULL,1,NULL,NULL,"GF3","VTDH",0,0,0,0,0
+2524,"GF3.VTPK","QO.VTPK","VTPK","GF3.VTPK","GF3.VTPK","Wave spectrum peak period",-1,NULL,NULL,NULL,1,NULL,NULL,"GF3","VTPK",0,0,0,0,0
+2525,"GF3.VZMX","QO.VZMX","VZMX","GF3.VZMX","GF3.VZMX","Maximum wave height",-1,NULL,NULL,NULL,1,NULL,NULL,"GF3","VZMX",0,0,0,0,0
+2526,"QO.OXYM","QO.OXYM","OXYM","QO.OXYM","QO.OXYM","Teneur en oxygène dissous de l`eau de mer. Unitée: microMolaire",-1,NULL,NULL,NULL,1,NULL,NULL,"QO","OXYM",0,0,0,1,0

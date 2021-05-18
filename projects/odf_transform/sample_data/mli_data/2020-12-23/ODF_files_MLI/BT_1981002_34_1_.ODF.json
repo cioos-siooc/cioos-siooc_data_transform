@@ -1,0 +1,333 @@
+{
+    "metadata": {
+        "units": {
+            "depth": {
+                "unit": [
+                    "m"
+                ],
+                "scale": ""
+            },
+            "SFlag": {
+                "unit": [],
+                "scale": ""
+            },
+            "temperature": {
+                "unit": [
+                    [
+                        "*",
+                        "degree",
+                        "C"
+                    ]
+                ],
+                "scale": "ITS-90"
+            },
+            "SFlag2": {
+                "unit": [],
+                "scale": ""
+            },
+            "CFlagFlag": {
+                "unit": [],
+                "scale": ""
+            }
+        },
+        "flags": {
+            "S": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            "S2": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            "QC": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        "filename": "/Users/nate.rosenstock/dev/cioos-siooc_data_transform/odf_transform/sample_data/mli_data/2020-12-23/ODF_files_MLI/BT_1981002_34_1_.ODF",
+        "deploymentType": "unknown",
+        "header": {
+            "ODF_HEADER": {
+                "FILE_SPECIFICATION _1": "BT_1981002_34_1_"
+            },
+            "CRUISE_HEADER": {
+                "COUNTRY_INSTITUTE_CODE _1": "1830",
+                "CRUISE_NUMBER _1": "1981002",
+                "ORGANIZATION _1": "DPO",
+                "CHIEF_SCIENTIST _1": "Unknown",
+                "START_DATE _1": "24-OCT-1981 00:00:00.00",
+                "END_DATE _1": "30-OCT-1981 23:59:00.00",
+                "PLATFORM _1": "E.E.Prince",
+                "CRUISE_NAME _1": "Y.Lavergne",
+                "CRUISE_DESCRIPTION _1": "Mission récupérée des archives du MEDS: 18PE81002"
+            },
+            "EVENT_HEADER": {
+                "DATA_TYPE_1": "BT",
+                "EVENT_NUMBER_1": "34",
+                "EVENT_QUALIFIER1_1": "1",
+                "EVENT_QUALIFIER2_1": "",
+                "CREATION_DATE_1": "20-JUN-2006 14:35:48.23",
+                "ORIG_CREATION_DATE_1": "17-NOV-1858 00:00:00.00",
+                "START_DATE_TIME_1": "30-OCT-1981 18:44:00.00",
+                "END_DATE_TIME_1": "17-NOV-1858 00:00:00.00",
+                "INITIAL_LATITUDE_1": "49.950000",
+                "INITIAL_LONGITUDE_1": "-66.316700",
+                "END_LATITUDE_1": "-99.990000",
+                "END_LONGITUDE_1": "-999.990000",
+                "MIN_DEPTH_1": "0.00",
+                "MAX_DEPTH_1": "233.00",
+                "SAMPLING_INTERVAL_1": "-99.0",
+                "SOUNDING_1": "-99.00",
+                "DEPTH_OFF_BOTTOM_1": "-99.00"
+            },
+            "INSTRUMENT_HEADER": {
+                "INST_TYPE_1": "Bathythermograph",
+                "MODEL_1": "Manual",
+                "SERIAL_NUMBER_1": "",
+                "DESCRIPTION_1": ""
+            },
+            "QUALITY_HEADER": {
+                "QUALITY_DATE_1": "20-JUN-2006 14:35:36.92",
+                "QUALITY_TESTS_1": "Test 1.1: GTSPP Platform Identification",
+                "QUALITY_TESTS_2": "Test 1.2: GTSPP Impossible Date/Time",
+                "QUALITY_TESTS_3": "Test 1.3: GTSPP Impossible Location",
+                "QUALITY_TESTS_4": "Test 1.4: GTSPP Position on Land",
+                "QUALITY_TESTS_5": "Test 1.5: GTSPP Impossible Speed",
+                "QUALITY_TESTS_6": "Test 1.6: GTSPP Impossible Sounding",
+                "QUALITY_TESTS_7": "Test 5.1: GTSPP Cruise Track Visual Inspection",
+                "QUALITY_TESTS_8": "Test 2.0: IML Minimum Descent Rate (2) (0.10m/s)",
+                "QUALITY_TESTS_9": "Test 2.1: GTSPP Global Impossible Parameter Values (4)",
+                "QUALITY_TESTS_10": "Test 2.2: GTSPP Regional Impossible Parameter Values (8)",
+                "QUALITY_TESTS_11": "Test 2.3: GTSPP Increasing Depth (16)",
+                "QUALITY_TESTS_12": "Test 2.4: GTSPP Profile Envelope (Temperature and Salinity) (32)",
+                "QUALITY_TESTS_13": "Test 2.6: GTSPP Freezing Point (128)",
+                "QUALITY_TESTS_14": "Test 2.7: GTSPP Spike in Temperature and Salinity (one point) (256)",
+                "QUALITY_TESTS_15": "Test 2.8: GTSPP Top and Bottom Spike in Temperature and Salinity (512)",
+                "QUALITY_TESTS_16": "Test 2.9: GTSPP Gradient in Temperature and Salinity (1024)",
+                "QUALITY_TESTS_17": "Test 2.10: GTSPP Density Inversion (point to point) (2048)",
+                "QUALITY_TESTS_18": "Test 2.11: IML Spike in Pressure, Temperature and Salinity (one point or more) (4096)",
+                "QUALITY_TESTS_19": "Test 2.12: IML Density Inversion (overall profile) (8192)",
+                "QUALITY_TESTS_20": "Test 3.5: IML Petrie Monthly Climatology (Temperature, Salinity and Sigma-T)",
+                "QUALITY_TESTS_21": "Test 5.2: GTSPP Profile Visual Inspection",
+                "QUALITY_COMMENTS_1": "QCFF values are derived from tests of GTSPP stage 2",
+                "QUALITY_COMMENTS_2": "A quality flag modified by hand has a QCFF value of 1"
+            },
+            "HISTORY_HEADER": {
+                "CREATION_DATE_2": "20-JUN-2006 14:34:31.53",
+                "PROCESS_1": "Conversion à partir d`un fichier MBT en provenance du MEDS"
+            },
+            "PARAMETER_HEADER": {
+                "TYPE_1": "DOUB",
+                "NAME_1": "Sensor Depth below Sea Surface",
+                "UNITS_1": "metres",
+                "CODE_1": "DEPH_01",
+                "NULL_VALUE_1": "-9.900000E+001",
+                "PRINT_FIELD_WIDTH_1": "9",
+                "PRINT_DECIMAL_PLACES_1": "2",
+                "ANGLE_OF_SECTION_1": "0.000000",
+                "MAGNETIC_VARIATION_1": "0.000000",
+                "DEPTH_1": "0.000000 ",
+                "MINIMUM_VALUE_1": "0",
+                "MAXIMUM_VALUE_1": "233",
+                "NUMBER_VALID_1": "19",
+                "NUMBER_NULL_1": "0"
+            },
+            "PARAMETER_HEADER2": {
+                "TYPE_2": "DOUB",
+                "NAME_2": "Quality flag: Sensor Depth below Sea Surface",
+                "UNITS_2": "none",
+                "CODE_2": "QQQQ_01",
+                "NULL_VALUE_2": "-9.900000E+001",
+                "PRINT_FIELD_WIDTH_2": "1",
+                "PRINT_DECIMAL_PLACES_2": "0",
+                "ANGLE_OF_SECTION_2": "0.000000",
+                "MAGNETIC_VARIATION_2": "0.000000",
+                "DEPTH_2": "0.000000 ",
+                "MINIMUM_VALUE_2": "1",
+                "MAXIMUM_VALUE_2": "1",
+                "NUMBER_VALID_2": "19",
+                "NUMBER_NULL_2": "0"
+            },
+            "PARAMETER_HEADER3": {
+                "TYPE_3": "DOUB",
+                "NAME_3": "Sea Temperature (IPTS-68)",
+                "UNITS_3": "degrees C",
+                "CODE_3": "TEMP_01",
+                "NULL_VALUE_3": "-9.900000E+001",
+                "PRINT_FIELD_WIDTH_3": "10",
+                "PRINT_DECIMAL_PLACES_3": "3",
+                "ANGLE_OF_SECTION_3": "0.000000",
+                "MAGNETIC_VARIATION_3": "0.000000",
+                "DEPTH_3": "0.000000 ",
+                "MINIMUM_VALUE_3": "1.4",
+                "MAXIMUM_VALUE_3": "8",
+                "NUMBER_VALID_3": "19",
+                "NUMBER_NULL_3": "0"
+            },
+            "PARAMETER_HEADER4": {
+                "TYPE_4": "DOUB",
+                "NAME_4": "Quality flag: Sea Temperature (IPTS-68)",
+                "UNITS_4": "none",
+                "CODE_4": "QQQQ_02",
+                "NULL_VALUE_4": "-9.900000E+001",
+                "PRINT_FIELD_WIDTH_4": "1",
+                "PRINT_DECIMAL_PLACES_4": "0",
+                "ANGLE_OF_SECTION_4": "0.000000",
+                "MAGNETIC_VARIATION_4": "0.000000",
+                "DEPTH_4": "0.000000 ",
+                "MINIMUM_VALUE_4": "1",
+                "MAXIMUM_VALUE_4": "1",
+                "NUMBER_VALID_4": "19",
+                "NUMBER_NULL_4": "0"
+            },
+            "PARAMETER_HEADER5": {
+                "TYPE_5": "DOUB",
+                "NAME_5": "Quality flag: QCFF",
+                "UNITS_5": "none",
+                "CODE_5": "QCFF_01",
+                "NULL_VALUE_5": "-9.900000E+001",
+                "PRINT_FIELD_WIDTH_5": "1",
+                "PRINT_DECIMAL_PLACES_5": "0",
+                "ANGLE_OF_SECTION_5": "0.000000",
+                "MAGNETIC_VARIATION_5": "0.000000",
+                "DEPTH_5": "0.000000 ",
+                "MINIMUM_VALUE_5": "0",
+                "MAXIMUM_VALUE_5": "0",
+                "NUMBER_VALID_5": "19",
+                "NUMBER_NULL_5": "0"
+            },
+            "RECORD_HEADER": {
+                "NUM_CALIBRATION_1": "0",
+                "NUM_SWING_1": "0",
+                "NUM_HISTORY_1": "1",
+                "NUM_CYCLE_1": "19",
+                "NUM_PARAM_1": "5"
+            }
+        },
+        "depthOffBottom": "-99.00",
+        "initialLatitude": "49.950000",
+        "initialLongitude": "-66.316700",
+        "endLatitude": "-99.990000",
+        "endLongitude": "-999.990000",
+        "samplingInterval": "-99.0",
+        "scientist": "Unknown",
+        "ship": "E.E.Prince",
+        "institute": "DPO",
+        "station": "34",
+        "latitude": 49.95,
+        "longitude": -66.3167,
+        "cruise": "Y.Lavergne",
+        "countryInstituteCode": "1830",
+        "cruiseNumber": "1981002",
+        "startTime": 373315400.0,
+        "eventNumber": "34",
+        "eventQualifier": "1",
+        "depthMin": 0,
+        "depthMax": 233,
+        "sounding": -99,
+        "waterDepth": -99,
+        "type": "Bathythermograph",
+        "serialNumber": "",
+        "model": "Manual",
+        "dataNamesOriginal": {
+            "depth": "DEPH_01",
+            "temperature": "TEMP_01"
+        },
+        "sampleInterval": null
+    },
+    "data": {
+        "depth": [
+            0,
+            15.2,
+            18,
+            21.4,
+            25.7,
+            28.2,
+            36.7,
+            42.2,
+            44.9,
+            49,
+            64.8,
+            69.4,
+            71,
+            78.4,
+            88.7,
+            129.2,
+            149.7,
+            200.4,
+            233
+        ],
+        "temperature": [
+            6.9,
+            7,
+            7.4,
+            8,
+            7.3,
+            7,
+            5.1,
+            3.6,
+            3.1,
+            2.7,
+            2.1,
+            1.6,
+            1.5,
+            1.4,
+            1.5,
+            3.5,
+            4.2,
+            5.3,
+            5.6
+        ]
+    }
+}
