@@ -1,0 +1,1073 @@
+*2018/01/05 12:08:52.59
+*IOS HEADER VERSION 2.0      2016/04/28 2016/06/13 IVF16
+
+*FILE
+    START TIME          : UTC 2017/08/25 14:38:08.000
+    TIME INCREMENT      : 0 0 0 0.416667E-01 0  ! (day hr min sec ms)
+    NUMBER OF RECORDS   : 495
+    DATA DESCRIPTION    : CTD
+    FILE TYPE           : ASCII
+    CRC                 : 84E89669
+    NUMBER OF CHANNELS  : 10
+
+    $TABLE: CHANNELS
+    ! No Name                        Units           Minimum        Maximum
+    !--- --------------------------- --------------- -------------- --------------
+       1 Pressure                    decibar         1.28           500.72
+       2 Depth                       metres          1.27           495.828
+       3 Temperature:Primary         'deg C (ITS90)' 3.9745         13.2859
+       4 Transmissivity              %/metre         38             63.5
+       5 Fluorescence:URU:Seapoint   mg/m^3          0.118          3.197
+       6 PAR                         uE/m^2/sec      0              4.147
+       7 Salinity:T0:C0              PSS-78          32.3534        34.1005
+       8 Oxygen:Dissolved:SBE        mL/L            0.972          7.034
+       9 Oxygen:Dissolved:SBE        umol/kg         42.2           306.2
+      10 Number_of_bin_records       n/a             1              51
+    $END
+
+    $TABLE: CHANNEL DETAIL
+    ! No  Pad   Start  Width  Format  Type  Decimal_Places
+    !---  ----  -----  -----  ------  ----  --------------
+       1  -99   ' '        7  F       ' '     1
+       2  -99   ' '        7  F       ' '     1
+       3  -99   ' '        9  F       ' '     4
+       4  -99   ' '        6  F       ' '     1
+       5  -99   ' '        8  F       ' '     3
+       6  -99   ' '        7  F       ' '     1
+       7  -99   ' '        9  F       ' '     4
+       8  -99   ' '        7  F       ' '     2
+       9  -99   ' '        6  F       ' '     1
+      10  -99   ' '        5  I       I       0
+    $END
+    $REMARKS
+        This file converted from Sea-Bird file: P:\Cruise_Data_Processing\2017-08\Pro
+    $END
+
+*ADMINISTRATION
+    MISSION             : 2017-08
+    AGENCY              : IOS, Ocean Sciences Division, Sidney, B.C.
+    COUNTRY             : Canada
+    PROJECT             : Line P
+    SCIENTIST           : Robert M.
+    PLATFORM            : John P. Tully
+
+*LOCATION
+    GEOGRAPHIC AREA     : North-East Pacific
+    STATION             : PA-011
+    EVENT NUMBER        : 91
+    LATITUDE            :  50   8.11000 N  ! (deg min)
+    LONGITUDE           : 144  49.86000 W  ! (deg min)
+    WATER DEPTH         : 4251
+
+*INSTRUMENT
+    TYPE                : Sea-Bird CTD
+    MODEL               : SBE-911plus
+    SERIAL NUMBER       : 0550
+    LOCATION            : Mid-ship                              ! custom item
+
+    $TABLE: SENSORS
+    !   Name                                 Abs Depth       Serial No
+    !   -----------------------------------  --------------  ----------
+        Temperature                          ' '             4054
+        Conductivity                         ' '             1766
+        'Pressure:Digiquartz with TC'        ' '             0550
+        Temperature:2                        ' '             4484
+        Conductivity:2                       ' '             3531
+        'Oxygen:SBE 43'                      ' '             1119
+        Fluorometer:Seapoint                 ' '             3685
+        PAR/Irradiance:Biospherical/Licor    ' '             70613
+        Altimeter                            ' '             62355
+        'Transmissometer:WET Labs C-Star'    ' '             1396DR
+    $END
+    $REMARKS
+        SOFTWARE VERSION SEASAVE V 7.26.7.107
+    $END
+
+*HISTORY
+
+    $TABLE: PROGRAMS
+    !   Name     Vers   Date       Time     Recs In   Recs Out
+    !   -------- ------ ---------- -------- --------- ---------
+        SBE_IOS  3.5.2  2017/12/12 16:08:45     31944     31944
+        CLEAN    5.2.2  2017/12/12 16:15:59     31944     31944
+        SHIFTDAT 3.4    2017/12/14 11:57:56     31944     31944
+        SHIFTDAT 3.4    2017/12/14 12:04:43     31944     31944
+        SHIFTDAT 3.4    2017/12/14 12:11:32     31944     31944
+        DELETE   6.3    2017/12/14 13:25:42     31944     12230
+        CTDEDIT  5.2.3  2018/01/02 16:59:44     12230     10891
+        ADTIMCH  4.4    2018/01/04 10:46:34     10891     10891
+        CALIB    11.9   2018/01/04 13:18:26     10891     10891
+        FILTERS  4.3    2018/01/04 14:14:56     10891     10891
+        BINAVE   4.2    2018/01/04 14:17:35     10891       495
+        REMOVECH 8.2    2018/01/04 14:35:09       495       495
+        CHGUNITS 3.1.1  2018/01/04 15:25:22       495       495
+        REORDER  1.3.1  2018/01/04 15:30:27 ?         ?
+        ADTIMCH  4.4    2018/01/05 12:08:39       495       495
+        HDREDIT2 3.1.1  2018/01/05 12:08:52 ?         ?
+    $END
+    $REMARKS
+        -CLEAN functions: 2017/12/12 16:09:41 20
+         Reset #RECS, MIN & MAX values in header.
+         Interpolation by   Record Number, in Pressure
+         Set event to last  4 characters of file name
+        -The following SHIFT parameters were used.
+         Shift Channel: Fluorescence:URU:Seapoint
+         # of Records to Advance (-ve for Delay):
+         At REC#     0 Shift= 24.00
+        -The following SHIFT parameters were used.
+         Shift Channel: Conductivity:Primary
+         # of Records to Advance (-ve for Delay):
+         At REC#     0 Shift= -0.60
+         Salinity was recalculated after shift
+        -The following SHIFT parameters were used.
+         Shift Channel: Conductivity:Secondary
+         # of Records to Advance (-ve for Delay):
+         At REC#     0 Shift= -0.60
+         Salinity was recalculated after shift
+        -The following DELETE parameters were used:
+         Surface Record Removal: Last Press Min
+           Maximum Surface Pressure (relative):      10.00
+           Surface Swell Pressure Tolerance:       1.00
+         Pressure filtered over width:   15
+         Swells deleted. Warning message if pressure difference of      2.00
+         Drop rates <   0.30m/s (calculated over  11 points) will be deleted.
+         Drop rate applies in the range    10.00 to   491.08 dbars
+         Sample interval (from FILE section of header) =     0.042 seconds.
+        -CTDEDIT  v5.2.3   2018/01/02 16:59:44
+           1339 records were deleted in this editing session.
+            413 changes in channel Salinity:T0:C0
+        -The following ADTIMCH parameters were used.
+         Add Day-Of-Year
+         Add      7.00 hours to times in header file section
+        -CALIB parameters: 2018/01/04 13:18:26
+         Calibration type = Correct
+         Mode: ONLY - calibration specs from Cal File only.
+         Calibration file = P:\Cruise_Data_Processing\2017-08\Processing\doc\2017-08-recal1.CCF
+         Calibrations applied:
+         Ch Name                          Units    Fmla Coefficents
+         -- ----------------------------- --------- --- -----------------------------
+         10 Fluorescence:URU:Seapoint     mg/m^3     11  0.1502000E+01 -0.6800000E-02
+                                                         0.0000000E+00  0.0000000E+00
+                                                         0.0000000E+00  0.0000000E+00
+                                                        Time:Day_Of_Year
+         17 Salinity:T1:C1                PSS-78     10 -0.6000000E-03  0.1000000E+01
+         18 Oxygen:Dissolved:SBE          mL/L       10  0.5330000E-01  0.1051400E+01
+        -The following FILTER parameters were used.
+         Median filter was used.
+         Filter width =   11
+         The following channel(s) were filtered.
+           Fluorescence:URU:Seapoint
+        -The following BINAVE parameters were used:
+         Bin channel = Pressure
+         Averaging interval =    1.00
+         Minimum bin value =       0.000
+         Average value was used
+         Interpolated values were NOT used for empty bins
+         Channel 'NUMBER_OF_BIN_RECORDS' was added to file.
+        -REMOVECH 2018/01/04 14:35:09
+         The following CHANNEL(S) were removed:
+          Time:Day_Of_Year [DAY_OF_YEAR]
+          Scan_Number
+          Temperature:Secondary [deg C (ITS90)]
+          Conductivity:Primary [S/m]
+          Conductivity:Secondary [S/m]
+          Oxygen:Voltage:SBE [volts]
+          Altimeter [metres]
+          Descent_Rate [m/s]
+          Status:Pump
+          Salinity:T1:C1 [PSS-78]
+          Flag
+        -CHANGE units:
+         Temperature reference channel: Temperature:P*
+         Salinity    reference channel: Salinity:T0:C0 [PSS-78]
+         'Oxygen:Dissolved:SBE [mL/L]' changed from mL/L    to umol/kg
+        -The following ADTIMCH parameters were used.
+         Add     -7.00 hours to times in header file section
+        -HEADER EDITS: 2018/01/05 12:08:52
+         Applied edit header: P:\Cruise_Data_Processing\2017-08\Processing\doc\2017-08-HDR.TXT
+         Channel  1: Pressure [decibar]
+           Format: F11.2 ==> F7.1
+         Channel  6: PAR [uE/m^2/sec]
+           Format: F11.3 ==> F7.1
+         Channel  8: Oxygen:Dissolved:SBE [mL/L]
+           Format: F8.3 ==> F7.2
+         Channel 10: Number_of_bin_records [n/a]
+           Pad:    ' ' ==> -99
+         Channel  2: Depth [metres]
+           Name:   Depth:Salt_Water ==> Depth
+           Format: F10.3 ==> F7.1
+    $END
+
+*COMMENTS
+    SBE HEADER
+      Sea-Bird SBE 9 Data File:
+      FileName = C:\CTD Data\2017-08\2017-08-0091.hex
+      Software Version Seasave V 7.26.7.107
+      Temperature SN = 4054
+      Conductivity SN = 1766
+      Number of Bytes Per Scan = 37
+      Number of Voltage Words = 4
+      Number of Scans Averaged by the Deck Unit = 1
+      System UpLoad Time = Aug 25 2017 14:42:07
+      NMEA Latitude = 50 08.11 N
+      NMEA Longitude = 144 49.86 W
+      NMEA UTC (Time) = Aug 25 2017  14:38:08
+      Store Lat/Lon Data = Append to Every Scan
+      SBE 11plus V 5.1e
+      number of scans to average = 1
+      pressure baud rate = 9600
+      NMEA baud rate = 4800
+      GPIB address = 1
+      advance primary conductivity  0.073 seconds
+      advance secondary conductivity  0.073 seconds
+      S>
+       Tully: 2017-08
+       Station:  PA-011
+       Depth:  4251
+      System UTC = Aug 25 2017 14:42:07
+    # nquan = 18
+    # nvalues = 31944
+    # units = specified
+    # name 0 = scan: Scan Count
+    # name 1 = prDM: Pressure, Digiquartz [db]
+    # name 2 = depSM: Depth [salt water, m]
+    # name 3 = t090C: Temperature [ITS-90, deg C]
+    # name 4 = t190C: Temperature, 2 [ITS-90, deg C]
+    # name 5 = c0S/m: Conductivity [S/m]
+    # name 6 = c1S/m: Conductivity, 2 [S/m]
+    # name 7 = CStarTr0: Beam Transmission, WET Labs C-Star [%]
+    # name 8 = flSP: Fluorescence, Seapoint
+    # name 9 = sbeox0V: Oxygen raw, SBE 43 [V]
+    # name 10 = par: PAR/Irradiance, Biospherical/Licor
+    # name 11 = altM: Altimeter [m]
+    # name 12 = dz/dtM: Descent Rate [m/s]
+    # name 13 = pumps: Pump Status
+    # name 14 = sal00: Salinity, Practical [PSU]
+    # name 15 = sal11: Salinity, Practical, 2 [PSU]
+    # name 16 = sbeox0ML/L: Oxygen, SBE 43 [ml/l], WS = 2
+    # name 17 = flag: flag
+    # span 0 =          1,      31944
+    # span 1 =      1.086,    501.083
+    # span 2 =      1.077,    496.180
+    # span 3 =     3.9726,    13.3098
+    # span 4 =     3.9717,    13.3085
+    # span 5 =   3.118092,   3.845768
+    # span 6 =   3.116771,   3.845991
+    # span 7 =    76.9652,    89.2808
+    # span 8 = 2.3199e-01, 4.0293e+00
+    # span 9 =     0.7117,     2.2902
+    # span 10 = 1.0000e-12, 8.5027e+00
+    # span 11 =       0.00,     100.00
+    # span 12 =     -2.040,      2.340
+    # span 13 =          0,          1
+    # span 14 =    31.8569,    34.1014
+    # span 15 =    31.9018,    34.1033
+    # span 16 =     0.8627,     6.7314
+    # span 17 = 0.0000e+00, 0.0000e+00
+    # interval = seconds: 0.0416667
+    # start_time = Aug 25 2017 14:38:08 [NMEA time, header]
+    # bad_flag = -9.990e-29
+    # <Sensors count="13" >
+    #   <sensor Channel="1" >
+    #     <!-- Frequency 0, Temperature -->
+    #     <TemperatureSensor SensorID="55" >
+    #       <SerialNumber>4054</SerialNumber>
+    #       <CalibrationDate>22-Feb-17</CalibrationDate>
+    #       <UseG_J>1</UseG_J>
+    #       <A>0.00000000e+000</A>
+    #       <B>0.00000000e+000</B>
+    #       <C>0.00000000e+000</C>
+    #       <D>0.00000000e+000</D>
+    #       <F0_Old>0.000</F0_Old>
+    #       <G>4.38616406e-003</G>
+    #       <H>6.44028261e-004</H>
+    #       <I>2.29631886e-005</I>
+    #       <J>2.07487665e-006</J>
+    #       <F0>1000.000</F0>
+    #       <Slope>1.00000000</Slope>
+    #       <Offset>0.0000</Offset>
+    #     </TemperatureSensor>
+    #   </sensor>
+    #   <sensor Channel="2" >
+    #     <!-- Frequency 1, Conductivity -->
+    #     <ConductivitySensor SensorID="3" >
+    #       <SerialNumber>1766</SerialNumber>
+    #       <CalibrationDate>30-Mar-17</CalibrationDate>
+    #       <UseG_J>1</UseG_J>
+    #       <!-- Cell const and series R are applicable only for wide range sensors.
+     -->
+    #       <SeriesR>0.0000</SeriesR>
+    #       <CellConst>2000.0000</CellConst>
+    #       <ConductivityType>0</ConductivityType>
+    #       <Coefficients equation="0" >
+    #         <A>0.00000000e+000</A>
+    #         <B>0.00000000e+000</B>
+    #         <C>0.00000000e+000</C>
+    #         <D>0.00000000e+000</D>
+    #         <M>0.0</M>
+    #         <CPcor>-9.57000000e-008</CPcor>
+    #       </Coefficients>
+    #       <Coefficients equation="1" >
+    #         <G>-4.12892961e+000</G>
+    #         <H>4.88377974e-001</H>
+    #         <I>-6.29237468e-004</I>
+    #         <J>5.38259078e-005</J>
+    #         <CPcor>-9.57000000e-008</CPcor>
+    #         <CTcor>3.2500e-006</CTcor>
+    #         <!-- WBOTC not applicable unless ConductivityType = 1. -->
+    #         <WBOTC>0.00000000e+000</WBOTC>
+    #       </Coefficients>
+    #       <Slope>1.00000000</Slope>
+    #       <Offset>0.00000</Offset>
+    #     </ConductivitySensor>
+    #   </sensor>
+    #   <sensor Channel="3" >
+    #     <!-- Frequency 2, Pressure, Digiquartz with TC -->
+    #     <PressureSensor SensorID="45" >
+    #       <SerialNumber>0550</SerialNumber>
+    #       <CalibrationDate>24-Feb-17</CalibrationDate>
+    #       <C1>-4.232943e+004</C1>
+    #       <C2>1.065076e-001</C2>
+    #       <C3>1.464900e-002</C3>
+    #       <D1>3.694200e-002</D1>
+    #       <D2>0.000000e+000</D2>
+    #       <T1>3.041883e+001</T1>
+    #       <T2>-3.536199e-004</T2>
+    #       <T3>4.388420e-006</T3>
+    #       <T4>2.583800e-009</T4>
+    #       <Slope>0.99995690</Slope>
+    #       <Offset>0.08882</Offset>
+    #       <T5>0.000000e+000</T5>
+    #       <AD590M>1.286170e-002</AD590M>
+    #       <AD590B>-9.445820e+000</AD590B>
+    #     </PressureSensor>
+    #   </sensor>
+    #   <sensor Channel="4" >
+    #     <!-- Frequency 3, Temperature, 2 -->
+    #     <TemperatureSensor SensorID="55" >
+    #       <SerialNumber>4484</SerialNumber>
+    #       <CalibrationDate>22-Feb-17</CalibrationDate>
+    #       <UseG_J>1</UseG_J>
+    #       <A>0.00000000e+000</A>
+    #       <B>0.00000000e+000</B>
+    #       <C>0.00000000e+000</C>
+    #       <D>0.00000000e+000</D>
+    #       <F0_Old>0.000</F0_Old>
+    #       <G>4.39937667e-003</G>
+    #       <H>6.40472023e-004</H>
+    #       <I>2.15385278e-005</I>
+    #       <J>1.84322868e-006</J>
+    #       <F0>1000.000</F0>
+    #       <Slope>1.00000000</Slope>
+    #       <Offset>0.0000</Offset>
+    #     </TemperatureSensor>
+    #   </sensor>
+    #   <sensor Channel="5" >
+    #     <!-- Frequency 4, Conductivity, 2 -->
+    #     <ConductivitySensor SensorID="3" >
+    #       <SerialNumber>3531</SerialNumber>
+    #       <CalibrationDate>30-Mar-17</CalibrationDate>
+    #       <UseG_J>1</UseG_J>
+    #       <!-- Cell const and series R are applicable only for wide range sensors.
+     -->
+    #       <SeriesR>0.0000</SeriesR>
+    #       <CellConst>2000.0000</CellConst>
+    #       <ConductivityType>0</ConductivityType>
+    #       <Coefficients equation="0" >
+    #         <A>0.00000000e+000</A>
+    #         <B>0.00000000e+000</B>
+    #         <C>0.00000000e+000</C>
+    #         <D>0.00000000e+000</D>
+    #         <M>0.0</M>
+    #         <CPcor>-9.57000000e-008</CPcor>
+    #       </Coefficients>
+    #       <Coefficients equation="1" >
+    #         <G>-1.02129539e+001</G>
+    #         <H>1.56309188e+000</H>
+    #         <I>-2.40628351e-003</I>
+    #         <J>2.66312047e-004</J>
+    #         <CPcor>-9.57000000e-008</CPcor>
+    #         <CTcor>3.2500e-006</CTcor>
+    #         <!-- WBOTC not applicable unless ConductivityType = 1. -->
+    #         <WBOTC>0.00000000e+000</WBOTC>
+    #       </Coefficients>
+    #       <Slope>1.00000000</Slope>
+    #       <Offset>0.00000</Offset>
+    #     </ConductivitySensor>
+    #   </sensor>
+    #   <sensor Channel="6" >
+    #     <!-- A/D voltage 0, Oxygen, SBE 43 -->
+    #     <OxygenSensor SensorID="38" >
+    #       <SerialNumber>1119</SerialNumber>
+    #       <CalibrationDate>28-Mar-17</CalibrationDate>
+    #       <Use2007Equation>1</Use2007Equation>
+    #       <CalibrationCoefficients equation="0" >
+    #         <!-- Coefficients for Owens-Millard equation. -->
+    #         <Boc>0.0000</Boc>
+    #         <Soc>0.0000e+000</Soc>
+    #         <offset>0.0000</offset>
+    #         <Pcor>0.00e+000</Pcor>
+    #         <Tcor>0.0000</Tcor>
+    #         <Tau>0.0</Tau>
+    #       </CalibrationCoefficients>
+    #       <CalibrationCoefficients equation="1" >
+    #         <!-- Coefficients for Sea-Bird equation - SBE calibration in 2007 and
+    later. -->
+    #         <Soc>5.7570e-001</Soc>
+    #         <offset>-0.5165</offset>
+    #         <A>-3.9454e-003</A>
+    #         <B> 1.7154e-004</B>
+    #         <C>-2.7543e-006</C>
+    #         <D0> 2.5826e+000</D0>
+    #         <D1> 1.92634e-004</D1>
+    #         <D2>-4.64803e-002</D2>
+    #         <E> 3.7500e-002</E>
+    #         <Tau20> 1.0300</Tau20>
+    #         <H1>-3.3000e-002</H1>
+    #         <H2> 5.0000e+003</H2>
+    #         <H3> 1.4500e+003</H3>
+    #       </CalibrationCoefficients>
+    #     </OxygenSensor>
+    #   </sensor>
+    #   <sensor Channel="7" >
+    #     <!-- A/D voltage 1, Fluorometer, Seapoint -->
+    #     <FluoroSeapointSensor SensorID="11" >
+    #       <SerialNumber>3685</SerialNumber>
+    #       <CalibrationDate>13-Mar-17</CalibrationDate>
+    #       <!-- The following is an array index, not the actual gain setting. -->
+    #       <GainSetting>2</GainSetting>
+    #       <Offset>0.000</Offset>
+    #     </FluoroSeapointSensor>
+    #   </sensor>
+    #   <sensor Channel="8" >
+    #     <!-- A/D voltage 2, PAR/Irradiance, Biospherical/Licor -->
+    #     <PAR_BiosphericalLicorChelseaSensor SensorID="42" >
+    #       <SerialNumber>70613</SerialNumber>
+    #       <CalibrationDate>03/21/16</CalibrationDate>
+    #       <M>1.00000000</M>
+    #       <B>0.00000000</B>
+    #       <CalibrationConstant>11876484560.57000000</CalibrationConstant>
+    #       <Multiplier>1.00000000</Multiplier>
+    #       <Offset>-0.08460000</Offset>
+    #     </PAR_BiosphericalLicorChelseaSensor>
+    #   </sensor>
+    #   <sensor Channel="9" >
+    #     <!-- A/D voltage 3, Free -->
+    #   </sensor>
+    #   <sensor Channel="10" >
+    #     <!-- A/D voltage 4, Altimeter -->
+    #     <AltimeterSensor SensorID="0" >
+    #       <SerialNumber>62355</SerialNumber>
+    #       <CalibrationDate></CalibrationDate>
+    #       <ScaleFactor>15.000</ScaleFactor>
+    #       <Offset>0.000</Offset>
+    #     </AltimeterSensor>
+    #   </sensor>
+    #   <sensor Channel="11" >
+    #     <!-- A/D voltage 5, Free -->
+    #   </sensor>
+    #   <sensor Channel="12" >
+    #     <!-- A/D voltage 6, Transmissometer, WET Labs C-Star -->
+    #     <WET_LabsCStar SensorID="71" >
+    #       <SerialNumber>1396DR</SerialNumber>
+    #       <CalibrationDate>Feb 2nd 2016</CalibrationDate>
+    #       <M>19.3228</M>
+    #       <B>-0.0193</B>
+    #       <PathLength>0.250</PathLength>
+    #     </WET_LabsCStar>
+    #   </sensor>
+    #   <sensor Channel="13" >
+    #     <!-- A/D voltage 7, Free -->
+    #   </sensor>
+    # </Sensors>
+    # datcnv_date = Dec 12 2017 10:54:55, 7.23.2 [datcnv_vars = 14]
+    # datcnv_in = P:\Cruise_Data_Processing\2017-08\RAW\CTD\2017-08-0091.hex P:\Crui
+    se_Data_Processing\2017-08\Processing\doc\2017-08-ctd.xmlcon
+    # datcnv_skipover = 0
+    # datcnv_ox_hysteresis_correction = yes
+    # wildedit_date = Dec 12 2017 13:08:35, 7.23.2
+    # wildedit_in = P:\Cruise_Data_Processing\2017-08\Processing\convert\2017-08-009
+    1.cnv
+    # wildedit_pass1_nstd = 2.0
+    # wildedit_pass2_nstd = 5.0
+    # wildedit_pass2_mindelta = 0.000e+000
+    # wildedit_npoint = 50
+    # wildedit_vars = prDM depSM t090C t190C c0S/m c1S/m
+    # wildedit_excl_bad_scans = yes
+    # alignctd_date = Dec 12 2017 13:18:09, 7.23.2
+    # alignctd_in = P:\Cruise_Data_Processing\2017-08\Processing\wildedit\2017-08-00
+    91.cnv
+    # alignctd_adv = sbeox0V 2.500
+    # celltm_date = Dec 12 2017 13:28:39, 7.23.2
+    # celltm_in = P:\Cruise_Data_Processing\2017-08\Processing\align\2017-08-0091.cn
+    v
+    # celltm_alpha = 0.0245, 0.0245
+    # celltm_tau = 9.5000, 9.5000
+    # celltm_temp_sensor_use_for_cond = primary, secondary
+    # Derive_date = Dec 12 2017 13:53:48, 7.23.2 [derive_vars = 3]
+    # Derive_in = P:\Cruise_Data_Processing\2017-08\Processing\celltm\2017-08-0091.c
+    nv P:\Cruise_Data_Processing\2017-08\Processing\doc\2017-08-ctd.xmlcon
+    # derive_time_window_docdt = seconds: 2
+    # derive_ox_tau_correction = yes
+    # file_type = ascii
+     END*
+    Remarks from CTDEDIT:
+    The descent rate of the CTD was very noisy with some complete reversals
+     of direction.
+    CTDEDIT was used to remove some records corrupted by shed wakes;
+     salinity was cleaned.
+    ---------------------------------------------------------------------------------
+
+    Data Processing Notes:
+    ----------------------
+
+    Transmissivity, Fluorescence and PAR data are nominal and unedited except that some
+            records were removed in editing temperature and salinity.
+
+    The fluorometer values drifted during the cruise starting with slightly high dark
+            values early in the cruise and rising to about 0.20 ug/L by the end. A
+            time-dependent correction was applied based on values at 4000m with an
+            adjustment to ensure no negative values were produced. This is an
+            estimate and produces dark values at 2000m ranging from 0.02ug/L to 0.09ug/L.
+
+    NOTE: While the CTD fluorescence data are expressed in concentration units, they
+            do not always compare well to extracted chlorophyll samples, particularly for
+            casts far from shore. It is recommended that users check extracted chlorophyll
+            values where available.
+
+    Dissolved oxygen was calibrated using the method described in SeaBird
+            Application Note #64-2, June 2012 revision, except that a small
+            offset in the fit was allowed.
+
+    The SBE DO sensor has a fairly long response time so data accuracy is not as high
+            when it is in motion as it is during stops for bottles. This will be
+            especially true when vertical DO gradients are large. To get an estimate
+            of the accuracy of the SBE DO data during downcasts (after recalibration)
+            a rough comparison was made between downcast SBE DO and upcast titrated
+            samples. Some of the difference will be due to problems with flushing
+            of Niskin bottles and/or analysis errors, so the following statement
+            likely underestimates SBE DO accuracy.
+
+    Downcast (CTD files) Oxygen:Dissolved:SBE data are considered, very roughly, to be:
+            ±0.5 mL/L from 0 to 200db
+            ±0.15 mL/L from 200db to 500db
+            ±0.04 mL/L below 500db
+
+    For details on the processing see document: 2017-08_Processing_Report.doc.
+
+    ---------------------------------------------------------------------------------
+
+*CALIBRATION
+
+    $TABLE: CORRECTED CHANNELS
+    !   Name                        Units    Fmla Pad    Coefficients
+    !   --------------------------- -------- ---- ------ ------------
+        Fluorescence:URU:Seapoint   mg/m^3     11 -99    (Time:Day_Of_Year)
+                                                         (1.502 -0.68E-02 0 0 0
+                                                          0)
+        Salinity:T1:C1              PSS-78     10 -99    () (-0.6E-03 1)
+        Oxygen:Dissolved:SBE        mL/L       10 -99    () (0.533E-01 1.0514)
+    $END
+!--1--- --2--- ---3---- --4-- ---5--- --6--- ---7---- --8--- --9-- -10-
+!Pressu Depth  Temperat Trans Fluores  PAR   Salinity Oxygen Oxyge Numb
+!re            ure:     missi cence:         :T0:C0   :      n:    er_o
+!              Primary  vity  URU:                    Dissol Disso ~bin
+!                             Seapoin                 ved:   lved: _rec
+!                             t                       SBE    SBE   ords
+!------ ------ -------- ----- ------- ------ -------- ------ ----- ----
+*END OF HEADER
+    1.3    1.3  13.2833  38.0   3.099    4.1  32.3543   6.10 266.0   51
+    2.0    2.0  13.2833  42.0   3.103    3.0  32.3544   6.10 265.9   38
+    3.0    3.0  13.2838  44.8   3.197    2.5  32.3542   6.10 265.8   32
+    4.0    4.0  13.2850  45.7   3.110    2.1  32.3537   6.10 266.0   31
+    5.0    4.9  13.2852  45.8   3.055    1.7  32.3537   6.10 266.0   39
+    6.0    5.9  13.2857  45.7   3.099    1.4  32.3534   6.10 265.9   24
+    7.0    6.9  13.2858  45.9   3.096    1.2  32.3537   6.10 265.9   19
+    8.0    7.9  13.2859  45.7   3.145    1.0  32.3536   6.10 266.0   23
+    9.0    8.9  13.2858  45.7   3.123    0.9  32.3539   6.11 266.2   27
+   10.0    9.9  13.2856  45.7   3.108    0.7  32.3539   6.11 266.2   28
+   11.0   10.9  13.2859  45.7   3.085    0.6  32.3539   6.11 266.1   27
+   12.0   11.9  13.2850  45.7   3.055    0.5  32.3544   6.10 266.0   24
+   13.0   12.9  13.2841  45.8   3.118    0.5  32.3548   6.11 266.1   22
+   14.0   13.9  13.2842  45.7   3.025    0.4  32.3550   6.11 266.3   21
+   15.0   14.9  13.2840  45.8   3.076    0.3  32.3548   6.11 266.2   24
+   16.0   15.9  13.2838  45.8   3.107    0.3  32.3549   6.11 266.2   30
+   17.0   16.8  13.2834  45.7   3.112    0.2  32.3550   6.11 266.3   31
+   18.0   17.8  13.2838  45.7   3.067    0.2  32.3549   6.11 266.3   25
+   19.0   18.8  13.2832  45.8   3.033    0.2  32.3550   6.12 266.6   21
+   20.0   19.8  13.2837  45.8   3.041    0.2  32.3549   6.12 266.6   22
+   21.0   20.8  13.2844  45.6   3.082    0.1  32.3549   6.12 266.6   23
+   22.0   21.8  13.2834  45.6   3.137    0.1  32.3551   6.12 266.6   25
+   23.0   22.8  13.2839  45.3   3.054    0.1  32.3551   6.11 266.3   31
+   24.0   23.8  13.2840  45.6   3.062    0.1  32.3551   6.11 266.3   34
+   25.0   24.8  13.2840  45.6   3.048    0.0  32.3550   6.10 266.0   26
+   26.0   25.8  13.2840  45.6   3.128    0.0  32.3552   6.11 266.2   20
+   27.0   26.8  13.2830  45.8   3.051    0.0  32.3552   6.11 266.4   18
+   28.0   27.8  13.2829  45.5   3.093    0.0  32.3553   6.12 266.7   19
+   29.0   28.8  13.2824  45.8   3.037    0.0  32.3552   6.12 266.9   22
+   30.0   29.8  13.2814  45.7   2.986    0.0  32.3555   6.12 266.9   27
+   31.0   30.7  13.2804  45.6   3.014    0.0  32.3556   6.12 266.8   30
+   32.0   31.8  13.2746  45.6   2.965    0.0  32.3562   6.12 266.6   39
+   32.9   32.6  13.2721  45.6   3.032    0.0  32.3563   6.08 265.1   35
+   34.0   33.7  13.2634  45.8   2.973    0.0  32.3563   5.96 259.6   20
+   35.0   34.7  13.1356  45.8   2.956    0.0  32.3579   5.88 256.3   15
+   36.0   35.7  12.7164  45.8   2.832    0.0  32.3693   5.96 259.9   14
+   37.0   36.7  11.6238  47.4   2.756    0.0  32.3683   6.26 272.9   15
+   38.0   37.7  10.0993  47.7   2.514    0.0  32.4082   6.69 291.4   20
+   38.6   38.3   9.3680  47.8   2.466    0.0  32.4666   6.78 295.4    4
+   40.3   40.0   8.5522  50.6   1.629    0.0  32.4641   6.64 289.3    9
+   41.0   40.6   8.3123  53.1   1.480    0.0  32.4655   6.70 291.6   23
+   42.0   41.6   8.0231  55.7   1.299    0.0  32.4630   6.75 294.0   21
+   43.0   42.6   7.8013  55.8   1.200    0.0  32.4629   6.79 295.7   25
+   44.0   43.6   7.5864  57.2   1.095    0.0  32.4694   6.83 297.2   26
+   45.0   44.6   7.4029  57.8   1.015    0.0  32.4714   6.84 297.8   25
+   46.0   45.6   7.2045  58.1   0.954    0.0  32.4778   6.86 298.7   24
+   47.0   46.6   6.8421  58.4   0.864    0.0  32.4825   6.92 301.2   24
+   48.0   47.6   6.5910  58.9   0.789    0.0  32.4870   6.96 302.8   25
+   49.0   48.6   6.3883  59.1   0.749    0.0  32.4935   6.98 303.8   26
+   50.0   49.6   6.3229  59.5   0.735    0.0  32.4939   6.98 303.7   23
+   51.0   50.6   6.1452  60.0   0.669    0.0  32.4915   7.01 305.0   25
+   51.9   51.4   5.9816  60.1   0.635    0.0  32.4998   7.03 305.8   20
+   53.2   52.7   5.8826  60.6   0.606    0.0  32.5020   7.03 306.1   17
+   54.0   53.5   5.8299  60.6   0.584    0.0  32.5092   7.03 306.1   25
+   55.0   54.5   5.7768  60.6   0.572    0.0  32.5157   7.03 306.1   22
+   56.0   55.5   5.7387  60.7   0.574    0.0  32.5189   7.03 306.0   21
+   57.0   56.5   5.7106  60.9   0.563    0.0  32.5191   7.03 306.2   24
+   58.0   57.5   5.6717  61.0   0.549    0.0  32.5254   7.03 306.1   29
+   59.0   58.5   5.6547  61.0   0.546    0.0  32.5285   7.03 306.0   31
+   60.0   59.5   5.6395  60.8   0.717    0.0  32.5271   7.03 305.9   27
+   61.0   60.5   5.6066  60.7   0.757    0.0  32.5301   7.02 305.5   24
+   62.0   61.4   5.5591  61.0   0.585    0.0  32.5343   7.02 305.4   23
+   63.0   62.4   5.4984  61.2   0.539    0.0  32.5391   7.02 305.4   23
+   64.0   63.5   5.4844  61.5   0.517    0.0  32.5403   7.01 304.9   24
+   65.0   64.4   5.4452  61.5   0.498    0.0  32.5423   7.00 304.7   26
+   66.0   65.4   5.4005  61.6   0.477    0.0  32.5478   7.00 304.6   24
+   67.0   66.4   5.3667  61.7   0.461    0.0  32.5538   7.00 304.7   22
+   68.0   67.4   5.3359  61.8   0.465    0.0  32.5530   7.00 304.7   25
+   69.0   68.4   5.3078  61.8   0.443    0.0  32.5571   7.00 304.6   29
+   70.0   69.4   5.2948  61.7   0.446    0.0  32.5546   6.99 304.1   29
+   71.0   70.4   5.2424  61.5   0.428    0.0  32.5585   6.99 304.2   27
+   72.0   71.4   5.2156  61.8   0.419    0.0  32.5609   6.98 303.9   30
+   73.0   72.3   5.1869  61.8   0.420    0.0  32.5628   6.98 303.6   22
+   74.0   73.3   5.1596  61.7   0.422    0.0  32.5675   6.97 303.5   19
+   75.0   74.4   5.1447  61.2   0.413    0.0  32.5695   6.97 303.4   20
+   76.0   75.4   5.1301  61.7   0.415    0.0  32.5692   6.97 303.4   27
+   77.0   76.3   5.1029  61.9   0.393    0.0  32.5729   6.96 303.1   33
+   78.0   77.3   5.0788  62.0   0.387    0.0  32.5712   6.96 303.0   27
+   79.0   78.3   5.0591  62.1   0.384    0.0  32.5729   6.96 303.1   23
+   80.0   79.3   5.0393  62.1   0.375    0.0  32.5757   6.97 303.3   21
+   81.0   80.3   5.0333  62.1   0.384    0.0  32.5769   6.96 303.0   26
+   82.0   81.3   5.0164  62.1   0.376    0.0  32.5795   6.96 303.0   31
+   83.0   82.2   5.0021  62.2   0.380    0.0  32.5793   6.96 302.8   25
+   84.0   83.3   4.9821  62.3   0.378    0.0  32.5823   6.96 303.0   20
+   85.0   84.3   4.9454  62.2   0.375    0.0  32.5828   6.97 303.2   23
+   86.0   85.3   4.9134  62.2   0.369    0.0  32.5873   6.96 303.0   26
+   87.0   86.2   4.9007  62.2   0.365    0.0  32.5891   6.95 302.6   27
+   88.0   87.2   4.8735  62.0   0.354    0.0  32.5888   6.95 302.6   22
+   89.0   88.2   4.8265  62.2   0.344    0.0  32.5948   6.96 302.8   23
+   90.0   89.2   4.7974  62.2   0.343    0.0  32.6025   6.96 302.7   31
+   90.6   89.8   4.7855  61.9   0.345    0.0  32.6048   6.96 302.7   12
+   92.0   91.2   4.7685  62.2   0.339    0.0  32.6032   6.95 302.6   22
+   93.0   92.2   4.7477  61.4   0.339    0.0  32.6057   6.96 303.0   19
+   94.0   93.2   4.7244  61.8   0.329    0.0  32.6098   6.97 303.2   19
+   95.0   94.2   4.7350  62.2   0.318    0.0  32.6199   6.95 302.2   21
+   96.0   95.2   4.8157  62.3   0.302    0.0  32.6442   6.90 300.4   28
+   97.0   96.1   4.8107  61.6   0.293    0.0  32.6501   6.87 299.1   30
+   98.0   97.1   4.7972  62.4   0.297    0.0  32.6580   6.85 298.1   18
+   99.0   98.1   4.7817  62.2   0.293    0.0  32.6729   6.83 297.2   19
+  100.0   99.1   4.7782  62.4   0.291    0.0  32.6829   6.80 296.1   21
+  101.0  100.2   4.7807  62.5   0.275    0.0  32.7039   6.76 294.0   32
+  102.0  101.1   4.8046  62.3   0.266    0.0  32.7376   6.68 290.6   41
+  103.0  102.1   4.8216  61.0   0.261    0.0  32.7813   6.58 286.3   25
+  104.0  103.1   4.8340  62.4   0.252    0.0  32.8185   6.50 282.9   18
+  105.0  104.1   4.8478  62.1   0.252    0.0  32.8559   6.42 279.5   18
+  106.0  105.1   4.8468  62.6   0.252    0.0  32.8957   6.34 276.0   19
+  107.0  106.1   4.8815  62.6   0.252    0.0  32.9251   6.25 272.0   24
+  108.0  107.1   4.9295  62.5   0.251    0.0  32.9488   6.16 268.1   27
+  109.0  108.1   4.9634  62.6   0.243    0.0  33.0009   6.05 263.4   27
+  110.0  109.0   5.0059  62.4   0.234    0.0  33.0490   5.93 258.1   29
+  111.0  110.0   5.0139  62.5   0.238    0.0  33.0842   5.82 253.2   30
+  112.0  111.0   4.9981  62.7   0.228    0.0  33.1205   5.73 249.3   22
+  113.0  112.0   4.9957  62.6   0.232    0.0  33.1414   5.66 246.3   20
+  114.0  113.0   4.9934  62.3   0.228    0.0  33.1648   5.61 244.0   19
+  115.0  114.0   4.9931  62.5   0.228    0.0  33.1799   5.55 241.3   25
+  116.0  115.0   4.9979  62.4   0.225    0.0  33.2092   5.47 238.1   27
+  117.0  116.0   5.0045  62.5   0.222    0.0  33.2491   5.40 234.9   27
+  118.0  117.0   5.0073  62.7   0.218    0.0  33.2683   5.33 231.9   27
+  119.0  118.0   5.0065  62.6   0.221    0.0  33.3010   5.25 228.5   31
+  120.0  118.9   4.9882  62.7   0.223    0.0  33.3362   5.17 224.9   29
+  121.0  119.9   4.9934  62.6   0.222    0.0  33.3624   5.09 221.3   24
+  122.0  120.9   4.9693  62.4   0.216    0.0  33.4059   5.01 218.0   19
+  123.0  121.9   4.9021  62.6   0.216    0.0  33.4372   4.94 215.0   19
+  124.0  122.9   4.8845  62.7   0.216    0.0  33.4535   4.88 212.1   20
+  125.0  123.9   4.8849  62.7   0.213    0.0  33.4646   4.82 209.5   23
+  126.0  124.9   4.8856  62.7   0.218    0.0  33.4789   4.76 207.2   29
+  127.0  125.9   4.8750  62.7   0.208    0.0  33.4893   4.72 205.2   32
+  128.0  126.8   4.8719  62.6   0.218    0.0  33.4924   4.68 203.7   33
+  129.0  127.8   4.8639  62.7   0.216    0.0  33.5002   4.66 202.5   23
+  130.0  128.8   4.8589  62.6   0.205    0.0  33.5149   4.63 201.4   19
+  131.0  129.8   4.8632  62.4   0.203    0.0  33.5285   4.60 200.2   19
+  132.0  130.8   4.8749  62.5   0.213    0.0  33.5475   4.57 198.8   23
+  133.0  131.8   4.8850  62.6   0.203    0.0  33.5639   4.53 197.2   29
+  134.0  132.8   4.8925  62.6   0.203    0.0  33.5743   4.50 195.9   26
+  135.0  133.8   4.9059  62.6   0.203    0.0  33.5876   4.47 194.6   25
+  136.0  134.8   4.9272  62.6   0.207    0.0  33.6033   4.44 193.3   29
+  137.0  135.8   4.9332  62.4   0.203    0.0  33.6085   4.42 192.3   30
+  138.0  136.8   4.9405  62.6   0.203    0.0  33.6153   4.40 191.5   23
+  139.0  137.7   4.9483  62.6   0.203    0.0  33.6196   4.39 190.9   20
+  140.0  138.8   4.9454  62.5   0.200    0.0  33.6253   4.38 190.3   19
+  141.0  139.8   4.9460  62.5   0.199    0.0  33.6320   4.36 189.5   20
+  142.0  140.8   4.9490  62.6   0.196    0.0  33.6384   4.33 188.5   26
+  143.0  141.7   4.9181  62.6   0.198    0.0  33.6388   4.32 187.9   33
+  144.0  142.7   4.9054  62.6   0.195    0.0  33.6417   4.30 187.2   32
+  145.0  143.7   4.9298  62.7   0.191    0.0  33.6554   4.28 186.1   27
+  146.0  144.7   4.9141  62.4   0.191    0.0  33.6580   4.26 185.2   23
+  147.0  145.7   4.9163  62.7   0.193    0.0  33.6614   4.25 184.7   22
+  148.0  146.7   4.9303  62.6   0.192    0.0  33.6663   4.23 184.0   22
+  149.0  147.7   4.9499  62.6   0.191    0.0  33.6740   4.22 183.3   22
+  150.0  148.7   4.9706  62.6   0.198    0.0  33.6847   4.20 182.6   26
+  151.0  149.7   4.9719  62.6   0.191    0.0  33.6870   4.18 181.8   34
+  152.0  150.6   5.0070  62.5   0.191    0.0  33.7034   4.15 180.5   29
+  153.0  151.6   5.0376  62.5   0.181    0.0  33.7132   4.13 179.5   20
+  154.0  152.6   4.9599  62.5   0.183    0.0  33.7061   4.12 179.2   17
+  155.0  153.6   4.9636  62.2   0.186    0.0  33.7069   4.11 178.6   18
+  156.1  154.7   4.9473  62.4   0.191    0.0  33.7074   4.10 178.2   29
+  157.0  155.6   4.9389  62.5   0.190    0.0  33.7076   4.08 177.6   38
+  158.0  156.6   4.9347  62.4   0.182    0.0  33.7072   4.08 177.2   27
+  159.0  157.6   4.9533  62.5   0.179    0.0  33.7146   4.07 176.8   25
+  160.0  158.6   4.9869  62.5   0.183    0.0  33.7232   4.05 176.2   19
+  161.0  159.5   5.0065  62.3   0.179    0.0  33.7269   4.04 175.7   21
+  162.0  160.5   5.0065  62.4   0.179    0.0  33.7284   4.03 175.4   19
+  163.0  161.6   5.0512  62.5   0.179    0.0  33.7415   4.01 174.6   20
+  164.0  162.6   5.1584  62.1   0.179    0.0  33.7643   3.99 173.4   23
+  165.0  163.5   5.1915  62.5   0.179    0.0  33.7678   3.97 172.8   31
+  166.0  164.5   5.1894  62.6   0.179    0.0  33.7684   3.96 172.3   33
+  167.0  165.5   5.1874  62.6   0.179    0.0  33.7676   3.96 172.1   30
+  168.0  166.5   5.1892  62.6   0.179    0.0  33.7675   3.95 171.8   26
+  169.0  167.5   5.1929  62.5   0.179    0.0  33.7687   3.94 171.4   23
+  170.0  168.5   5.2002  62.7   0.179    0.0  33.7731   3.93 170.8   18
+  171.0  169.5   5.2080  62.5   0.179    0.0  33.7786   3.91 170.0   19
+  172.0  170.5   5.2107  62.5   0.179    0.0  33.7802   3.90 169.4   18
+  173.0  171.5   5.2124  62.6   0.179    0.0  33.7810   3.88 168.8   22
+  174.1  172.5   5.2090  62.5   0.179    0.0  33.7817   3.87 168.2   32
+  175.0  173.4   5.1963  62.5   0.179    0.0  33.7836   3.84 167.1   39
+  176.0  174.4   5.1906  62.5   0.179    0.0  33.7836   3.82 166.3   25
+  177.0  175.4   5.1877  62.4   0.176    0.0  33.7838   3.81 165.9   21
+  178.0  176.4   5.1864  62.5   0.176    0.0  33.7846   3.81 165.5   22
+  179.0  177.4   5.1829  62.5   0.179    0.0  33.7857   3.79 164.9   25
+  180.0  178.4   5.1561  62.5   0.179    0.0  33.7829   3.78 164.4   24
+  181.0  179.4   5.1432  62.3   0.176    0.0  33.7835   3.77 163.9   20
+  182.0  180.4   5.1373  62.5   0.175    0.0  33.7831   3.76 163.5   19
+  183.0  181.4   5.1322  62.4   0.176    0.0  33.7831   3.75 163.3   21
+  183.9  182.3   5.1317  62.2   0.173    0.0  33.7864   3.74 162.8   22
+  185.2  183.5   5.1264  62.5   0.175    0.0  33.7873   3.72 161.7   24
+  185.9  184.3   5.1228  62.5   0.173    0.0  33.7873   3.70 160.9   22
+  187.0  185.3   5.0842  62.5   0.168    0.0  33.7864   3.69 160.3   15
+  188.0  186.3   5.0566  62.6   0.167    0.0  33.7856   3.67 159.6   15
+  189.0  187.3   5.0503  62.6   0.167    0.0  33.7848   3.65 158.9   16
+  190.0  188.3   5.0437  62.7   0.167    0.0  33.7840   3.65 158.5   20
+  191.0  189.3   5.0359  62.7   0.169    0.0  33.7852   3.63 158.1   27
+  192.0  190.3   5.0454  62.6   0.167    0.0  33.7875   3.62 157.4   31
+  193.0  191.3   5.0538  62.6   0.167    0.0  33.7897   3.60 156.8   32
+  194.0  192.2   5.0619  62.7   0.167    0.0  33.7923   3.59 156.1   28
+  195.0  193.2   5.0684  62.6   0.167    0.0  33.7944   3.58 155.6   23
+  196.0  194.2   5.0666  62.7   0.260    0.0  33.7952   3.57 155.1   21
+  197.0  195.2   5.0666  62.5   0.205    0.0  33.7967   3.56 154.6   23
+  198.0  196.2   5.0653  62.7   0.182    0.0  33.7982   3.54 153.8   24
+  199.0  197.2   5.0683  62.6   0.172    0.0  33.8022   3.51 152.7   22
+  200.0  198.2   5.0751  62.6   0.167    0.0  33.8050   3.50 152.1   20
+  201.0  199.2   5.0741  62.5   0.167    0.0  33.8055   3.48 151.4   21
+  202.0  200.2   5.0765  62.6   0.167    0.0  33.8065   3.47 150.9   27
+  203.0  201.2   5.0605  62.5   0.167    0.0  33.8054   3.46 150.6   35
+  204.0  202.1   5.0567  62.5   0.167    0.0  33.8074   3.44 149.7   28
+  205.0  203.1   5.0725  62.5   0.167    0.0  33.8142   3.41 148.4   24
+  206.0  204.1   5.0684  62.5   0.167    0.0  33.8154   3.39 147.5   19
+  207.0  205.1   5.0630  62.5   0.166    0.0  33.8158   3.38 146.8   18
+  208.0  206.1   5.0538  62.3   0.155    0.0  33.8160   3.36 146.2   20
+  209.1  207.2   5.0345  62.5   0.165    0.0  33.8153   3.35 145.5   29
+  210.0  208.1   5.0139  61.9   0.164    0.0  33.8151   3.33 144.6   34
+  211.0  209.0   4.9913  62.6   0.161    0.0  33.8113   3.30 143.6   25
+  212.0  210.1   4.9547  62.7   0.155    0.0  33.8080   3.29 142.9   23
+  213.0  211.1   4.9347  62.4   0.155    0.0  33.8081   3.27 142.1   26
+  214.0  212.0   4.8939  62.6   0.157    0.0  33.8052   3.25 141.4   28
+  215.0  213.0   4.8714  62.7   0.161    0.0  33.8037   3.24 140.8   24
+  216.0  214.0   4.8508  62.5   0.155    0.0  33.8035   3.22 140.2   21
+  217.0  215.0   4.8435  62.3   0.156    0.0  33.8070   3.21 139.4   19
+  218.0  216.0   4.8614  62.7   0.160    0.0  33.8137   3.18 138.1   21
+  219.0  217.0   4.8874  62.7   0.155    0.0  33.8225   3.14 136.6   25
+  220.0  218.0   4.8800  62.7   0.155    0.0  33.8225   3.11 135.4   26
+  221.0  219.0   4.8745  62.5   0.155    0.0  33.8233   3.09 134.3   25
+  222.0  220.0   4.8787  62.5   0.155    0.0  33.8263   3.07 133.4   24
+  223.0  221.0   4.8760  62.5   0.155    0.0  33.8285   3.04 132.2   34
+  224.0  221.9   4.8788  62.7   0.155    0.0  33.8313   3.02 131.1   34
+  225.0  222.9   4.8921  62.7   0.155    0.0  33.8350   2.99 130.0   25
+  226.0  223.9   4.8850  62.6   0.155    0.0  33.8353   2.98 129.4   19
+  227.0  224.9   4.8843  62.7   0.155    0.0  33.8368   2.96 128.9   16
+  228.0  225.9   4.8784  62.7   0.155    0.0  33.8375   2.95 128.3   17
+  229.0  226.9   4.8708  62.7   0.155    0.0  33.8370   2.94 127.8   19
+  230.1  228.0   4.8395  62.7   0.155    0.0  33.8343   2.93 127.4   24
+  230.9  228.8   4.8250  62.7   0.155    0.0  33.8364   2.92 126.8   14
+  231.9  229.8   4.8148  62.7   0.155    0.0  33.8353   2.90 125.9   28
+  233.0  230.8   4.8150  62.7   0.155    0.0  33.8375   2.87 125.0   20
+  234.0  231.9   4.8138  62.8   0.155    0.0  33.8383   2.86 124.3   19
+  235.0  232.9   4.8126  62.7   0.155    0.0  33.8405   2.84 123.6   23
+  236.0  233.9   4.8050  62.8   0.155    0.0  33.8403   2.83 123.2   28
+  237.0  234.8   4.7976  62.7   0.155    0.0  33.8396   2.82 122.7   32
+  238.0  235.8   4.7933  62.7   0.155    0.0  33.8404   2.81 122.0   25
+  239.0  236.8   4.7877  62.8   0.155    0.0  33.8432   2.79 121.5   22
+  240.0  237.8   4.7700  62.8   0.155    0.0  33.8430   2.78 120.8   21
+  241.0  238.8   4.7670  62.8   0.155    0.0  33.8462   2.76 119.8   27
+  242.0  239.8   4.7682  62.9   0.155    0.0  33.8482   2.73 118.7   26
+  243.0  240.8   4.7630  62.8   0.154    0.0  33.8483   2.71 118.0   23
+  244.0  241.8   4.7509  62.9   0.151    0.0  33.8486   2.71 117.8   22
+  245.0  242.8   4.7492  62.9   0.155    0.0  33.8491   2.70 117.3   24
+  246.0  243.7   4.7469  62.9   0.147    0.0  33.8511   2.68 116.6   23
+  247.0  244.7   4.7597  62.9   0.152    0.0  33.8572   2.66 115.7   25
+  248.0  245.7   4.7675  62.1   0.152    0.0  33.8631   2.63 114.2   30
+  249.0  246.7   4.7634  62.9   0.150    0.0  33.8652   2.60 113.0   31
+  250.0  247.7   4.7618  62.5   0.146    0.0  33.8668   2.57 111.9   25
+  251.0  248.7   4.7626  62.8   0.142    0.0  33.8678   2.56 111.3   19
+  252.0  249.7   4.7434  62.9   0.142    0.0  33.8668   2.55 110.9   19
+  253.0  250.7   4.7218  62.9   0.142    0.0  33.8679   2.53 110.1   23
+  254.0  251.7   4.7206  62.7   0.149    0.0  33.8722   2.51 109.2   21
+  254.9  252.6   4.7094  62.8   0.148    0.0  33.8712   2.49 108.1   34
+  256.0  253.6   4.7023  62.8   0.142    0.0  33.8709   2.48 107.6   21
+  257.0  254.6   4.7008  62.9   0.142    0.0  33.8710   2.47 107.3   16
+  258.0  255.6   4.6977  62.9   0.142    0.0  33.8719   2.46 106.9   16
+  259.0  256.6   4.6940  62.9   0.142    0.0  33.8722   2.45 106.6   16
+  260.0  257.6   4.6762  62.8   0.163    0.0  33.8724   2.44 106.1   17
+  260.9  258.5   4.6687  62.8   0.173    0.0  33.8731   2.44 106.0   21
+  262.3  259.8   4.6630  62.7   0.143    0.0  33.8735   2.42 105.3   11
+  262.9  260.5   4.6481  62.7   0.142    0.0  33.8742   2.41 104.8   17
+  264.0  261.5   4.6516  62.6   0.142    0.0  33.8765   2.40 104.1   14
+  265.0  262.6   4.6771  62.5   0.142    0.0  33.8816   2.38 103.6   14
+  266.1  263.6   4.6784  62.9   0.142    0.0  33.8823   2.37 103.2   18
+  267.0  264.5   4.6744  62.8   0.142    0.0  33.8822   2.36 102.7   10
+  268.0  265.5   4.6687  63.0   0.142    0.0  33.8828   2.35 102.1   26
+  269.0  266.5   4.6490  62.9   0.142    0.0  33.8818   2.33 101.5   24
+  270.0  267.5   4.6218  62.9   0.142    0.0  33.8812   2.32 100.8   31
+  271.0  268.5   4.5968  63.0   0.142    0.0  33.8804   2.30 100.0   31
+  272.0  269.5   4.5787  63.1   0.142    0.0  33.8816   2.28  99.0   24
+  273.0  270.5   4.5744  63.1   0.142    0.0  33.8820   2.27  98.5   22
+  274.0  271.5   4.5693  63.0   0.142    0.0  33.8821   2.25  98.0   23
+  275.0  272.4   4.5516  63.1   0.142    0.0  33.8811   2.25  97.6   22
+  276.0  273.5   4.5247  63.0   0.142    0.0  33.8812   2.23  97.1   22
+  277.0  274.4   4.5063  62.9   0.142    0.0  33.8809   2.22  96.7   20
+  278.0  275.4   4.5022  62.9   0.142    0.0  33.8810   2.21  96.3   22
+  278.6  276.1   4.5020  62.9   0.142    0.0  33.8811   2.21  96.1    7
+  280.4  277.8   4.4955  62.9   0.142    0.0  33.8812   2.19  95.3    5
+  281.0  278.4   4.4936  62.9   0.142    0.0  33.8829   2.19  95.3   27
+  282.0  279.3   4.5051  62.9   0.142    0.0  33.8867   2.18  94.8   20
+  283.0  280.4   4.4975  63.0   0.142    0.0  33.8881   2.17  94.4   18
+  284.0  281.4   4.4950  62.7   0.142    0.0  33.8887   2.16  94.0   18
+  285.0  282.4   4.4818  62.1   0.142    0.0  33.8887   2.15  93.4   21
+  285.9  283.3   4.4648  63.0   0.142    0.0  33.8890   2.14  93.0   24
+  287.3  284.6   4.4560  63.0   0.142    0.0  33.8892   2.13  92.6   13
+  288.0  285.3   4.4532  63.0   0.142    0.0  33.8886   2.12  92.2   26
+  289.0  286.3   4.4503  63.1   0.142    0.0  33.8910   2.11  91.6   17
+  290.0  287.3   4.4449  63.1   0.142    0.0  33.8930   2.10  91.2   14
+  291.0  288.3   4.4486  63.0   0.142    0.0  33.8959   2.09  90.8   16
+  292.0  289.3   4.4581  63.1   0.142    0.0  33.8983   2.07  90.2   20
+  293.0  290.3   4.4585  63.1   0.142    0.0  33.8992   2.06  89.4   27
+  294.0  291.3   4.4580  63.1   0.142    0.0  33.8996   2.05  89.0   29
+  295.0  292.3   4.4406  63.0   0.142    0.0  33.8984   2.04  88.7   33
+  297.1  294.4   4.4290  63.1   0.142    0.0  33.9017   2.01  87.4   12
+  297.9  295.2   4.4159  63.1   0.142    0.0  33.9018   2.00  87.1   14
+  298.9  296.2   4.4055  63.1   0.142    0.0  33.9024   2.00  86.7   11
+  300.0  297.2   4.4044  63.0   0.142    0.0  33.9021   1.99  86.6   11
+  301.0  298.3   4.3986  63.1   0.142    0.0  33.9016   1.99  86.5   11
+  302.0  299.2   4.3879  63.1   0.142    0.0  33.9017   1.99  86.3   13
+  302.7  299.9   4.3785  63.0   0.142    0.0  33.9033   1.98  86.1    9
+  305.1  302.2   4.3733  63.0   0.142    0.0  33.9075   1.96  85.0   12
+  306.0  303.1   4.3656  63.1   0.142    0.0  33.9086   1.95  84.6   15
+  307.0  304.1   4.3585  63.1   0.133    0.0  33.9100   1.93  83.9   15
+  308.0  305.1   4.3549  63.1   0.142    0.0  33.9109   1.92  83.6   16
+  309.0  306.1   4.3536  63.1   0.138    0.0  33.9111   1.91  83.2   20
+  310.0  307.1   4.3545  62.2   0.134    0.0  33.9130   1.90  82.4   24
+  311.0  308.1   4.3554  63.1   0.138    0.0  33.9135   1.89  82.2   24
+  312.0  309.1   4.3501  63.0   0.132    0.0  33.9160   1.88  81.6   21
+  313.1  310.1   4.3431  63.0   0.138    0.0  33.9175   1.87  81.2   34
+  314.0  311.0   4.3391  63.0   0.134    0.0  33.9180   1.86  80.8   13
+  314.9  312.0   4.3356  63.0   0.135    0.0  33.9190   1.85  80.3   27
+  316.0  313.0   4.3358  63.1   0.141    0.0  33.9200   1.84  80.0   16
+  317.0  314.0   4.3315  63.1   0.135    0.0  33.9214   1.83  79.6   13
+  318.0  315.0   4.3350  63.1   0.140    0.0  33.9254   1.82  79.3   11
+  319.0  316.0   4.3396  63.1   0.142    0.0  33.9281   1.81  78.9   10
+  320.0  317.0   4.3309  63.1   0.142    0.0  33.9287   1.81  78.7   12
+  321.1  318.1   4.3214  63.1   0.142    0.0  33.9285   1.80  78.5   13
+  321.9  318.9   4.3155  63.1   0.132    0.0  33.9296   1.80  78.3   15
+  324.3  321.3   4.3154  63.1   0.130    0.0  33.9354   1.79  77.7    8
+  325.0  321.9   4.3155  63.2   0.130    0.0  33.9370   1.78  77.2   18
+  326.0  322.9   4.3115  63.3   0.130    0.0  33.9369   1.76  76.7   13
+  327.0  323.9   4.2920  63.2   0.130    0.0  33.9352   1.76  76.5    9
+  328.0  324.9   4.2921  63.2   0.130    0.0  33.9357   1.75  76.3   13
+  329.1  326.0   4.2942  63.2   0.130    0.0  33.9382   1.75  75.9   15
+  330.0  326.9   4.2914  63.3   0.134    0.0  33.9396   1.74  75.8   19
+  331.4  328.3   4.2866  63.2   0.130    0.0  33.9407   1.73  75.3    4
+  331.9  328.8   4.2853  63.2   0.130    0.0  33.9421   1.73  75.0   14
+  333.0  329.9   4.2839  63.3   0.130    0.0  33.9434   1.72  74.7   32
+  334.0  330.8   4.2816  63.3   0.130    0.0  33.9448   1.71  74.3   34
+  335.0  331.8   4.2775  63.3   0.130    0.0  33.9465   1.70  73.9   25
+  336.0  332.8   4.2785  63.3   0.159    0.0  33.9506   1.69  73.4   18
+  337.0  333.8   4.2802  63.3   0.153    0.0  33.9515   1.69  73.4   16
+  338.0  334.8   4.2958  63.3   0.130    0.0  33.9553   1.69  73.3   16
+  339.0  335.8   4.3086  63.3   0.130    0.0  33.9593   1.68  73.2   18
+  340.0  336.8   4.3186  63.3   0.130    0.0  33.9615   1.68  73.0   19
+  341.0  337.8   4.3147  63.2   0.130    0.0  33.9632   1.68  73.1   23
+  341.7  338.5   4.3256  63.2   0.130    0.0  33.9657   1.67  72.8   10
+  343.4  340.2   4.3126  63.3   0.130    0.0  33.9659   1.66  72.3    4
+  344.0  340.7   4.3078  63.2   0.130    0.0  33.9658   1.66  72.3   22
+  345.0  341.7   4.3106  63.1   0.130    0.0  33.9668   1.66  72.0   16
+  346.0  342.8   4.3175  63.2   0.130    0.0  33.9694   1.65  71.7   14
+  347.0  343.8   4.2995  63.3   0.130    0.0  33.9690   1.65  71.6   14
+  348.0  344.8   4.2940  63.1   0.130    0.0  33.9695   1.64  71.5   17
+  348.8  345.5   4.2944  63.2   0.130    0.0  33.9697   1.64  71.4   16
+  350.2  346.9   4.2873  63.1   0.130    0.0  33.9726   1.63  70.9   15
+  351.0  347.7   4.2831  63.2   0.130    0.0  33.9739   1.62  70.6   14
+  352.0  348.7   4.2788  63.1   0.130    0.0  33.9757   1.62  70.3   15
+  353.0  349.7   4.2788  62.9   0.130    0.0  33.9772   1.61  70.1   13
+  354.0  350.7   4.2789  63.3   0.130    0.0  33.9777   1.61  69.9   17
+  354.8  351.5   4.2785  63.3   0.130    0.0  33.9781   1.61  69.8   13
+  356.5  353.1   4.2790  63.3   0.130    0.0  33.9778   1.60  69.7    1
+  357.0  353.6   4.2763  63.3   0.130    0.0  33.9792   1.60  69.5   16
+  358.0  354.6   4.2745  63.1   0.130    0.0  33.9819   1.59  69.2   12
+  359.0  355.6   4.2749  63.2   0.130    0.0  33.9825   1.58  68.9   11
+  360.0  356.6   4.2750  63.3   0.130    0.0  33.9844   1.58  68.8   11
+  361.0  357.6   4.2762  63.3   0.130    0.0  33.9866   1.58  68.7   12
+  362.1  358.6   4.2741  63.3   0.130    0.0  33.9880   1.57  68.5   16
+  362.7  359.3   4.2706  63.3   0.130    0.0  33.9893   1.57  68.3    8
+  364.4  361.0   4.2664  63.3   0.130    0.0  33.9909   1.55  67.6    5
+  364.9  361.5   4.2645  63.2   0.130    0.0  33.9918   1.55  67.3   23
+  366.0  362.5   4.2633  63.1   0.130    0.0  33.9927   1.54  66.9   18
+  367.0  363.5   4.2592  63.4   0.130    0.0  33.9942   1.53  66.6   15
+  368.0  364.5   4.2564  63.5   0.130    0.0  33.9951   1.53  66.3   20
+  369.0  365.5   4.2555  63.4   0.130    0.0  33.9958   1.52  66.2   29
+  370.0  366.5   4.2549  63.4   0.130    0.0  33.9962   1.51  65.8   31
+  371.0  367.5   4.2537  63.5   0.130    0.0  33.9975   1.51  65.6   27
+  372.0  368.5   4.2526  63.4   0.130    0.0  33.9988   1.50  65.3   22
+  373.0  369.5   4.2488  63.3   0.130    0.0  34.0001   1.50  65.0   20
+  374.0  370.4   4.2439  63.4   0.130    0.0  34.0010   1.49  64.9   19
+  375.0  371.4   4.2407  63.4   0.130    0.0  34.0018   1.49  64.7   21
+  376.0  372.5   4.2399  63.3   0.130    0.0  34.0030   1.48  64.4   27
+  376.6  373.0   4.2397  63.3   0.130    0.0  34.0040   1.48  64.4    7
+  378.0  374.4   4.2377  63.3   0.130    0.0  34.0049   1.47  64.0   23
+  379.0  375.4   4.2332  63.3   0.130    0.0  34.0063   1.47  63.8   18
+  380.0  376.4   4.2316  63.3   0.130    0.0  34.0065   1.46  63.5   15
+  381.0  377.4   4.2291  63.3   0.130    0.0  34.0075   1.45  63.2   13
+  382.0  378.4   4.2266  63.3   0.130    0.0  34.0082   1.45  63.2   13
+  383.0  379.4   4.2240  63.3   0.130    0.0  34.0091   1.45  62.9   16
+  384.0  380.3   4.2199  63.3   0.130    0.0  34.0115   1.44  62.7   18
+  386.5  382.8   4.2119  63.3   0.130    0.0  34.0140   1.42  61.9    1
+  387.0  383.3   4.2071  63.3   0.130    0.0  34.0155   1.42  61.8   15
+  388.0  384.3   4.2040  63.3   0.130    0.0  34.0167   1.42  61.5   12
+  389.0  385.3   4.2016  63.3   0.130    0.0  34.0175   1.41  61.3   13
+  390.0  386.3   4.1955  63.3   0.130    0.0  34.0187   1.40  61.0   13
+  391.0  387.3   4.1927  63.3   0.130    0.0  34.0193   1.40  60.9   18
+  391.6  387.8   4.1919  63.3   0.130    0.0  34.0198   1.40  60.9    4
+  394.0  390.2   4.1858  63.3   0.130    0.0  34.0219   1.38  60.1   20
+  395.0  391.2   4.1849  63.3   0.130    0.0  34.0221   1.38  59.9   20
+  396.0  392.2   4.1837  63.3   0.130    0.0  34.0225   1.37  59.5   22
+  397.0  393.2   4.1816  63.3   0.130    0.0  34.0232   1.37  59.5   20
+  398.0  394.2   4.1797  63.3   0.130    0.0  34.0244   1.36  59.2   20
+  399.0  395.2   4.1760  63.3   0.130    0.0  34.0267   1.36  59.0   21
+  400.0  396.2   4.1743  63.3   0.130    0.0  34.0275   1.35  58.7   31
+  401.5  397.6   4.1737  63.3   0.130    0.0  34.0278   1.35  58.6    1
+  401.9  398.1   4.1703  63.3   0.130    0.0  34.0295   1.34  58.3   22
+  403.0  399.1   4.1621  63.4   0.134    0.0  34.0321   1.33  57.8   16
+  404.0  400.2   4.1584  63.5   0.130    0.0  34.0326   1.32  57.4   14
+  405.0  401.2   4.1572  63.5   0.130    0.0  34.0330   1.31  57.2   14
+  406.1  402.2   4.1539  63.5   0.130    0.0  34.0339   1.31  56.9   21
+  406.6  402.7   4.1515  63.3   0.130    0.0  34.0347   1.30  56.7    5
+  408.1  404.2   4.1479  63.4   0.130    0.0  34.0353   1.29  56.1   29
+  409.0  405.1   4.1467  63.4   0.130    0.0  34.0356   1.29  55.9   26
+  410.0  406.1   4.1440  63.3   0.130    0.0  34.0360   1.28  55.6   23
+  411.0  407.1   4.1406  63.4   0.130    0.0  34.0369   1.27  55.4   25
+  412.0  408.0   4.1392  63.3   0.130    0.0  34.0372   1.27  55.4   25
+  413.0  409.0   4.1374  63.4   0.130    0.0  34.0377   1.27  55.0   22
+  414.0  410.0   4.1354  63.5   0.130    0.0  34.0385   1.26  54.6   19
+  415.0  411.1   4.1351  63.4   0.130    0.0  34.0387   1.26  54.9   24
+  416.0  412.0   4.1347  63.4   0.129    0.0  34.0389   1.26  54.7   33
+  417.0  413.0   4.1348  62.9   0.130    0.0  34.0389   1.26  54.7   25
+  418.0  414.0   4.1331  63.3   0.130    0.0  34.0396   1.25  54.5   17
+  419.0  415.0   4.1288  63.4   0.129    0.0  34.0415   1.25  54.4   23
+  420.0  416.0   4.1250  63.3   0.128    0.0  34.0433   1.24  54.1   36
+  421.0  416.9   4.1232  63.3   0.130    0.0  34.0435   1.24  53.9   30
+  422.0  418.0   4.1217  63.3   0.126    0.0  34.0440   1.23  53.6   28
+  423.0  418.9   4.1181  63.3   0.130    0.0  34.0468   1.23  53.3   32
+  424.0  419.9   4.1145  63.3   0.130    0.0  34.0495   1.22  53.2   25
+  425.0  420.9   4.1123  63.3   0.129    0.0  34.0516   1.21  52.8   13
+  426.0  421.9   4.1103  63.4   0.129    0.0  34.0511   1.21  52.6   15
+  427.0  422.9   4.1087  63.3   0.130    0.0  34.0501   1.21  52.6   13
+  428.0  423.9   4.1037  63.3   0.127    0.0  34.0505   1.20  52.3   14
+  428.9  424.8   4.1006  63.3   0.126    0.0  34.0516   1.20  52.2   15
+  431.1  427.0   4.0982  63.3   0.130    0.0  34.0527   1.20  52.2   10
+  432.0  427.8   4.0964  63.3   0.122    0.0  34.0530   1.19  51.9   15
+  433.0  428.9   4.0951  63.3   0.128    0.0  34.0533   1.19  51.6   16
+  434.1  429.9   4.0916  63.3   0.130    0.0  34.0545   1.19  51.5   25
+  435.1  430.9   4.0912  63.3   0.122    0.0  34.0552   1.18  51.3   23
+  436.0  431.8   4.0919  63.3   0.123    0.0  34.0559   1.18  51.1   25
+  437.0  432.8   4.0913  63.4   0.125    0.0  34.0563   1.18  51.1   27
+  438.0  433.8   4.0866  63.4   0.130    0.0  34.0568   1.17  50.9   32
+  439.0  434.7   4.0827  63.5   0.125    0.0  34.0580   1.16  50.6   24
+  440.0  435.7   4.0801  63.4   0.124    0.0  34.0590   1.16  50.5   19
+  441.0  436.7   4.0775  63.5   0.120    0.0  34.0599   1.16  50.2   16
+  442.0  437.7   4.0734  63.4   0.118    0.0  34.0614   1.15  50.1   18
+  442.9  438.7   4.0717  63.4   0.119    0.0  34.0620   1.15  49.9   19
+  444.4  440.1   4.0685  63.4   0.118    0.0  34.0633   1.14  49.6    7
+  445.0  440.7   4.0683  63.4   0.129    0.0  34.0635   1.14  49.4   25
+  446.0  441.6   4.0678  63.5   0.126    0.0  34.0638   1.13  49.2   17
+  447.0  442.7   4.0656  63.4   0.118    0.0  34.0647   1.13  49.1   14
+  448.0  443.7   4.0621  63.3   0.118    0.0  34.0660   1.13  49.0   17
+  449.1  444.7   4.0607  63.2   0.123    0.0  34.0666   1.13  49.0   23
+  450.0  445.7   4.0562  62.9   0.120    0.0  34.0686   1.12  48.6   32
+  451.0  446.6   4.0503  63.5   0.122    0.0  34.0702   1.11  48.3   36
+  452.0  447.6   4.0492  63.5   0.120    0.0  34.0704   1.10  48.0   26
+  453.0  448.6   4.0489  63.4   0.118    0.0  34.0705   1.10  47.9   22
+  454.0  449.6   4.0487  63.5   0.118    0.0  34.0707   1.10  47.8   21
+  455.0  450.6   4.0484  63.4   0.118    0.0  34.0709   1.10  47.7   24
+  456.0  451.6   4.0483  63.4   0.118    0.0  34.0709   1.10  47.7   31
+  457.0  452.5   4.0479  63.4   0.118    0.0  34.0711   1.09  47.6   25
+  458.0  453.6   4.0477  63.4   0.119    0.0  34.0714   1.09  47.5   20
+  459.0  454.6   4.0469  63.5   0.118    0.0  34.0718   1.09  47.6   19
+  460.0  455.6   4.0435  63.5   0.125    0.0  34.0745   1.09  47.2   24
+  461.0  456.5   4.0423  63.5   0.128    0.0  34.0756   1.09  47.2   24
+  462.0  457.5   4.0420  63.5   0.118    0.0  34.0759   1.08  46.9   20
+  463.0  458.5   4.0413  63.5   0.119    0.0  34.0761   1.08  46.8   19
+  464.0  459.5   4.0395  63.5   0.118    0.0  34.0764   1.08  46.9   21
+  464.9  460.4   4.0387  63.3   0.118    0.0  34.0773   1.08  46.8   11
+  465.9  461.4   4.0376  63.3   0.118    0.0  34.0786   1.07  46.6   30
+  467.0  462.4   4.0326  63.2   0.118    0.0  34.0797   1.07  46.4   14
+  468.0  463.4   4.0297  63.5   0.118    0.0  34.0818   1.06  46.1   14
+  469.0  464.4   4.0288  63.5   0.118    0.0  34.0824   1.06  46.0   14
+  470.0  465.4   4.0266  63.5   0.118    0.0  34.0827   1.05  45.8   15
+  471.0  466.5   4.0238  63.5   0.118    0.0  34.0833   1.05  45.8   17
+  472.0  467.4   4.0236  63.5   0.118    0.0  34.0833   1.05  45.6   21
+  473.0  468.5   4.0228  63.5   0.120    0.0  34.0837   1.05  45.5   32
+  474.1  469.5   4.0224  63.4   0.121    0.0  34.0838   1.04  45.4   25
+  475.0  470.4   4.0213  63.5   0.118    0.0  34.0843   1.04  45.2   32
+  476.0  471.3   4.0170  63.4   0.120    0.0  34.0853   1.04  45.1   35
+  476.9  472.3   4.0145  63.4   0.118    0.0  34.0859   1.03  44.9   25
+  478.0  473.3   4.0120  62.8   0.118    0.0  34.0864   1.03  44.9   19
+  479.0  474.3   4.0114  63.4   0.118    0.0  34.0866   1.03  44.6   17
+  480.0  475.3   4.0100  63.5   0.118    0.0  34.0870   1.03  44.6   18
+  481.0  476.3   4.0088  63.5   0.118    0.0  34.0874   1.03  44.6   25
+  482.0  477.3   4.0071  63.4   0.118    0.0  34.0880   1.02  44.4   28
+  483.0  478.3   4.0053  63.3   0.118    0.0  34.0888   1.02  44.3   31
+  484.0  479.3   4.0033  63.4   0.118    0.0  34.0895   1.01  44.1   35
+  485.0  480.3   4.0020  63.5   0.118    0.0  34.0900   1.01  44.1   31
+  486.0  481.3   4.0013  63.4   0.118    0.0  34.0902   1.01  43.9   29
+  487.0  482.2   4.0004  63.3   0.118    0.0  34.0906   1.00  43.7   25
+  488.0  483.2   3.9987  63.4   0.119    0.0  34.0911   1.01  43.8   18
+  489.0  484.2   3.9966  63.4   0.118    0.0  34.0919   1.01  43.7   16
+  490.0  485.2   3.9944  63.2   0.118    0.0  34.0930   1.00  43.6   16
+  490.9  486.2   3.9920  63.1   0.118    0.0  34.0937   1.00  43.6   19
+  492.3  487.5   3.9893  63.4   0.118    0.0  34.0949   1.00  43.3   17
+  493.0  488.2   3.9862  63.4   0.118    0.0  34.0957   0.99  43.2   28
+  494.0  489.2   3.9840  63.3   0.118    0.0  34.0966   0.99  42.9   30
+  495.0  490.2   3.9831  63.4   0.121    0.0  34.0969   0.99  42.9   43
+  496.0  491.1   3.9828  63.5   0.118    0.0  34.0970   0.98  42.6   24
+  497.0  492.1   3.9828  63.5   0.118    0.0  34.0970   0.98  42.6   17
+  498.0  493.1   3.9829  63.5   0.118    0.0  34.0970   0.98  42.6   16
+  499.0  494.2   3.9811  63.4   0.118    0.0  34.0976   0.98  42.7   20
+  500.1  495.2   3.9766  63.5   0.118    0.0  34.0995   0.97  42.4   19
+  500.7  495.8   3.9745  63.4   0.119    0.0  34.1005   0.97  42.2   16
