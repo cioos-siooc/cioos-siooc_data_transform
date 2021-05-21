@@ -304,16 +304,19 @@ def get_vocabulary_attributes(
     """
 
     def _compare_units(unit, expected_units):
-        """Simple tool to compare "|" separated units in the Vocabulary expected unit list.
+        """
+        Simple tool to compare "|" separated units in the Vocabulary expected unit list.
         - First unit if any is matching.
         - None if empty or expected to be empty
+        - unknown if unit exists but the "expected_units" input is empty.
         - False if not matching units
         """
+        none_units=["none", "dimensionless"]
         if expected_units:
             # Split unit list and convert None or dimensionless to None
             unit_list = []
             for unit_item in expected_units.split("|"):
-                if unit_item.lower() in ["none", "dimensionless"]:
+                if unit_item.lower() in none_units:
                     unit_list.append(None)
                 else:
                     unit_list.append(unit_item)
@@ -323,15 +326,18 @@ def get_vocabulary_attributes(
             unit_list = []
             standard_unit = None
 
-        if unit in ["none", "dimensionaless"]:
+        if unit in none_units:
             unit = None
-
+        # If a matching unit is found, return the standard unit (first one listed)
         if unit in unit_list:
             return standard_unit
+        # If unit is None and Standard unit is None return None
         elif unit is None and standard_unit is None:
             return None
+        # If there's a Unit and standard unit is None, give back unknown. We don't what it's suppose to be.
         elif unit and standard_unit is None:
             return "unknown"
+        # If unit doesn't match the list return False
         elif unit not in unit_list:
             return False
 
