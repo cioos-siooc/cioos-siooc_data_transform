@@ -158,9 +158,9 @@ def write_ctd_ncfile(outfile, odf_data, config={}):
     odf_variable_attributes = oce.oce_units_to_odf(odf_variable_attributes, metadata)
 
     # Add vocabularies and documentation to variable attributes
-    odf_variable_attributes = odf.define_odf_variable_attributes(odf_variable_attributes, metadata,
-                                                                 organizations=config['organisationVocabulary'],
-                                                                 vocabulary=config['vocabulary'])
+    odf_variable_attributes = odf.get_vocabulary_attributes(odf_variable_attributes, metadata,
+                                                            organizations=config['organisationVocabulary'],
+                                                            vocabulary=config['vocabulary'])
 
     # Explicitly use OCE units (where not sure if there's any conversion applied within OCE)
     for var, att in odf_variable_attributes.items():

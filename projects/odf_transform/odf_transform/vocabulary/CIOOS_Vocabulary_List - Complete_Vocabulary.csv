@@ -757,7 +757,7 @@ GF3,SWDR,MEDS,A,Wave,Vague,degree(angle),degré(angle),sea_surface_swell_wave_to
 GF3,SWHT,MEDS,A,Wave,Vague,metre,mètre,sea_surface_swell_wave_significant_height,water_surface_swell_wave_significant_height,,,,,,,,,,,,metre,,sea_surface_swell_wave_significant_height,http://vocab.nerc.ac.uk/collection/P07/current/CFSN0378/,,,,,,,,,,,,,,SWHT,,
 GF3,SWM$,MEDS,A,Wave,Vague,second,seconde,,,,,,,,,,,,,,second,,,,,,,,,,,,,,,,,SWM$,,
 GF3,SWPR,MEDS,A,Wave,Vague,second,seconde,sea_surface_swell_wave_period,water_surface_swell_wave_period,,,,,,,,,,,,second,,sea_surface_swell_wave_period,http://vocab.nerc.ac.uk/collection/P07/current/CFSN0377/,,,,,,,,,,,,,,SWPR,,
-GF3,SYTM,"BIO,IML,MEDS",A,Date and time within day,Date et temps dans une journée,text,texte,,,,,,,,,,time,,,,,,time,http://vocab.nerc.ac.uk/collection/P07/current/CFSN0115/,,,,,,,,,,,,,,SYTM,,
+GF3,SYTM,"BIO,IML,MEDS",A,Date and time within day,Date et temps dans une journée,text,texte,,,,,,,,,,time,,,,None|UTC|GMT|seconds,,time,http://vocab.nerc.ac.uk/collection/P07/current/CFSN0115/,,,,,,,,,,,,,,SYTM,,
 GF3,TAPE,MEDS,A,Wave,Vague,number,nombre,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,TAPE,,
 GF3,TAXN,"BIO,MEDS",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,TAXN,,
 GF3,TBD$,MEDS,A,Physical Oceanography,Océanographie physique,dimensionless,sans dimension,,,,,,,,,,,,,,dimensionless,,,,,,,,,,,,,,,,,TBD$,,

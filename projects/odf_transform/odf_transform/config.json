@@ -16,6 +16,7 @@
         "summary_fra": " summary in french here",
         "description": "detailed description",
         "description_fra": "description in french",
+        "processing_level": "processing description",
         "infoUrl": "http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html",
         "keywords": "temperature, salinity",
         "keywords_fra": "salinite",
@@ -28,5 +29,14 @@
         "keywords_vocabulary": "GCMD Science Keywords",
         "Conventions": "CF-1.6,CF-1.7,ACDD1.1",
         "comment": ""
+    },
+    "flag_convention": {
+        "default": {
+            "standard_name": "status_flag",
+            "flag_values": [0, 1, 2, 3, 4, 5, 9],
+            "flag_meanings": "not_evaluated correct inconsistent_with_other_values doubtful erroneous modified missing"
+        },
+        "QCFF": {},
+        "FFFF": {}
     }
 }

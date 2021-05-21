@@ -119,6 +119,32 @@ def convert_variables_to_erddap_format(ds):
     return ds
 
 
+def standardize_variable_attributes(values, attributes={}):
+    """
+    Method to generate simple generic variable attributes and reorder attributes in a consistent order.
+    """
+    attribute_order = ['long_name', 'units', 'scale', 'standard_name', 'sdn_parameter_name',
+                       'source', 'reference', 'cell_method', 'value_min', 'value_max'
+                       'grid_mapping']
+    if values.dtype in [float, int, 'float32', 'float64', 'int64', 'int32']:
+        attributes.update({
+            "valid_min": values.min().item(0),
+            "valid_max": values.max().item(0)
+        })
+
+    # Sort attributes by order provided
+    sorted_attributes = {key: attributes[key] for key in attribute_order if key in attributes}
+
+    # If any left over add the rest
+    sorted_attributes.update(attributes)
+
+    # Drop empty attributes
+    empty_att = [key for key, att in sorted_attributes.items() if att==None]
+    for key in empty_att:
+        sorted_attributes.pop(key)
+    return sorted_attributes
+
+
 def get_spatial_coverage_attributes(ds,
                                     time='time',
                                     lat='latitude',
@@ -128,6 +154,7 @@ def get_spatial_coverage_attributes(ds,
     """
     This method generates the geospatial and time coverage attributes associated to an xarray dataset.
     """
+    # TODO add resolution attributes
     time_spatial_coverage = {}
     # time
     if time in ds:
@@ -142,15 +169,19 @@ def get_spatial_coverage_attributes(ds,
         time_spatial_coverage.update({
             'geospatial_lat_min': ds[lat].min().values,
             'geospatial_lat_max': ds[lat].max().values,
+            'geospatial_lat_units': ds[lat].attrs.get('units'),
             'geospatial_lon_min': ds[lon].min().values,
-            'geospatial_lon_max': ds[lon].max().values
+            'geospatial_lon_max': ds[lon].max().values,
+            'geospatial_lon_units': ds[lon].attrs.get('units'),
         })
 
     # depth coverage
     if depth in ds:
         time_spatial_coverage.update({
             'geospatial_vertical_min': ds[depth].min().values,
-            'geospatial_vertical_max': ds[depth].max().values
+            'geospatial_vertical_max': ds[depth].max().values,
+            'geospatial_vertical_units': ds[depth].attrs['units'],
+            'geospatial_vertical_positive': 'down'
         })
 
     # Add to global attributes
@@ -230,7 +261,7 @@ def define_index_dimensions(ds):
     # Handle dimension name if still default "index" from conversion of pandas to xarray
     if 'index' in ds.dims and len(ds.dims.keys()) == 1:
         # If dimension is index and is a table like data
-        if ds.attrs['cdm_data_type'] in ['Timeseries', 'Trajectory']:
+        if ds.attrs['cdm_data_type'] in ['TimeSeries', 'Trajectory']:
             ds = ds.swap_dims({'index': 'time'})
             ds = ds.reset_coords('index')
         elif 'Profile' == ds.attrs['cdm_data_type']:
@@ -257,7 +288,7 @@ def add_variable_attributes(ds,
         matched_scale = None
         for scale_name in scales:
             for att in review_attributes:
-                if att in ds[var].attrs:
+                if att in ds[var].attrs and ds[var].attrs[att]:
                     matched_scale = re.search(scales[scale_name], ds[var].attrs[att], re.IGNORECASE)
 
                 if matched_scale:

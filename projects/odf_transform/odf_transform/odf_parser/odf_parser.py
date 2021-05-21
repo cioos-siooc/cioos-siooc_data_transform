@@ -1,3 +1,8 @@
+"""
+odf_parser is a module that regroup a different set of tools used to parse the ODF format which is use, maintain
+and developped by the DFO offices BIO and MLI.
+"""
+
 import re
 import datetime as dt
 import warnings
@@ -6,20 +11,25 @@ import json
 import gsw
 
 # Dictionary with the mapping of the odf types to python types
-odf_dtypes = {'DOUB': 'float64', 'SING': 'float32', 'DOUBLE': 'float64',
-              'SYTM': str, 'INTE': 'int32', 'CHAR': str, 'QQQQ': 'int32'}
+odf_dtypes = {
+    "DOUB": "float64",
+    "SING": "float32",
+    "DOUBLE": "float64",
+    "SYTM": str,
+    "INTE": "int32",
+    "CHAR": str,
+    "QQQQ": "int32",
+}
 
 # Commonly date place holder used within the ODF files
-odf_time_null_value = (dt.datetime.strptime("17-NOV-1858 00:00:00.00", '%d-%b-%Y %H:%M:%S.%f') -
-                       dt.datetime(1970, 1, 1)).total_seconds()
+flag_long_name_prefix = "Quality_Flag: "
+original_prefix_var_attribute = "original_"
 
 
-def read(filename,
-         encoding_format='Windows-1252'
-         ):
+def read(filename, encoding_format="Windows-1252"):
     """
     Read_odf
-    Read_odf parse the odf format used by some DFO organisation to python list of diectionary format and
+    Read_odf parse the odf format used by some DFO organisation to python list of dictionaryformat and
     pandas dataframe. Once converted, the output can easily be converted to netcdf format.
 
     Steps applied:
@@ -40,61 +50,55 @@ def read(filename,
      start of the data.
     :return:
     """
-    header_end = '-- DATA --'
-    data_delimiter = r'\s+'
-    quotechar = '\''
-    parameter_section = 'PARAMETER_HEADER'
-    variable_type = 'TYPE'
-    null_value = 'NULL_VALUE'
-    section_items_minimum_whitespaces = 2
-    original_prefix_var_attribute = 'original_'
 
     def _convert_to_number(value):
-        """ Simple method to try to convert values to float or integer."""
-        try:  # Try float first
-            output_value = float(value)
+        """Simple method to try to convert input (string, literals) to float or integer."""
+        try:
+            floated = float(value)
+            if floated.is_integer():
+                return int(floated)
+            return floated
         except ValueError:
-            try:  # Then try integer
-                output_value = int(value)
-            except ValueError:  # If nothing works just keep it as is
-                output_value = re.sub(r'^\s*|\s*$', '', value)
-        return output_value
+            return value
 
     metadata = {}  # Start with an empty dictionary
     with open(filename, encoding=encoding_format) as f:
-        line = ''
+        line = ""
         original_header = []
         # Read header one line at the time
-        while header_end not in line:
+        while "-- DATA --" not in line:
             line = f.readline()
             # Drop some characters that aren't useful
-            line = re.sub(r'\n|,$', '', line)
+            line = re.sub(r"\n|,$", "", line)
 
             # Collect each original odf header lines
             original_header.append(line)
 
-            # Detect the end of the header
-            if header_end in line:
-                # May also be stop by the while condition
-                break
-
             # Sections
-            if re.match(r'^\s{0,' + str(section_items_minimum_whitespaces - 1) + r'}\w', line):
-                section = line.replace('\n', '').replace(',', '')
-                section = re.sub(r'^\s*|\s$', '', section)  # Ignore white spaces before and after
+            if re.match(r"^\s?\w", line):
+                section = line.replace("\n", "").replace(",", "")
+                section = re.sub(
+                    r"^\s*|\s$", "", section
+                )  # Ignore white spaces before and after
                 if section not in metadata:
                     metadata[section] = [{}]
                 else:
                     metadata[section].append({})
 
             # Dictionary type lines (key=value)
-            elif re.match(r'^\s{' + str(section_items_minimum_whitespaces) + r'}\s*\w', line):  # Something=This
-                dict_line = re.split(r'=', line, maxsplit=1)  # Make sure that only the first = is use to split
-                dict_line = [re.sub(r'^\s+|\s+$', '', item) for item in dict_line]  # Remove trailing white spaces
+            elif re.match(r"^\s{2}\s*\w", line):  # Something=This
+                dict_line = re.split(
+                    r"=", line, maxsplit=1
+                )  # Make sure that only the first = is use to split
+                dict_line = [
+                    re.sub(r"^\s+|\s+$", "", item) for item in dict_line
+                ]  # Remove trailing white spaces
 
-                if re.match(r'\'.*\'', dict_line[1]):  # Is delimited by double quotes, definitely a string
+                if re.match(
+                    r"\'.*\'", dict_line[1]
+                ):  # Is delimited by double quotes, definitely a string
                     # Drop the quote signs and the white spaces before and after
-                    dict_line[1] = str(re.sub(r'^\s*|\s*$', '', dict_line[1][1:-1]))
+                    dict_line[1] = str(re.sub(r"^\s*|\s*$", "", dict_line[1][1:-1]))
                 else:
                     # Try to convert the value of the dictionary in an integer or float
                     dict_line[1] = _convert_to_number(dict_line[1])
@@ -102,235 +106,360 @@ def read(filename,
                 # Add to the metadata as a dictionary
                 metadata[section][-1][dict_line[0]] = dict_line[1]
 
-            elif re.match(r'^\s+.+', line):  # Unknown line format (likely comments) doesn't seem to have any examples
-                # TODO this hasn't been tested yet I haven't try an example with not a dictionary like line
-                metadata[section].append(line)
             else:
                 assert RuntimeError, "Can't understand the line: " + line
 
         # Simplify the single sections to a dictionary
         for section in metadata:
-            if len(metadata[section]) == 1 and \
-                    type(metadata[section][0]) is dict:
+            if len(metadata[section]) == 1 and type(metadata[section][0]) is dict:
                 metadata[section] = metadata[section][0]
 
-        # READ ODF DATA SECTION
-        # Define first the variable names and the type.
-        variable_attributes = {}
+        # READ PARAMETER_HEADER
+        # Define first the variable name and attributes and the type.
+        metadata["variable_attributes"] = {}
+        time_columns = []
         # Variable names and related attributes
-        for att in metadata[parameter_section]:
-            if 'CODE' in att:
-                var_name = parse_odf_code_variable(att['CODE'])
-            elif 'NAME' in att and 'WMO_CODE' in att and att['NAME'].startswith(att['WMO_CODE']):
-                var_name = parse_odf_code_variable(att['NAME'])
+        for att in metadata["PARAMETER_HEADER"]:
+            # Generate variable name
+            if "CODE" in att:
+                var_name = parse_odf_code_variable(att["CODE"])
+            elif (
+                "NAME" in att
+                and "WMO_CODE" in att
+                and att["NAME"].startswith(att["WMO_CODE"])
+            ):
+                var_name = parse_odf_code_variable(att["NAME"])
             else:
-                raise RuntimeError('Unrecognizable ODF variable attributes')
+                raise RuntimeError("Unrecognizable ODF variable attributes")
 
-            # Make sure that the variable name is GF3 term (opt: two digit number)
-            variable_attributes[var_name['standardized_name']] = att
-            # Retrieve list of time variables
-        time_columns = [key for key, att in variable_attributes.items()
-                        if key.startswith('SYTM') or att['TYPE'] == 'SYTM']
+            attribute = {
+                "long_name": att.get("NAME"),
+                "units": att.get("UNITS"),
+                "gf3_code": var_name["standardized_name"],
+                "type": att["TYPE"],
+                "null_value": att["NULL_VALUE"],
+                "comments": json.dumps(
+                    {"odf_variable_attributes": att}, ensure_ascii=False, indent=False
+                ),
+            }
+            # Generate variable attributes
+            output_variable_name = var_name["standardized_name"]
+
+            # Add those variable attributes to the metadata output
+            metadata["variable_attributes"].update({output_variable_name: attribute})
+            # Time type column add to time variables to parse by pd.read_csv()
+            if output_variable_name.startswith("SYTM") or att["TYPE"] == "SYTM":
+                time_columns.append(output_variable_name)
+
+        # If not time column replace by False
         if not time_columns:
             time_columns = False
 
-        # Read with Pandas
-        data_raw = pd.read_csv(f, delimiter=data_delimiter, quotechar=quotechar, header=None,
-                               names=variable_attributes.keys(),
-                               dtype={key: odf_dtypes[att.get(variable_type)]
-                                      for key, att in variable_attributes.items()},
-                               na_values={key: att.get(null_value) for key, att in variable_attributes.items()},
-                               parse_dates=time_columns,
-                               encoding=encoding_format, )
+        # Read Data with Pandas
+        data_raw = pd.read_csv(
+            f,
+            delimiter=r"\s+",
+            quotechar="'",
+            header=None,
+            names=metadata["variable_attributes"].keys(),
+            dtype={
+                key: odf_dtypes[att.pop("type")]
+                for key, att in metadata["variable_attributes"].items()
+            },
+            na_values={
+                key: att.pop("null_value")
+                for key, att in metadata["variable_attributes"].items()
+            },
+            parse_dates=time_columns,
+            encoding=encoding_format,
+        )
 
     # Make sure that there's the same amount of variables read versus what is suggested in the header
-    if len(data_raw.columns) != len(metadata[parameter_section]):
-        raise RuntimeError('{0} variables were detected in the data versus {1} in the header.'
-                           .format(len(data_raw.columns), len(metadata[parameter_section])))
+    if len(data_raw.columns) != len(metadata["PARAMETER_HEADER"]):
+        raise RuntimeError(
+            "{0} variables were detected in the data versus {1} in the header.".format(
+                len(data_raw.columns), len(metadata["PARAMETER_HEADER"])
+            )
+        )
 
-        # Add a original_ before each variable attributes from the ODF
-    metadata['variable_attributes'] = {var: {
-        original_prefix_var_attribute + key: value
-        for key, value in att.items()
-    }
-        for var, att in variable_attributes.items()
-    }
-    # # Make sure that timezone is UTC, GMT or None
+    # Make sure that timezone is UTC, GMT or None
+    # (This may not be necessary since we're looking at the units later now)
     if time_columns:
         for parm in time_columns:
-            units = metadata['variable_attributes'][parm].get(original_prefix_var_attribute + 'UNITS')
-            if units not in [None, 'none', '(none)', 'GMT', 'UTC', 'seconds']:
-                warnings.warn('{0} has UNITS(timezone) of {1}'.format(parm, units), UserWarning)
+            units = metadata["variable_attributes"][parm].get(
+                original_prefix_var_attribute + "UNITS"
+            )
+            if units not in [None, "none", "(none)", "GMT", "UTC", "seconds"]:
+                warnings.warn(
+                    "{0} has UNITS(timezone) of {1}".format(parm, units), UserWarning
+                )
 
+    # TODO review if the count of flagged values versus good is the same as ODF attributes NUMBER_VALID NUMBER_NULL
     return metadata, data_raw
 
 
-def define_odf_variable_attributes(metadata,
-                                   organizations=None,
-                                   vocabulary=None,
-                                   vocabulary_attribute_list=None,
-                                   odf_var_header_prefix='original_',
-                                   odf_variable_name="CODE",
-                                   flag_prefix='QualityFlag:'):
+def odf_flag_variables(metadata, flag_convention=None):
     """
-    This method is use to retrieve from an ODF file each variable code and corresponding related
-    vocabularies associated to the organization and variable name.
-    Flag columns are also reviewed and matched to the appropriate variable.
+    odf_flag_variables handle the different conventions used within the ODF files over the years and map them
+     to the CF standards.
     """
-    # Make sure organization is a list
-    if type(organizations) is str:
-        organizations = [organizations]
-    # Define vocabulary default list of variables to import as attributes
-    if vocabulary_attribute_list is None:
-        vocabulary_attribute_list = ['name', 'standard_name',
-                                     'sdn_parameter_urn', 'sdn_parameter_name']
-    parameter_code_att = odf_var_header_prefix + odf_variable_name
 
-    def _find_previous_key(key_list, present_key):
-        """
-        For some ODF format, a flag column is related to the variable prior to it. This tool is use to retrieve
-        the name of this variable situated prior to a given column.
-        """
-        previous_key = ''
-        for i in key_list.keys():
-            if i == present_key:
-                break
-            else:
-                previous_key = i
-        return previous_key
-
-    # Find matching vocabulary
-
-    flag_dict = {}
+    # Loop through each variables and detect flag variables
+    previous_key = None
     for var, att in metadata.items():
-        # Separate the parameter_code from the number at the end of the variable
-        parameter_code = parse_odf_code_variable(var)
-        att['parameter_code'] = parameter_code['name']
-        att['parameter_code_number'] = parameter_code['index']
+        # Retrieve information from variable name
+        odf_var_name = parse_odf_code_variable(var)
+        related_variable = None
 
-        # FLAG VARIABLES Detect if it is a flag column associated with another column
-        flag_column = False
-        if parameter_code['name'].startswith('QQQQ'):  # MLI FLAG should apply to previous variable
-            flag_dict[var] = _find_previous_key(metadata, var)
-            flag_column = True
-        elif parameter_code['name'] in ['QCFF', 'FFFF']:
-            flag_column = True
-        elif parameter_code['name'].startswith('Q') and var[1:] in metadata.keys():
-            # BIO Format which Q+[PCODE] of the associated variable
-            flag_dict[var] = var[1:]
-            flag_column = True
-        # Make sure that the flag column relate to something
-        if flag_column and parameter_code['name'] not in ['QCFF', 'FFFF'] and flag_dict[var] not in metadata:
-            warnings.warn(var + ' flag is refering to' +
-                          flag_dict[var] + ' which is not available as variable',
-                          UserWarning)
+        # FLAG VARIABLES Detect if it is a flag column
+        is_q_flag = var.startswith("Q") and var[1:] in metadata.keys()
+        is_qqqq_flag = odf_var_name["name"] == "QQQQ"
+        is_general_flag = odf_var_name["name"] in ["QCFF", "FFFF"]
 
-        # Loop through each organisations and find the matching parameter_code within the vocabulary
-        if vocabulary is not None and not flag_column and var not in ['SYTM_01']:
-            # Find matching vocabularies and code and sort by given vocabularies
-            matching_terms = vocabulary[vocabulary.index.isin(organizations, level=0) &
-                                        vocabulary.index.isin([parameter_code['name']], level=1)]
+        is_flag_column = is_q_flag or is_qqqq_flag or is_general_flag
 
-            # Iterate over each matching vocabulary and review units
-            if len(matching_terms) > 0:
-                # Sort by given vocabulary order
-                matching_terms = matching_terms.reindex(organizations, level=0)
+        # Find related variable
+        if is_qqqq_flag:
+            # FLAG QQQQ should apply to previous variable
+            related_variable = previous_key
+        if is_q_flag:
+            # Q  Format is usually Q+[PCODE] of the associated variable
+            related_variable = var[1:]
 
-                var_units = att.get('original_UNITS', '')
-                if var_units:
-                    var_units = standardize_odf_units(var_units)
+        # Set previous key for the next iteration
+        previous_key = var
 
-                for index, row in matching_terms.iterrows():
-                    # Compare actual units to what's expected in the vocabulary
-                    if row.isna()['expected_units'] or \
-                            var_units in row['expected_units'].split('|') or \
-                            re.search('none|dimensionless', row['expected_units'], re.IGNORECASE) is not None:
+        # If the variable isn't a flag variable, go to the next iteration
+        if not is_flag_column:
+            continue
 
-                        # Add attributes from vocabulary
-                        att.update(row.filter(vocabulary_attribute_list).dropna().to_dict())
+        # If flag is specific to a variable, try to confirm if the odf name of the related variable match the
+        # flag name. If yes, add this flag variable to the ancillary_attribute of the related variable
+        if related_variable:
+            # Make sure that the related variable exist
+            if related_variable not in metadata:
+                raise KeyError(
+                    "{0} flag is referring to {1} which is not available as variable".format(
+                        var, related_variable
+                    ),
+                )
 
-                        # Standardize units
-                        if not flag_column:
-                            # Standardized units by selecting the very first possibility
-                            # or not giving unit attribute if none
-                            if type(row['expected_units']) is str:
-                                att['units'] = row['expected_units'].split('|')[0]
-                            elif var_units not in ['none']:
-                                att['units'] = var_units
+            # Try to see if the related_variable and flag have matching name or code in odf
+            related_variable_name = re.sub(
+                r"quality\sflag.*:\s*|quality flag of ",
+                "",
+                att["long_name"],
+                1,
+                re.IGNORECASE,
+            )
+            # Flag name do not match either variable name or code, give a warning.
+            if related_variable_name not in metadata[related_variable].get(
+                "long_name"
+            ) and related_variable_name not in metadata[related_variable].get(
+                "gf3_code"
+            ):
+                warnings.warn(
+                    "{0}[{1}] flag was matched to the variable {2} but ODF attributes {3} do not match".format(
+                        var,
+                        att["long_name"],
+                        related_variable,
+                        {
+                            key: metadata[related_variable].get(key)
+                            for key in ["long_name", "gf3_code"]
+                        },
+                    ),
+                    UserWarning,
+                )
 
-                            # No units available make sure it's the same in the data
-                            if row.isna()['expected_units'] and \
-                                    var_units not in [None, 'none']:
-                                warnings.warn('No units available within vocabularies {2} for term {0} [{1}]'
-                                              .format(var, att['original_UNITS'],
-                                                      matching_terms['expected_units'].to_dict(), UserWarning))
-                        break
-
-                    # Will make it here if don't find any matching untis
-                    warnings.warn('No Matching unit found for {0} [{1}] in: {2}'
-                                  .format(var, att.get('original_UNITS'),
-                                          matching_terms['expected_units'].to_dict()), UserWarning)
+            # Standardize long name attribute of flag variables
+            if "name" in metadata[related_variable]:
+                att["long_name"] = (
+                    flag_long_name_prefix + metadata[related_variable]["name"]
+                )
             else:
-                # If no matching vocabulary exist let it know
-                warnings.warn('{0} not available in vocabularies: {1}'.format(parameter_code['name'], organizations),
-                              UserWarning)
-
-    # Add Flag specific attributes
-    for flag_column, data_column in flag_dict.items():
-        if data_column in metadata:
-            # Add long name attribute which is generally QUALITY_FLAG: [variable it affects]
-            if 'name' in metadata[data_column]:
-                metadata[flag_column]['long_name'] = flag_prefix + metadata[data_column]['name']
-            else:
-                metadata[flag_column]['long_name'] = flag_prefix + data_column
+                att["long_name"] = flag_long_name_prefix + related_variable
 
             # Add ancillary_variables attribute
-            if 'ancillary_variables' not in metadata[data_column]:
-                metadata[data_column]['ancillary_variables'] = flag_column
-            elif 'ancillary_variables' in metadata[data_column] and type(metadata[data_column]) is str:
-                metadata[data_column]['ancillary_variables'] += ',' + flag_column
+            if "ancillary_variables" in metadata[related_variable]:
+                metadata[related_variable]["ancillary_variables"] += ",{0}".format(var)
             else:
-                warnings.warn('unknown ancillary flag format attribute', UserWarning)
-        # TODO improve flag parameters default documentation
-        #  - add flag_values, flag_masks and flag_meanings to flag attributes
-        #       http://cfconventions.org/cf-conventions/cf-conventions.html#flags
-        #       we would need to know the convention used by the organization if there's any.
-        #       Otherwise, this should be implemented within the erddap dataset.
+                metadata[related_variable]["ancillary_variables"] = var
 
-    # Update P01 name based on parameter_code number
-    for var in metadata:
-        if 'sdn_parameter_urn' in att and \
-                type(att['sdn_parameter_urn']) is str:
-            att['sdn_parameter_urn'] = re.sub(r'\d\d$',
-                                                        '%02d' % att['parameter_code_number'],
-                                                        att['sdn_parameter_urn'])
-        if 'name' in att and \
-                type(att['name']) is str:
-            att['name'] = re.sub(r'\d\d$',
-                                           '%02d' % att['parameter_code_number'],
-                                           att['name'])
+        # Add flag convention attributes if available within config file
+        if flag_convention:
+            if var in flag_convention:
+                att.update(flag_convention[var])
+            elif "default" in flag_convention:
+                att.update(flag_convention["default"])
+
+        # TODO rename QQQQ_XX flag variables to Q[related_variables] so that ERDDAP can easily amalgamate them!
+    return metadata
+
+
+def get_vocabulary_attributes(
+    metadata, organizations=None, vocabulary=None, vocabulary_attribute_list=None
+):
+    """
+    This method is use to retrieve from an ODF variable code, units and units, matching vocabulary terms available.
+    """
+
+    def _compare_units(unit, expected_units):
+        """
+        Simple tool to compare "|" separated units in the Vocabulary expected unit list.
+        - First unit if any is matching.
+        - None if empty or expected to be empty
+        - unknown if unit exists but the "expected_units" input is empty.
+        - False if not matching units
+        """
+        none_units = ["none", "dimensionless"]
+        if expected_units:
+            # Split unit list and convert None or dimensionless to None
+            unit_list = []
+            for unit_item in expected_units.split("|"):
+                if unit_item.lower() in none_units:
+                    unit_list.append(None)
+                else:
+                    unit_list.append(unit_item)
+
+            standard_unit = unit_list[0]
+        else:
+            unit_list = []
+            standard_unit = None
+
+        if unit in none_units:
+            unit = None
+        # If a matching unit is found, return the standard unit (first one listed)
+        if unit in unit_list:
+            return standard_unit
+        # If unit is None and Standard unit is None return None
+        elif unit is None and standard_unit is None:
+            return None
+        # If there's a Unit and standard unit is None, give back unknown. We don't what it's suppose to be.
+        elif unit and standard_unit is None:
+            return "unknown"
+        # If unit doesn't match the list return False
+        elif unit not in unit_list:
+            return False
+
+    # Define vocabulary default list of variables to import as attributes
+    if vocabulary_attribute_list is None:
+        vocabulary_attribute_list = (
+            "name",
+            "standard_name",
+            "sdn_parameter_urn",
+            "sdn_parameter_name",
+        )
+
+    # Find matching vocabulary
+    for var, attributes in metadata.items():
+        # Separate the parameter_code from the number at the end of the variable
+        parameter_code = parse_odf_code_variable(var)
+
+        # We already standardized all the flags with the standard long_name attribute. Let's detect them with that.
+        flag_column = attributes.get("long_name", "").startswith(
+            flag_long_name_prefix
+        ) or parameter_code["name"] in ["QCFF", "FFFF"]
+
+        # Get ODF variable units and make some simple standardization
+        var_units = standardize_odf_units(attributes.get("units", "none"))
+
+        # Find matching vocabularies and code and sort by given vocabularies
+        matching_terms = vocabulary[
+            vocabulary.index.isin(organizations, level=0)
+            & vocabulary.index.isin([parameter_code["name"]], level=1)
+        ].copy()
+
+        # Among these matching terms find matching units
+        matching_terms["standardize_units"] = matching_terms["expected_units"].apply(
+            lambda x: _compare_units(var_units, x)
+        )
+
+        # Drop the terms with no matching units (=False)
+        matching_terms_and_units = matching_terms[
+            ~matching_terms["standardize_units"].isin([False])
+        ]
+
+        # No matching term, give a warning if not a flag and move on to the next iteration
+        if len(matching_terms_and_units) == 0:
+            if flag_column:
+                continue
+            elif len(matching_terms) == 0:
+                warnings.warn(
+                    "{0}[{1}] not available in vocabularies: {2}".format(
+                        parameter_code["name"], attributes["units"], organizations
+                    ),
+                    UserWarning,
+                )
+            elif len(matching_terms_and_units) == 0:
+                # If it has found a matching terms but not unit.
+                warnings.warn(
+                    "No Matching unit found for {0} [{1}] in: {2}".format(
+                        var,
+                        attributes.get("units"),
+                        matching_terms["expected_units"].to_dict(),
+                    ),
+                    UserWarning,
+                )
+            continue
+
+        # Sort matching terms by vocabulary order given and pick the very first one
+        matched_terms = matching_terms_and_units.reindex(organizations, level=0).iloc[0]
+
+        # Update variable attributes with vocabulary terms
+        for item in vocabulary_attribute_list:
+            if item in matched_terms.dropna():
+                attributes[item] = matched_terms[item]
+
+        # Update units attribute to match vocabulary firs unit listed
+        if matched_terms["standardize_units"] == "unknown":
+            warnings.warn(
+                "No units available within vocabularies {2} for term {0} [{1}]".format(
+                    var,
+                    attributes["units"],
+                    matching_terms["expected_units"].to_dict(),
+                    UserWarning,
+                )
+            )
+            attributes["units"] = var_units
+        elif matched_terms["standardize_units"]:
+            attributes["units"] = matched_terms["standardize_units"]
+        elif matching_terms["standardize_units"] is None and "units" in attributes:
+            attributes.pop("units")
+
+        # Update sdn_parameter_urn term available to match trailing number with variable itself.
+        if attributes.get("sdn_parameter_urn"):
+            attributes["sdn_parameter_urn"] = re.sub(
+                r"\d\d$",
+                "%02d" % parameter_code["index"],
+                attributes["sdn_parameter_urn"],
+            )
 
     # TODO Add Warning for missing information and attributes (maybe)
     #  Example: Standard Name, P01, P02
     return metadata
 
 
-def parse_odf_code_variable(var_name):
+def parse_odf_code_variable(odf_code: str):
     """
     Method use to parse an ODF CODE terms to a dictionary. The tool will extract the name (GF3 code),
     the index (01-99) and generate a standardized name with two digit index values if available.
     Some historical data do not follow the same standard, this tool tries to handle the issues found.
-    """
-    var_list = var_name.rsplit('_', 1)
-    var_dict = {'name': var_list[0]}
-    var_dict['standardized_name'] = var_dict['name']
-    if len(var_list) > 1 and var_list[1] not in ['']:
-        var_dict['index'] = int(var_list[1])
-        var_dict['standardized_name'] += '_{0:02.0f}'.format(var_dict['index'])
-    elif len(var_list) > 1 and var_list[1] == '':
-        var_dict['standardized_name'] += '_'
 
-    return var_dict
+    eg
+    parse_odf_code_variable("IDEN_1")={name: 'IDEN', index: 1, standardized_name: IDEN_01}
+    """
+    odf_code_split = odf_code.rsplit("_", 1)
+    odf_code_has_index = len(odf_code_split) == 2
+    gf3_code = odf_code_split[0]
+    if odf_code_has_index:
+        index = int(odf_code_split[1])
+        return {
+            "name": gf3_code,
+            "index": index,
+            "standardized_name": gf3_code + "_" + "{0:02g}".format(index),
+        }
+    # this variable has no index available
+    return {"name": gf3_code, "standardized_name": gf3_code}
 
 
 def standardize_odf_units(unit_string):
@@ -338,14 +467,14 @@ def standardize_odf_units(unit_string):
     Units strings were manually written within the ODF files.
     We're trying to standardize all the different issues found.
     """
+    if unit_string:
+        unit_string = unit_string.replace("**", "^")
+        unit_string = unit_string.replace("µ", "u")
+        unit_string = re.sub(r" /|/ ", "/", unit_string)
+        unit_string = re.sub(r" \^|\^ ", "^", unit_string)
 
-    unit_string = unit_string.replace('**', '^')
-    unit_string = unit_string.replace('µ', 'u')
-    unit_string = re.sub(r' /|/ ', '/', unit_string)
-    unit_string = re.sub(r' \^|\^ ', '^', unit_string)
-
-    if re.match(r'\(none\)|none|dimensionless', unit_string):
-        unit_string = 'none'
+        if re.match(r"\(none\)|none|dimensionless", unit_string):
+            unit_string = "none"
     return unit_string
 
 
@@ -353,106 +482,169 @@ def global_attributes_from_header(odf_header):
     """
     Method use to define the standard global attributes from an ODF Header parsed by the read function.
     """
-    global_attributes = {"project": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
-                         "institution": odf_header["CRUISE_HEADER"]["ORGANIZATION"],
-                         "history": json.dumps(odf_header["HISTORY_HEADER"], ensure_ascii=False, indent=False),
-                         "comment": odf_header["EVENT_HEADER"]["EVENT_COMMENTS"],
-                         "header": json.dumps(odf_header, ensure_ascii=False, indent=False)}
+    global_attributes = {
+        "project": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
+        "institution": odf_header["CRUISE_HEADER"]["ORGANIZATION"],
+        "history": json.dumps(
+            odf_header["HISTORY_HEADER"], ensure_ascii=False, indent=False
+        ),
+        "comment": odf_header["EVENT_HEADER"].get("EVENT_COMMENTS", ""),
+        "header": json.dumps(odf_header, ensure_ascii=False, indent=False),
+    }
     return global_attributes
 
 
-def generate_variables_from_header(ds,
-                                   odf_header,
-                                   cdm_data_type,
-                                   original_var_field='original_variable'):
+def convert_odf_time(time_string):
+    """Simple tool to convert ODF timestamps to a datetime object"""
+    if time_string == "17-NOV-1858 00:00:00.00":
+        return None
+    else:
+        return pd.to_datetime(time_string, utc=True)
+
+
+def generate_variables_from_header(
+    ds, odf_header, cdm_data_type, original_var_field="source"
+):
     """
     Method use to generate metadata variables from the ODF Header to a xarray Dataset.
     """
     initial_variable_order = list(ds.keys())
 
     # General Attributes
-    ds['file_id'] = odf_header['ODF_HEADER']['FILE_SPECIFICATION']
     ds["institution"] = odf_header["CRUISE_HEADER"]["ORGANIZATION"]
     ds["cruise_name"] = odf_header["CRUISE_HEADER"]["CRUISE_NAME"]
-    ds["cruise_id"] = odf_header["CRUISE_HEADER"]["CRUISE_NUMBER"]
+    ds["cruise_id"] = odf_header["CRUISE_HEADER"].get("CRUISE_NUMBER", "")
     ds["chief_scientist"] = odf_header["CRUISE_HEADER"]["CHIEF_SCIENTIST"]
-    ds['platform'] = odf_header["CRUISE_HEADER"]["PLATFORM"]
+    ds["platform"] = odf_header["CRUISE_HEADER"]["PLATFORM"]
 
     # Time Variables
-    if "SYTM_01" in ds.keys():
-        if cdm_data_type == 'Profile':
-            ds.coords["time"] = ds['SYTM_01'].min().values
-            ds["time_precise"] = ds['SYTM_01']
-            ds["time"].attrs[original_var_field] = 'min(SYTM_01)'
-            ds["time_precise"].attrs[original_var_field] = 'SYTM_01'
-        else:
-            ds.coords["time"] = ds['SYTM_01']
-            ds["time"].attrs[original_var_field] = 'SYTM_01'
-    else:
-        ds.coords["time"] = pd.to_datetime(odf_header["EVENT_HEADER"]["START_DATE_TIME"])
-        ds["time"].attrs[original_var_field] = "EVENT_HEADER:START_DATE_TIME"
-    ds["start_time"] = pd.to_datetime(odf_header["EVENT_HEADER"]["START_DATE_TIME"])
-    ds["end_time"] = pd.to_datetime(odf_header["EVENT_HEADER"]["END_DATE_TIME"])
+    if odf_header["EVENT_HEADER"]["START_DATE_TIME"]:
+        ds["start_time"] = convert_odf_time(
+            odf_header["EVENT_HEADER"]["START_DATE_TIME"]
+        )
+        ds["start_time"].attrs[original_var_field] = "EVENT_HEADER:START_DATE_TIME"
 
-    ds["start_time"].attrs.update({original_var_field: "EVENT_HEADER:START_DATE_TIME",
-                                   '_FillValue': odf_time_null_value})
-    ds["end_time"].attrs.update({original_var_field: "EVENT_HEADER:END_DATE_TIME",
-                                 '_FillValue': odf_time_null_value})
+    if convert_odf_time(odf_header["EVENT_HEADER"]["END_DATE_TIME"]):
+        ds["end_time"] = convert_odf_time(odf_header["EVENT_HEADER"]["END_DATE_TIME"])
+        ds["end_time"].attrs[original_var_field] = "EVENT_HEADER:END_DATE_TIME"
+
+    # Time is handled differently for profile variables since there's not always a time variable within the ODF.
+    # Time series and trajectory data should both have a time variable in the ODF.
+    if cdm_data_type == "Profile":
+        # Time variable
+        if "start_time" in ds and ds["start_time"].item():
+            ds.coords["time"] = ds["start_time"].copy()
+        # elif "SYTM_01" in ds.keys():
+        #     ds.coords["time"] = ds["SYTM_01"].min().values
+        #     ds["time"].attrs[original_var_field] = "min(SYMT_01)"
+
+        # precise time
+        if "SYTM_01" in ds.keys():
+            ds["precise_time"] = ds["SYTM_01"].copy()
+    else:
+        ds.coords["time"] = ds["SYTM_01"]
+        ds["time"].attrs[original_var_field] = "SYTM_01"
+
+    # Make sure there's a time variable
+    if "time" not in ds:
+        raise RuntimeError("No time available.")
 
     # Coordinate variables
-    if "LATD_01" in ds.keys():
-        if cdm_data_type in ['Profile', 'TimeSeries']:
-            ds.coords["latitude"] = ds["LATD_01"][0].values
-            ds['latitude'].attrs[original_var_field] = 'LATD_01[0]'
-            ds['latitude_precise'] = ds["LATD_01"]
-            ds["latitude_precise"].attrs[original_var_field] = "LATD_01"
-            ds["latitude_precise"].attrs.update({
-                'units': 'degrees_north',
-                'standard_name': 'latitude',
-                '_FillValue': -99}
+    # Latitude (ODF uses a place holder -99 in some of their header for latitude)
+    initial_latitude = odf_header["EVENT_HEADER"].get("INITIAL_LATITUDE", -99)
+    has_latitude_timeseries = "LATD_01" in ds
+
+    if cdm_data_type in ["Profile", "TimeSeries"]:
+        # Let's define latitude first, use start latitude if available
+        if initial_latitude != -99:
+            ds.coords["latitude"] = initial_latitude
+            ds["latitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LATITUDE"
+        # elif has_latitude_timeseries:
+        #     ds.coords["latitude"] = ds["LATD_01"][0].values
+        #     ds["latitude"].attrs[original_var_field] = "LATD_01[0]"
+
+        # If a latitude time series is available, copy it to a preciseLat variable as suggested by ERDDAP
+        if has_latitude_timeseries:
+            ds["preciseLat"] = ds["LATD_01"].copy()
+            ds["preciseLat"].attrs[original_var_field] = "LATD_01"
+            ds["preciseLat"].attrs.update(
+                {"units": "degrees_north", "standard_name": "latitude"}
             )
-        else:
-            ds.coords["latitude"] = ds["LATD_01"]
-            ds["latitude"].attrs[original_var_field] = "LATD_01"
-    else:
-        ds.coords["latitude"] = float(odf_header["EVENT_HEADER"]["INITIAL_LATITUDE"])
-        ds["latitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LATITUDE"
+    elif has_latitude_timeseries:
+        ds.coords["latitude"] = ds["LATD_01"]
+        ds["latitude"].attrs[original_var_field] = "LATD_01"
 
-    ds['latitude'].attrs.update({'units': 'degrees_north',
-                                 'standard_name': 'latitude',
-                                 '_FillValue': -99})
-    if "LOND_01" in ds.keys():
-        if cdm_data_type in ['Profile', 'TimeSeries']:
-            ds.coords["longitude"] = ds["LOND_01"][0].values
-            ds['longitude'].attrs[original_var_field] = 'LOND_01[0]'
-            ds['longitude_precise'] = ds["LOND_01"]
-            ds["longitude_precise"].attrs[original_var_field] = "LOND_01"
-            ds["longitude_precise"].attrs.update({
-                'units': 'degrees_east',
-                'standard_name': 'longitude',
-                '_FillValue': -999}
+    # Make sure there's a latitude
+    if "latitude" not in ds:
+        raise RuntimeError("Missing Latitude input")
+
+    # Add latitude attributes
+    ds["latitude"].attrs.update(
+        {"long_name": "Latitude", "units": "degrees_north", "standard_name": "latitude"}
+    )
+
+    # Longitude (ODF uses a place holder -999 in some of their header for longitude)
+    initial_longitude = odf_header["EVENT_HEADER"].get("INITIAL_LONGITUDE", -999)
+    has_longitude_time_series = "LOND_01" in ds
+
+    if cdm_data_type in ["Profile", "TimeSeries"]:
+        if initial_longitude != -999:
+            ds.coords["longitude"] = initial_longitude
+            ds["longitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LONGITUDE"
+        # elif has_longitude_time_series:
+        #     ds.coords["longitude"] = ds["LOND_01"][0].values
+        #     ds["longitude"].attrs[original_var_field] = "LOND_01[0]"
+
+        # If a longitude time series is available, copy it to a preciseLat variable as suggested by ERDDAP
+        if has_longitude_time_series:
+            ds["preciseLon"] = ds["LOND_01"].copy()
+            ds["preciseLon"].attrs[original_var_field] = "LOND_01"
+            ds["preciseLon"].attrs.update(
+                {"units": "degrees_east", "standard_name": "longitude"}
             )
+    elif has_longitude_time_series:
+        ds.coords["longitude"] = ds["LOND_01"]
+        ds["longitude"].attrs[original_var_field] = "LOND_01"
 
-        else:
-            ds.coords["longitude"] = ds["LOND_01"]
-            ds["longitude"].attrs[original_var_field] = "LOND_01"
-    else:
-        ds.coords["longitude"] = float(odf_header["EVENT_HEADER"]["INITIAL_LONGITUDE"])
-        ds["longitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LONGITUDE"
+    # Make sure there's a longitude
+    if "longitude" not in ds:
+        raise RuntimeError("Missing Longitude input")
+    # Add longitude attributes
+    ds["longitude"].attrs.update(
+        {
+            "long_name": "Longitude",
+            "units": "degrees_north",
+            "standard_name": "longitude",
+        }
+    )
 
-    ds['longitude'].attrs.update({'units': 'degrees_east',
-                                  'standard_name': 'longitude',
-                                  '_FillValue': -999})
     # Depth
-    if 'DEPH_01' in ds:
-        ds.coords['depth'] = ds['DEPH_01']
-        ds['depth'].attrs[original_var_field] = 'DEPH_01'
+    if "DEPH_01" in ds:
+        ds.coords["depth"] = ds["DEPH_01"]
+        ds["depth"].attrs[original_var_field] = "DEPH_01"
     elif "PRES_01" in ds:
-        ds.coords['depth'] = (ds['PRES_01'].dims, -gsw.z_from_p(ds['PRES_01'], ds['latitude']))
-        ds['depth'].attrs[original_var_field] = "-gsw.z_from_p(PRES_01,latitude)"
-    ds['depth'].attrs.update({'units': 'm',
-                              'standard_name': 'depth',
-                              'positive': 'down'})
+        ds.coords["depth"] = (
+            ds["PRES_01"].dims,
+            -gsw.z_from_p(ds["PRES_01"], ds["latitude"]),
+        )
+        ds["depth"].attrs[original_var_field] = "-gsw.z_from_p(PRES_01,latitude)"
+    elif (
+        "MIN_DEPTH" in odf_header["EVENT_HEADER"]
+        and "MAX_DEPTH" in odf_header["EVENT_HEADER"]
+        and odf_header["EVENT_HEADER"]["MAX_DEPTH"]
+        - odf_header["EVENT_HEADER"]["MIN_DEPTH"]
+        == 0
+    ):
+        ds.coords["depth"] = odf_header["EVENT_HEADER"]["MAX_DEPTH"]
+        ds["depth"].attrs[original_var_field] = "EVENT_HEADER:MIN|MAX_DEPTH"
+    else:
+        # If no depth variable is available we'll assume it's not suppose to happen for now.
+        raise RuntimeError("Missing a depth information")
+
+    if "depth" in ds:
+        ds["depth"].attrs.update(
+            {"units": "m", "standard_name": "depth", "positive": "down"}
+        )
 
     # Reorder variables
     variable_list = [var for var in ds.keys() if var not in initial_variable_order]
