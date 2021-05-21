@@ -439,22 +439,35 @@ def get_vocabulary_attributes(
     return metadata
 
 
-def parse_odf_code_variable(var_name):
+def parse_odf_code_variable(odf_code):
     """
     Method use to parse an ODF CODE terms to a dictionary. The tool will extract the name (GF3 code),
     the index (01-99) and generate a standardized name with two digit index values if available.
     Some historical data do not follow the same standard, this tool tries to handle the issues found.
     """
-    var_list = var_name.rsplit("_", 1)
-    var_dict = {"name": var_list[0]}
-    var_dict["standardized_name"] = var_dict["name"]
-    if len(var_list) > 1 and var_list[1] not in [""]:
-        var_dict["index"] = int(var_list[1])
-        var_dict["standardized_name"] += "_{0:02.0f}".format(var_dict["index"])
-    elif len(var_list) > 1 and var_list[1] == "":
-        var_dict["standardized_name"] += "_"
+    # var_list = var_name.rsplit("_", 1)
+    # var_dict = {"name": var_list[0]}
+    # var_dict["standardized_name"] = var_dict["name"]
+    # if len(var_list) > 1 and var_list[1] not in [""]:
+    #     var_dict["index"] = int(var_list[1])
+    #     var_dict["standardized_name"] += "_{0:02.0f}".format(var_dict["index"])
+    # elif len(var_list) > 1 and var_list[1] == "":
+    #     var_dict["standardized_name"] += "_"
+    # return var_dict
 
-    return var_dict
+    odf_code_split = odf_code.rsplit("_", 1)
+    odf_code_has_index = len(odf_code_split) == 2
+    gf3_code = odf_code_split[0]
+    if odf_code_has_index:
+        index = int(odf_code_split[1])
+        return {"name": gf3_code,
+                "index": index,
+                "standardized_name": gf3_code + "_" + "{0:02g}".format(index)
+                }
+    # this variable has no index available
+    return {"name": gf3_code,
+            "standardized_name": gf3_code
+            }
 
 
 def standardize_odf_units(unit_string):
