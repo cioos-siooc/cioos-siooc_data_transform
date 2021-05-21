@@ -1,6 +1,6 @@
 {
-    "odf_path":"D:\\review_ODF",
-    "output_path":"D:\\review_ODF\\output",
+    "odf_path":"../sample_data/test_files/",
+    "output_path":"./output/",
     "geojsonFileList": [
         "./geojson_files/ios_polygons.geojson",
         "./geojson_files/MLI_St-LawrenceBoxes.geojson",
