@@ -311,7 +311,7 @@ def get_vocabulary_attributes(
         - unknown if unit exists but the "expected_units" input is empty.
         - False if not matching units
         """
-        none_units=["none", "dimensionless"]
+        none_units = ["none", "dimensionless"]
         if expected_units:
             # Split unit list and convert None or dimensionless to None
             unit_list = []
@@ -453,14 +453,13 @@ def parse_odf_code_variable(odf_code: str):
     gf3_code = odf_code_split[0]
     if odf_code_has_index:
         index = int(odf_code_split[1])
-        return {"name": gf3_code,
-                "index": index,
-                "standardized_name": gf3_code + "_" + "{0:02g}".format(index)
-                }
+        return {
+            "name": gf3_code,
+            "index": index,
+            "standardized_name": gf3_code + "_" + "{0:02g}".format(index),
+        }
     # this variable has no index available
-    return {"name": gf3_code,
-            "standardized_name": gf3_code
-            }
+    return {"name": gf3_code, "standardized_name": gf3_code}
 
 
 def standardize_odf_units(unit_string):
@@ -629,9 +628,13 @@ def generate_variables_from_header(
             -gsw.z_from_p(ds["PRES_01"], ds["latitude"]),
         )
         ds["depth"].attrs[original_var_field] = "-gsw.z_from_p(PRES_01,latitude)"
-    elif 'MIN_DEPTH' in odf_header['EVENT_HEADER'] and \
-        'MAX_DEPTH' in odf_header['EVENT_HEADER'] and \
-        odf_header["EVENT_HEADER"]["MAX_DEPTH"]- odf_header["EVENT_HEADER"]["MIN_DEPTH"] == 0:
+    elif (
+        "MIN_DEPTH" in odf_header["EVENT_HEADER"]
+        and "MAX_DEPTH" in odf_header["EVENT_HEADER"]
+        and odf_header["EVENT_HEADER"]["MAX_DEPTH"]
+        - odf_header["EVENT_HEADER"]["MIN_DEPTH"]
+        == 0
+    ):
         ds.coords["depth"] = odf_header["EVENT_HEADER"]["MAX_DEPTH"]
         ds["depth"].attrs[original_var_field] = "EVENT_HEADER:MIN|MAX_DEPTH"
     else:
