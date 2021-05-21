@@ -261,12 +261,16 @@ def define_index_dimensions(ds):
     # Handle dimension name if still default "index" from conversion of pandas to xarray
     if 'index' in ds.dims and len(ds.dims.keys()) == 1:
         # If dimension is index and is a table like data
-        if ds.attrs['cdm_data_type'] in ['TimeSeries', 'Trajectory']:
+        if ds.attrs['cdm_data_type'] in ['TimeSeries', 'Trajectory'] and \
+                ds['index'].size == ds['time'].size:
             ds = ds.swap_dims({'index': 'time'})
             ds = ds.reset_coords('index')
-        elif 'Profile' == ds.attrs['cdm_data_type']:
+        elif 'Profile' == ds.attrs['cdm_data_type'] and \
+                ds['index'].size == ds['depth'].size:
             ds = ds.swap_dims({'index': 'depth'})
             ds = ds.reset_coords('index')
+        else:
+            warnings.warn('Unknown Dimension for {0}'.format(ds.attrs['cdm_data_type']))
 
     return ds
 
