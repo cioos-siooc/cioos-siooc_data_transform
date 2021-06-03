@@ -74,12 +74,18 @@ def write_ctd_ncfile(
         metadata["variable_attributes"],
         organizations=config["organisationVocabulary"],
         vocabulary=config["vocabulary"],
+        global_attributes=ds.attrs
     )
 
     # Add variable attributes to ds variables
     for var, attrs in var_attributes.items():
         ds[var].attrs.update(attrs)
     ds = xarray_methods.add_variable_attributes(ds)
+
+    # Rename variables if name attribute exist
+    variable_to_rename = {var: ds[var].attrs['name'] for var in ds if 'name' in ds[var].attrs}
+    if variable_to_rename:
+        ds = ds.rename(variable_to_rename)
 
     # Generate extra variables (BODC, Derived)
     ds = xarray_methods.generate_bodc_variables(ds)
