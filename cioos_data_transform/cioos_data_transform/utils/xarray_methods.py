@@ -136,10 +136,8 @@ def convert_variables_to_erddap_format(ds):
 
             else:
                 # Should be a string
-                ds[var] = ds[var].astype(
-                    str
-                )  # .str.encode('utf-8')  # Force to encode in UTF-8
-                # ds[var].attrs['_Encoding'] = 'UTF-8'
+                ds[var] = ds[var].astype(str)
+
     return ds
 
 
@@ -163,9 +161,7 @@ def standardize_variable_attributes(values, attributes=None):
         "value_max" "grid_mapping",
     ]
     if values.dtype in [float, int, "float32", "float64", "int64", "int32"]:
-        attributes.update(
-            {"valid_min": values.min().item(0), "valid_max": values.max().item(0)}
-        )
+        attributes['actual_range'] = [values.min().item(0), values.max().item(0)]
 
     # Sort attributes by order provided
     sorted_attributes = {
