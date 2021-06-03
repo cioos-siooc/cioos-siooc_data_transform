@@ -482,15 +482,38 @@ def global_attributes_from_header(odf_header):
     """
     Method use to define the standard global attributes from an ODF Header parsed by the read function.
     """
+    odf_original_header = odf_header.copy()
+    odf_original_header.pop('variable_attributes')
     global_attributes = {
         "project": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
         "institution": odf_header["CRUISE_HEADER"]["ORGANIZATION"],
+        "country_code": odf_header["CRUISE_HEADER"]["COUNTRY_INSTITUTE_CODE"],
+        "cruise_number": odf_header["CRUISE_HEADER"]["CRUISE_NUMBER"],
+        "cruise_name": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
+        "cruise_description": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
+        "scientist": odf_header["CRUISE_HEADER"]["CHIEF_SCIENTIST"],
+        "platform": odf_header["CRUISE_HEADER"]["PLATFORM"],
+        "data_type": odf_header["CRUISE_HEADER"].get("DATA_TYPE", ''),
+        "sampling_interval": odf_header["EVENT_HEADER"]["SAMPLING_INTERVAL"],
+        "water_depth": odf_header["EVENT_HEADER"]["SOUNDING"],
+        "date_created": odf_header["EVENT_HEADER"]["ORIG_CREATION_DATE"],
+        "date_modified": odf_header["EVENT_HEADER"]["CREATION_DATE"],
         "history": json.dumps(
             odf_header["HISTORY_HEADER"], ensure_ascii=False, indent=False
         ),
         "comment": odf_header["EVENT_HEADER"].get("EVENT_COMMENTS", ""),
-        "header": json.dumps(odf_header, ensure_ascii=False, indent=False),
+        "original_odf_header": '\n'.join(odf_header["original_header"]),
+        "original_odf_header_json": json.dumps(odf_original_header, ensure_ascii=False, indent=False),
     }
+
+    if "INSTRUMENT_HEADER" in odf_header:
+        global_attributes.update({
+            "instrument_type": odf_header["INSTRUMENT_HEADER"]["INST_TYPE"],
+            "instrument_model": odf_header["INSTRUMENT_HEADER"]["MODEL"],
+            "instrument_serial_number": odf_header["INSTRUMENT_HEADER"]["SERIAL_NUMBER"],
+            "instrument_description": odf_header["INSTRUMENT_HEADER"]["DESCRIPTION"],
+        })
+    # Missing terms potentially, mooring_number, station,
     return global_attributes
 
 
