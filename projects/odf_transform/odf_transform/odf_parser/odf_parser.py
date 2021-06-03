@@ -226,11 +226,10 @@ def odf_flag_variables(metadata, flag_convention=None):
             # Q  Format is usually Q+[PCODE] of the associated variable
             related_variable = var[1:]
 
-        # Set previous key for the next iteration
-        previous_key = var
-
         # If the variable isn't a flag variable, go to the next iteration
         if not is_flag_column:
+            # Set previous key for the next iteration
+            previous_key = var
             continue
 
         # If flag is specific to a variable, try to confirm if the odf name of the related variable match the
@@ -270,6 +269,12 @@ def odf_flag_variables(metadata, flag_convention=None):
                     ),
                     UserWarning,
                 )
+            # Rename QQQQ Flag variables to the Q* standard
+            if is_qqqq_flag:
+                rename_var = 'Q'+related_variable
+                metadata[var]['name'] = rename_var
+            else:
+                rename_var = var
 
             # Standardize long name attribute of flag variables
             if "name" in metadata[related_variable]:
@@ -281,9 +286,9 @@ def odf_flag_variables(metadata, flag_convention=None):
 
             # Add ancillary_variables attribute
             if "ancillary_variables" in metadata[related_variable]:
-                metadata[related_variable]["ancillary_variables"] += ",{0}".format(var)
+                metadata[related_variable]["ancillary_variables"] += ",{0}".format(rename_var)
             else:
-                metadata[related_variable]["ancillary_variables"] = var
+                metadata[related_variable]["ancillary_variables"] = rename_var
 
         # Add flag convention attributes if available within config file
         if flag_convention:
@@ -292,12 +297,15 @@ def odf_flag_variables(metadata, flag_convention=None):
             elif "default" in flag_convention:
                 att.update(flag_convention["default"])
 
+        # Set previous key for the next iteration
+        previous_key = var
+
         # TODO rename QQQQ_XX flag variables to Q[related_variables] so that ERDDAP can easily amalgamate them!
     return metadata
 
 
 def get_vocabulary_attributes(
-    metadata, organizations=None, vocabulary=None, vocabulary_attribute_list=None
+    metadata, organizations=None, vocabulary=None, vocabulary_attribute_list=None, global_attributes=None
 ):
     """
     This method is use to retrieve from an ODF variable code, units and units, matching vocabulary terms available.
