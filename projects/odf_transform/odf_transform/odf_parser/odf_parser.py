@@ -95,7 +95,7 @@ def read(filename, encoding_format="Windows-1252"):
                 ]  # Remove trailing white spaces
 
                 if re.match(
-                    r"\'.*\'", dict_line[1]
+                        r"\'.*\'", dict_line[1]
                 ):  # Is delimited by double quotes, definitely a string
                     # Drop the quote signs and the white spaces before and after
                     dict_line[1] = str(re.sub(r"^\s*|\s*$", "", dict_line[1][1:-1]))
@@ -124,9 +124,9 @@ def read(filename, encoding_format="Windows-1252"):
             if "CODE" in att:
                 var_name = parse_odf_code_variable(att["CODE"])
             elif (
-                "NAME" in att
-                and "WMO_CODE" in att
-                and att["NAME"].startswith(att["WMO_CODE"])
+                    "NAME" in att
+                    and "WMO_CODE" in att
+                    and att["NAME"].startswith(att["WMO_CODE"])
             ):
                 var_name = parse_odf_code_variable(att["NAME"])
             else:
@@ -253,7 +253,7 @@ def odf_flag_variables(metadata, flag_convention=None):
             )
             # Flag name do not match either variable name or code, give a warning.
             if related_variable_name not in metadata[related_variable].get(
-                "long_name"
+                    "long_name"
             ) and related_variable_name not in metadata[related_variable].get(
                 "gf3_code"
             ):
@@ -271,7 +271,7 @@ def odf_flag_variables(metadata, flag_convention=None):
                 )
             # Rename QQQQ Flag variables to the Q* standard
             if is_qqqq_flag:
-                rename_var = 'Q'+related_variable
+                rename_var = 'Q' + related_variable
                 metadata[var]['name'] = rename_var
             else:
                 rename_var = var
@@ -279,7 +279,7 @@ def odf_flag_variables(metadata, flag_convention=None):
             # Standardize long name attribute of flag variables
             if "name" in metadata[related_variable]:
                 att["long_name"] = (
-                    flag_long_name_prefix + metadata[related_variable]["name"]
+                        flag_long_name_prefix + metadata[related_variable]["name"]
                 )
             else:
                 att["long_name"] = flag_long_name_prefix + related_variable
@@ -305,7 +305,7 @@ def odf_flag_variables(metadata, flag_convention=None):
 
 
 def get_vocabulary_attributes(
-    metadata, organizations=None, vocabulary=None, vocabulary_attribute_list=None, global_attributes=None
+        metadata, organizations=None, vocabulary=None, vocabulary_attribute_list=None, global_attributes=None
 ):
     """
     This method is use to retrieve from an ODF variable code, units and units, matching vocabulary terms available.
@@ -534,7 +534,7 @@ def convert_odf_time(time_string):
 
 
 def generate_variables_from_header(
-    ds, odf_header, cdm_data_type, original_var_field="source"
+        ds, odf_header, cdm_data_type, original_var_field="source"
 ):
     """
     Method use to generate metadata variables from the ODF Header to a xarray Dataset.
@@ -660,11 +660,11 @@ def generate_variables_from_header(
         )
         ds["depth"].attrs[original_var_field] = "-gsw.z_from_p(PRES_01,latitude)"
     elif (
-        "MIN_DEPTH" in odf_header["EVENT_HEADER"]
-        and "MAX_DEPTH" in odf_header["EVENT_HEADER"]
-        and odf_header["EVENT_HEADER"]["MAX_DEPTH"]
-        - odf_header["EVENT_HEADER"]["MIN_DEPTH"]
-        == 0
+            "MIN_DEPTH" in odf_header["EVENT_HEADER"]
+            and "MAX_DEPTH" in odf_header["EVENT_HEADER"]
+            and odf_header["EVENT_HEADER"]["MAX_DEPTH"]
+            - odf_header["EVENT_HEADER"]["MIN_DEPTH"]
+            == 0
     ):
         ds.coords["depth"] = odf_header["EVENT_HEADER"]["MAX_DEPTH"]
         ds["depth"].attrs[original_var_field] = "EVENT_HEADER:MIN|MAX_DEPTH"
