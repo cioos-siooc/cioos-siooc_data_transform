@@ -369,17 +369,21 @@ def add_variable_attributes(ds, review_attributes=None, overwrite=True):
         review_attributes = [
             "units",
             "long_name",
+            "scale",
             "standard_name",
-            "comments",
+            "sdn_parameter_urn",
             "sdn_parameter_name",
+            "sdn_uom_urn",
+            "sdn_uom_name",
+            "comments",
         ]
 
     for var in ds:
         # Scale attribute
-        if "scale" not in ds[var].attrs or overwrite:
-            scale = _get_scale()
-            if scale:
-                ds[var].attrs["scale"] = scale
+        # if "scale" not in ds[var].attrs or overwrite:
+        #     scale = _get_scale()
+        #     if scale:
+        #         ds[var].attrs["scale"] = scale
 
         # Make sure coordinates have standard_names
         if var in ["time", "latitude", "longitude", "depth"]:
