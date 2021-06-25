@@ -79,7 +79,12 @@ def write_ctd_ncfile(
 
     # Add variable attributes to ds variables
     for var, attrs in var_attributes.items():
-        ds[var].attrs.update(attrs)
+        if var in ds:
+            ds[var].attrs.update(attrs)
+        else:
+            ds[var] = ds[attrs['source']].copy()
+            ds[var].attrs.update(attrs)
+
     ds = xarray_methods.add_variable_attributes(ds)
 
     # Rename variables if name attribute exist
