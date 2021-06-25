@@ -115,6 +115,9 @@ def read(filename, encoding_format="Windows-1252"):
             if len(metadata[section]) == 1 and type(metadata[section][0]) is dict:
                 metadata[section] = metadata[section][0]
 
+        # Add original header in text format to the dictionary
+        metadata['original_header'] = original_header
+
         # READ PARAMETER_HEADER
         # Define first the variable name and attributes and the type.
         metadata["variable_attributes"] = {}
