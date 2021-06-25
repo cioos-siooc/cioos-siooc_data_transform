@@ -104,7 +104,8 @@ def read(filename, encoding_format="Windows-1252"):
                     dict_line[1] = _convert_to_number(dict_line[1])
 
                 # Add to the metadata as a dictionary
-                metadata[section][-1][dict_line[0]] = dict_line[1]
+                key = dict_line[0].strip().replace(' ', '_')
+                metadata[section][-1][key] = dict_line[1]
 
             else:
                 assert RuntimeError, "Can't understand the line: " + line
