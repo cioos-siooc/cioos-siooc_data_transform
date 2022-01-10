@@ -491,7 +491,7 @@ def get_vocabulary_attributes(
                 new_attributes["units"] = var_units
             elif row["standardize_units"]:
                 new_attributes["units"] = row["standardize_units"]
-            elif row["standardize_units"] is None and "units" in attributes:
+            elif row["standardize_units"] is None and "units" in new_attributes:
                 new_attributes.pop("units")
 
             # Update sdn_parameter_urn term available to match trailing number with variable itself.
@@ -728,7 +728,7 @@ def generate_variables_from_header(
     elif "PRES_01" in ds:
         ds.coords["depth"] = (
             ds["PRES_01"].dims,
-            -gsw.z_from_p(ds["PRES_01"], ds["latitude"]),
+            -gsw.z_from_p(ds["PRES_01"].data, ds["latitude"].data),
         )
         ds["depth"].attrs[original_var_field] = "-gsw.z_from_p(PRES_01,latitude)"
     elif (
