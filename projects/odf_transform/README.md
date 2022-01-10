@@ -4,8 +4,15 @@ This project converts ODF files to NetCDF
 
 ## Installation
 
-1. Open your Python 3x virtual environment
-1. From the root of this repo run:
+1. Create a new conda `cioos_transform` environment running Python 3.7 (required for Windows):
+``` shell
+conda create --name cioos_transform python=3.7
+```
+2. Activate the environement:
+```shell
+conda activate cioos_transform
+```
+3. From the root of this repo run:
 
 ```shell
 pip install -e cioos_data_transform
