@@ -49,8 +49,12 @@ def write_ctd_ncfile(
     ds.attrs.update(odf.global_attributes_from_header(metadata))  # From ODF header
 
     # Add New Variables
-    metadata["variable_attributes"] = odf.odf_flag_variables(
-        metadata["variable_attributes"], config.get("flag_convention")
+    for var, attrs in metadata['variable_attributes'].items():
+        if var in ds:
+            ds[var].attrs = attrs
+
+    ds = odf.odf_flag_variables(
+       ds, config.get("flag_convention")
     )
     ds = odf.generate_variables_from_header(
         ds, metadata, config["cdm_data_type"]

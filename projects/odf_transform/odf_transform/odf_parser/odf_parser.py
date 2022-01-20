@@ -202,7 +202,7 @@ def read(filename, encoding_format="Windows-1252"):
     return metadata, data_raw
 
 
-def odf_flag_variables(metadata, flag_convention=None):
+def odf_flag_variables(ds, flag_convention=None):
     """
     odf_flag_variables handle the different conventions used within the ODF files over the years and map them
      to the CF standards.
@@ -210,89 +210,41 @@ def odf_flag_variables(metadata, flag_convention=None):
 
     # Loop through each variables and detect flag variables
     previous_key = None
-    for var, att in metadata.items():
+    for var in ds:
+        att = ds[var].attrs
         # Retrieve information from variable name
         odf_var_name = parse_odf_code_variable(var)
         related_variable = None
 
-        # FLAG VARIABLES Detect if it is a flag column
-        is_q_flag = var.startswith("Q") and var[1:] in metadata.keys()
-        is_qqqq_flag = odf_var_name["name"] == "QQQQ"
-        is_general_flag = odf_var_name["name"] in ["QCFF", "FFFF"]
-
-        is_flag_column = is_q_flag or is_qqqq_flag or is_general_flag
-
         # Find related variable
-        if is_qqqq_flag:
+        if var.startswith("QQQQ"):
             # FLAG QQQQ should apply to previous variable
-            related_variable = previous_key
-        if is_q_flag:
-            # Q  Format is usually Q+[PCODE] of the associated variable
-            related_variable = var[1:]
+            related_variable = [previous_key]
 
-        # If the variable isn't a flag variable, go to the next iteration
-        if not is_flag_column:
+            # Rename variable so that we can link by variable name
+            ds = ds.rename({var: f"Q{previous_key}"})
+            var = f"Q{previous_key}"
+
+        elif var.startswith(("QCFF", "FFFF")):
+            # This is a general flag
+            related_variable = [var for var in ds if not var.startswith("Q")]
+
+        elif var.startswith("Q") and var[1:] in ds:
+            # Q  Format is usually Q+[PCODE] of the associated variable
+            related_variable = [var[1:]]
+
+        else:
+            # If the variable isn't a flag variable, go to the next iteration
             # Set previous key for the next iteration
             previous_key = var
             continue
 
-        # If flag is specific to a variable, try to confirm if the odf name of the related variable match the
-        # flag name. If yes, add this flag variable to the ancillary_attribute of the related variable
-        if related_variable:
-            # Make sure that the related variable exist
-            if related_variable not in metadata:
-                raise KeyError(
-                    "{0} flag is referring to {1} which is not available as variable".format(
-                        var, related_variable
-                    ),
-                )
-
-            # Try to see if the related_variable and flag have matching name or code in odf
-            related_variable_name = re.sub(
-                r"quality\sflag.*:\s*|quality flag of ",
-                "",
-                att["long_name"],
-                1,
-                re.IGNORECASE,
-            )
-            # Flag name do not match either variable name or code, give a warning.
-            if related_variable_name not in metadata[related_variable].get(
-                    "long_name"
-            ) and related_variable_name not in metadata[related_variable].get(
-                "gf3_code"
-            ):
-                warnings.warn(
-                    "{0}[{1}] flag was matched to the variable {2} but ODF attributes {3} do not match".format(
-                        var,
-                        att["long_name"],
-                        related_variable,
-                        {
-                            key: metadata[related_variable].get(key)
-                            for key in ["long_name", "gf3_code"]
-                        },
-                    ),
-                    UserWarning,
-                )
-            # Rename QQQQ Flag variables to the Q* standard
-            if is_qqqq_flag:
-                rename_var = 'Q' + related_variable
-                metadata[var]['name'] = rename_var
+        # Add flag variable to related variable ancillary_variables attribute
+        for var in related_variable:
+            if "ancillary_variables" in ds[var].attrs:
+                ds[var].attrs["ancillary_variables"] += f",{var}"
             else:
-                rename_var = var
-
-            # Standardize long name attribute of flag variables
-            if "name" in metadata[related_variable]:
-                att["long_name"] = (
-                        flag_long_name_prefix + metadata[related_variable]["name"]
-                )
-            else:
-                att["long_name"] = flag_long_name_prefix + related_variable
-
-            # Add ancillary_variables attribute
-            if "ancillary_variables" in metadata[related_variable]:
-                metadata[related_variable]["ancillary_variables"] += ",{0}".format(rename_var)
-            else:
-                metadata[related_variable]["ancillary_variables"] = rename_var
+                ds[var].attrs["ancillary_variables"] = var
 
         # Add flag convention attributes if available within config file
         if flag_convention:
@@ -304,8 +256,7 @@ def odf_flag_variables(metadata, flag_convention=None):
         # Set previous key for the next iteration
         previous_key = var
 
-        # TODO rename QQQQ_XX flag variables to Q[related_variables] so that ERDDAP can easily amalgamate them!
-    return metadata
+    return ds
 
 
 def get_vocabulary_attributes(
