@@ -85,7 +85,10 @@ class OceanNcVar(object):
             self.datatype = "float32"
             # self.dimensions = ('z')
             self.long_name = "Depth below surface"
-            self.standard_name = "depth"
+            if self.name.strip().lower() == "depth":
+                self.standard_name = "depth"
+            if self.name.strip().lower() == "depth_nominal":
+                self.standard_name = "depth_nominal"
             self.units = "m"
             self.attributes = {"positive": "down", "axis": "Z"}
             self.__set_null_val()

@@ -78,10 +78,6 @@ def write_cur_ncfile(filename, curcls, config={}):
         date_format
     )
     global_attrs["processing_level"] = config.get("processing_level")
-    global_attrs[
-        "time_coverage_duration"
-    ] = f"{(curcls.obs_time[-1] - curcls.obs_time[0]).days} days"
-    global_attrs["time_coverage_resolution"] = "n/a"
     global_attrs["standard_name_vocabulary"] = config.get(
         "standard_name_vocabulary"
     )
@@ -93,11 +89,14 @@ def write_cur_ncfile(filename, curcls, config={}):
     global_attrs["nrec"] = int(curcls.file["NUMBER OF RECORDS"])
     # add variable profile_id (dummy variable)
     global_attrs["filename"] = curcls.filename.split("/")[-1]
+    ncfile.add_var("str_id", "filename", None, curcls.filename.split("/")[-1])
     # add administration variables
     if "COUNTRY" in curcls.administration:
-        global_attrs["country"] = curcls.administration["COUNTRY"].strip()
+        country = curcls.administration["COUNTRY"].strip()
     else:
-        global_attrs["country"] = "n/a"
+        country = "n/a"
+    global_attrs["country"] = country
+    ncfile.add_var("str_id", "country", None, country)
     # create mission id
     if "MISSION" in curcls.administration:
         mission_id = curcls.administration["MISSION"].strip()
@@ -111,7 +110,7 @@ def write_cur_ncfile(filename, curcls, config={}):
     else:
         buf = mission_id.split("-")
         mission_id = "{:4d}-{:03d}".format(int(buf[0]), int(buf[1]))
-
+    global_attrs["mission"] = mission_id
     ncfile.add_var("str_id", "deployment_mission_id", None, mission_id)
 
     # create event and profile ID
@@ -135,24 +134,32 @@ def write_cur_ncfile(filename, curcls, config={}):
     global_attrs["id"] = profile_id
 
     if "SCIENTIST" in curcls.administration:
-        global_attrs["scientist"] = curcls.administration["SCIENTIST"].strip()
+        scientist = curcls.administration["SCIENTIST"].strip()
     else:
-        global_attrs["scientist"] = "n/a"
+        scientist = "n/a"
+    global_attrs["scientist"] = scientist
+    ncfile.add_var("str_id", "scientist", None, scientist)
 
     if "PROJECT" in curcls.administration:
-        global_attrs["project"] = curcls.administration["PROJECT"].strip()
+        project = curcls.administration["PROJECT"].strip()
     else:
-        global_attrs["project"] = "n/a"
+        project = "n/a"
+    global_attrs["project"] = project
+    ncfile.add_var("str_id", "project", None, project)
 
     if "AGENCY" in curcls.administration:
-        global_attrs["agency"] = curcls.administration["AGENCY"].strip()
+        agency = curcls.administration["AGENCY"].strip()
     else:
-        global_attrs["agency"] = "n/a"
+        agency = "n/a"
+    global_attrs["agency"] = agency
+    ncfile.add_var("str_id", "agency", None, agency)
 
     if "PLATFORM" in curcls.administration:
-        global_attrs["platform"] = curcls.administration["PLATFORM"].strip()
+        platform = curcls.administration["PLATFORM"].strip()
     else:
-        global_attrs["platform"] = "n/a"
+        platform = "n/a"
+    global_attrs["platform"] = platform
+    ncfile.add_var("str_id", "platform", None, platform)
 
     # add instrument type
     if "TYPE" in curcls.instrument:
@@ -209,8 +216,15 @@ def write_cur_ncfile(filename, curcls, config={}):
 
     ncfile.add_var("str_id", "geographic_area", None, curcls.geo_code)
 
-    # add time variable
-    # Check if variable lengths are same length as curcls.obs_time
+    # add time variables and attributes
+    global_attrs["time_coverage_duration"] = str(
+        curcls.obs_time[-1] - curcls.obs_time[0]
+    )
+
+    global_attrs["time_coverage_resolution"] = str(
+        curcls.obs_time[1] - curcls.obs_time[0]
+    )
+
     ncfile.add_var("time", "time", None, curcls.obs_time, vardim=("time"))
     global_attrs["time_coverage_start"] = curcls.obs_time[0].strftime(
         date_format

@@ -58,13 +58,19 @@ def write_ctd_ncfile(filename, ctdcls, config={}):
     )
     # initcreate dimension variable
     global_attrs["nrec"] = int(ctdcls.file["NUMBER OF RECORDS"])
-    # add variable profile_id (dummy variable)
+    # add filename as string variable and as ncfile global attribute
     global_attrs["filename"] = ctdcls.filename.split("/")[-1]
+    ncfile.add_var("str_id", "filename", None, ctdcls.filename.split("/")[-1])
+
     # add administration variables
     if "COUNTRY" in ctdcls.administration:
-        global_attrs["country"] = ctdcls.administration["COUNTRY"].strip()
+        # global_attrs["country"] = ctdcls.administration["COUNTRY"].strip()
+        country = ctdcls.administration["COUNTRY"].strip()
     else:
-        global_attrs["country"] = "n/a"
+        country = "n/a"
+        # global_attrs["country"] = "n/a"
+    ncfile.add_var("str_id", "country", None, country)
+    global_attrs["country"] = country
 
     if "MISSION" in ctdcls.administration:
         mission_id = ctdcls.administration["MISSION"].strip()
@@ -76,24 +82,32 @@ def write_ctd_ncfile(filename, ctdcls, config={}):
     ncfile.add_var("str_id", "mission_id", None, mission_id)
 
     if "SCIENTIST" in ctdcls.administration:
-        global_attrs["scientist"] = ctdcls.administration["SCIENTIST"].strip()
+        scientist = ctdcls.administration["SCIENTIST"].strip()
     else:
-        global_attrs["scientist"] = "n/a"
+        scientist = "n/a"
+    global_attrs["scientist"] = scientist
+    ncfile.add_var("str_id", "scientist", None, scientist)
 
     if "PROJECT" in ctdcls.administration:
-        global_attrs["project"] = ctdcls.administration["PROJECT"].strip()
+        project = ctdcls.administration["PROJECT"].strip()
     else:
-        global_attrs["project"] = "n/a"
+        project = "n/a"
+    global_attrs["project"] = project
+    ncfile.add_var("str_id", "project", None, project)
 
     if "AGENCY" in ctdcls.administration:
-        global_attrs["agency"] = ctdcls.administration["AGENCY"].strip()
+        agency = ctdcls.administration["AGENCY"].strip()
     else:
-        global_attrs["agency"] = "n/a"
+        agency = "n/a"
+    global_attrs["agency"] = agency
+    ncfile.add_var("str_id", "agency", None, agency)
 
     if "PLATFORM" in ctdcls.administration:
-        global_attrs["platform"] = ctdcls.administration["PLATFORM"].strip()
+        platform = ctdcls.administration["PLATFORM"].strip()
     else:
-        global_attrs["platform"] = "n/a"
+        platform = "n/a"
+    global_attrs["platform"] = platform
+    ncfile.add_var("str_id", "platform", None, platform)
 
     # add instrument type
     if "TYPE" in ctdcls.instrument:
@@ -189,6 +203,16 @@ def write_ctd_ncfile(filename, ctdcls, config={}):
             ncfile.add_var(
                 "depth",
                 "depth",
+                ctdcls.channels["Units"][i],
+                ctdcls.data[:, i],
+                ("z"),
+                null_value,
+                attributes={"featureType": "profile"},
+            )
+        elif is_in(["depth"], channel) and is_in(["nominal"], channel):
+            ncfile.add_var(
+                "depth",
+                "depth_nominal",
                 ctdcls.channels["Units"][i],
                 ctdcls.data[:, i],
                 ("z"),

@@ -77,18 +77,18 @@ def convert_cur_files(f, out_path):
         print("Unable to import data from file", fdata.filename)
 
 
-# for fn in glob(fix_path('./test_files/ctd_mooring/*.*'), recursive=True):
-#     convert_mctd_files(f=fn, out_path=fix_path('temp/'))
+# for fn in glob(fix_path("./tests/test_files/ctd_mooring/*.*"), recursive=True):
+#     convert_mctd_files(f=fn, out_path=fix_path("./tests/temp/"))
 
-# for fn in glob(fix_path('./test_files/ctd_profile/*.*'), recursive=True):
-#     convert_ctd_files(f=fn, out_path=fix_path('temp/'))
+for fn in glob(fix_path("./tests/test_files/ctd_profile/*.*"), recursive=True):
+    convert_ctd_files(f=fn, out_path=fix_path("./tests/temp/"))
 
 # for fn in glob(fix_path('./test_files/bot/*.*'), recursive=True):
 #     convert_bot_files(f=fn, out_path=fix_path('temp/'))
 
-for fn in glob(
-    fix_path("./tests/test_files/current_meter/*.*"), recursive=True
-):
-    convert_cur_files(f=fn, out_path=fix_path("./tests/temp/"))
+# for fn in glob(
+#     fix_path("./tests/test_files/current_meter/*.*"), recursive=True
+# ):
+#     convert_cur_files(f=fn, out_path=fix_path("./tests/temp/"))
 
 # print(iod.utils.compare_file_list(['a.bot', 'c.bkas.asd'], ['nc2/a.nc', 'nc3/nc1/b.nc', 'nc1/nc/c.nc', 'd.nc']))

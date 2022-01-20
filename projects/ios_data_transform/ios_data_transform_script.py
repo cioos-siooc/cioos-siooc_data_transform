@@ -85,7 +85,7 @@ def convert_files_threads(ftype, fname, config={}):
         # now try to write the file...
         yy = fdata.start_date[0:4]
         if not os.path.exists(out_path + yy):
-            os.mkdir(out_path + yy)
+            os.makedirs(out_path + yy)
         ncFileName = out_path + yy + "/" + fname.split("/")[-1] + ".nc"
         if ftype == "ctd":
             try:

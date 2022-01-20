@@ -45,10 +45,6 @@ def write_mctd_ncfile(filename, ctdcls, config={}):
         date_format
     )
     global_attrs["processing_level"] = config.get("processing_level")
-    global_attrs[
-        "time_coverage_duration"
-    ] = f"{(ctdcls.obs_time[-1] - ctdcls.obs_time[0]).days} days"
-    global_attrs["time_coverage_resolution"] = "n/a"
     global_attrs["standard_name_vocabulary"] = config.get(
         "standard_name_vocabulary"
     )
@@ -60,12 +56,16 @@ def write_mctd_ncfile(filename, ctdcls, config={}):
     global_attrs["nrec"] = int(ctdcls.file["NUMBER OF RECORDS"])
     # add variable profile_id (dummy variable)
     global_attrs["filename"] = ctdcls.filename.split("/")[-1]
+    ncfile.add_var("str_id", "filename", None, ctdcls.filename.split("/")[-1])
 
     # add administration variables
     if "COUNTRY" in ctdcls.administration:
-        global_attrs["country"] = ctdcls.administration["COUNTRY"].strip()
+        country = ctdcls.administration["COUNTRY"].strip()
     else:
-        global_attrs["country"] = "n/a"
+        country = "n/a"
+    ncfile.add_var("str_id", "country", None, country)
+    global_attrs["country"] = country
+
     # create mission id
     if "MISSION" in ctdcls.administration:
         mission_id = ctdcls.administration["MISSION"].strip()
@@ -86,24 +86,32 @@ def write_mctd_ncfile(filename, ctdcls, config={}):
     ncfile.add_var("str_id", "mission_id", None, mission_id)
 
     if "SCIENTIST" in ctdcls.administration:
-        global_attrs["scientist"] = ctdcls.administration["SCIENTIST"].strip()
+        scientist = ctdcls.administration["SCIENTIST"].strip()
     else:
-        global_attrs["scientist"] = "n/a"
+        scientist = "n/a"
+    global_attrs["scientist"] = scientist
+    ncfile.add_var("str_id", "scientist", None, scientist)
 
     if "PROJECT" in ctdcls.administration:
-        global_attrs["project"] = ctdcls.administration["PROJECT"].strip()
+        project = ctdcls.administration["PROJECT"].strip()
     else:
-        global_attrs["project"] = "n/a"
+        project = "n/a"
+    global_attrs["project"] = project
+    ncfile.add_var("str_id", "project", None, project)
 
     if "AGENCY" in ctdcls.administration:
-        global_attrs["agency"] = ctdcls.administration["AGENCY"].strip()
+        agency = ctdcls.administration["AGENCY"].strip()
     else:
-        global_attrs["agency"] = "n/a"
+        agency = "n/a"
+    global_attrs["agency"] = agency
+    ncfile.add_var("str_id", "agency", None, agency)
 
     if "PLATFORM" in ctdcls.administration:
-        global_attrs["platform"] = ctdcls.administration["PLATFORM"].strip()
+        platform = ctdcls.administration["PLATFORM"].strip()
     else:
-        global_attrs["platform"] = "n/a"
+        platform = "n/a"
+    global_attrs["platform"] = platform
+    ncfile.add_var("str_id", "platform", None, platform)
 
     # add instrument type
     if "TYPE" in ctdcls.instrument:
@@ -167,7 +175,6 @@ def write_mctd_ncfile(filename, ctdcls, config={}):
         event_id = "0000"
 
     ncfile.add_var("str_id", "event_number", None, event_id)
-    # add time variable
     profile_id = "{:04d}-{:03d}-{:04d}".format(
         int(buf[0]), int(buf[1]), int(event_id)
     )
@@ -180,7 +187,13 @@ def write_mctd_ncfile(filename, ctdcls, config={}):
         attributes={"cf_role": "timeSeries_id"},
     )
     global_attrs["id"] = profile_id
-
+    # add time variable
+    global_attrs["time_coverage_duration"] = str(
+        ctdcls.obs_time[-1] - ctdcls.obs_time[0]
+    )
+    global_attrs["time_coverage_resolution"] = str(
+        ctdcls.obs_time[1] - ctdcls.obs_time[0]
+    )
     ncfile.add_var("time", "time", None, ctdcls.obs_time, vardim=("time"))
     global_attrs["time_coverage_start"] = ctdcls.obs_time[0].strftime(
         date_format
