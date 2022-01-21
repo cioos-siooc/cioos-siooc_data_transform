@@ -74,27 +74,12 @@ def write_ctd_ncfile(
         raise ValueError("Unknown cdm_data_type: {0}".format(cdm_data_type))
 
     # Add Vocabulary attributes
-    var_attributes = odf.get_vocabulary_attributes(
-        metadata["variable_attributes"],
+    ds = odf.get_vocabulary_attributes(
+        ds,
         organizations=config["organisationVocabulary"],
         vocabulary=config["vocabulary"],
-        global_attributes=ds.attrs
     )
-
-    # Add variable attributes to ds variables
-    for var, attrs in var_attributes.items():
-        if var in ds:
-            ds[var].attrs.update(attrs)
-        else:
-            ds[var] = ds[attrs['source']].copy()
-            ds[var].attrs.update(attrs)
-
     ds = xarray_methods.add_variable_attributes(ds)
-
-    # Rename variables if name attribute exist
-    variable_to_rename = {var: ds[var].attrs['name'] for var in ds if 'name' in ds[var].attrs}
-    if variable_to_rename:
-        ds = ds.rename(variable_to_rename)
 
     # Generate extra variables (BODC, Derived)
     ds = xarray_methods.generate_bodc_variables(ds)
