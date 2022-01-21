@@ -322,16 +322,22 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
 
     # Find matching vocabulary
     variable_list = [variable for variable in ds]
+    new_variable_order = []
     for var in variable_list:
         attributes = ds[var].attrs
 
         # Ignore variables with no attributes and flag variables
         if attributes == {} or attributes.get("flag_values"):
+            new_variable_order.append(var)
             continue
 
         if "gf3_code" in attributes:
             # Ignore trailing number while matching to vocabulary
             name = attributes["gf3_code"].split("_")[0]
+            if "_" in attributes["gf3_code"]:
+                gf3_index = attributes["gf3_code"].split("_")[1]
+            else:
+                gf3_index = 1
         else:
             name = var
 
@@ -342,14 +348,18 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
             # Add scale to to scale attribute
             attributes["scale"] = scale
 
-        # Find matching vocabularies and code and sort by given vocabularies
+        # Find matching vocabularies and pick the first organization
         matching_terms = vocabulary.query(
-            f"Vocabulary in {organizations} and name=='{name}'"
+            f"Vocabulary == {organizations} and name=='{name}'"
         )
 
         # If nothing matches, move to the next one
         if matching_terms.empty:
+            new_variable_order.append(var)
             continue
+
+        # Consider only the first organization that has this term
+        matching_terms = matching_terms.loc[matching_terms.index[0][0]]
 
         # Among these matching terms find matching ones
         match_units = matching_terms["expected_units"].apply(
@@ -372,31 +382,19 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
             )
         )
 
-        # Drop the terms with no matching units (=False)
+        # Drop the terms with no matching units
         matching_terms_and_units = matching_terms.loc[
             match_units & match_scale & (match_instrument | match_instrument_global)
         ]
 
-        if var in ["TEMP_01", "PSAL_01", "TE90_01"] and (
-            match_instrument is False and match_instrument_global is False
-        ):
-            print("unknown sensor")
-
         # No matching term, give a warning if not a flag and move on to the next iteration
         if len(matching_terms_and_units) == 0:
-            if len(matching_terms) == 0:
-                warning_message = (
-                    f"{name['name']}[{attributes['units']}](ODF CODE: {var}) is "
-                    f"not available in vocabularies: {organizations}"
-                )
-            else:
-                warning_message = (
-                    f"No Matching unit found for {var} [{attributes.get('units')}] in:"
-                    + f"{matching_terms['expected_units'].to_dict()}"
-                )
             warnings.warn(
-                warning_message, UserWarning,
+                f"No Matching unit found for {var} [{attributes.get('units')}] in:"
+                + f"{matching_terms['expected_units'].to_dict()}",
+                UserWarning,
             )
+            new_variable_order.append(var)
             continue
 
         # Generate new variables and update original variable attributes from vocabulary
@@ -405,9 +403,12 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
             if row["variable_name"]:
                 ds[row["variable_name"]] = ds[var].copy()
                 new_attrs = ds[row["variable_name"]].attrs
+                new_variable_order.append(row["variable_name"])
             else:
                 new_attrs = ds[var].attrs
+                new_variable_order.append(var)
 
+            # Retrieve all attributes in vocabulary that have something
             new_attrs.update(row[vocabulary_attribute_list].dropna().to_dict())
 
             # If original data has units but vocabulary doesn't require one drop the units
@@ -417,12 +418,11 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
             # Update sdn_parameter_urn term available to match trailing number with variable itself.
             if new_attrs.get("sdn_parameter_urn"):
                 new_attrs["sdn_parameter_urn"] = re.sub(
-                    r"\d\d|XX$", "%02d" % name["index"], new_attrs["sdn_parameter_urn"],
+                    r"\d\d|XX$",
+                    "%02d" % int(gf3_index),
+                    new_attrs["sdn_parameter_urn"],
                 )
-
-    # TODO Add Warning for missing information and attributes (maybe)
-    #  Example: Standard Name, P01, P06
-    return ds
+    return ds[new_variable_order]
 
 
 def parse_odf_code_variable(odf_code: str):
