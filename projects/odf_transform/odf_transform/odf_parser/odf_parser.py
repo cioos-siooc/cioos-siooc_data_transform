@@ -157,17 +157,17 @@ def read(filename, encoding_format="Windows-1252"):
                 "gf3_code": var_name,
                 "type": att["TYPE"],
                 "null_value": att["NULL_VALUE"],
-                "comments": json.dumps(
+                "comments": "Original ODF Variable Attributes:\n"
+                + json.dumps(
                     {"odf_variable_attributes": att}, ensure_ascii=False, indent=False
                 ),
             }
-            # Generate variable attributes
 
             # Add those variable attributes to the metadata output
             metadata["variable_attributes"].update({var_name: attribute})
             # Time type column add to time variables to parse by pd.read_csv()
-            if output_variable_name.startswith("SYTM") or att["TYPE"] == "SYTM":
-                time_columns.append(output_variable_name)
+            if var_name.startswith("SYTM") or att["TYPE"] == "SYTM":
+                time_columns.append(var_name)
 
         # If not time column replace by False
         if not time_columns:
@@ -294,7 +294,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
                     return scale
         return None
 
-    def _review_term(term, expected_terms, search=False, search_flag=None):
+    def _review_term(term, expected_terms, regexp=False, search_flag=None):
         """
         Simple tool to compare "|" separated units in the Vocabulary expected unit list.
         - First unit if any is matching.
@@ -311,7 +311,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         elif term in expected_terms.split("|"):
             # Match exactely one of the listed terms
             return True
-        elif search and re.search(expected_terms, term, search_flag):
+        elif regexp and re.search(expected_terms, term, search_flag):
             # Match expected term
             return True
         else:
@@ -374,11 +374,11 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
             lambda x: _review_term(var_units, x)
         )
         match_scale = matching_terms["expected_scale"].apply(
-            lambda x: _review_term(attributes.get("scale"), x)
+            lambda x: _review_term(attrs.get("scale"), x)
         )
         match_instrument = matching_terms["expected_instrument"].apply(
             lambda x: _review_term(
-                attributes["long_name"], x, search=True, search_flag=re.IGNORECASE
+                attrs["long_name"], x, regexp=True, search_flag=re.IGNORECASE
             )
         )
         instrument_name = (
@@ -386,11 +386,11 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         )
         match_instrument_global = matching_terms["expected_instrument"].apply(
             lambda x: _review_term(
-                instrument_name, x, search=True, search_flag=re.IGNORECASE
+                instrument_name, x, regexp=True, search_flag=re.IGNORECASE
             )
         )
 
-        # Drop the terms with no matching units
+        # Select only the terms that matches all the units/scale/instrument conditions
         matching_terms_and_units = matching_terms.loc[
             match_units & match_scale & (match_instrument | match_instrument_global)
         ]
@@ -398,7 +398,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         # No matching term, give a warning if not a flag and move on to the next iteration
         if len(matching_terms_and_units) == 0:
             warnings.warn(
-                f"No Matching unit found for {var} [{attributes.get('units')}] in:"
+                f"No Matching unit found for {var} [{attrs.get('units')}] in:"
                 + f"{matching_terms['expected_units'].to_dict()}",
                 UserWarning,
             )
@@ -542,7 +542,7 @@ def generate_variables_from_header(
 
         # precise time
         if "SYTM_01" in ds.keys():
-            ds["precise_time"] = ds["SYTM_01"].copy()
+            ds["measurement_time"] = ds["SYTM_01"].copy()
     else:
         ds.coords["time"] = ds["SYTM_01"]
         ds["time"].attrs[original_var_field] = "SYTM_01"
@@ -561,9 +561,6 @@ def generate_variables_from_header(
         if initial_latitude != -99:
             ds.coords["latitude"] = initial_latitude
             ds["latitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LATITUDE"
-        # elif has_latitude_timeseries:
-        #     ds.coords["latitude"] = ds["LATD_01"][0].values
-        #     ds["latitude"].attrs[original_var_field] = "LATD_01[0]"
 
         # If a latitude time series is available, copy it to a preciseLat variable as suggested by ERDDAP
         if has_latitude_timeseries:
@@ -593,9 +590,6 @@ def generate_variables_from_header(
         if initial_longitude != -999:
             ds.coords["longitude"] = initial_longitude
             ds["longitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LONGITUDE"
-        # elif has_longitude_time_series:
-        #     ds.coords["longitude"] = ds["LOND_01"][0].values
-        #     ds["longitude"].attrs[original_var_field] = "LOND_01[0]"
 
         # If a longitude time series is available, copy it to a preciseLat variable as suggested by ERDDAP
         if has_longitude_time_series:
