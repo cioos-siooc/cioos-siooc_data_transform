@@ -83,8 +83,8 @@ def convert_cur_files(f, out_path):
 for fn in glob(fix_path("./tests/test_files/ctd_profile/*.*"), recursive=True):
     convert_ctd_files(f=fn, out_path=fix_path("./tests/temp/"))
 
-# for fn in glob(fix_path('./test_files/bot/*.*'), recursive=True):
-#     convert_bot_files(f=fn, out_path=fix_path('temp/'))
+for fn in glob(fix_path('./tests/test_files/bot/*.*'), recursive=True):
+    convert_bot_files(f=fn, out_path=fix_path('./tests/temp/'))
 
 # for fn in glob(
 #     fix_path("./tests/test_files/current_meter/*.*"), recursive=True
