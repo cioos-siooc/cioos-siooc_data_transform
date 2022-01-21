@@ -26,6 +26,21 @@ flag_long_name_prefix = "Quality_Flag: "
 original_prefix_var_attribute = "original_"
 
 
+class GF3Code:
+    """
+    ODF GF3 Class split terms in their different components and standardize the convention (CODE_XX).  
+    """
+
+    def __init__(self, code):
+        self.code = re.search("^[^_]*", code)[0]
+        index = re.search("\d*$", code)
+        if index:
+            self.index = int(index[0])
+        else:
+            self.index = None
+        self.name = self.code + ("_%02g" % int(self.index) if self.index else "")
+
+
 def read(filename, encoding_format="Windows-1252"):
     """
     Read_odf
@@ -126,20 +141,20 @@ def read(filename, encoding_format="Windows-1252"):
         for att in metadata["PARAMETER_HEADER"]:
             # Generate variable name
             if "CODE" in att:
-                var_name = parse_odf_code_variable(att["CODE"])
+                var_name = GF3Code(att["CODE"]).name
             elif (
                 "NAME" in att
                 and "WMO_CODE" in att
                 and att["NAME"].startswith(att["WMO_CODE"])
             ):
-                var_name = parse_odf_code_variable(att["NAME"])
+                var_name = GF3Code(att["NAME"]).name
             else:
                 raise RuntimeError("Unrecognizable ODF variable attributes")
 
             attribute = {
                 "long_name": att.get("NAME"),
                 "units": att.get("UNITS"),
-                "gf3_code": var_name["standardized_name"],
+                "gf3_code": var_name,
                 "type": att["TYPE"],
                 "null_value": att["NULL_VALUE"],
                 "comments": json.dumps(
@@ -147,10 +162,9 @@ def read(filename, encoding_format="Windows-1252"):
                 ),
             }
             # Generate variable attributes
-            output_variable_name = var_name["standardized_name"]
 
             # Add those variable attributes to the metadata output
-            metadata["variable_attributes"].update({output_variable_name: attribute})
+            metadata["variable_attributes"].update({var_name: attribute})
             # Time type column add to time variables to parse by pd.read_csv()
             if output_variable_name.startswith("SYTM") or att["TYPE"] == "SYTM":
                 time_columns.append(output_variable_name)
@@ -324,31 +338,25 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
     variable_list = [variable for variable in ds]
     new_variable_order = []
     for var in variable_list:
-        attributes = ds[var].attrs
+        attrs = ds[var].attrs
 
         # Ignore variables with no attributes and flag variables
-        if attributes == {} or attributes.get("flag_values"):
+        if attrs == {} or attrs.get("flag_values"):
             new_variable_order.append(var)
             continue
 
-        if "gf3_code" in attributes:
-            # Ignore trailing number while matching to vocabulary
-            name = attributes["gf3_code"].split("_")[0]
-            if "_" in attributes["gf3_code"]:
-                gf3_index = attributes["gf3_code"].split("_")[1]
-            else:
-                gf3_index = 1
-        else:
-            name = var
-
         # Retrieve standardize units and scale
-        var_units = standardize_odf_units(attributes.get("units", "none"))
-        scale = detect_reference_scale(var, attributes)
+        var_units = standardize_odf_units(attrs.get("units", "none"))
+        scale = detect_reference_scale(var, attrs)
         if scale:
             # Add scale to to scale attribute
-            attributes["scale"] = scale
+            attrs["scale"] = scale
 
-        # Find matching vocabularies and pick the first organization
+        # Find matching vocabulary for that GF3 Code (if available) or variable name
+        if "gf3_code" in attrs:
+            name = GF3Code(attrs["gf3_code"]).code
+        else:
+            name = var
         matching_terms = vocabulary.query(
             f"Vocabulary == {organizations} and name=='{name}'"
         )
@@ -415,48 +423,14 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
             if "units" in new_attrs and row["units"] is None:
                 new_attrs.pop("units")
 
-            # Update sdn_parameter_urn term available to match trailing number with variable itself.
-            if new_attrs.get("sdn_parameter_urn"):
+            # Update sdn_parameter_urn term available to match trailing number from the variable itself.
+            if "sdn_parameter_urn" in new_attrs and "gf3_code" in new_attrs:
                 new_attrs["sdn_parameter_urn"] = re.sub(
                     r"\d\d|XX$",
-                    "%02d" % int(gf3_index),
+                    "%02d" % GF3Code(new_attrs["gf3_code"]).index,
                     new_attrs["sdn_parameter_urn"],
                 )
     return ds[new_variable_order]
-
-
-def parse_odf_code_variable(odf_code: str):
-    """
-    Method use to parse an ODF CODE terms to a dictionary. The tool will extract the name (GF3 code),
-    the index (01-99) and generate a standardized name with two digit index values if available.
-    Some historical data do not follow the same standard, this tool tries to handle the issues found.
-
-    eg
-    parse_odf_code_variable("IDEN_1")={name: 'IDEN', index: 1, standardized_name: IDEN_01}
-    """
-    odf_code_split = odf_code.rsplit("_", 1)
-    odf_code_has_index = len(odf_code_split) == 2
-    gf3_code = odf_code_split[0]
-    if odf_code_has_index:
-        index = int(odf_code_split[1])
-        return {
-            "name": gf3_code,
-            "index": index,
-            "standardized_name": gf3_code + "_" + "{0:02g}".format(index),
-        }
-    # this variable has no index available
-    return {"name": gf3_code, "standardized_name": gf3_code}
-
-
-class GF3_Code:
-    def __init__(self, code):
-        code = re.search("^[^_]*", code)
-        index = re.search("\d$", code)
-        if index == None:
-            self.index = None
-        else:
-            self.index = int(index)
-        self.name = self.code[0] + ("_%02g" % int(self.index) if self.index else "")
 
 
 def standardize_odf_units(unit_string):
