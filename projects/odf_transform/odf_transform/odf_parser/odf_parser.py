@@ -622,7 +622,7 @@ def generate_variables_from_header(
     ds["longitude"].attrs.update(
         {
             "long_name": "Longitude",
-            "units": "degrees_north",
+            "units": "degrees_east",
             "standard_name": "longitude",
         }
     )
