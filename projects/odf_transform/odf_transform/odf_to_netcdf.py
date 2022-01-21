@@ -31,10 +31,7 @@ def read_config(config_file):
 
 
 def write_ctd_ncfile(
-    odf_path,
-    output_path,
-    config=None,
-    polygons={},
+    odf_path, output_path, config=None, polygons={},
 ):
     """Method use to convert odf files to a CIOOS/ERDDAP compliant NetCDF format"""
     print(os.path.split(odf_path)[-1])
@@ -49,16 +46,15 @@ def write_ctd_ncfile(
     ds.attrs.update(odf.global_attributes_from_header(metadata))  # From ODF header
 
     # Add New Variables
-    for var, attrs in metadata['variable_attributes'].items():
+    for var, attrs in metadata["variable_attributes"].items():
         if var in ds:
             ds[var].attrs = attrs
 
-    ds = odf.odf_flag_variables(
-       ds, config.get("flag_convention")
-    )
+    ds = odf.odf_flag_variables(ds, config.get("flag_convention"))
     ds = odf.generate_variables_from_header(
         ds, metadata, config["cdm_data_type"]
     )  # From ODF header
+
     # geographic_area
     ds["geographic_area"] = get_geo_code(
         [ds["longitude"].mean(), ds["latitude"].mean()], polygons
@@ -128,8 +124,7 @@ def convert_odf_files(config, odf_files_list=[], output_path=""):
             if not os.path.isdir(os.path.join(os.path.dirname(f), "failed")):
                 os.mkdir(os.path.join(os.path.dirname(f), "failed"))
             shutil.copy(
-                f,
-                os.path.join(os.path.dirname(f), "failed", os.path.split(f)[-1]),
+                f, os.path.join(os.path.dirname(f), "failed", os.path.split(f)[-1]),
             )
 
             print("***** ERROR***", f)

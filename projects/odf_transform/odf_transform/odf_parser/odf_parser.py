@@ -95,7 +95,7 @@ def read(filename, encoding_format="Windows-1252"):
                 ]  # Remove trailing white spaces
 
                 if re.match(
-                        r"\'.*\'", dict_line[1]
+                    r"\'.*\'", dict_line[1]
                 ):  # Is delimited by double quotes, definitely a string
                     # Drop the quote signs and the white spaces before and after
                     dict_line[1] = str(re.sub(r"^\s*|\s*$", "", dict_line[1][1:-1]))
@@ -104,7 +104,7 @@ def read(filename, encoding_format="Windows-1252"):
                     dict_line[1] = _convert_to_number(dict_line[1])
 
                 # Add to the metadata as a dictionary
-                key = dict_line[0].strip().replace(' ', '_')
+                key = dict_line[0].strip().replace(" ", "_")
                 metadata[section][-1][key] = dict_line[1]
 
             else:
@@ -116,7 +116,7 @@ def read(filename, encoding_format="Windows-1252"):
                 metadata[section] = metadata[section][0]
 
         # Add original header in text format to the dictionary
-        metadata['original_header'] = original_header
+        metadata["original_header"] = original_header
 
         # READ PARAMETER_HEADER
         # Define first the variable name and attributes and the type.
@@ -128,9 +128,9 @@ def read(filename, encoding_format="Windows-1252"):
             if "CODE" in att:
                 var_name = parse_odf_code_variable(att["CODE"])
             elif (
-                    "NAME" in att
-                    and "WMO_CODE" in att
-                    and att["NAME"].startswith(att["WMO_CODE"])
+                "NAME" in att
+                and "WMO_CODE" in att
+                and att["NAME"].startswith(att["WMO_CODE"])
             ):
                 var_name = parse_odf_code_variable(att["NAME"])
             else:
@@ -448,6 +448,17 @@ def parse_odf_code_variable(odf_code: str):
     return {"name": gf3_code, "standardized_name": gf3_code}
 
 
+class GF3_Code:
+    def __init__(self, code):
+        code = re.search("^[^_]*", code)
+        index = re.search("\d$", code)
+        if index == None:
+            self.index = None
+        else:
+            self.index = int(index)
+        self.name = self.code[0] + ("_%02g" % int(self.index) if self.index else "")
+
+
 def standardize_odf_units(unit_string):
     """
     Units strings were manually written within the ODF files.
@@ -469,7 +480,7 @@ def global_attributes_from_header(odf_header):
     Method use to define the standard global attributes from an ODF Header parsed by the read function.
     """
     odf_original_header = odf_header.copy()
-    odf_original_header.pop('variable_attributes')
+    odf_original_header.pop("variable_attributes")
     global_attributes = {
         "project": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
         "institution": odf_header["CRUISE_HEADER"]["ORGANIZATION"],
@@ -479,7 +490,7 @@ def global_attributes_from_header(odf_header):
         "cruise_description": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
         "scientist": odf_header["CRUISE_HEADER"]["CHIEF_SCIENTIST"],
         "platform": odf_header["CRUISE_HEADER"]["PLATFORM"],
-        "data_type": odf_header["CRUISE_HEADER"].get("DATA_TYPE", ''),
+        "data_type": odf_header["CRUISE_HEADER"].get("DATA_TYPE", ""),
         "sampling_interval": odf_header["EVENT_HEADER"]["SAMPLING_INTERVAL"],
         "water_depth": odf_header["EVENT_HEADER"]["SOUNDING"],
         "date_created": odf_header["EVENT_HEADER"]["ORIG_CREATION_DATE"],
@@ -488,17 +499,25 @@ def global_attributes_from_header(odf_header):
             odf_header["HISTORY_HEADER"], ensure_ascii=False, indent=False
         ),
         "comment": odf_header["EVENT_HEADER"].get("EVENT_COMMENTS", ""),
-        "original_odf_header": '\n'.join(odf_header["original_header"]),
-        "original_odf_header_json": json.dumps(odf_original_header, ensure_ascii=False, indent=False),
+        "original_odf_header": "\n".join(odf_header["original_header"]),
+        "original_odf_header_json": json.dumps(
+            odf_original_header, ensure_ascii=False, indent=False
+        ),
     }
 
     if "INSTRUMENT_HEADER" in odf_header:
-        global_attributes.update({
-            "instrument_type": odf_header["INSTRUMENT_HEADER"]["INST_TYPE"],
-            "instrument_model": odf_header["INSTRUMENT_HEADER"]["MODEL"],
-            "instrument_serial_number": odf_header["INSTRUMENT_HEADER"]["SERIAL_NUMBER"],
-            "instrument_description": odf_header["INSTRUMENT_HEADER"]["DESCRIPTION"],
-        })
+        global_attributes.update(
+            {
+                "instrument_type": odf_header["INSTRUMENT_HEADER"]["INST_TYPE"],
+                "instrument_model": odf_header["INSTRUMENT_HEADER"]["MODEL"],
+                "instrument_serial_number": odf_header["INSTRUMENT_HEADER"][
+                    "SERIAL_NUMBER"
+                ],
+                "instrument_description": odf_header["INSTRUMENT_HEADER"][
+                    "DESCRIPTION"
+                ],
+            }
+        )
     # Missing terms potentially, mooring_number, station,
     return global_attributes
 
@@ -512,7 +531,7 @@ def convert_odf_time(time_string):
 
 
 def generate_variables_from_header(
-        ds, odf_header, cdm_data_type, original_var_field="source"
+    ds, odf_header, cdm_data_type, original_var_field="source"
 ):
     """
     Method use to generate metadata variables from the ODF Header to a xarray Dataset.
@@ -638,11 +657,11 @@ def generate_variables_from_header(
         )
         ds["depth"].attrs[original_var_field] = "-gsw.z_from_p(PRES_01,latitude)"
     elif (
-            "MIN_DEPTH" in odf_header["EVENT_HEADER"]
-            and "MAX_DEPTH" in odf_header["EVENT_HEADER"]
-            and odf_header["EVENT_HEADER"]["MAX_DEPTH"]
-            - odf_header["EVENT_HEADER"]["MIN_DEPTH"]
-            == 0
+        "MIN_DEPTH" in odf_header["EVENT_HEADER"]
+        and "MAX_DEPTH" in odf_header["EVENT_HEADER"]
+        and odf_header["EVENT_HEADER"]["MAX_DEPTH"]
+        - odf_header["EVENT_HEADER"]["MIN_DEPTH"]
+        == 0
     ):
         ds.coords["depth"] = odf_header["EVENT_HEADER"]["MAX_DEPTH"]
         ds["depth"].attrs[original_var_field] = "EVENT_HEADER:MIN|MAX_DEPTH"
