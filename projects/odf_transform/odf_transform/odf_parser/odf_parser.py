@@ -211,15 +211,13 @@ def odf_flag_variables(ds, flag_convention=None):
     # Loop through each variables and detect flag variables
     previous_key = None
     for var in ds:
-        att = ds[var].attrs
-        # Retrieve information from variable name
-        odf_var_name = parse_odf_code_variable(var)
-        related_variable = None
+        attrs = ds[var].attrs
+        related_variables = None
 
         # Find related variable
         if var.startswith("QQQQ"):
             # FLAG QQQQ should apply to previous variable
-            related_variable = [previous_key]
+            related_variables = [previous_key]
 
             # Rename variable so that we can link by variable name
             ds = ds.rename({var: f"Q{previous_key}"})
@@ -227,11 +225,11 @@ def odf_flag_variables(ds, flag_convention=None):
 
         elif var.startswith(("QCFF", "FFFF")):
             # This is a general flag
-            related_variable = [var for var in ds if not var.startswith("Q")]
+            related_variables = [var for var in ds if not var.startswith("Q")]
 
         elif var.startswith("Q") and var[1:] in ds:
             # Q  Format is usually Q+[PCODE] of the associated variable
-            related_variable = [var[1:]]
+            related_variables = [var[1:]]
 
         else:
             # If the variable isn't a flag variable, go to the next iteration
@@ -240,18 +238,20 @@ def odf_flag_variables(ds, flag_convention=None):
             continue
 
         # Add flag variable to related variable ancillary_variables attribute
-        for var in related_variable:
+        for related_variable in related_variables:
             if "ancillary_variables" in ds[var].attrs:
-                ds[var].attrs["ancillary_variables"] += f",{var}"
+                ds[related_variable].attrs[
+                    "ancillary_variables"
+                ] += f",{related_variable}"
             else:
-                ds[var].attrs["ancillary_variables"] = var
+                ds[related_variable].attrs["ancillary_variables"] = related_variable
 
         # Add flag convention attributes if available within config file
         if flag_convention:
             if var in flag_convention:
-                att.update(flag_convention[var])
+                ds[var].attrs.update(flag_convention[var])
             elif "default" in flag_convention:
-                att.update(flag_convention["default"])
+                ds[var].attrs.update(flag_convention["default"])
 
         # Set previous key for the next iteration
         previous_key = var
