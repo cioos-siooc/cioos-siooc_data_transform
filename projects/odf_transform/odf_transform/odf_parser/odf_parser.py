@@ -253,12 +253,10 @@ def odf_flag_variables(ds, flag_convention=None):
 
         # Add flag variable to related variable ancillary_variables attribute
         for related_variable in related_variables:
-            if "ancillary_variables" in ds[var].attrs:
-                ds[related_variable].attrs[
-                    "ancillary_variables"
-                ] += f",{related_variable}"
+            if "ancillary_variables" in ds[related_variable].attrs:
+                ds[related_variable].attrs["ancillary_variables"] += f",{var}"
             else:
-                ds[related_variable].attrs["ancillary_variables"] = related_variable
+                ds[related_variable].attrs["ancillary_variables"] = var
 
         # Add flag convention attributes if available within config file
         if flag_convention:
