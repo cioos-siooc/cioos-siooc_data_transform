@@ -292,24 +292,24 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
                     return scale
         return None
 
-    def _review_term(term, expected_terms, regexp=False, search_flag=None):
+    def _review_term(term, accepted_terms, regexp=False, search_flag=None):
         """
         Simple tool to compare "|" separated units in the Vocabulary expected unit list.
         - First unit if any is matching.
         - True if empty or expected to be empty
-        - unknown if unit exists but the "expected_units" input is empty.
+        - unknown if unit exists but the "accepted_units" input is empty.
         - False if not matching units
         """
-        if expected_terms == None:
+        if accepted_terms == None:
             # No required term
             return True
-        elif re.search("^none$|^dimensionless$", expected_terms, re.IGNORECASE):
+        elif re.search("^none$|^dimensionless$", accepted_terms, re.IGNORECASE):
             # Truly expect no units
             return True
-        elif term in expected_terms.split("|"):
+        elif term in accepted_terms.split("|"):
             # Match exactely one of the listed terms
             return True
-        elif regexp and re.search(expected_terms, term, search_flag):
+        elif regexp and re.search(accepted_terms, term, search_flag):
             # Match expected term
             return True
         else:
@@ -328,9 +328,9 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
     ]
 
     # Generate Standardized Attributes from vocabulary table
-    # The very first item in the expected columns is the main term to use
-    vocabulary["units"] = vocabulary["expected_units"].str.split("|").str[0]
-    vocabulary["instrument"] = vocabulary["expected_instrument"].str.split("|").str[0]
+    # # The very first item in the expected columns is the main term to use
+    # vocabulary["units"] = vocabulary["accepted_units"].str.split("|").str[0]
+    # vocabulary["instrument"] = vocabulary["accepted_instrument"].str.split("|").str[0]
 
     # Find matching vocabulary
     variable_list = [variable for variable in ds]
@@ -368,13 +368,13 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         matching_terms = matching_terms.loc[matching_terms.index[0][0]]
 
         # Among these matching terms find matching ones
-        match_units = matching_terms["expected_units"].apply(
+        match_units = matching_terms["accepted_units"].apply(
             lambda x: _review_term(var_units, x)
         )
-        match_scale = matching_terms["expected_scale"].apply(
+        match_scale = matching_terms["accepted_scale"].apply(
             lambda x: _review_term(attrs.get("scale"), x)
         )
-        match_instrument = matching_terms["expected_instrument"].apply(
+        match_instrument = matching_terms["accepted_instruments"].apply(
             lambda x: _review_term(
                 attrs["long_name"], x, regexp=True, search_flag=re.IGNORECASE
             )
@@ -382,7 +382,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         instrument_name = (
             f"{ds.attrs.get('instrument_type')} {ds.attrs.get('instrument_model')}"
         )
-        match_instrument_global = matching_terms["expected_instrument"].apply(
+        match_instrument_global = matching_terms["accepted_instruments"].apply(
             lambda x: _review_term(
                 instrument_name, x, regexp=True, search_flag=re.IGNORECASE
             )
@@ -397,7 +397,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         if len(matching_terms_and_units) == 0:
             warnings.warn(
                 f"No Matching unit found for {var} [{attrs.get('units')}] in:"
-                + f"{matching_terms['expected_units'].to_dict()}",
+                + f"{matching_terms['accepted_units'].to_dict()}",
                 UserWarning,
             )
             new_variable_order.append(var)
