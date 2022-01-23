@@ -75,10 +75,6 @@ def write_ctd_ncfile(
         organizations=config["organisationVocabulary"],
         vocabulary=config["vocabulary"],
     )
-    ds = xarray_methods.add_variable_attributes(ds)
-
-    # Generate extra variables (BODC, Derived)
-    ds = xarray_methods.generate_bodc_variables(ds)
 
     # Add geospatial and geometry related global attributes
     # Just add spatial/time range as attributes
