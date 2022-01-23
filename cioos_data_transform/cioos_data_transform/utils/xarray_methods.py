@@ -148,27 +148,41 @@ def standardize_variable_attributes(ds):
     attribute_order = [
         "long_name",
         "units",
+        "time_zone",
         "scale",
         "standard_name",
         "sdn_parameter_name",
+        "sdn_parameter_urn",
+        "sdn_uom_urn",
+        "sdn_uom_name",
+        "ioos_category",
+        "gf3_code",
         "source",
         "reference",
+        "comments",
+        "definition",
+        "ancillary_variables",
         "cell_method",
+        "actual_range",
+        "valid_range",
         "value_min",
-        "value_max" "grid_mapping",
+        "value_max",
+        "mising_value",
+        "_FillValue",
+        "fileAccessBaseUrl",
+        "_Encoding",
+        "grid_mapping",
     ]
     for var in ds:
         if ds[var].dtype in [float, int, "float32", "float64", "int64", "int32"]:
             ds[var].attrs["actual_range"] = [
-                var.min().item(0),
-                var.max().item(0),
+                ds[var].min().item(0),
+                ds[var].max().item(0),
             ]
 
         # Sort attributes by order provided
         sorted_attributes = {
-            key: ds[var].attrs[key]
-            for key in attribute_order
-            if key in ds[var].attrs
+            key: ds[var].attrs[key] for key in attribute_order if key in ds[var].attrs
         }
 
         # If any left over add the rest
