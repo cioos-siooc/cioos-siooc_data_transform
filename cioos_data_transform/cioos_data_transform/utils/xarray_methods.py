@@ -141,13 +141,10 @@ def convert_variables_to_erddap_format(ds):
     return ds
 
 
-def standardize_variable_attributes(values, attributes=None):
+def standardize_variable_attributes(ds):
     """
     Method to generate simple generic variable attributes and reorder attributes in a consistent order.
     """
-    if attributes is None:
-        attributes = {}
-
     attribute_order = [
         "long_name",
         "units",
@@ -160,30 +157,34 @@ def standardize_variable_attributes(values, attributes=None):
         "value_min",
         "value_max" "grid_mapping",
     ]
-    if values.dtype in [float, int, "float32", "float64", "int64", "int32"]:
-        attributes['actual_range'] = [values.min().item(0), values.max().item(0)]
+    for var in ds:
+        if ds[var].dtype in [float, int, "float32", "float64", "int64", "int32"]:
+            ds[var].attrs["actual_range"] = [
+                var.min().item(0),
+                var.max().item(0),
+            ]
 
-    # Sort attributes by order provided
-    sorted_attributes = {
-        key: attributes[key] for key in attribute_order if key in attributes
-    }
+        # Sort attributes by order provided
+        sorted_attributes = {
+            key: ds[var].attrs[key]
+            for key in attribute_order
+            if key in ds[var].attrs
+        }
 
-    # If any left over add the rest
-    sorted_attributes.update(attributes)
+        # If any left over add the rest
+        sorted_attributes.update(ds[var].attrs)
 
-    # Drop empty attributes
-    empty_att = [key for key, att in sorted_attributes.items() if att is None]
-    for key in empty_att:
-        sorted_attributes.pop(key)
-    return sorted_attributes
+        # Drop empty attributes
+        empty_att = [key for key, att in sorted_attributes.items() if att is None]
+        for key in empty_att:
+            sorted_attributes.pop(key)
+
+        ds[var].attrs = sorted_attributes
+    return ds
 
 
 def get_spatial_coverage_attributes(
-    ds,
-    time="time",
-    lat="latitude",
-    lon="longitude",
-    depth="depth",
+    ds, time="time", lat="latitude", lon="longitude", depth="depth",
 ):
     """
     This method generates the geospatial and time coverage attributes associated to an xarray dataset.
