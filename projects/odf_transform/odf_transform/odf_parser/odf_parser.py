@@ -320,13 +320,17 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
 
     # Define vocabulary default list of variables to import as attributes
     vocabulary_attribute_list = [
+        "long_name",
         "units",
         "instrument",
+        "scale",
         "standard_name",
         "sdn_parameter_urn",
         "sdn_parameter_name",
         "sdn_uom_urn",
         "sdn_uom_name",
+        "definition",
+        "convention",
     ]
 
     # Generate Standardized Attributes from vocabulary table
