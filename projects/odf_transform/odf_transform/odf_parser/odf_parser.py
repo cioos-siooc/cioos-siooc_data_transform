@@ -10,6 +10,8 @@ import pandas as pd
 import json
 import gsw
 
+import xarray as xr
+
 # Dictionary with the mapping of the odf types to python types
 odf_dtypes = {
     "DOUB": "float64",
@@ -352,8 +354,10 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
 
         # Find matching vocabulary for that GF3 Code (if available) or variable name
         if "gf3_code" in attrs:
-            name = GF3Code(attrs["gf3_code"]).code
+            gf3 = GF3Code(attrs["gf3_code"])
+            name = gf3.code
         else:
+            gf3 = None
             name = var
         matching_terms = vocabulary.query(
             f"Vocabulary == {organizations} and name=='{name}'"
@@ -404,15 +408,33 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
             continue
 
         # Generate new variables and update original variable attributes from vocabulary
+        new_variable_order.append(var)
         for index, row in matching_terms_and_units.iterrows():
             # Make a copy of original variable
             if row["variable_name"]:
-                ds[row["variable_name"]] = ds[var].copy()
-                new_attrs = ds[row["variable_name"]].attrs
-                new_variable_order.append(row["variable_name"])
+                # Apply suffix number of original variable
+                if gf3 and 1 < gf3.index < 10:
+                    new_variable = re.sub("1$", "%1g" % gf3.index, row["variable_name"])
+                else:
+                    new_variable = row["variable_name"]
+
+                if new_variable in ds:
+                    # If the new variable already exist in the dataset continue
+                    continue
+
+                # Generate new variable by either copying it or applying specified function to the initial variable
+                if row["apply_function"]:
+                    ds[new_variable] = xr.apply_ufunc(
+                        eval(row["apply_function"]), (ds[var]), keep_attrs=True
+                    )
+                else:
+                    ds[new_variable] = ds[var].copy()
+
+                new_attrs = ds[new_variable].attrs
+                new_variable_order.append(new_variable)
             else:
+                # Apply vocabulary to original variable
                 new_attrs = ds[var].attrs
-                new_variable_order.append(var)
 
             # Retrieve all attributes in vocabulary that have something
             new_attrs.update(row[vocabulary_attribute_list].dropna().to_dict())
@@ -424,9 +446,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
             # Update sdn_parameter_urn term available to match trailing number from the variable itself.
             if "sdn_parameter_urn" in new_attrs and "gf3_code" in new_attrs:
                 new_attrs["sdn_parameter_urn"] = re.sub(
-                    r"\d\d|XX$",
-                    "%02d" % GF3Code(new_attrs["gf3_code"]).index,
-                    new_attrs["sdn_parameter_urn"],
+                    r"\d\d|XX$", "%02d" % gf3.index, new_attrs["sdn_parameter_urn"],
                 )
     return ds[new_variable_order]
 
