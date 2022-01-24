@@ -4,13 +4,15 @@ and developped by the DFO offices BIO and MLI.
 """
 
 import re
-import datetime as dt
 import warnings
+
 import pandas as pd
+import numpy as np
+import xarray as xr
+
 import json
 import gsw
 
-import xarray as xr
 
 # Dictionary with the mapping of the odf types to python types
 odf_dtypes = {
@@ -671,7 +673,12 @@ def generate_variables_from_header(
 
     if "depth" in ds:
         ds["depth"].attrs.update(
-            {"units": "m", "standard_name": "depth", "positive": "down"}
+            {
+                "units": "m",
+                "standard_name": "depth",
+                "positive": "down",
+                "long_name": "Depth",
+            }
         )
 
     # Reorder variables
