@@ -256,7 +256,7 @@ def odf_flag_variables(ds, flag_convention=None):
         # Add flag variable to related variable ancillary_variables attribute
         for related_variable in related_variables:
             if "ancillary_variables" in ds[related_variable].attrs:
-                ds[related_variable].attrs["ancillary_variables"] += f",{var}"
+                ds[related_variable].attrs["ancillary_variables"] += f" {var}"
             else:
                 ds[related_variable].attrs["ancillary_variables"] = var
 
@@ -266,6 +266,11 @@ def odf_flag_variables(ds, flag_convention=None):
                 ds[var].attrs.update(flag_convention[var])
             elif "default" in flag_convention:
                 ds[var].attrs.update(flag_convention["default"])
+
+            # Match flag_values data type to variable data type
+            ds[var].attrs["flag_values"] = tuple(
+                np.array(ds[var].attrs["flag_values"]).astype(ds[var].dtype)
+            )
 
         # Set previous key for the next iteration
         previous_key = var
