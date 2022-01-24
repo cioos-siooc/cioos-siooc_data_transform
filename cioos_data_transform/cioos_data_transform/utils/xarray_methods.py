@@ -174,11 +174,14 @@ def standardize_variable_attributes(ds):
         "grid_mapping",
     ]
     for var in ds:
-        if ds[var].dtype in [float, int, "float32", "float64", "int64", "int32"]:
-            ds[var].attrs["actual_range"] = [
+        if (
+            ds[var].dtype in [float, int, "float32", "float64", "int64", "int32"]
+            and "flag_values" not in ds[var].attrs
+        ):
+            ds[var].attrs["actual_range"] = (
                 ds[var].min().item(0),
                 ds[var].max().item(0),
-            ]
+            )
 
         # Sort attributes by order provided
         sorted_attributes = {
