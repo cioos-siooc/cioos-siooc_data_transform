@@ -546,11 +546,17 @@ def generate_variables_from_header(
         ds["start_time"] = convert_odf_time(
             odf_header["EVENT_HEADER"]["START_DATE_TIME"]
         )
-        ds["start_time"].attrs[original_var_field] = "EVENT_HEADER:START_DATE_TIME"
+        ds["start_time"].attrs = {
+            "original_var_field": "EVENT_HEADER:START_DATE_TIME",
+            "long_name": "Event Start Time",
+        }
 
     if convert_odf_time(odf_header["EVENT_HEADER"]["END_DATE_TIME"]):
         ds["end_time"] = convert_odf_time(odf_header["EVENT_HEADER"]["END_DATE_TIME"])
-        ds["end_time"].attrs[original_var_field] = "EVENT_HEADER:END_DATE_TIME"
+        ds["end_time"].attrs = {
+            "original_var_field": "EVENT_HEADER:END_DATE_TIME",
+            "long_name": "Event Start Time",
+        }
 
     # Time is handled differently for profile variables since there's not always a time variable within the ODF.
     # Time series and trajectory data should both have a time variable in the ODF.
@@ -569,9 +575,8 @@ def generate_variables_from_header(
         ds.coords["time"] = ds["SYTM_01"]
         ds["time"].attrs[original_var_field] = "SYTM_01"
 
-    # Make sure there's a time variable
-    if "time" not in ds:
-        raise RuntimeError("No time available.")
+    # Add standard_name attribute
+    ds["time"].attrs["standard_name"] = "time"
 
     # Coordinate variables
     # Latitude (ODF uses a place holder -99 in some of their header for latitude)
