@@ -31,6 +31,7 @@
         "license": "standard license information here",
         "keywords_vocabulary": "GCMD Science Keywords",
         "Conventions": "CF-1.6,CF-1.7,ACDD1.1",
+        "standard_name_vocabulary": "CF Standard Name Table v78",
         "comment": ""
     },
     "flag_convention": {
