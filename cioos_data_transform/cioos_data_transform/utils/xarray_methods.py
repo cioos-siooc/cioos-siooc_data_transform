@@ -273,17 +273,8 @@ def derive_cdm_data_type(
             and ds[lat].size > 1
             and ds[lon].size > 1
         ):  # Trajectory
-            is_trajectory = True
             cdm_data_type += "Trajectory"
-        else:
-            is_trajectory = False
-
-        if (
-            time in ds
-            and ds[time].ndim == 1
-            and ds[time].size > 1
-            and not is_trajectory
-        ):  # Time Series
+        elif time in ds and ds[time].ndim == 1 and ds[time].size > 1:  # Time Series
             cdm_data_type += "TimeSeries"
 
         if depth in ds and ds[depth].ndim == 1 and ds[depth].size > 1:  # Profile
