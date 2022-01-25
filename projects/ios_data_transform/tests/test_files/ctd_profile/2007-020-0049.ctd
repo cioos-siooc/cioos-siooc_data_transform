@@ -1,0 +1,365 @@
+*2017/03/24 14:12:54.38
+*IOS HEADER VERSION 2.0      2016/04/28 2016/06/13 IVF16
+
+*FILE
+    START TIME          : UTC 2007/08/10 04:00:40.000
+    NUMBER OF RECORDS   : 1
+    DATA DESCRIPTION    : CTD
+    FILE TYPE           : ASCII
+    FORMAT              : '(F10.3,F9.4,F7.2,F8.3,F11.3,F7.1,F8.3,F9.4,F5.0,E11.'
+        CONTINUED       : '3)'
+    CRC                 : 44EB2446
+    NUMBER OF CHANNELS  : 10
+
+    $TABLE: CHANNELS
+    ! No Name                               Units           Minimum        Maximum
+    !--- ---------------------------------- --------------- -------------- --------------
+       1 Pressure                           decibar         5              5
+       2 Temperature:Primary                'deg C (ITS90)' -0.7213        -0.7213
+       3 Transmissivity                     %/metre         65.708         65.708
+       4 Fluorescence:Calibrated:Seapoint   mg/m^3          0.35E-01       0.35E-01
+       5 PAR:Reference                      uE/m^2/sec      1864           1864
+       6 Altimeter                          metres          78.5           78.5
+       7 Oxygen:Dissolved:SBE               mL/L            8.415          8.415
+       8 Salinity:T0:C0                     PSS-78          24.253         24.253
+       9 Number_of_bin_records              n/a             70             70
+      10 Flag                               n/a             222            222
+    $END
+
+    $TABLE: CHANNEL DETAIL
+    ! No  Pad   Start  Width  Format  Type  Decimal_Places
+    !---  ----  -----  -----  ------  ----  --------------
+       1  -99   ' '       10  F       ' '     3
+       2  -99   ' '        9  F       ' '     4
+       3  -99   ' '        7  F       ' '     2
+       4  -99   ' '        8  F       ' '     3
+       5  -99   ' '       11  F       ' '     3
+       6  -99   ' '        7  F       ' '     1
+       7  -99   ' '        8  F       ' '     3
+       8  -99   ' '        9  F       ' '     4
+       9  -99   ' '        5  F       ' '     0
+      10  -99   ' '       11  E       ' '     3
+    $END
+    $REMARKS
+        CTD Flag word has 3 columns: Temperature, Conductivity, and Oxygen. Data quality
+        is expressed with the following flags:
+        --------------------------------------------------------------------------------
+        0 = No Quality Control.
+        2 = Good.
+        6 = Interpolated or replaced by dual sensor or upcast value.
+        --------------------------------------------------------------------------------
+        This file converted from Sea-Bird file: Z:\SHARE\DATA\Data Archive Process -
+    $END
+
+*ADMINISTRATION
+    MISSION             : 2007-20
+    AGENCY              : IOS, Ocean Sciences Division, Sidney, B.C
+    COUNTRY             : Canada
+    PROJECT             : Joint Ocean Ice Study (JOIS incl JWACS and BGOS)
+    SCIENTIST           : Fiona McLaughlin
+    PLATFORM            : Louis S. St. Laurent
+
+*LOCATION
+    GEOGRAPHIC AREA     : Arctic Ocean's Canada Basin
+    STATION             : CB-9
+    EVENT NUMBER        : 49
+    LATITUDE            :  77  56.00000 N  ! (deg min)
+    LONGITUDE           : 149  49.92000 W  ! (deg min)
+    WATER DEPTH         : 3816
+
+*INSTRUMENT
+    TYPE                : Sea-Bird CTD
+    MODEL               : SBE-911plus
+    SERIAL NUMBER       : 0724
+
+    $TABLE: SENSORS
+    !   Name                         Abs Depth       Serial No
+    !   ---------------------------  --------------  ----------
+        temperature:primary          ' '             4322
+        conductivity:primary         ' '             2809
+        pressure                     ' '             90559
+        temperature:secondary        ' '             4239
+        conductivity:secondary       ' '             2810
+        Oxygen:SBE                   ' '             435
+        altimeter:Datasonics         ' '             'PSA-916D SN:1161'
+        Fluorometer:Seapoint         ' '             'SCF 2569'
+        transmissometer:primary      ' '             CST-662DR
+        transmissometer:secondary    ' '             993DR
+        irradiance:primary           ' '             'QSP2300 SN:70123'
+        'surface irradiance'         ' '             'QSR2200 SN:20279'
+    $END
+    $REMARKS
+        SOFTWARE VERSION SEASAVE WIN32 V 5.37D
+        Satlantic ISUS Nitrate Sensor SN:72 was installed.
+    $END
+
+*HISTORY
+
+    $TABLE: PROGRAMS
+    !   Name     Vers   Date       Time     Recs In   Recs Out
+    !   -------- ------ ---------- -------- --------- ---------
+        SBE_IOS  3.5.2  2017/03/10 15:41:26         1         1
+        REMOVECH 8.2    2017/03/10 16:07:16         1         1
+        CALIB    11.8.1 2017/03/10 16:12:13         1         1
+        CALIB    11.8.1 2017/03/10 16:13:33         1         1
+        REMOVECH 8.2    2017/03/24 11:25:30         1         1
+        HDREDIT2 3.1.1  2017/03/24 14:12:54 ?         ?
+    $END
+$REMARKS
+-REMOVECH 2017/03/10 16:07:16
+ The following CHANNEL(S) were removed:
+  Scan_Number
+  Depth:Salt_Water [metres]
+  Temperature:Secondary [deg C (ITS90)]
+  Conductivity:Primary [mS/cm]
+  Conductivity:Secondary [mS/cm]
+  Oxygen:Voltage:SBE [volts]
+  Transmissivity2 [%/metre]
+  Salinity:T1:C1 [PSS-78]
+  Temperature:Potential [deg C (ITS90)]
+  Sigma:Theta [kg/m^3]
+  Speed:Sound [m/s]
+-CALIB parameters: 2017/03/10 16:12:13
+ Calibration type = Correct
+ Mode: ONLY - calibration specs from Cal File only.
+ Calibration file = Z:\SHARE\DATA\Data Archive Process - 2017\Joe's work\2007-20\CTD\Trans_volts.ccf
+ Calibrations applied:
+ Ch Name                          Units    Fmla Coefficents
+ -- ----------------------------- --------- --- -----------------------------
+  3 Transmissivity                %/metre    10  0.5590000E-01  0.5250000E-01
+-CALIB parameters: 2017/03/10 16:13:33
+ Calibration type = Correct
+ Mode: ONLY - calibration specs from Cal File only.
+ Calibration file = Z:\SHARE\DATA\Data Archive Process - 2017\Joe's work\2007-20\CTD\Trans_Percent.
+ccf
+ Calibrations applied:
+ Ch Name                          Units    Fmla Coefficents
+ -- ----------------------------- --------- --- -----------------------------
+  3 Transmissivity                %/metre    10 -0.1084000E+01  0.1936000E+02
+  6 PAR                           uE/m^2/se  10  0.0000000E+00  0.1597600E+01
+-REMOVECH 2017/03/24 11:25:30
+ The following CHANNEL(S) were removed:
+  Voltage:6 [volts]
+  PAR [uE/m^2/sec]
+-HEADER EDITS: 2017/03/24 14:12:54
+ Applied edit header: Z:\SHARE\DATA\Data Archive Process - 2017\Joe's work\2007-20\Headers\2007-20
+CTD Header.txt
+ Channel  4: Fluorescence:Calibrated:Seapoint [mg/m^3]
+   Name:   Fluorescence:URU:Seapoint ==> Fluorescence:Calibrated:Seapoint
+$END
+
+*COMMENTS
+  SBE HEADER
+    Sea-Bird SBE 9 Data File:
+    FileName = C:\Science\2007-20\CTD\raw\200720_049.DAT
+    Software Version Seasave Win32 V 5.37d
+    Temperature SN = 03P
+    Conductivity SN = 04-2809
+    Number of Bytes Per Scan = 33
+    Number of Voltage Words = 5
+    Number of Scans Averaged by the Deck Unit = 1
+    System UpLoad Time = Aug 10 2007 03:59:48
+    NMEA Latitude = 77 56.00 N
+    NMEA Longitude = 149 49.92 W
+    NMEA UTC (Time) = Aug 10 2007  04:00:40
+    Store Lat/Lon Data = Add to Header Only
+     Ship:      CCGS Louis S. St-Laurent
+     Cruise:    2007-20
+     Station:      CB-9
+     Depth:  3816
+  # nquan = 23
+  # nvalues = 1
+  # units = specified
+  # name 0 = scan: Scan Count
+  # name 1 = prDM: Pressure, Digiquartz [db]
+  # name 2 = depSM: Depth [salt water, m]
+  # name 3 = t090C: Temperature [ITS-90, deg C]
+  # name 4 = t190C: Temperature, 2 [ITS-90, deg C]
+  # name 5 = c0mS/cm: Conductivity [mS/cm]
+  # name 6 = c1mS/cm: Conductivity, 2 [mS/cm]
+  # name 7 = sbeox0V: Oxygen Voltage, SBE 43
+  # name 8 = xmiss: Beam Transmission, Chelsea/Seatech/Wetlab CStar [%]
+  # name 9 = xmiss1: Beam Transmission, Chelsea/Seatech/Wetlab CStar, 2 [%]
+  # name 10 = flSP: Fluorescence, Seapoint
+  # name 11 = v6: Voltage 6
+  # name 12 = par: PAR/Irradiance, Biospherical/Licor
+  # name 13 = spar: SPAR/Surface Irradiance
+  # name 14 = altM: Altimeter [m]
+  # name 15 = sbeox0ML/L: Oxygen, SBE 43 [ml/l], WS = 1
+  # name 16 = sal00: Salinity [PSU]
+  # name 17 = sal11: Salinity, 2 [PSU]
+  # name 18 = nbin: number of scans per bin
+  # name 19 = potemp090C: Potential Temperature [ITS-90, deg C]
+  # name 20 = sigma-é00: Density [sigma-theta, Kg/m^3]
+  # name 21 = svCM: Sound Velocity [Chen-Millero, m/s]
+  # name 22 = flag: flag
+  # span 0 =       7145,       7145
+  # span 1 =      5.000,      5.000
+  # span 2 =      4.947,      4.947
+  # span 3 =    -0.7213,    -0.7213
+  # span 4 =    -0.7273,    -0.7273
+  # span 5 =  20.337957,  20.337957
+  # span 6 =  21.013278,  21.013278
+  # span 7 =     2.7663,     2.7663
+  # span 8 =    89.6492,    89.6492
+  # span 9 =    87.9209,    87.9209
+  # span 10 = 4.9605e-02, 4.9605e-02
+  # span 11 =     0.6493,     0.6493
+  # span 12 = 1.2509e+02, 1.2509e+02
+  # span 13 = 1.8640e+03, 1.8640e+03
+  # span 14 =      78.53,      78.53
+  # span 15 =    7.76121,    7.76121
+  # span 16 =    24.2654,    24.2654
+  # span 17 =    25.1388,    25.1388
+  # span 18 =         70,         70
+  # span 19 =    -0.7213,    -0.7213
+  # span 20 =    19.4474,    19.4474
+  # span 21 =    1431.43,    1431.43
+  # span 22 = 0.0000e+00, 0.0000e+00
+  # interval = decibars: 1
+  # start_time = Aug 10 2007 03:59:48
+  # bad_flag = -9.990e-29
+  # sensor 0 = Frequency  0  temperature, primary, 03P, 5-Jan-07 (ITS90)
+  # sensor 1 = Frequency  1  conductivity, primary, 04-2809, 9-Jan-07, cpcor = -9.
+  5700e-08
+  # sensor 2 = Frequency  2  pressure, 90559, 10/29/02
+  # sensor 3 = Frequency  3  temperature, secondary, 03P, 30-Decb-06 (ITS90)
+  # sensor 4 = Frequency  4  conductivity, secondary, 2810, 9 Jan 07, cpcor = -9.5
+  700e-08
+  # sensor 5 = Extrnl Volt  0  Oxygen, SBE, primary, 435, 25 Jan 2007
+  # sensor 6 = Extrnl Volt  1  altimeter
+  # sensor 7 = Extrnl Volt  2  Fluorometer, Seapoint, primary
+  # sensor 8 = Extrnl Volt  3  transmissometer, primary, CST-662DR, 20-Mar-2003
+  # sensor 9 = Extrnl Volt  4  transmissometer, secondary, 993DR, Aug 28 2006
+  # sensor 10 = Extrnl Volt  7  irradiance (PAR), primary, QCP, 13 Mar 2007
+  # sensor 11 = Extrnl Volt  9  surface irradiance (SPAR), degrees = 0.0
+  # datcnv_date = Jun 01 2008 22:43:02, 5.31
+  # datcnv_in = c:\200720\ctdproc\200720_049.dat c:\200720\ctdproc\200719-0724-spa
+  r-30jul2007_nmea_pbias22may08.CON
+  # datcnv_skipover = 4100
+  # alignctd_date = Jun 01 2008 22:43:03, 5.31
+  # alignctd_in = c:\200720\ctdproc\200720_049.cnv
+  # alignctd_adv = sbeox0V 8.000
+  # wildedit_date = Jun 01 2008 22:43:04, 5.31
+  # wildedit_in = c:\200720\ctdproc\200720_049.cnv
+  # wildedit_pass1_nstd = 10.0
+  # wildedit_pass2_nstd = 20.0
+  # wildedit_pass2_mindelta = 0.000e+000
+  # wildedit_npoint = 100
+  # wildedit_vars = prDM depSM t090C t190C c0mS/cm c1mS/cm sbeox0V xmiss xmiss1 fl
+  SP v6 par spar altM
+  # wildedit_excl_bad_scans = yes
+  # celltm_date = Jun 01 2008 22:43:04, 5.31
+  # celltm_in = c:\200720\ctdproc\200720_049.cnv
+  # celltm_alpha = 0.0300, 0.0300
+  # celltm_tau = 7.0000, 7.0000
+  # celltm_temp_sensor_use_for_cond = primary, secondary
+  # filter_date = Jun 01 2008 22:43:05, 5.31
+  # filter_in = c:\200720\ctdproc\200720_049.cnv
+  # filter_low_pass_tc_A = 0.030
+  # filter_low_pass_tc_B = 0.150
+  # filter_low_pass_A_vars = c0mS/cm c1mS/cm
+  # filter_low_pass_B_vars = prDM depSM
+  # loopedit_date = Jun 01 2008 22:43:07, 5.31
+  # loopedit_in = c:\200720\ctdproc\200720_049.cnv
+  # loopedit_minVelocity = 0.000
+  # loopedit_excl_bad_scans = yes
+  # Derive_date = Jun 01 2008 22:43:08, 5.31
+  # Derive_in = c:\200720\ctdproc\200720_049.cnv c:\200720\ctdproc\200719-0724-spa
+  r-30jul2007_nmea_pbias22may08.CON
+  # derive_time_window_docdt = seconds: 1
+  # binavg_date = Jun 01 2008 22:43:09, 5.31
+  # binavg_in = c:\200720\ctdproc\200720_049.cnv
+  # binavg_bintype = decibars
+  # binavg_binsize = 1
+  # binavg_excl_bad_scans = yes
+  # binavg_skipover = 0
+  # binavg_surface_bin = no, min = 0.000, max = 0.000, value = 0.000
+  # Derive_date = Jun 01 2008 22:43:10, 5.31
+  # Derive_in = c:\200720\ctdproc\200720_049.cnv c:\200720\ctdproc\200719-0724-spa
+  r-30jul2007_nmea_pbias22may08.CON
+  # split_date = Jun 01 2008 22:43:10, 5.31
+  # split_in = c:\200720\ctdproc\200720_049.cnv
+  # split_excl_bad_scans = yes
+  # file_type = ascii
+   END*
+
+  CTD Data Processing Notes:
+  --------------------------
+
+  For full details see report Physical and chemical data from the Canada Basin July 26 to
+  August 31, 2007 cited below.
+
+  Standard seabird processing steps and Matlab based routines were used.
+
+  CTD Pressure: Lab calibration (29th Oct 2002) adjusted by applying -0.48dbar offset to the bias
+  based on in-air surface readings of the CTD.
+
+  CTD Temperature: Pre-cruise lab calibration was used after comparisons with dual sensor and
+  post-cruise calibration information.
+
+  CTD Conductivity: Pre-cruise lab calibration adjusted after comparisons with dual sensor,
+  post-cruise calibrations and water sample data.  Primary conductivity adjusted by bias of
+  +0.0018 mS/cm . Secondary conductivity adjusted by bias of +0.0016 mS/cm.
+
+  CTD Oxygen: Oxygen data are from a SeaBird SBE43 sensor with pumped flow in-line after the
+  primary temperature and conductivity sensors. A lag of -8 seconds was applied to oxygen voltage
+  in the Seabird processing step Align. Downcast CTD oxygen voltage and upcast temperature and
+  salinity were used to calibrate CTD to water sample oxygen (upcast). The  107 casts required
+  6 calibration groups. Fitting method followed Seabirds Application Note 64-2 (“SBE 43 Dissolved
+  Oxygen Sensor Calibration and Data Corrections using Winkler Titrations”). A remaining pressure
+  dependent shape in the residual between water sample and CTD oxygen was removed by subtracting a
+  mean curve. Parts of the mean curve were found by fitting sections of data from discreet pressure
+  ranges. The parts were then stitched together via spline interpolation to create a full profile
+  mean curve.
+
+  CTD Fluorometer: Fluorometer data are from a Seapoint sensor with pumped flow in-line after the
+  secondary temperature and conductivity sensors. Calibration with bottle data performed using
+  bottle chlorophyll values between 0.025 and 0.60 mg/m3. The number of observations used were 116
+  out of 141 with a standard deviation of 0.03 in the residuals. Coefficients used: Slope: 0.7909,
+  Bias: -0.0045. Alignment of -4 seconds was used. Frequent single dropouts in fluorescence to 0
+  have been fixed by setting to neighbor value.
+
+  ISUS: Data are uncalibrated. The voltage is proportional to nitrate.
+
+  Transmissometer data are unprocessed, using calibration from 28 Aug 2006.
+
+  PAR data are unprocessed, using corrected calibration from 13 Mar 2007.
+
+  Altimeter data are unprocessed, using calibration from Mar 2005.
+
+  Data Notes:
+  - Spikes in temperature, conductivity and oxygen have been linearly interpolated over and where
+    needed secondary values (when available) have replaced the primary values.
+
+  Reference:
+
+  1. McLaughlin, F., Proshutinsky, A., Carmack, E.C., Shimada, K., Brown, K., Corkum, M.,
+     Dempsey, M., Drost, H., Eert, J., Guay, C., Gueguen, C., Hutchings, J., Itoh, M., Jackson, J.,
+     Kane, T., Krishfield, R., Li, B., Lovejoy, C., Maclean, H., Nelson, J., Nelson, R., Orlich, A.,
+     Smith, J., Steel, M., White, L., Wrohan, I., and Zimmermann, S. 2017. Physical and chemical
+     data from the Canada Basin July 26 to August 31, 2007. Can. Data Rep. Hydrogr. Ocean Sci. 189:
+     xx + xxx p. (in preparation).
+
+*CALIBRATION
+
+    $TABLE: CORRECTED CHANNELS
+    !Name                        Units        Fmla Pad    Coefficients
+    !--------------------------- ------------ ---- ------ ------------
+     Conductivity:Primary        mS/cm          10 -99    () (0.18E-02 1)
+     Conductivity:Secondary      mS/cm          10 -99    () (0.16E-02 1)
+     Fluorescence:URU:Seapoint   mg/m^3         10 -99    () (-0.45E-02 0.7909)
+     Transmissivity              %/metre        10 -99    () (0.559E-01
+                                                           0.525E-01)
+     Transmissivity              %/metre        10 -99    () (-1.084 19.36)
+     PAR                         uE/m^2/sec     10 -99    () (0 1.5976)
+    $END
+!----1---- ---2---- --3--- ---4--- ----5----- --6--- ---7--- ---8---- -9-- ----10----
+!Pressure  Temperat Transm Fluores PAR:       Altime Oxygen: Salinity Numb    Flag   
+!          ure:     issivi cence:  Reference  ter    Dissolv :T0:C0   er_o           
+!          Primary  ty     Calibra                   ed:SBE           ~bin           
+!                          ted:Sea                                    _rec           
+!                          point                                      ords           
+!--------- -------- ------ ------- ---------- ------ ------- -------- ---- ----------
+*END OF HEADER
+     5.000  -0.7213  65.71   0.035   1864.000   78.5   8.415  24.2530  70.  0.222E+03

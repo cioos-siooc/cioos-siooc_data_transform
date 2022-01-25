@@ -60,7 +60,7 @@ def _create_new_empty_variable(dset, new_variable_name, similar_variables, long_
         variable_type = temp_var.dtype
 
         if new_variable_name not in dset.variables.keys():
-            dset.createVariable(new_variable_name, variable_type, variable_dimensions)
+            dset.createVariable(new_variable_name, variable_type, variable_dimensions, fill_value=np.nan)
 
         dset[new_variable_name].long_name = long_name
         dset[new_variable_name].standard_name = standard_name

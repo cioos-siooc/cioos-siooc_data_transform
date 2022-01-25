@@ -1,6 +1,9 @@
+from datetime import datetime
+from pytz import timezone
 import json
 from cioos_data_transform.OceanNcFile import CurNcFile
-from cioos_data_transform.OceanNcVar import OceanNcVar
+
+# from cioos_data_transform.OceanNcVar import OceanNcVar
 from cioos_data_transform.utils import is_in
 import numpy as np
 
@@ -30,7 +33,7 @@ def add_ne_speed(speed, direction):
     return east_comp, north_comp
 
 
-def write_cur_ncfile(filename, curcls):
+def write_cur_ncfile(filename, curcls, config={}):
     """
     use data and methods in curcls object to write the current meter data into a netcdf file
     authors:    Pramod Thupaki pramod.thupaki@hakai.org,
@@ -45,214 +48,189 @@ def write_cur_ncfile(filename, curcls):
     if ".CUR" in filename:
         filename = ".cur".join(filename.rsplit(".CUR", 1))
 
-    out = CurNcFile()
+    date_format = "%Y-%m-%d %H:%M:%S%Z"
+    ncfile = CurNcFile()
     # write global attributes
-    out.featureType = "timeSeries"
-    out.summary = "This dataset contains observations made by the Institute of Ocean Sciences of Fisheries and Oceans (DFO) using current meters mounted on moorings."
-    out.title = "This dataset contains observations made by the Institute of Ocean Sciences of Fisheries and Oceans (DFO) using current meters mounted on moorings."
-    out.institution = "Institute of Ocean Sciences, 9860 West Saanich Road, Sidney, B.C., Canada"
-    out.infoUrl = "http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html"
-    out.cdm_profile_variables = "time"  # TEMPS901, TEMPS902, TEMPS601, TEMPS602, TEMPS01, PSALST01, PSALST02, PSALSTPPT01, PRESPR01
+    global_attrs = {}
+    ncfile.global_attrs = global_attrs
+
+    global_attrs["featureType"] = "timeSeries"
+
+    global_attrs["summary"] = config.get("summary")
+    global_attrs["title"] = config.get("title")
+    global_attrs["institution"] = config.get("institution")
+    global_attrs["infoUrl"] = config.get("infoUrl")
+    global_attrs["description"] = config.get("description")
+    global_attrs["keywords"] = config.get("keywords")
+    global_attrs["acknowledgement"] = config.get("acknowledgement")
+    global_attrs["naming_authority"] = "COARDS"
+    global_attrs["comment"] = config.get("comment")
+    global_attrs["creator_name"] = config.get("creator_name")
+    global_attrs["creator_email"] = config.get("creator_email")
+    global_attrs["creator_url"] = config.get("creator_url")
+    global_attrs["license"] = config.get("license")
+    global_attrs["keywords"] = config.get("keywords")
+    global_attrs["keywords_vocabulary"] = config.get("keywords_vocabulary")
+    global_attrs["Conventions"] = config.get("Conventions")
+    global_attrs["cdm_data_type"] = "TimeSeries"
+    global_attrs["cdm_timeseries_variables"] = "profile"
+    global_attrs["date_created"] = datetime.now(timezone("UTC")).strftime(
+        date_format
+    )
+    global_attrs["processing_level"] = config.get("processing_level")
+    global_attrs["standard_name_vocabulary"] = config.get(
+        "standard_name_vocabulary"
+    )
     # write full original header, as json dictionary
-    out.HEADER = json.dumps(
+    global_attrs["header"] = json.dumps(
         curcls.get_complete_header(), ensure_ascii=False, indent=False
     )
     # initcreate dimension variable
-    out.nrec = int(curcls.file["NUMBER OF RECORDS"])
+    global_attrs["nrec"] = int(curcls.file["NUMBER OF RECORDS"])
     # add variable profile_id (dummy variable)
-    ncfile_var_list = []
-    # profile_id = random.randint(1, 100000)
-    ncfile_var_list.append(
-        OceanNcVar(
-            "str_id",
-            "filename",
-            None,
-            None,
-            None,
-            curcls.filename.split("/")[-1],
-        )
-    )
+    global_attrs["filename"] = curcls.filename.split("/")[-1]
+    ncfile.add_var("str_id", "filename", None, curcls.filename.split("/")[-1])
     # add administration variables
     if "COUNTRY" in curcls.administration:
-        ncfile_var_list.append(
-            OceanNcVar(
-                "str_id",
-                "country",
-                None,
-                None,
-                None,
-                curcls.administration["COUNTRY"].strip(),
-            )
-        )
+        country = curcls.administration["COUNTRY"].strip()
+    else:
+        country = "n/a"
+    global_attrs["country"] = country
+    ncfile.add_var("str_id", "country", None, country)
+    # create mission id
     if "MISSION" in curcls.administration:
         mission_id = curcls.administration["MISSION"].strip()
+    elif "MISSION" in curcls.deployment:
+        mission_id = curcls.deployment["MISSION"].strip()
     else:
         mission_id = "n/a"
 
     if mission_id.lower() == "n/a":
-        # raise Exception("Error: Mission ID not available", curcls.filename)
-        # print("Mission ID not available !", curcls.filename)
-        ncfile_var_list.append(
-            OceanNcVar(
-                "str_id",
-                "deployment_mission_id",
-                None,
-                None,
-                None,
-                mission_id.lower(),
-            )
-        )
+        print("Mission ID not available !", curcls.filename)
     else:
         buf = mission_id.split("-")
         mission_id = "{:4d}-{:03d}".format(int(buf[0]), int(buf[1]))
-        ncfile_var_list.append(
-            OceanNcVar(
-                "str_id", "deployment_mission_id", None, None, None, mission_id
-            )
-        )
+    global_attrs["mission"] = mission_id
+    ncfile.add_var("str_id", "deployment_mission_id", None, mission_id)
 
-    if "SCIENTIST" in curcls.administration:
-        ncfile_var_list.append(
-            OceanNcVar(
-                "str_id",
-                "scientist",
-                None,
-                None,
-                None,
-                curcls.administration["SCIENTIST"].strip(),
-            )
-        )
-    if "PROJECT" in curcls.administration:
-        ncfile_var_list.append(
-            OceanNcVar(
-                "str_id",
-                "project",
-                None,
-                None,
-                None,
-                curcls.administration["PROJECT"].strip(),
-            )
-        )
-    if "AGENCY" in curcls.administration:
-        ncfile_var_list.append(
-            OceanNcVar(
-                "str_id",
-                "agency",
-                None,
-                None,
-                None,
-                curcls.administration["AGENCY"].strip(),
-            )
-        )
-    if "PLATFORM" in curcls.administration:
-        ncfile_var_list.append(
-            OceanNcVar(
-                "str_id",
-                "platform",
-                None,
-                None,
-                None,
-                curcls.administration["PLATFORM"].strip(),
-            )
-        )
-    # add instrument type
-    if "TYPE" in curcls.instrument:
-        ncfile_var_list.append(
-            OceanNcVar(
-                "str_id",
-                "instrument_type",
-                None,
-                None,
-                None,
-                curcls.instrument["TYPE"].strip(),
-            )
-        )
-    if "MODEL" in curcls.instrument:
-        ncfile_var_list.append(
-            OceanNcVar(
-                "str_id",
-                "instrument_model",
-                None,
-                None,
-                None,
-                curcls.instrument["MODEL"].strip(),
-            )
-        )
-    if "SERIAL NUMBER" in curcls.instrument:
-        ncfile_var_list.append(
-            OceanNcVar(
-                "str_id",
-                "instrument_serial_number",
-                None,
-                None,
-                None,
-                curcls.instrument["SERIAL NUMBER"].strip(),
-            )
-        )
-    if "DEPTH" in curcls.instrument:
-        ncfile_var_list.append(
-            OceanNcVar(
-                "instr_depth",
-                "instrument_depth",
-                None,
-                None,
-                None,
-                float(curcls.instrument["DEPTH"]),
-            )
-        )
-    # add locations variables
-    ncfile_var_list.append(
-        OceanNcVar(
-            "lat",
-            "latitude",
-            "degrees_north",
-            None,
-            None,
-            curcls.location["LATITUDE"],
-        )
-    )
-    ncfile_var_list.append(
-        OceanNcVar(
-            "lon",
-            "longitude",
-            "degrees_east",
-            None,
-            None,
-            curcls.location["LONGITUDE"],
-        )
-    )
-    ncfile_var_list.append(
-        OceanNcVar(
-            "str_id", "geographic_area", None, None, None, curcls.geo_code
-        )
-    )
-
+    # create event and profile ID
     if "EVENT NUMBER" in curcls.location:
         event_id = curcls.location["EVENT NUMBER"].strip()
     else:
-        # print("Event number not found!" + curcls.filename)
+        print("Event number not found!" + curcls.filename)
         event_id = "0000"
-    ncfile_var_list.append(
-        OceanNcVar("str_id", "event_number", None, None, None, event_id)
-    )
-    # add time variable
-    if mission_id.lower() == "n/a":
-        profile_id = "{}-{:04d}".format(mission_id.lower(), int(event_id))
+
+    ncfile.add_var("str_id", "event_number", None, event_id)
+
+    if mission_id is None or mission_id == "n/a":
+        year_string = curcls.obs_time[0].strftime("%Y")
+        profile_id = "{}-000-{:04d}".format(year_string, int(event_id))
     else:
         profile_id = "{:04d}-{:03d}-{:04d}".format(
             int(buf[0]), int(buf[1]), int(event_id)
         )
-
     # print(profile_id)
-    ncfile_var_list.append(
-        OceanNcVar("profile", "profile", None, None, None, profile_id)
+    ncfile.add_var("profile", "profile", None, profile_id)
+    global_attrs["id"] = profile_id
+
+    if "SCIENTIST" in curcls.administration:
+        scientist = curcls.administration["SCIENTIST"].strip()
+    else:
+        scientist = "n/a"
+    global_attrs["scientist"] = scientist
+    ncfile.add_var("str_id", "scientist", None, scientist)
+
+    if "PROJECT" in curcls.administration:
+        project = curcls.administration["PROJECT"].strip()
+    else:
+        project = "n/a"
+    global_attrs["project"] = project
+    ncfile.add_var("str_id", "project", None, project)
+
+    if "AGENCY" in curcls.administration:
+        agency = curcls.administration["AGENCY"].strip()
+    else:
+        agency = "n/a"
+    global_attrs["agency"] = agency
+    ncfile.add_var("str_id", "agency", None, agency)
+
+    if "PLATFORM" in curcls.administration:
+        platform = curcls.administration["PLATFORM"].strip()
+    else:
+        platform = "n/a"
+    global_attrs["platform"] = platform
+    ncfile.add_var("str_id", "platform", None, platform)
+
+    # add instrument type
+    if "TYPE" in curcls.instrument:
+        ncfile.add_var(
+            "str_id",
+            "instrument_type",
+            None,
+            curcls.instrument["TYPE"].strip(),
+        )
+
+    if "MODEL" in curcls.instrument:
+        ncfile.add_var(
+            "str_id",
+            "instrument_model",
+            None,
+            curcls.instrument["MODEL"].strip(),
+        )
+
+    if "SERIAL NUMBER" in curcls.instrument:
+        ncfile.add_var(
+            "str_id",
+            "instrument_serial_number",
+            None,
+            curcls.instrument["SERIAL NUMBER"].strip(),
+        )
+
+    if "DEPTH" in curcls.instrument:
+        ncfile.add_var(
+            "instr_depth",
+            "instrument_depth",
+            None,
+            float(curcls.instrument["DEPTH"]),
+        )
+    # add locations variables
+    ncfile.add_var(
+        "lat",
+        "latitude",
+        "degrees_north",
+        curcls.location["LATITUDE"],
+    )
+    global_attrs["geospatial_lat_min"] = curcls.location["LATITUDE"]
+    global_attrs["geospatial_lat_max"] = curcls.location["LATITUDE"]
+    ncfile.add_var(
+        "lon",
+        "longitude",
+        "degrees_east",
+        curcls.location["LONGITUDE"],
+    )
+    global_attrs["geospatial_lon_min"] = curcls.location["LONGITUDE"]
+    global_attrs["geospatial_lon_max"] = curcls.location["LONGITUDE"]
+    global_attrs["geospatial_bounds"] = "POINT ({}, {})".format(
+        curcls.location["LONGITUDE"], curcls.location["LATITUDE"]
     )
 
-    # Check if variable lengths are same length as curcls.obs_time
-    ncfile_var_list.append(
-        OceanNcVar(
-            "time", "time", None, None, None, curcls.obs_time, vardim=("time")
-        )
+    ncfile.add_var("str_id", "geographic_area", None, curcls.geo_code)
+
+    # add time variables and attributes
+    global_attrs["time_coverage_duration"] = str(
+        curcls.obs_time[-1] - curcls.obs_time[0]
+    )
+
+    global_attrs["time_coverage_resolution"] = str(
+        curcls.obs_time[1] - curcls.obs_time[0]
+    )
+
+    ncfile.add_var("time", "time", None, curcls.obs_time, vardim=("time"))
+    global_attrs["time_coverage_start"] = curcls.obs_time[0].strftime(
+        date_format
+    )
+    global_attrs["time_coverage_end"] = curcls.obs_time[-1].strftime(
+        date_format
     )
     # direction_index = None
     # for i, channel in enumerate(curcls.channels['Name']):
@@ -288,347 +266,275 @@ def write_cur_ncfile(filename, curcls):
                 print("Channel Details missing. Setting Pad value to ' ' ...")
                 null_value = "' '"
         if is_in(["depth"], channel):
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "depth",
-                    "depth",
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "depth",
+                "depth",
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
+
         elif is_in(["pressure"], channel):
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "pressure",
-                    "pressure",
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "pressure",
+                "pressure",
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
+
         elif is_in(["temperature:low_res"], channel):
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "temperature:cur:low_res",
-                    curcls.channels["Name"][i],
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "temperature:cur:low_res",
+                curcls.channels["Name"][i],
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
+
         elif is_in(["temperature"], channel) and not is_in(
             ["temperature:high_res", "temperature:low_res"], channel
         ):
             temp_count += 1
             if temp_count == 1:
-                ncfile_var_list.append(
-                    OceanNcVar(
-                        "temperature:cur",
-                        curcls.channels["Name"][i],
-                        curcls.channels["Units"][i],
-                        curcls.channels["Minimum"][i],
-                        curcls.channels["Maximum"][i],
-                        curcls.data[:, i],
-                        ncfile_var_list,
-                        ("time"),
-                        null_value,
-                    )
+                ncfile.add_var(
+                    "temperature:cur",
+                    curcls.channels["Name"][i],
+                    curcls.channels["Units"][i],
+                    curcls.data[:, i],
+                    ("time"),
+                    null_value,
+                    attributes={"featureType": "timeSeries"},
                 )
             elif temp_count == 2:
-                ncfile_var_list.append(
-                    OceanNcVar(
-                        "temperature:cur:high_res",
-                        curcls.channels["Name"][i],
-                        curcls.channels["Units"][i],
-                        curcls.channels["Minimum"][i],
-                        curcls.channels["Maximum"][i],
-                        curcls.data[:, i],
-                        ncfile_var_list,
-                        ("time"),
-                        null_value,
-                    )
-                )
-        elif is_in(["temperature:high_res"], channel):
-            ncfile_var_list.append(
-                OceanNcVar(
+                ncfile.add_var(
                     "temperature:cur:high_res",
                     curcls.channels["Name"][i],
                     curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
                     curcls.data[:, i],
-                    ncfile_var_list,
                     ("time"),
                     null_value,
+                    attributes={"featureType": "timeSeries"},
                 )
+        elif is_in(["temperature:high_res"], channel):
+            ncfile.add_var(
+                "temperature:cur:high_res",
+                curcls.channels["Name"][i],
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
         elif is_in(["salinity"], channel):
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "salinity:cur",
-                    curcls.channels["Name"][i],
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "salinity:cur",
+                curcls.channels["Name"][i],
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
+
         elif is_in(["oxygen"], channel) and not is_in(
             ["flag", "bottle", "rinko", "temperature", "current"], channel
         ):
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "oxygen",
-                    curcls.channels["Name"][i],
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "oxygen",
+                curcls.channels["Name"][i],
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
+
         elif is_in(["conductivity"], channel) and not is_in(
             ["conductivity_ratio", "conductivity ratio"], channel
         ):
             pass
+
         elif is_in(["conductivity_ratio", "conductivity ratio"], channel):
             pass
+
         elif is_in(["speed:east", "ew_comp"], channel):
             flag_ne_speed += 1
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "speed:east",
-                    curcls.channels["Name"][i],
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "speed:east",
+                curcls.channels["Name"][i],
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
+
         elif is_in(["speed:north", "ns_comp"], channel):
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "speed:north",
-                    curcls.channels["Name"][i],
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "speed:north",
+                curcls.channels["Name"][i],
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
+
         elif is_in(["speed:up"], channel):
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "speed:up",
-                    curcls.channels["Name"][i],
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "speed:up",
+                curcls.channels["Name"][i],
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
+
         elif is_in(["amplitude:beam1"], channel):
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "amplitude:beam1",
-                    curcls.channels["Name"][i],
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "amplitude:beam1",
+                curcls.channels["Name"][i],
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
+
         elif is_in(["amplitude:beam2"], channel):
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "amplitude:beam2",
-                    curcls.channels["Name"][i],
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "amplitude:beam2",
+                curcls.channels["Name"][i],
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
+
         elif is_in(["amplitude:beam3"], channel):
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "amplitude:beam3",
-                    curcls.channels["Name"][i],
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "amplitude:beam3",
+                curcls.channels["Name"][i],
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
+
         elif is_in(["speed:sound"], channel) and not is_in(
             ["speed:sound:1", "speed:sound:2"], channel
         ):
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "speed:sound",
-                    curcls.channels["Name"][i],
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "speed:sound",
+                curcls.channels["Name"][i],
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
+
         elif is_in(["speed:sound:1"], channel):
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "speed:sound:1",
-                    curcls.channels["Name"][i],
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "speed:sound:1",
+                curcls.channels["Name"][i],
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
+
         elif is_in(["speed:sound:2"], channel):
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "speed:sound:2",
-                    curcls.channels["Name"][i],
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "speed:sound:2",
+                curcls.channels["Name"][i],
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
+
         elif is_in(["heading"], channel):
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "heading",
-                    curcls.channels["Name"][i],
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "heading",
+                curcls.channels["Name"][i],
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
+
         elif is_in(["pitch"], channel):
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "pitch",
-                    curcls.channels["Name"][i],
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "pitch",
+                curcls.channels["Name"][i],
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
+
         elif is_in(["roll"], channel):
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "roll",
-                    curcls.channels["Name"][i],
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "roll",
+                curcls.channels["Name"][i],
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
+
         elif is_in(["speed"], channel):
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "speed",
-                    curcls.channels["Name"][i],
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "speed",
+                curcls.channels["Name"][i],
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
             index_speed = i
+
         elif is_in(["direction:geog(to)", "direction:current"], channel):
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "direction:geog(to)",
-                    curcls.channels["Name"][i],
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "direction:geog(to)",
+                curcls.channels["Name"][i],
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
             index_direction = i
+
         elif is_in(["sigma-t"], channel):
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "sigma-t",
-                    curcls.channels["Name"][i],
-                    curcls.channels["Units"][i],
-                    curcls.channels["Minimum"][i],
-                    curcls.channels["Maximum"][i],
-                    curcls.data[:, i],
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "sigma-t",
+                curcls.channels["Name"][i],
+                curcls.channels["Units"][i],
+                curcls.data[:, i],
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
         else:
             print(channel, "not transferred to netcdf file !")
-            # raise Exception('not found !!')
 
     # Calculate North and East components of speed if missing
     try:
@@ -659,39 +565,31 @@ def write_cur_ncfile(filename, curcls):
                 )
 
             null_value = "' '"
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "speed:east",
-                    "Speed:East",
-                    curcls.channels["Units"][index_speed],
-                    np.nanmin(speed_east),
-                    np.nanmax(speed_east),
-                    speed_east,
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+            ncfile.add_var(
+                "speed:east",
+                "Speed:East",
+                curcls.channels["Units"][index_speed],
+                speed_east,
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
-            ncfile_var_list.append(
-                OceanNcVar(
-                    "speed:north",
-                    "Speed:North",
-                    curcls.channels["Units"][index_speed],
-                    np.nanmin(speed_north),
-                    np.nanmax(speed_north),
-                    speed_north,
-                    ncfile_var_list,
-                    ("time"),
-                    null_value,
-                )
+
+            ncfile.add_var(
+                "speed:north",
+                "Speed:North",
+                curcls.channels["Units"][index_speed],
+                speed_north,
+                ("time"),
+                null_value,
+                attributes={"featureType": "timeSeries"},
             )
             print("Calculated east and north speed components ...")
     except UnboundLocalError as e:
         print("Speed and speed component channels not found in file !")
 
     # attach variables to ncfileclass and call method to write netcdf file
-    out.varlist = ncfile_var_list
-    out.write_ncfile(filename)
+    ncfile.write_ncfile(filename)
     print("Finished writing file:", filename, "\n")
     # release_memory(out)
     return 1

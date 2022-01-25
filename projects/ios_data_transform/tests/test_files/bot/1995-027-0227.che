@@ -1,0 +1,105 @@
+*2013/12/22 11:36:43.51
+*IOS HEADER VERSION 1.10 2011/10/26 2011/10/26
+
+*FILE
+    START TIME          : UTC 1995/09/28 22:19:00.000
+    NUMBER OF RECORDS   : 1
+    DATA DESCRIPTION    : Bottle:Rosette:Up:Stop + CTD:Down
+    FILE TYPE           : ASCII
+    NUMBER OF CHANNELS  : 8
+
+    $TABLE: CHANNELS
+    ! No Name                   Units     Minimum        Maximum
+    !--- ---------------------- --------- -------------- --------------
+       1 Sample_Number          n/a       510            510
+       2 Pressure               decibar   40             40
+       3 Salinity               PSS-78    30.083         30.083
+       4 Oxygen:Dissolved       umol/kg   106.7          106.7
+       5 Nitrate_plus_Nitrite   umol/L    26.7           26.7
+       6 Silicate               umol/L    45.7           45.7
+       7 Phosphate              umol/L    2.43           2.43
+       8 Ammonium               umol/L    0.12           0.12
+    $END
+
+    $TABLE: CHANNEL DETAIL
+    ! No  Pad   Start  Width  Format  Type  Decimal_Places
+    !---  ----  -----  -----  ------  ----  --------------
+       1  -99   ' '    ' '    I5      I     ' '
+       2  -99   ' '    ' '    F7.1    R4    ' '
+       3  -99   ' '    ' '    F8.3    R4    ' '
+       4  -99   ' '    ' '    F7.1    R4    ' '
+       5  -99   ' '    ' '    F6.1    R4    ' '
+       6  -99   ' '    ' '    F6.1    R4    ' '
+       7  -99   ' '    ' '    F7.2    R4    ' '
+       8  -99   ' '    ' '    F7.2    R4    ' '
+    $END
+
+*ADMINISTRATION
+    MISSION             : 1995-27
+    AGENCY              : IOS, Ocean Science and Productivity, Sidney, B.C.
+    COUNTRY             : Canada
+    PROJECT             : Saanich Inlet
+    SCIENTIST           : Stucchi D.
+    PLATFORM            : R.B. Young
+
+*LOCATION
+    GEOGRAPHIC AREA     : Saanich Inlet
+    STATION             : S3
+    EVENT NUMBER        : 227
+    LATITUDE            :  48  35.37000 N  ! (deg min)
+    LONGITUDE           : 123  30.13000 W  ! (deg min)
+
+*HISTORY
+
+    $TABLE: PROGRAMS
+    !   Name                     Vers   Date       Time     Recs In   Recs Out
+    !   ------------------------ ------ ---------- -------- --------- ---------
+        SPRD2IS                  4.9    2012/08/20 14:22:23         1         1
+        HDREDIT2                 2.5.1  2012/08/20 14:31:07 ?         ?
+        SORT                     3.5    2012/08/20 14:32:40         1         1
+        CLEAN                    5.0.4  2012/08/20 14:33:27         1         1
+        CHANGE_CTD_CHANNEL_NAMES 1.0    2013/12/22 11:36:43         1         1
+    $END
+    $REMARKS
+        -HEADER EDITS: 2012/08/20 14:31:07
+         Applied edit header: C:\temp\Frank\1995-27\1995-27.txt
+        -SORT parameters: 2012/08/20 14:32:40
+         Sorted in ascending order of channel Pressure
+        -CLEAN functions: 2012/08/20 14:33:26 20
+         Reset #RECS, MIN & MAX values in header.
+         Delete Empty Channels:     0 deleted.
+    $END
+
+*INSTRUMENT
+    TYPE                : Bottle
+    MODEL               : Niskin 10 Litre
+
+*COMMENTS
+
+    Collection method:
+    ------------------
+      A rosette, holding 24 ten-litre water samplers, with a CTD was used.
+
+    Analysis methods:
+    -----------------
+
+      Salinity samples are collected in glass bottles and analyzed on Guildline
+      model 8410 Portasal Salinometers which are standardized with IAPSO standard
+      seawater.
+
+      Oxygen samples are analyzed on an automated Winkler titration system
+      following the procedures of Carpenter (1965). A Brinkmann model 665 Dosimat
+      and model PC910 Colorimeter is controlled by Visual-Basic program to
+      titrate the oxygen samples.
+
+      Nutrient samples are analyzed fresh on board using a Technicon AAII auto-
+      analyzer following methods described in Barwell-Clarke and Whitney (1996).
+!-1-- --2--- ---3--- --4--- --5-- --6-- --7--- --8---
+!Samp Pressu Salinit Oxygen Nitra Silic Phosph Ammoni
+!le_  re     y       :      te_   ate   ate    um    
+!Numb                Dissol plus_                    
+!er                  ved    Nitri                    
+!                           te                       
+!---- ------ ------- ------ ----- ----- ------ ------
+*END OF HEADER
+  510   40.0  30.083  106.7  26.7  45.7   2.43   0.12
