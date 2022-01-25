@@ -14,6 +14,10 @@ import json
 import gsw
 
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 # Dictionary with the mapping of the odf types to python types
 odf_dtypes = {
     "DOUB": "float64",
@@ -212,9 +216,7 @@ def read(filename, encoding_format="Windows-1252"):
                 original_prefix_var_attribute + "UNITS"
             )
             if units not in [None, "none", "(none)", "GMT", "UTC", "seconds"]:
-                warnings.warn(
-                    "{0} has UNITS(timezone) of {1}".format(parm, units), UserWarning
-                )
+                logger.warn(f"{filename}: {parm} has UNITS (timezone) of {units}")
 
     # TODO review if the count of flagged values versus good is the same as ODF attributes NUMBER_VALID NUMBER_NULL
     return metadata, data_raw
@@ -380,6 +382,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
             continue
 
         # Consider only the first organization that has this term
+        selected_organization = matching_terms.index[0][0]
         matching_terms = matching_terms.loc[matching_terms.index[0][0]]
 
         # Among these matching terms find matching ones
@@ -410,10 +413,9 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
 
         # No matching term, give a warning if not a flag and move on to the next iteration
         if len(matching_terms_and_units) == 0:
-            warnings.warn(
-                f"No Matching unit found for {var} [{attrs.get('units')}] in:"
-                + f"{matching_terms['accepted_units'].to_dict()}",
-                UserWarning,
+            logger.warn(
+                f"ODF File: {ds['file_id'].values} -> No Matching unit found for {var} [{attrs.get('units')}] in:"
+                + f" {selected_organization} -> {str(matching_terms['accepted_units'].to_dict())}"
             )
             new_variable_order.append(var)
             continue

@@ -13,6 +13,21 @@ from cioos_data_transform.utils.utils import fix_path
 from cioos_data_transform.utils.utils import get_geo_code, read_geojson
 import pandas as pd
 
+import logging
+
+# Log to log file
+logging.captureWarnings(True)
+logging.basicConfig(filename="odf_transform.log", level=logging.INFO)
+logger = logging.getLogger()
+
+# set up logging to console
+console = logging.StreamHandler()
+console.setLevel(logging.DEBUG)
+# set a format which is simpler for console use
+formatter = logging.Formatter("[%(levelname)-8s] %(message)s")
+console.setFormatter(formatter)
+# add the handler to the root logger
+logging.getLogger("").addHandler(console)
 
 CONFIG_PATH = fix_path("./config.json")
 
@@ -109,18 +124,10 @@ def convert_odf_files(config, odf_files_list=[], output_path=""):
                 output_path=output_path + "{}.nc".format(os.path.basename(f)),
                 config=config,
             )
-
+        except KeyError as e:
+            logger.error(f"{f} is missing {e.args}")
         except Exception as e:
-            # Copy problematic files to a subfolder
-            if not os.path.isdir(os.path.join(os.path.dirname(f), "failed")):
-                os.mkdir(os.path.join(os.path.dirname(f), "failed"))
-            shutil.copy(
-                f, os.path.join(os.path.dirname(f), "failed", os.path.split(f)[-1]),
-            )
-
-            print("***** ERROR***", f)
-            print(e)
-            print(traceback.print_exc())
+            logger.error(f"Failed to convert: {f}", exc_info=True)
 
 
 def read_geojson_file_list(file_list):
