@@ -41,7 +41,7 @@ class GF3Code:
 
     def __init__(self, code):
         self.code = re.search("^[^_]*", code)[0]
-        index = re.search("\d*$", code)
+        index = re.search("\d+$", code)
         if index:
             self.index = int(index[0])
         else:
