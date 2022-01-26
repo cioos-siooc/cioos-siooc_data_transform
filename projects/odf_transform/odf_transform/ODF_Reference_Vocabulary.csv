@@ -301,8 +301,9 @@ GF3,FDT$,MEDS,,,,,,,,,,,,,,,,,,FDT$,
 GF3,FFFF,"BIO,IML,MEDS",none,,,,,,,none,,,,,,,,,,,
 GF3,FIXF,MEDS,,,,,,,,,,,,,,,,,,FIXF,
 GF3,FLO1,MEDS,milligram per litre,,,,,,,milligram per litre,,,,,,SDN:P06::UMGL,Milligrams per litre,,,FLO1,
-GF3,FLOR,"BIO,IML,MEDS",mg/m^3|mg/m**3|milligram per metre cube|ug/L|ug/l,,fluoresdence|fluo|Flourescence,,,CPHLPR01,,mg/m^3,fluoresdence,,mass_concentration_of_chlorophyll_in_sea_water,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,SDN:P06::UMMC,Milligrams per cubic metre,,,FLOR,chl-a_water_ISfluor
-GF3,FLOR,"BIO,IML,MEDS",mg/m^3|mg/m**3|milligram per metre cube|ug/L|ug/l,,cdom,,,,,mg/m^3,cdom,,,SDN:P01::CDOMZZ01,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by fluorometry,SDN:P06::UMMC,Milligrams per cubic metre,,,FLOR,CDOM_fluor
+GF3,FLOR,"BIO,IML,MEDS",mg/m^3|mg/m**3|milligram per metre cube|ug/L|ug/l,,fluoresdence|fluo|Flourescence|^FSP_,,,CPHLPR01,,mg/m^3,,,mass_concentration_of_chlorophyll_in_sea_water,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,SDN:P06::UMMC,Milligrams per cubic metre,,,FLOR,chl-a_water_ISfluor
+GF3,FLOR,"BIO,IML,MEDS",mg/m^3|mg/m**3|milligram per metre cube|ug/L|ug/l,,^FSPUV_,,,FLOR_SPUV,,mg/m^3,,,,,,,,,,,
+GF3,FLOR,"BIO,IML,MEDS",mg/m^3|mg/m**3|milligram per metre cube|ug/L|ug/l,,cdom,,,,,mg/m^3,,,,SDN:P01::CDOMZZ01,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by fluorometry,SDN:P06::UMMC,Milligrams per cubic metre,,,FLOR,CDOM_fluor
 GF3,FLORSDEV,"BIO,MEDS",mg/m^3,,,,,,,mg/m^3,,,,,,SDN:P06::UMMC,Milligrams per cubic metre,,,FLORSDEV,
 GF3,FLU$,MEDS,percent,,,,,,,percent,,,,,,SDN:P06::UPCT,Percent,,,FLU$,
 GF3,FLU1,MEDS,milligram per metre cube,,,,,,,milligram per metre cube,,,,,,,,,,FLU1,
@@ -618,7 +619,8 @@ GF3,PSAL,"BIO,IML,MEDS",1e-3|psu|PSU|practical salinity unit (PSS-78)||none,PSS-
 GF3,PSEA,MEDS,practical salinity unit (PSS-78),PSS-78,,,,,,practical salinity unit (PSS-78),,PSS-78,,,,,,,,PSEA,
 GF3,PSP$,MEDS,decibar,,,,,,,decibar,,,,,,SDN:P06::UPDB,Decibars,,,PSP$,
 GF3,PSQ$,MEDS,decibar,,,,,,,decibar,,,,,,SDN:P06::UPDB,Decibars,,,PSQ$,
-GF3,PSAR,"BIO,IML,MEDS",ueinsteins/s/m^2|micromole per metre square per second|micromoles/m^2/sec,,,,,,,ueinsteins/s/m^2,,,surface_downwelling_photo_flux_in_sea_water,,,,,,,PSAR,
+GF3,PSAR,"BIO,IML,MEDS",ueinsteins/s/m^2|micromole per metre square per second|micromoles/m^2/sec,,,,,,,ueinsteins/s/m^2,,,downwelling_photosynthetic_photon_spherical_irradiance_in_sea_water,,,,,,,PSAR,
+BIO,PSAR,"BIO,IML,MEDS",none,,,,,PSAR_noUnits,,,,,downwelling_photosynthetic_photon_spherical_irradiance_in_sea_water,,,,,,,PSAR,
 GF3,PTCHSDEV,"BIO,MEDS",,,,,,,,,,,,,,,,,,PTCHSDEV,
 GF3,PTM$,MEDS,,,,,,,,,,,,,,,,,,PTM$,
 GF3,PTP1,MEDS,,,,,,,,,,,,,,,,,,PTP1,
@@ -724,7 +726,8 @@ GF3,SOU$,MEDS,metre,,,,,,,metre,,,sea_floor_depth_below_mean_sea_level,,,SDN:P06
 GF3,SOUT,MEDS,watt per metre square,,,,,,,watt per metre square,,,,,,,,,,SOUT,
 GF3,SOXY,MEDS,millimole per metre cube,,,,,,,millimole per metre cube,,,,,,,,,,SOXY,
 GF3,SPA$,MEDS,microeinstein per metre square per second,,,,,,,microeinstein per metre square per second,,,,,,,,,,SPA$,
-GF3,SPAR,"BIO,MEDS",ueinsteins/s/m^2,,,,,,,ueinsteins/s/m^2,,,,,,,,,,SPAR,
+BIO,SPAR,"BIO,MEDS",none,,,,,SPAR_noUnits,,,,,surface_downwelling_photosynthetic_photon_spherical_irradiance_in_sea_water,,,,,,,SPAR,
+GF3,SPAR,"BIO,MEDS",ueinsteins/s/m^2,,,,,,,ueinsteins/s/m^2,,,surface_downwelling_photosynthetic_photon_spherical_irradiance_in_sea_water,,,,,,,SPAR,
 GF3,SPARSDEV,"BIO,MEDS",ueinsteins/s/m^2,,,,,,,ueinsteins/s/m^2,,,,,,,,,,SPARSDEV,
 GF3,SPC$,MEDS,metre per second,,,,,,,metre per second,,,,,,SDN:P06::UVAA,Metres per second,,,SPC$,
 GF3,SPCF,MEDS,hertz,,,,,,,hertz,,,,,,SDN:P06::UTHZ,Hertz,,,SPCF,
@@ -1010,7 +1013,7 @@ GF3,ZEOX,BIO,milligram per metre cube,,,,,,,milligram per metre cube,,,,,,,,,,ZE
 GF3,ZNTH,"BIO,IML,MEDS",degree,,,,,,,degree,,,zenith_angle,,,SDN:P06::UAAA,Degrees,,,ZNTH,
 GF3,ZONE,MEDS,hour,,,,,,,hour,,,,,,SDN:P06::UHOR,Hours,,,ZONE,
 GF3,ZOO_,MEDS,,,,,,,,,,,,,,,,Number of zooplanktonic organisms counted,,ZOO_,
-GF3,TRB_,"MEDS,IML",NTU,,,,,TURBXXXX,,NTU,,,sea_water_turbidity,SDN:P01::TURBXXXX,Turbidity of water in the water body,SDN:P06::UFNU,Formazin Nephelometric Units,Estimate of suspended sediment concentration based on the proportion of a light transmission in the water column that is reflected back to a co-located receiver.,,TRB_,Turbidity
+GF3,TRB_,"MEDS,IML",NTU,,,,,TURB_NTU,,NTU,,,sea_water_turbidity,SDN:P01::TURBXXXX,Turbidity of water in the water body,SDN:P06::USTU,Nephelometric Turbidity Units,Estimate of suspended sediment concentration based on the proportion of a light transmission in the water column that is reflected back to a co-located receiver.,,TRB_,Turbidity
 IOS,Adenosine_Triphosphate,IOS,milligram per metre cube,,,,,,,milligram per metre cube,,,,,,,,,,,
 IOS,Alkalinity:Carbonate,IOS,micromole per kilogram,,,,,,,micromole per kilogram,,,,,,SDN:P06::KGUM,Micromoles per kilogram,,,,
 IOS,Alkalinity:Total,IOS,micromole per kilogram,,,,,,,micromole per kilogram,,,,,,SDN:P06::KGUM,Micromoles per kilogram,,,,
@@ -1500,6 +1503,7 @@ seabird,SvDF,CCADI,ft/s,,,,,,,ft/s,,,,,Sound velocity in the water body by CTD a
 seabird,SvWM,CCADI,m/s,,,,,SVELCT01,,m/s,,,,SDN:P01::SVELCT01,Sound velocity in the water body by CTD and computation from temperature and salinity by unspecified algorithm,SDN:P06::UVAA,Metres per second,Computed value from CTD temperature and salinity data,,SVEL,CTD_Sound_Vel
 seabird,SvWF,CCADI,ft/s,,,,,,,ft/s,,,,,Sound velocity in the water body by CTD and computation from temperature and salinity by Wilson algorithm,,,Computed value from CTD temperature and salinity data,,SVEL,Sound_Veloucity_WF
 seabird,Sbeox0ML/L,CCADI,ml/l,,,,,,,ml/l,,,volume_fraction_of_oxygen_in_sea_water,,ToBeDefined,SDN:P06::UMLL,Millilitres per litre,ToBeDefined,,,Sbeox0ML_per_L
-GF3,TURB,BIO,FTU|Formazine Turbidity Unit ,,,,,TURBXXXX,,FTU,,,sea_water_turbidity,SDN:P01::TURBXXXX,Turbidity of water in the water body,SDN:P06::UFNU,Formazin Nephelometric Units,Turbidity of water in the water body,,TURB,Turbidity
+GF3,TURB,BIO,FTU|Formazine Turbidity Unit ,,,,,TURB_FTU,,FTU,,,sea_water_turbidity,SDN:P01::TURBXXXX,Turbidity of water in the water body,SDN:P06::UFNU,Formazin Nephelometric Units,Turbidity of water in the water body,,TURB,Turbidity
+GF3,TURB,BIO,m^-1/sr,,WETECOBB,,,TURB_WETECOBB,,m^-1/sr,,,sea_water_turbidity,SDN:P01::TURBXXXX,Turbidity of water in the water body,,,Turbidity of water in the water body,,TURB,Turbidity
 GF3,UNKN,"BIO,IML",dimensionless,,,,,,,dimensionless,,,,,,SDN:P06::UUUU,Dimensionless,,,UNKN,
 GF3,VCSP,"BIO,IML,MEDS",m/s|metre per second|M/s,,,,,LRZAZZZZ,,m/s,,,upward_sea_water_velocity,SDN:P01::LRZAZZZZ,Upward velocity of water current in the water body,SDN:P06::UVAA,Metres per second,Upward velocity of water current in the water body,,VCSP,VertCurr
