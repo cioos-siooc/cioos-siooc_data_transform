@@ -8,7 +8,7 @@
     ],
     "vocabularyFile": "ODF_Reference_Vocabulary.csv",
     "organisationVocabulary": [
-        "QO",
+        "BIO",
         "GF3"
     ],
     "cdm_data_type": "Profile",
@@ -24,7 +24,7 @@
         "keywords": "temperature, salinity",
         "keywords_fra": "salinite",
         "acknowledgement": "thanks etc ...",
-        "naming_authority": "CF Standard Name Table v29",
+        "naming_authority": "unknown",
         "creator_name": "CIOOS",
         "creator_email": "cioos email here",
         "creator_url": "http://www.someurlhere.com",

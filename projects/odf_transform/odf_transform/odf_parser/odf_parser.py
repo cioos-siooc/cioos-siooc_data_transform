@@ -373,7 +373,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
             gf3 = None
             name = var
         matching_terms = vocabulary.query(
-            f"Vocabulary == {organizations} and name=='{name}'"
+            f"Vocabulary in{tuple(organizations)} and name=='{name}'"
         )
 
         # If nothing matches, move to the next one
