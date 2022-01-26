@@ -414,8 +414,8 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         # No matching term, give a warning if not a flag and move on to the next iteration
         if len(matching_terms_and_units) == 0:
             logger.warn(
-                f"ODF File: {ds['file_id'].values} -> No Matching unit found for {var} [{attrs.get('units')}] in:"
-                + f" {selected_organization} -> {str(matching_terms['accepted_units'].to_dict())}"
+                f"ODF File: {ds['file_id'].values} -> No Matching unit found for code: {var}, long_name: {attrs.get('long_name')}, units: {attrs.get('units')} in vocabulary {selected_organization}\n"
+                + f"{matching_terms[['accepted_units','accepted_scale','accepted_instruments']]}"
             )
             new_variable_order.append(var)
             continue
