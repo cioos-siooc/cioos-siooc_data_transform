@@ -382,8 +382,15 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
             continue
 
         # Consider only the first organization that has this term
-        selected_organization = matching_terms.index[0][0]
-        matching_terms = matching_terms.loc[matching_terms.index[0][0]]
+        selected_organization = (
+            matching_terms.index.get_level_values(0).drop_duplicates().tolist()
+        )
+        if len(selected_organization) > 1:
+            present_organizations = [
+                org for org in organizations if org in selected_organization
+            ]
+            selected_organization = present_organizations[0]
+            matching_terms = matching_terms.loc[selected_organization]
 
         # Among these matching terms find matching ones
         match_units = matching_terms["accepted_units"].apply(
