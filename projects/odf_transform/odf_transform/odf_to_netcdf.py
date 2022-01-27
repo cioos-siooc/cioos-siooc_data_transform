@@ -163,19 +163,34 @@ if __name__ == "__main__":
         help="Enter the folder to write your NetCDF files to." + "Defaults to 'output'",
         required=False,
     )
+    parser.add_argument(
+        "-subdir",
+        action="store_true",
+        dest="subdir",
+        help="Look in subdirectories'",
+        required=False,
+    )
 
     args = parser.parse_args()
     odf_path = args.odf_path
     output_path = args.output_path + "/"
+    subdir = args.subdir
 
     odf_files_list = []
 
     if not odf_path:
         raise Exception("No odf_path")
 
-    if os.path.isdir(odf_path):
+    if os.path.isdir(odf_path) and subdir:
+        # Get all ODF within the subdirectories
+        for root, dirs, files in os.walk(odf_path):
+            for file in files:
+                if file.endswith(".ODF"):
+                    odf_files_list.append(os.path.join(root, file))
+
+    elif os.path.isdir(odf_path):
         odf_files_list = glob.glob(odf_path + "/*.ODF")
     elif os.path.isfile(odf_path):
         odf_files_list = [odf_path]
-
+    print(f"Convert {len(odf_files_list)} ODF files")
     convert_odf_files(config, odf_files_list, output_path)
