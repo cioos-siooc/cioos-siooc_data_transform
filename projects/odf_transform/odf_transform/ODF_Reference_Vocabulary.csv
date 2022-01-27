@@ -1,5 +1,5 @@
 Vocabulary,name,Users,accepted_units,accepted_scale,accepted_instruments,calibration_review,apply_function,variable_name,long_name,units,instrument,scale,standard_name,sdn_parameter_urn,sdn_parameter_name,sdn_uom_urn,sdn_uom_name,definition,convention,GF3_name,SDN:P01::Alternative Name
-CCADI,V5,CCADI,,,,,,,,volts,,,,,,SDN:P06::UVLT,Volts,Biospherical Instruments 2-pi PAR lightmeter,,VC5_,
+GF3,ALKW,IML,umol/kg,,bottle|sample,,,ALKYZZXX,,umol/kg,bottle,,sea_water_alkalinity_expressed_as_mole_equivalent,SDN:P01::ALKYZZXX,Total alkalinity per unit volume of the water body,SDN:P06::KGUM,Micromoles per kilogram,,,ALKW,TotAlk
 CCADI,Upoly0,CCADI,mmol/m^3,,,,,NTRAZZXX,,mmol/m^3,,,,SDN:P01::NTRAZZXX,Concentration of nitrate {NO3- CAS 14797-55-8} per unit volume of the water body [unknown phase],SDN:P06::MMCM,Millimoles per cubic metre,Concentration of nitrate per unit volume of the water column. Nitrate may be expressed in terms of mass or quantity of substance.,,NTRA,NO3
 GF3,412E,"BIO,MEDS",uW/cm^2/nm,,,,,RXUU412E,,uW/cm^2/nm,,,,SDN:P01::RXUU412E,Upwelling vector irradiance as energy of electromagnetic radiation (412nm wavelength) in the water body by cosine-collector radiometer,,,Upwelling vector irradiance as energy of electromagnetic radiation (412nm wavelength) in the water body by cosine-collector radiometer,,412E,Eu412
 GF3,412ESDEV,"BIO,MEDS",,,,,,,,,,,,,,,,,,412ESDEV,
@@ -136,7 +136,7 @@ GF3,CCVR,MEDS,,,,,,,,,,,cloud_area_fraction,,,,,,,CCVR,
 GF3,CDE$,MEDS,second,,,,,,,second,,,,,,SDN:P06::UTBB,Seconds,,,CDE$,
 GF3,CDID,MEDS,,,,,,,,,,,,,,,,Original label as provided by the data provider eg. IML95028CTD5,,CDID,
 GF3,CDOM,"BIO,MEDS",mg/m^3,,,,,CDOMZZ01,,mg/m^3,,,,SDN:P01::CDOMZZ01,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by fluorometry,SDN:P06::UMMC,Milligrams per cubic metre,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by fluorometry,,CDOM,CDOM_fluor
-GF3,CDOMSDEV,"BIO,MEDS",mg/m^3,,,,,,,mg/m^3,,,,,,SDN:P06::UMMC,Milligrams per cubic metre,,,CDOMSDEV,
+GF3,CNTR,"BIO,IML,MEDS",dimensionless,,,,,,,,,,,,,SDN:P06::UUUU,Dimensionless,,,CNTR,
 GF3,CDOR,MEDS,relative,,,,,,,relative,,,,,,,,,,CDOR,
 GF3,CDWT,BIO,,,,,,,,,,,,,,,,,,CDWT,
 GF3,CDX1,MEDS,milligram per litre,,,,,,,milligram per litre,,,,,,SDN:P06::UMGL,Milligrams per litre,,,CDX1,
@@ -242,7 +242,7 @@ GF3,DON$,MEDS,millimole per metre cube,,,,,,,millimole per metre cube,,,,,,,,,,D
 GF3,DON_,"BIO,IML",mmol/m^3,,,,,,,mmol/m^3,,,,,,SDN:P06::MMCM,Millimoles per cubic metre,,,DON_,
 GF3,DOX$,MEDS,millilitre per litre,,,,,,,millilitre per litre,,,,,,SDN:P06::UMLL,Millilitres per litre,,,DOX$,
 GF3,DOXY,"BIO,IML,MEDS",ml/L|millilitre per litre|ml/l,,,,,DOXYZZ01,,ml/L,,,volume_fraction_of_oxygen_in_sea_water,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,SDN:P06::UMLL,Millilitres per litre,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,DOXY,WC_dissO2_IS
-GF3,DOXY,"BIO,IML,MEDS",ml/L|millilitre per litre|ml/l,,bottle|sample,,,DOXYWITX,,ml/L,,,volume_fraction_of_oxygen_in_sea_water,SDN:P01::DOXYWITX,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by Winkler titration,SDN:P06::UMLL,Millilitres per litre,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by Winkler titration,,DOXY,WC_dissO2_Winkler
+GF3,DOXY,"BIO,IML,MEDS",ml/L|millilitre per litre|ml/l,,bottle|sample,,,DOXYWITX,,ml/L,Winkler Titration,,volume_fraction_of_oxygen_in_sea_water,SDN:P01::DOXYWITX,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by Winkler titration,SDN:P06::UMLL,Millilitres per litre,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by Winkler titration,,DOXY,WC_dissO2_Winkler
 GF3,DPDT,"BIO,IML,MEDS",metre/second|metre per second|metres/sec,,,,,,,metre/second,,,,,,SDN:P06::UVAA,Metres per second,,,DPDT,
 GF3,DPI$,MEDS,,,,,,,,,,,,,,,,,,DPI$,
 GF3,DPO$,MEDS,,,,,,,,,,,,,,,,,,DPO$,
@@ -302,17 +302,17 @@ GF3,FFFF,"BIO,IML,MEDS",none,,,,,,,none,,,,,,,,,,,
 GF3,FIXF,MEDS,,,,,,,,,,,,,,,,,,FIXF,
 GF3,FLO1,MEDS,milligram per litre,,,,,,,milligram per litre,,,,,,SDN:P06::UMGL,Milligrams per litre,,,FLO1,
 BIO,FLOR,"BIO,IML,MEDS",mg/m^3|mg/m**3|milligram per metre cube|ug/L|ug/l,,fluoresdence|fluo|Flourescence|^FSP_,,,CPHLPR01,,mg/m^3,,,mass_concentration_of_chlorophyll_in_sea_water,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,SDN:P06::UMMC,Milligrams per cubic metre,,,FLOR,chl-a_water_ISfluor
-BIO,FLOR,"BIO,IML,MEDS",mg/m^3|mg/m**3|milligram per metre cube|ug/L|ug/l,,^FSPUV_,,,FLOR_SPUV,,mg/m^3,,,,,,,,,,,
+BIO,FLOR,"BIO,IML,MEDS",mg/m^3|mg/m**3|milligram per metre cube|ug/L|ug/l,,^FSPUV_,,,FLOR_SPUV,,mg/m^3,,,,,,,,,,FLOR,
 BIO,FLOR,"BIO,IML,MEDS",mg/m^3|mg/m**3|milligram per metre cube|ug/L|ug/l,,cdom,,,,,mg/m^3,,,,SDN:P01::CDOMZZ01,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by fluorometry,SDN:P06::UMMC,Milligrams per cubic metre,,,FLOR,CDOM_fluor
-BIO,FLOR,,mg/m^3,,^FWETLABS_,,,FLOR_WETLABS,,mg/m^3,,,,,,,,,,,
-BIO,FLOR,,mg/m**3|ug/L,,^FC_,,,FLOR_FC,,mg/m^3,,,,,,,,,,,
-BIO,FLOR,,none|(none),,^FWETLABS_,,,FLOR_WETLABS_noUnits,,,,,,,,,,,,,
-BIO,FLOR,,none|(none),,^FWGREEN,,,FLOR_WGREEN_noUnits,,,,,,,,,,,,,
-BIO,FLOR,,none|(none),,^FC_,,,FLOR_FC_nonUnits,,,,,,,,,,,,,
-BIO,FLOR,,none|(none),,^FSPUV_,,,FLOR_FSPUV_nonUnits,,,,,,,,,,,,,
-BIO,FLOR,,none|(none),,^FSP_,,,FLOR_SP_nonUnits,,,,,,,,,,,,,
-BIO,FLOR,,none|(none),,^FCUVA_,,,FLOR_CUVA_nonUnits,,,,,,,,,,,,,
-GF3,FLORSDEV,"BIO,MEDS",mg/m^3,,,,,,,mg/m^3,,,,,,SDN:P06::UMMC,Milligrams per cubic metre,,,FLORSDEV,
+BIO,FLOR,,mg/m^3,,^FWETLABS_,,,FLOR_WETLABS,,mg/m^3,,,,,,,,,,FLOR,
+BIO,FLOR,,mg/m**3|ug/L|ug/l,,^FC_,,,FLOR_FC,,mg/m^3,,,,,,,,,,FLOR,
+BIO,FLOR,,none|(none),,^FWETLABS_,,,FLOR_WETLABS_noUnits,,,,,,,,,,,,FLOR,
+BIO,FLOR,,none|(none),,^FWGREEN,,,FLOR_WGREEN_noUnits,,,,,,,,,,,,FLOR,
+BIO,FLOR,,none|(none),,^FC_,,,FLOR_FC_nonUnits,,,,,,,,,,,,FLOR,
+BIO,FLOR,,none|(none),,^FSPUV_,,,FLOR_FSPUV_nonUnits,,,,,,,,,,,,FLOR,
+BIO,FLOR,,none|(none),,^FSP_,,,FLOR_SP_nonUnits,,,,,,,,,,,,FLOR,
+BIO,FLOR,,none|(none),,^FCUVA_,,,FLOR_CUVA_nonUnits,,,,,,,,,,,,FLOR,
+BIO,FLOR,,none|(none),,^FLOR_,,,FLOR_unknown,,,,,,,,,,,,FLOR,
 GF3,FLU$,MEDS,percent,,,,,,,percent,,,,,,SDN:P06::UPCT,Percent,,,FLU$,
 GF3,FLU1,MEDS,milligram per metre cube,,,,,,,milligram per metre cube,,,,,,,,,,FLU1,
 GF3,FLU2,MEDS,V|volt,,,,,,,V,,,,,,,,,,FLU2,
@@ -592,8 +592,8 @@ GF3,POM_,"BIO,IML,MEDS",g/m^3,,,,,,,g/m^3,,,,,,SDN:P06::UGMC,Grams per cubic met
 GF3,PON$,MEDS,milligram per metre cube,,,,,,,milligram per metre cube,,,,,,,,,,PON$,
 GF3,PON_,"BIO,IML,MEDS",mmol/ m^3,,,,,,,mmol/ m^3,,,,,,SDN:P06::MMCM,Millimoles per cubic metre,,,PON_,
 GF3,PHT_,IML,Total scale,,bottle|sample,,,,,Total scale,bottle,,sea_water_ph_reported_on_total_scale,SDN:P01::PHMASSXX,pH (total scale) {pH[T]} of the water body,SDN:P06::UUPH,pH units,,,,Total_pHmass
-GF3,POTP,MEDS,degree Celsius,,,,,,,degree Celsius,,,,,,SDN:P06::UPAA,Degrees Celsius,,,POTP,
-GF3,POTT,"BIO,IML,MEDS",degree Celsius,,,,,CPATZZ01,,degree Celsius,,,,SDN:P01::CPATZZ01,Potential temperature of the atmosphere,SDN:P06::UPAA,Degrees Celsius,Potential temperature of the atmosphere,,POTT,Air_PotTemp
+GF3,POTM,"BIO,IML,MEDS","degree Celsius|IPTS-68, deg C|degrees C|ITS-68, deg C",,,,,POTMCV01,,degree Celsius,,,sea_water_potential_temperature,SDN:P01::POTMCV01,Potential temperature of the water body by computation using UNESCO 1983 algorithm,SDN:P06::UPAA,Degrees Celsius,,,POTM,WC_Potemp
+GF3,POTM,"BIO,IML,MEDS","degree Celsius|IPTS-68, deg C|degrees C|ITS-68, deg C",IPTS-68,,,,POTMS601,,degree Celsius,,IPTS-68,sea_water_potential_temperature,SDN:P01::POTMS601,"Potential temperature of the water body by CTD and computation from pressure, salinity and IPTS-68 temperature using UNESCO algorithm",SDN:P06::UPAA,Degrees Celsius,,,POTM,Potemp_ipts68
 GF3,POXY,MEDS,millimole per metre cube,,,,,,,millimole per metre cube,,,,,,,,,,POXY,
 GF3,PP1$,MEDS,,,,,,,,,,,,,,,,,,PP1$,
 GF3,PP2$,MEDS,,,,,,,,,,,,,,,,,,PP2$,
@@ -621,9 +621,9 @@ GF3,PRT$,MEDS,,,,,,,,,,,,,,,,,,PRT$,
 GF3,PRTN,MEDS,millimetre,,,,,,,millimetre,,,,,,SDN:P06::UXMM,Millimetres,,,PRTN,
 GF3,PRV$,MEDS,metre per second,,,,,,,metre per second,,,,,,SDN:P06::UVAA,Metres per second,,,PRV$,
 GF3,PRES,"BIO,IML,MEDS",decibar|decibars|db,,,,,PRESPR01,Sea Pressure,decibar,,,sea_water_pressure,SDN:P01::PRESPR01,Pressure (spatial coordinate) exerted by the water body by profiling pressure sensor and correction to read zero at sea level,SDN:P06::UPDB,Decibars,Pressure (spatial coordinate) exerted by the water body by profiling pressure sensor and correction to read zero at sea level,,PRES,Pres_Z
-GF3,PSAL,"BIO,IML,MEDS",1e-3|psu|PSU|practical salinity unit (PSS-78)||none,PSS-78,,,,PSLTZZ01,,1.00E-03,,PSS-78,sea_water_practical_salinity,SDN:P01::PSLTZZ01,Practical salinity of the water body,,,Practical salinity of the water body,,PSAL,P_sal
-GF3,PSAL,"BIO,IML,MEDS",1e-3|psu|PSU|practical salinity unit (PSS-78)||none,PSS-78,CTD|STD|GUILDLINE|GUILDLN\.*|SBE\s*19|SBE\s*9|SBE\s*37|SBE\s*25|Microcat|Maestro|Concerto|XR\-*620|XR\-*420,,,PSALST01,,1.00E-03,CTD,PSS-78,sea_water_practical_salinity,SDN:P01::PSALST01,Practical salinity of the water body by CTD and computation using UNESCO 1983 algorithm,,,Practical salinity of the water body,,PSAL,P_sal_CTD
-GF3,PSAL,"BIO,IML,MEDS",1e-3|psu|PSU|practical salinity unit (PSS-78)||none,PSS-78,bottle|sample,,,PSALBSTX,,1.00E-03,bottle,PSS-78,sea_water_practical_salinity,SDN:P01::PSALBSTX,Practical salinity of the water body by bench salinometer and computation using UNESCO 1983 algorithm,,,Practical salinity of the water body,,PSAL,P_sal_salinom
+GF3,PSAL,"BIO,IML,MEDS",1e-3|psu|PSU|practical salinity unit (PSS-78)||none,PSS-78,,,,PSLTZZ01,,1e-3,,PSS-78,sea_water_practical_salinity,SDN:P01::PSLTZZ01,Practical salinity of the water body,,,Practical salinity of the water body,,PSAL,P_sal
+GF3,PSAL,"BIO,IML,MEDS",1e-3|psu|PSU|practical salinity unit (PSS-78)||none,PSS-78,CTD|STD|GUILDLINE|GUILDLN\.*|SBE\s*19|SBE\s*9|SBE\s*37|SBE\s*25|Microcat|Maestro|Concerto|XR\-*620|XR\-*420,,,PSALST01,,1e-3,CTD,PSS-78,sea_water_practical_salinity,SDN:P01::PSALST01,Practical salinity of the water body by CTD and computation using UNESCO 1983 algorithm,,,Practical salinity of the water body,,PSAL,P_sal_CTD
+GF3,PSAL,"BIO,IML,MEDS",1e-3|psu|PSU|practical salinity unit (PSS-78)||none,PSS-78,bottle|sample,,,PSALBSTX,,1e-3,bottle,PSS-78,sea_water_practical_salinity,SDN:P01::PSALBSTX,Practical salinity of the water body by bench salinometer and computation using UNESCO 1983 algorithm,,,Practical salinity of the water body,,PSAL,P_sal_salinom
 GF3,PSEA,MEDS,practical salinity unit (PSS-78),PSS-78,,,,,,practical salinity unit (PSS-78),,PSS-78,,,,,,,,PSEA,
 GF3,PSP$,MEDS,decibar,,,,,,,decibar,,,,,,SDN:P06::UPDB,Decibars,,,PSP$,
 GF3,PSQ$,MEDS,decibar,,,,,,,decibar,,,,,,SDN:P06::UPDB,Decibars,,,PSQ$,
