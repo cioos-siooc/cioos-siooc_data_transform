@@ -4,11 +4,12 @@ and developped by the DFO offices BIO and MLI.
 """
 
 import re
-import warnings
 
 import pandas as pd
 import numpy as np
 import xarray as xr
+
+from datetime import datetime
 
 import json
 import gsw
@@ -449,9 +450,23 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
 
                 # Generate new variable by either copying it or applying specified function to the initial variable
                 if row["apply_function"]:
+                    input_args = [ds[var]]
+                    extra_args = re.search("\((P?.*)\)", row["apply_function"])
+                    if extra_args:
+                        for item in extra_args[1].split(","):
+                            if item in ds:
+                                input_args.append(ds[item])
+                            else:
+                                input_args.append(item)
+                        row["apply_function"] = (
+                            row["apply_function"].rsplit("(")[0].strip()
+                        )
+
                     ds[new_variable] = xr.apply_ufunc(
-                        eval(row["apply_function"]), (ds[var]), keep_attrs=True
+                        eval(row["apply_function"]), *tuple(input_args), keep_attrs=True
                     )
+                    arg_str = tuple(arg.name if type(arg) is xr.DataArray else arg for arg in input_args)
+                    ds.attrs['history'] += f"{datetime.now().isoformat()} - Generate new variable: {new_variable} = {row['apply_function']}{arg_str}"
                 else:
                     ds[new_variable] = ds[var].copy()
 
