@@ -62,7 +62,7 @@ def read_geojson(filename):
     # read shapefile in geojson format into Polygon object
     # input geojson file
     # output: Polygon object
-    with open(filename) as f:
+    with open(filename, encoding="utf-8") as f:
         data = json.load(f)
     poly_dict = {}
 
