@@ -128,7 +128,12 @@ def read(filename, encoding_format="Windows-1252"):
 
                 # Add to the metadata as a dictionary
                 key = dict_line[0].strip().replace(" ", "_")
-                metadata[section][-1][key] = dict_line[1]
+                if key in metadata[section][-1]:
+                    if type(metadata[section][-1][key]) is not list:
+                        metadata[section][-1][key] = [metadata[section][-1][key]]
+                    metadata[section][-1][key].append(dict_line[1])
+                else:
+                    metadata[section][-1][key] = dict_line[1]
 
             else:
                 assert RuntimeError, "Can't understand the line: " + line
