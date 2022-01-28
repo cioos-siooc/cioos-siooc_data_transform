@@ -46,7 +46,7 @@ def read_config(config_file):
 
 
 def write_ctd_ncfile(
-    odf_path, output_path, config=None, polygons={},
+    odf_path, output_path=None, config=None, polygons={},
 ):
     """Method use to convert odf files to a CIOOS/ERDDAP compliant NetCDF format"""
     print(os.path.split(odf_path)[-1])
@@ -96,6 +96,8 @@ def write_ctd_ncfile(
     ds = xarray_methods.standardize_variable_attributes(ds)
 
     # Finally save the xarray dataset to a NetCDF file!!!
+    if output_path == None:
+        output_path = odf_path + ".nc"
     ds.to_netcdf(output_path)
 
 
@@ -137,7 +139,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog="odf_to_netcdf", description="Convert ODF files to NetCDF"
     )
-
     parser.add_argument(
         "-i",
         type=str,
@@ -145,7 +146,6 @@ if __name__ == "__main__":
         default=config.get("odf_path"),
         help="ODF file or directory with ODF files. Recursive",
     )
-
     parser.add_argument(
         "-o",
         type=str,
