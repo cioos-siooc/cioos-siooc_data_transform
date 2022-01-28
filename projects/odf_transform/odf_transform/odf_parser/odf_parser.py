@@ -557,142 +557,14 @@ def generate_variables_from_header(
     ds["chief_scientist"] = odf_header["CRUISE_HEADER"]["CHIEF_SCIENTIST"]
     ds["platform"] = odf_header["CRUISE_HEADER"]["PLATFORM"]
 
-    # Time Variables
-    if odf_header["EVENT_HEADER"]["START_DATE_TIME"]:
-        ds["start_time"] = convert_odf_time(
-            odf_header["EVENT_HEADER"]["START_DATE_TIME"]
-        )
-        ds["start_time"].attrs = {
-            "original_var_field": "EVENT_HEADER:START_DATE_TIME",
-            "long_name": "Event Start Time",
-        }
+    ds["start_time"] = convert_odf_time(odf_header["EVENT_HEADER"]["START_DATE_TIME"])
+    ds["end_time"] = convert_odf_time(odf_header["EVENT_HEADER"]["END_DATE_TIME"])
 
-    if convert_odf_time(odf_header["EVENT_HEADER"]["END_DATE_TIME"]):
-        ds["end_time"] = convert_odf_time(odf_header["EVENT_HEADER"]["END_DATE_TIME"])
-        ds["end_time"].attrs = {
-            "original_var_field": "EVENT_HEADER:END_DATE_TIME",
-            "long_name": "Event Start Time",
-        }
-
-    # Time is handled differently for profile variables since there's not always a time variable within the ODF.
-    # Time series and trajectory data should both have a time variable in the ODF.
-    if cdm_data_type == "Profile":
-        # Time variable
-        if "start_time" in ds and ds["start_time"].item():
-            ds.coords["time"] = ds["start_time"].copy()
-        # elif "SYTM_01" in ds.keys():
-        #     ds.coords["time"] = ds["SYTM_01"].min().values
-        #     ds["time"].attrs[original_var_field] = "min(SYMT_01)"
-
-        # precise time
-        if "SYTM_01" in ds.keys():
-            ds["measurement_time"] = ds["SYTM_01"].copy()
-    else:
-        ds.coords["time"] = ds["SYTM_01"]
-        ds["time"].attrs[original_var_field] = "SYTM_01"
-
-    # Add standard_name attribute
-    ds["time"].attrs["standard_name"] = "time"
-
-    # Coordinate variables
-    # Latitude (ODF uses a place holder -99 in some of their header for latitude)
-    initial_latitude = odf_header["EVENT_HEADER"].get("INITIAL_LATITUDE", -99)
-    has_latitude_timeseries = "LATD_01" in ds
-
-    if cdm_data_type in ["Profile", "TimeSeries"]:
-        # Let's define latitude first, use start latitude if available
-        if initial_latitude != -99:
-            ds.coords["latitude"] = initial_latitude
-            ds["latitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LATITUDE"
-
-        # If a latitude time series is available, copy it to a preciseLat variable as suggested by ERDDAP
-        if has_latitude_timeseries:
-            ds["preciseLat"] = ds["LATD_01"].copy()
-            ds["preciseLat"].attrs[original_var_field] = "LATD_01"
-            ds["preciseLat"].attrs.update(
-                {"units": "degrees_north", "standard_name": "latitude"}
-            )
-    elif has_latitude_timeseries:
-        ds.coords["latitude"] = ds["LATD_01"]
-        ds["latitude"].attrs[original_var_field] = "LATD_01"
-
-    # Make sure there's a latitude
-    if "latitude" not in ds:
-        raise RuntimeError("Missing Latitude input")
-
-    # Add latitude attributes
-    ds["latitude"].attrs.update(
-        {"long_name": "Latitude", "units": "degrees_north", "standard_name": "latitude"}
-    )
-
-    # Longitude (ODF uses a place holder -999 in some of their header for longitude)
-    initial_longitude = odf_header["EVENT_HEADER"].get("INITIAL_LONGITUDE", -999)
-    has_longitude_time_series = "LOND_01" in ds
-
-    if cdm_data_type in ["Profile", "TimeSeries"]:
-        if initial_longitude != -999:
-            ds.coords["longitude"] = initial_longitude
-            ds["longitude"].attrs[original_var_field] = "EVENT_HEADER:INITIAL_LONGITUDE"
-
-        # If a longitude time series is available, copy it to a preciseLat variable as suggested by ERDDAP
-        if has_longitude_time_series:
-            ds["preciseLon"] = ds["LOND_01"].copy()
-            ds["preciseLon"].attrs[original_var_field] = "LOND_01"
-            ds["preciseLon"].attrs.update(
-                {"units": "degrees_east", "standard_name": "longitude"}
-            )
-    elif has_longitude_time_series:
-        ds.coords["longitude"] = ds["LOND_01"]
-        ds["longitude"].attrs[original_var_field] = "LOND_01"
-
-    # Make sure there's a longitude
-    if "longitude" not in ds:
-        raise RuntimeError("Missing Longitude input")
-    # Add longitude attributes
-    ds["longitude"].attrs.update(
-        {
-            "long_name": "Longitude",
-            "units": "degrees_east",
-            "standard_name": "longitude",
-        }
-    )
-
-    # Depth
-    if "DEPH_01" in ds:
-        ds.coords["depth"] = ds["DEPH_01"]
-        ds["depth"].attrs[original_var_field] = "DEPH_01"
-    elif "PRES_01" in ds:
-        ds.coords["depth"] = (
-            ds["PRES_01"].dims,
-            -gsw.z_from_p(ds["PRES_01"].data, ds["latitude"].data),
-        )
-        ds["depth"].attrs[original_var_field] = "-gsw.z_from_p(PRES_01,latitude)"
-    elif (
-        "MIN_DEPTH" in odf_header["EVENT_HEADER"]
-        and "MAX_DEPTH" in odf_header["EVENT_HEADER"]
-        and odf_header["EVENT_HEADER"]["MAX_DEPTH"]
-        - odf_header["EVENT_HEADER"]["MIN_DEPTH"]
-        == 0
-    ):
-        ds.coords["depth"] = odf_header["EVENT_HEADER"]["MAX_DEPTH"]
-        ds["depth"].attrs[original_var_field] = "EVENT_HEADER:MIN|MAX_DEPTH"
-    else:
-        # If no depth variable is available we'll assume it's not suppose to happen for now.
-        raise RuntimeError("Missing a depth information")
-
-    if "depth" in ds:
-        ds["depth"].attrs.update(
-            {
-                "units": "m",
-                "standard_name": "depth",
-                "positive": "down",
-                "long_name": "Depth",
-            }
-        )
+    ds["initial_latitude"] = odf_header["EVENT_HEADER"]["INITIAL_LATITUDE"]
+    ds["initial_longitude"] = odf_header["EVENT_HEADER"]["INITIAL_LONGITUDE"]
 
     # Reorder variables
     variable_list = [var for var in ds.keys() if var not in initial_variable_order]
-    variable_list.extend(list(ds.coords.keys()))
     variable_list.extend(initial_variable_order)
     ds = ds[variable_list]
     return ds
