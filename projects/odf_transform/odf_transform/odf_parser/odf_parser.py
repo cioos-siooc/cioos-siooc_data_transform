@@ -535,6 +535,16 @@ def global_attributes_from_header(odf_header):
                 ],
             }
         )
+
+    # Derive cdm_data_type from DATA_TYPE
+    if odf_header["EVENT_HEADER"]["DATA_TYPE"] in ["CTD", "BOTL"]:
+        global_attributes["cdm_data_type"] = "Profile"
+        global_attributes["cdm_profile_variable_type"] = ""
+    else:
+        raise RuntimeError(
+            f"Incompatible with ODF DATA_TYPE {odf_header['EVENT_HEADER']['DATA_TYPE']} yet."
+        )
+
     # Missing terms potentially, mooring_number, station,
     return global_attributes
 
@@ -562,11 +572,33 @@ def generate_variables_from_header(
     ds["chief_scientist"] = odf_header["CRUISE_HEADER"]["CHIEF_SCIENTIST"]
     ds["platform"] = odf_header["CRUISE_HEADER"]["PLATFORM"]
 
+    ds["event_number"] = odf_header["EVENT_HEADER"]["EVENT_NUMBER"]
+
     ds["start_time"] = convert_odf_time(odf_header["EVENT_HEADER"]["START_DATE_TIME"])
     ds["end_time"] = convert_odf_time(odf_header["EVENT_HEADER"]["END_DATE_TIME"])
 
     ds["initial_latitude"] = odf_header["EVENT_HEADER"]["INITIAL_LATITUDE"]
+    ds["initial_latitude"].attrs = {
+        "units": "degrees_north",
+        "source": "EVENT_HEADER:INITIAL_LATITUDE",
+    }
     ds["initial_longitude"] = odf_header["EVENT_HEADER"]["INITIAL_LONGITUDE"]
+    ds["initial_longitude"].attrs = {
+        "units": "degrees_east",
+        "source": "EVENT_HEADER:INITIAL_LONGITUDE",
+    }
+
+    if ds.attrs["cdm_data_type"] == "Profile":
+        # Define profile specific variables
+        ds["profile_id"] = odf_header["ODF_HEADER"]["FILE_SPECIFICATION"]
+        ds["profile_id"].attrs = {"cf_role": "profile_id"}
+        ds["latitude"] = ds["initial_latitude"]
+        ds["longitude"] = ds["initial_longitude"]
+        ds["latitude"].attrs["standard_name"] = "latitude"
+        ds["longitude"].attrs["standard_name"] = "longitude"
+
+        ds["time"] = ds["start_time"]
+        ds["time"].attrs["standard_name"] = "time"
 
     # Reorder variables
     variable_list = [var for var in ds.keys() if var not in initial_variable_order]

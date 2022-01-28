@@ -75,15 +75,6 @@ def write_ctd_ncfile(
         [ds["longitude"].mean(), ds["latitude"].mean()], polygons
     )
 
-    # Add file name as a variable
-    cdm_data_type = config.get("cdm_data_type")
-    file_id = os.path.split(odf_path)[-1]
-    ds["file_id"] = file_id
-    if cdm_data_type in ["Profile", "TimeSeries", "Trajectory", "TimeSeriesProfiles"]:
-        ds[cdm_data_type.lower() + "_id"] = file_id
-    else:
-        raise ValueError("Unknown cdm_data_type: {0}".format(cdm_data_type))
-
     # Add Vocabulary attributes
     ds = odf.get_vocabulary_attributes(
         ds,
