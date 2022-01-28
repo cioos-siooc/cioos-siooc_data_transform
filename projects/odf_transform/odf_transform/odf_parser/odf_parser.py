@@ -511,6 +511,7 @@ def global_attributes_from_header(odf_header):
     """
     Method use to define the standard global attributes from an ODF Header parsed by the read function.
     """
+
     odf_original_header = odf_header.copy()
     odf_original_header.pop("variable_attributes")
     global_attributes = {
@@ -527,15 +528,21 @@ def global_attributes_from_header(odf_header):
         "water_depth": odf_header["EVENT_HEADER"]["SOUNDING"],
         "date_created": odf_header["EVENT_HEADER"]["ORIG_CREATION_DATE"],
         "date_modified": odf_header["EVENT_HEADER"]["CREATION_DATE"],
-        "history": json.dumps(
-            odf_header["HISTORY_HEADER"], ensure_ascii=False, indent=False
-        ),
+        "history": "",
         "comment": odf_header["EVENT_HEADER"].get("EVENT_COMMENTS", ""),
         "original_odf_header": "\n".join(odf_header["original_header"]),
         "original_odf_header_json": json.dumps(
             odf_original_header, ensure_ascii=False, indent=False
         ),
     }
+
+    # Convert ODF history to CF history
+    for history_group in odf_header["HISTORY_HEADER"]:
+        date = convert_odf_time(history_group["CREATION_DATE"])
+        if type(history_group["PROCESS"]) is str:
+            history_group["PROCESS"] = [history_group["PROCESS"]]
+        for row in history_group["PROCESS"]:
+            global_attributes["history"] += f"{date.isoformat()} - {row}\n"
 
     if "INSTRUMENT_HEADER" in odf_header:
         global_attributes.update(
