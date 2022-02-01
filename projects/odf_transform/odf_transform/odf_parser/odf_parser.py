@@ -586,7 +586,11 @@ def global_attributes_from_header(odf_header):
 def convert_odf_time(time_string):
     """Simple tool to convert ODF timestamps to a datetime object"""
     if time_string == "17-NOV-1858 00:00:00.00":
-        return None
+        return pd.NaT
+    elif re.search(":60.0+$", time_string):
+        return pd.to_datetime(re.sub(":60.0+$", ":00.0", time_string)) + pd.Timedelta(
+            "1min"
+        )
     else:
         return pd.to_datetime(time_string, utc=True)
 
