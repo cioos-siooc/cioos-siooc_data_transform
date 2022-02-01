@@ -171,10 +171,6 @@ def read(filename, encoding_format="Windows-1252"):
                 "gf3_code": var_name,
                 "type": att["TYPE"],
                 "null_value": att["NULL_VALUE"],
-                "comments": "Original ODF Variable Attributes:\n"
-                + json.dumps(
-                    {"odf_variable_attributes": att}, ensure_ascii=False, indent=False
-                ),
             }
 
             # Add those variable attributes to the metadata output
