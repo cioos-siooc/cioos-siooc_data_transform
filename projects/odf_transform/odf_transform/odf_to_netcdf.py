@@ -56,11 +56,15 @@ def write_ctd_ncfile(
     # Let's convert to an xarray dataset
     ds = raw_data.to_xarray()
 
+    file_id = odf_path.split("\\")[-1]
+    ds["file_id"] = file_id
+    ds.attrs["filename"] = file_id
+
     # Write global attributes
     ds.attrs.update(config["global_attributes"])  # From the config file
     ds.attrs.update(odf.global_attributes_from_header(metadata))  # From ODF header
 
-    # Add New Variables
+    # Add variables attributes from odf
     for var, attrs in metadata["variable_attributes"].items():
         if var in ds:
             ds[var].attrs = attrs
