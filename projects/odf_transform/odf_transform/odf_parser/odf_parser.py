@@ -448,11 +448,13 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
 
                 # Generate new variable by either copying it or applying specified function to the initial variable
                 if row["apply_function"]:
-                    input_args = [ds[var]]
+                    input_args = []
                     extra_args = re.search("\((P?.*)\)", row["apply_function"])
                     if extra_args:
                         for item in extra_args[1].split(","):
-                            if item in ds:
+                            if item in var:
+                                input_args.append(ds[var])
+                            elif item in ds:
                                 input_args.append(ds[item])
                             else:
                                 input_args.append(item)
