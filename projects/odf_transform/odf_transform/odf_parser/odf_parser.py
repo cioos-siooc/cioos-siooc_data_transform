@@ -277,6 +277,9 @@ def odf_flag_variables(ds, flag_convention=None):
             ds[var].attrs["flag_values"] = tuple(
                 np.array(ds[var].attrs["flag_values"]).astype(ds[var].dtype)
             )
+        # Drop units variable from flag variables
+        if "units" in ds[var].attrs:
+            ds[var].attrs.pop("units")
 
         # Set previous key for the next iteration
         previous_key = var
