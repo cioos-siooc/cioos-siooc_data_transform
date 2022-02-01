@@ -465,16 +465,25 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
                     ds[new_variable] = xr.apply_ufunc(
                         eval(row["apply_function"]), *tuple(input_args), keep_attrs=True
                     )
-                    arg_str = tuple(arg.name if type(arg) is xr.DataArray else arg for arg in input_args)
-                    ds.attrs['history'] += f"{datetime.now().isoformat()} - Generate new variable: {new_variable} = {row['apply_function']}{arg_str}"
+                    arg_str = tuple(
+                        arg.name if type(arg) is xr.DataArray else arg
+                        for arg in input_args
+                    )
+                    ds.attrs[
+                        "history"
+                    ] += f"{datetime.now().isoformat()} - Generate new variable: {new_variable} = {row['apply_function']}{arg_str}"
                 else:
                     ds[new_variable] = ds[var].copy()
+                    ds.attrs[
+                        "history"
+                    ] += f"{datetime.now().isoformat()} - Generate new variable: {new_variable} = {var}"
 
                 new_attrs = ds[new_variable].attrs
                 new_variable_order.append(new_variable)
             else:
                 # Apply vocabulary to original variable
                 new_attrs = ds[var].attrs
+                new_variable_order.append(var)
 
             # Retrieve all attributes in vocabulary that have something
             new_attrs.update(row[vocabulary_attribute_list].dropna().to_dict())
