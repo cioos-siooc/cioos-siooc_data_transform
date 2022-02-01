@@ -605,6 +605,8 @@ def generate_variables_from_header(
     ds["platform"] = odf_header["CRUISE_HEADER"]["PLATFORM"]
 
     ds["event_number"] = odf_header["EVENT_HEADER"]["EVENT_NUMBER"]
+    ds["event_qualifier1"] = odf_header["EVENT_HEADER"]["EVENT_QUALIFIER1"]
+    ds["event_qualifier2"] = odf_header["EVENT_HEADER"]["EVENT_QUALIFIER2"]
 
     ds["start_time"] = convert_odf_time(odf_header["EVENT_HEADER"]["START_DATE_TIME"])
     ds["end_time"] = convert_odf_time(odf_header["EVENT_HEADER"]["END_DATE_TIME"])
