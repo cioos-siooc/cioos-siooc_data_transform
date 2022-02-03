@@ -437,8 +437,17 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
             # Make a copy of original variable
             if row["variable_name"]:
                 # Apply suffix number of original variable
-                if gf3 and 1 < gf3.index < 10:
-                    new_variable = re.sub("1$", "%1g" % gf3.index, row["variable_name"])
+                if gf3:
+                    if re.search("01$|XX$", row["variable_name"]):
+                        new_variable = re.sub(
+                            "01$|XX$", "%02g" % gf3.index, row["variable_name"]
+                        )
+                    if re.search("1$", row["variable_name"]):
+                        new_variable = re.sub(
+                            "1$", "%1g" % gf3.index, row["variable_name"]
+                        )
+                    else:
+                        new_variable = row["variable_name"] + "%02g" % gf3.index
                 else:
                     new_variable = row["variable_name"]
 
