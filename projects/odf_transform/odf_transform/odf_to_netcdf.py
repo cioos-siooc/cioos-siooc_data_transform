@@ -91,13 +91,8 @@ def write_ctd_ncfile(
     # Add geospatial and geometry related global attributes
     # Just add spatial/time range as attributes
     ds = xarray_methods.get_spatial_coverage_attributes(ds)
-    # Retrieve geometry information
-    ds = xarray_methods.derive_cdm_data_type(ds, config["cdm_data_type"])
     # Add encoding information to xarray
     ds = xarray_methods.convert_variables_to_erddap_format(ds)
-    # Assign the right dimension
-    ds = xarray_methods.define_index_dimensions(ds)
-
     # Standardize variable attributes
     ds = xarray_methods.standardize_variable_attributes(ds)
 
