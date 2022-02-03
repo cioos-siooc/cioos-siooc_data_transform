@@ -48,7 +48,21 @@
             ],
             "flag_meanings": "not_evaluated correct inconsistent_with_other_values doubtful erroneous modified missing"
         },
-        "QCFF": {},
-        "FFFF": {}
+        "QCFF": {
+            "standard_name": "status_flag",
+            "flag_values": [
+                0,
+                1
+            ],
+            "flag_meanings": "good bad"
+        },
+        "FFFF": {
+            "standard_name": "status_flag",
+            "flag_values": [
+                0,
+                1
+            ],
+            "flag_meanings": "good bad"
+        }
     }
 }
