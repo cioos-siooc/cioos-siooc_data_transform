@@ -1,0 +1,275 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+	{ "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [ [
+				[-69.855, 48.554],
+				[-67.380, 49.694],
+				[-67.380, 48.750],
+				[-69.430, 47.740],
+				[-69.855, 48.554]
+				] ]
+		},
+		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 10",
+		   "Label": "10",
+		   "REGION": "Atlantic",
+		   "Legend": "10. Estuary \/ Estuaire"
+		}
+	},
+	{ "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [ [
+				[-69.855, 48.554],
+				[-69.632, 48.169],
+				[-70.75, 47.267],
+				[-70.39, 47.07],
+				[-69.43, 47.74]
+				] ]
+		},
+		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 13",
+		   "Label": "13",
+		   "REGION": "Atlantic",
+		   "Legend": "13. Upper Estuary \/ Estuaire supérieur"
+		}
+	},
+	{ "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [ [
+				[-67.38, 50.7],
+				[-63.91, 50.7],
+				[-63.91, 49.74],
+				[-63.14438248, 49.54872651],
+				[-64.23103931, 49.10072949],
+				[-65.36914368, 48.60701674],
+				[-65.7, 48.75],
+				[-67.38, 48.75],
+				[-67.38, 50.7]
+				] ]
+		},
+		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 11",
+		   "Label": "11",
+		   "REGION": "Atlantic",
+		   "Legend": "11. Northwest Gulf \/ Nord-ouest du Golfe"
+		}
+	},
+	{ "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [ [
+				[-56.80864907720, 50.86048343770],
+				[-57.09624930310, 48.74322832010],
+				[-59.236516, 48.5],
+				[-61.7111455, 49.085297],
+				[-63.14438247500, 49.54872651280],
+				[-63.90999999810, 49.73999999970],
+				[-63.90999999910, 50.69861169390],
+				[-60.27024627110, 50.69861616890],
+				[-59.45627046140, 50.15062083820],
+				[-59.04028602220, 50.36862097910],
+				[-58.32031264060, 50.65862179800],
+				[-57.81033124400, 50.80862274830],
+				[-56.89036756610, 51.34862353080],
+				[-56.75254216220, 50.98234330830],
+				[-56.80864907720, 50.86048343770]
+				] ]
+		},
+		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 02",
+		   "Label": "02",
+		   "REGION": "Atlantic",
+		   "Legend": "02. Northeast Gulf \/ Nord-est du Golfe"
+		}
+	},
+	{ "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [ [
+				[-64.23103931, 49.10072949],
+				[-64.07710401, 48.87171415],
+				[-63.54681786, 48.74294405],
+				[-62.880148, 48.33862262],
+				[-61.70297791, 48.14923154],
+				[-60.730211474, 47.7486299],
+				[-59.236516, 48.5],
+				[-61.7111455, 49.085297],
+				[-63.14438248, 49.54872651],
+				[-64.23103931, 49.10072949]
+				] ]
+		},
+		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 30",
+		   "Label": "30",
+		   "REGION": "Atlantic",
+		   "Legend": "30. Centre Gulf \/ Centre du Golfe"
+		}
+	},
+	{ "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [ [
+				[-60.73021474, 47.7486299],
+				[-59.90286522, 46.99022553],
+				[-58.8213913, 47.63094635],
+				[-57.0962493, 48.74322832],
+				[-59.236516, 48.5],
+				[-60.73021474, 47.7486299]
+				] ]
+		},
+		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 31",
+		   "Label": "31",
+		   "REGION": "Atlantic",
+		   "Legend": "31. Cabot Strait \/ Détroit de Cabot"
+		}
+	},
+	{ "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [ [
+				[-56.890, 51.350],
+				[-57.810, 50.810],
+				[-58.320, 50.660],
+				[-59.040, 50.370],
+				[-59.456, 50.152],
+				[-60.270, 50.700],
+				[-57.410, 51.700],
+				[-56.890, 51.350]
+				] ]
+		},
+		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 40",
+		   "Label": "40",
+		   "REGION": "Atlantic",
+		   "Legend": "40. Mecatina \/ Mécatina"
+		}
+	},
+	{ "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [ [
+				[-57.410, 51.700],
+				[-55.727, 52.247],
+				[-55.444, 52.247],
+				[-55.280, 52.020],
+				[-55.427, 51.645],
+				[-55.440, 51.571],
+				[-55.546, 51.573],
+				[-55.635, 51.442],
+				[-56.093, 51.513],
+				[-56.776, 51.057],
+				[-56.780, 51.060],
+				[-56.890, 51.350],
+				[-57.410, 51.700]
+				] ]
+		},
+		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 41",
+		   "Label": "41",
+		   "REGION": "Atlantic",
+		   "Legend": "41. Belle Isle Straite \/ Détroit de Belle Isle"
+		}
+	},
+	{ "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [ [
+				[-63.54681785980, 48.74294405070],
+				[-62.88014800470, 48.33862261700],
+				[-61.70297790860, 48.14923154380],
+				[-60.73021474040, 47.74862990390],
+				[-59.90286521600, 46.99022553010],
+				[-60.37531037230, 46.70161200680],
+				[-60.82276140160, 46.58691764910],
+				[-61.66800000050, 45.27200000170],
+				[-62, 45.35],
+				[-62, 46.45],
+				[-62.6060449861, 46.2971751412],
+				[-64.0437055376, 46.4553672316],
+				[-63.9714162382, 46.5661016949],
+				[-64.2105478322, 46.7322033898],
+				[-64.00, 47.07],
+				[-64.79776, 47.07],
+				[-65.4778, 46.69265],
+				[-67.38000000020, 48.38],
+				[-67.38000000410, 48.74999999950],
+				[-65.70000000150, 48.74999999960],
+				[-65.36914368120, 48.60701673690],
+				[-64.23103930600, 49.10072949280],
+				[-64.07710400790, 48.87171414590],
+				[-63.54681785980, 48.74294405070]
+				] ]
+		},
+		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 05",
+		   "Label": "05",
+		   "REGION": "Atlantic",
+		   "Legend": "05. Magdalen Shallows \/ Plateau madelinien"}},
+	{ "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [ [
+				[-65.4778, 46.69265],
+				[-64.79776, 47.07],
+				[-64.00, 47.07],
+				[-64.2105478322, 46.7322033898],
+				[-63.9714162382, 46.5661016949],
+				[-64.0437055376, 46.4553672316],
+				[-62.6060449861, 46.2971751412],
+				[-62, 46.45],
+				[-62, 45.35],
+				[-64.60399999870, 46.01400000330],
+				[-65.4778, 46.69265]
+				] ]
+		},
+		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 06",
+		   "Label": "06",
+		   "REGION": "Atlantic",
+		   "Legend": "06. Northumberland \/ Northumberland"}},
+	{ "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [ [
+				[-60.97, 46.35],
+				[-58.49, 45.94],
+				[-58.02, 45.59],
+				[-56.81, 46.11],
+				[-57.32, 47.36],
+				[-57.09624930310, 48.74322832010],
+				[-58.82139129860, 47.63094635320],
+				[-59.90286521600, 46.99022553010],
+				[-60.37531037230, 46.70161200680],
+				[-60.82276140160, 46.58691764910],
+				[-60.97, 46.35]
+				] ]
+		},
+		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 07",
+		   "Label": "07",
+		   "REGION": "Atlantic",
+		   "Legend": "07. Laurentian Hermitage \/ Laurentien Hermitage"}},
+	{ "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [ [
+				[-58.02, 45.59],
+				[-56.81, 46.11],
+				[-55.76, 45.00],
+				[-57.31, 44.46],
+				[-58.02, 45.59]
+				] ]
+		},
+		"properties": {
+  "name": "MLI St-Lawrence Gulf Boxes \/ Boîtes du Golfe du Saint-Laurent de l'IML 12",
+		   "Label": "12",
+		   "REGION": "Atlantic",
+		   "Legend": "12. Laurentian Mouth \/ Laurentien Embouchure"}}
+  ]
+}

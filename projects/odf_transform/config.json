@@ -1,5 +1,5 @@
 {
-    "odf_path": "../sample_data/test_files/",
+    "odf_path": "./sample_data/test_files/",
     "output_path": "./output/",
     "geojsonFileList": [
         "./geojson_files/ios_polygons.geojson",

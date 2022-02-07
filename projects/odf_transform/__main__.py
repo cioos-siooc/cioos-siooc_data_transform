@@ -1,19 +1,24 @@
 import glob
 import json
 import os
-import traceback
+
 import numpy as np
 
-import shutil
 import argparse
 
-import odf_parser.odf_parser as odf
+from odf_transform import parser as odf_parser
+from odf_transform import attributes
+from odf_transform import review
+
 import cioos_data_transform.utils.xarray_methods as xarray_methods
 from cioos_data_transform.utils.utils import fix_path
 from cioos_data_transform.utils.utils import get_geo_code, read_geojson
 import pandas as pd
 
 import logging
+
+MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
+DEFAULT_CONFIG_PATH = os.path.join(MODULE_PATH, "config.json")
 
 # Log to log file
 logging.captureWarnings(True)
@@ -31,8 +36,6 @@ console.setFormatter(formatter)
 # add the handler to the root logger
 logging.getLogger("").addHandler(console)
 
-CONFIG_PATH = fix_path("./config.json")
-
 
 def read_config(config_file):
     """Function to load configuration json file and vocabulary file."""
@@ -40,10 +43,18 @@ def read_config(config_file):
     with open(config_file) as fid:
         config = json.load(fid)
 
+    # If config.json is default in package set relative paths to module path
+    if os.path.join(MODULE_PATH, "config.json") == DEFAULT_CONFIG_PATH:
+        config["odf_path"] = os.path.join(MODULE_PATH, config["odf_path"][2:])
+        config["output_path"] = os.path.join(MODULE_PATH, config["output_path"][2:])
+        config["geojsonFileList"] = [
+            os.path.join(MODULE_PATH, fpath[2:]) for fpath in config["geojsonFileList"]
+        ]
+        config["vocabularyFile"] = os.path.join(MODULE_PATH, config["vocabularyFile"])
+
     # Read Vocabulary file
-    if config["vocabularyFile"] and config["vocabularyFile"].endswith("csv"):
-        vocab = pd.read_csv(config["vocabularyFile"], index_col=["Vocabulary", "name"])
-        config["vocabulary"] = vocab.fillna(np.nan).replace({np.nan: None})
+    vocab = pd.read_csv(config["vocabularyFile"], index_col=["Vocabulary", "name"])
+    config["vocabulary"] = vocab.fillna(np.nan).replace({np.nan: None})
     return config
 
 
@@ -53,26 +64,29 @@ def write_ctd_ncfile(
     """Method use to convert odf files to a CIOOS/ERDDAP compliant NetCDF format"""
     print(os.path.split(odf_path)[-1])
     # Parse the ODF file with the CIOOS python parsing tool
-    metadata, raw_data = odf.read(odf_path)
+    metadata, raw_data = odf_parser.read(odf_path)
 
     # Let's convert to an xarray dataset
     ds = raw_data.to_xarray()
 
-    file_id = odf_path.split("\\")[-1]
+    # Add file name to dataset
+    file_id = os.path.basename(odf_path)
     ds["file_id"] = file_id
     ds.attrs["filename"] = file_id
 
     # Write global attributes
     ds.attrs.update(config["global_attributes"])  # From the config file
-    ds.attrs.update(odf.global_attributes_from_header(metadata))  # From ODF header
+    ds.attrs.update(
+        attributes.global_attributes_from_header(metadata)
+    )  # From ODF header
 
     # Add variables attributes from odf
     for var, attrs in metadata["variable_attributes"].items():
         if var in ds:
             ds[var].attrs = attrs
 
-    ds = odf.odf_flag_variables(ds, config.get("flag_convention"))
-    ds = odf.generate_variables_from_header(
+    ds = odf_parser.odf_flag_variables(ds, config.get("flag_convention"))
+    ds = attributes.generate_variables_from_header(
         ds, metadata, config["cdm_data_type"]
     )  # From ODF header
 
@@ -82,7 +96,7 @@ def write_ctd_ncfile(
     )
 
     # Add Vocabulary attributes
-    ds = odf.get_vocabulary_attributes(
+    ds = odf_parser.get_vocabulary_attributes(
         ds,
         organizations=config["organisationVocabulary"],
         vocabulary=config["vocabulary"],
@@ -134,9 +148,16 @@ def read_geojson_file_list(file_list):
 # make this file importable
 #
 if __name__ == "__main__":
-    config = read_config(CONFIG_PATH)
+    config = read_config(DEFAULT_CONFIG_PATH)
     parser = argparse.ArgumentParser(
-        prog="odf_to_netcdf", description="Convert ODF files to NetCDF"
+        prog="odf_transform", description="Convert ODF files to NetCDF"
+    )
+    parser.add_argument(
+        "-config",
+        type=str,
+        dest="config_path",
+        default=DEFAULT_CONFIG_PATH,
+        help="Path to config file to use for the odf conversion. config.json",
     )
     parser.add_argument(
         "-i",
@@ -150,36 +171,20 @@ if __name__ == "__main__":
         type=str,
         dest="output_path",
         default=config.get("output_path", "./output/"),
-        help="Enter the folder to write your NetCDF files to." + "Defaults to 'output'",
-        required=False,
-    )
-    parser.add_argument(
-        "-subdir",
-        action="store_true",
-        dest="subdir",
-        help="Look in subdirectories'",
+        help="Enter the folder to write your NetCDF files to. Next to the original ODF file.'",
         required=False,
     )
 
     args = parser.parse_args()
+    config = read_config(args.config_path)
     odf_path = args.odf_path
     output_path = args.output_path + "/"
-    subdir = args.subdir
-
-    odf_files_list = []
 
     if not odf_path:
         raise Exception("No odf_path")
 
-    if os.path.isdir(odf_path) and subdir:
-        # Get all ODF within the subdirectories
-        for root, dirs, files in os.walk(odf_path):
-            for file in files:
-                if file.endswith(".ODF"):
-                    odf_files_list.append(os.path.join(root, file))
-
     elif os.path.isdir(odf_path):
-        odf_files_list = glob.glob(odf_path + "/*.ODF")
+        odf_files_list = glob.glob(odf_path + "/**/*.ODF", recursive=True)
     elif os.path.isfile(odf_path):
         odf_files_list = [odf_path]
     print(f"Convert {len(odf_files_list)} ODF files")
