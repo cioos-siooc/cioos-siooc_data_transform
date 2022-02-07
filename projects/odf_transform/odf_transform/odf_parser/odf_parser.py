@@ -559,11 +559,11 @@ def global_attributes_from_header(odf_header):
 
     # Convert ODF history to CF history
     for history_group in odf_header["HISTORY_HEADER"]:
-        date = convert_odf_time(history_group["CREATION_DATE"])
+        date = convert_odf_time(history_group["CREATION_DATE"], str)
         if type(history_group["PROCESS"]) is str:
             history_group["PROCESS"] = [history_group["PROCESS"]]
         for row in history_group["PROCESS"]:
-            global_attributes["history"] += f"{date.isoformat()} - {row}\n"
+            global_attributes["history"] += f"{date} {row}\n"
 
     if "INSTRUMENT_HEADER" in odf_header:
         global_attributes.update(
@@ -592,16 +592,21 @@ def global_attributes_from_header(odf_header):
     return global_attributes
 
 
-def convert_odf_time(time_string):
+def convert_odf_time(time_string, output_type=None):
     """Simple tool to convert ODF timestamps to a datetime object"""
     if time_string == "17-NOV-1858 00:00:00.00":
-        return pd.NaT
+        time = pd.NaT
     elif re.search(":60.0+$", time_string):
-        return pd.to_datetime(re.sub(":60.0+$", ":00.0", time_string)) + pd.Timedelta(
+        time = pd.to_datetime(re.sub(":60.0+$", ":00.0", time_string)) + pd.Timedelta(
             "1min"
         )
     else:
-        return pd.to_datetime(time_string, utc=True)
+        time = pd.to_datetime(time_string, utc=True)
+
+    if output_type == str:
+        return time.strftime("%Y-%m-%dT%H:%M:%SZ")
+    else:
+        return time
 
 
 def generate_variables_from_header(
