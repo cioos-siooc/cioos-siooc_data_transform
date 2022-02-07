@@ -92,52 +92,50 @@ def read(filename, encoding_format="Windows-1252"):
         # Read header one line at the time
         while "-- DATA --" not in line:
             line = f.readline()
-            # Drop some characters that aren't useful
-            line = re.sub(r"\n|,$", "", line)
+
+            if line == "-- DATA --\n":
+                break
 
             # Collect each original odf header lines
             original_header.append(line)
 
-            # Sections
-            if re.match(r"^\s?\w", line):
-                section = line.replace("\n", "").replace(",", "")
-                section = re.sub(
-                    r"^\s*|\s$", "", section
-                )  # Ignore white spaces before and after
-                if section not in metadata:
-                    metadata[section] = [{}]
+            try:
+                # Sections
+                if re.match(r"[A-Z_]+,{0,1}\s*\n", line):
+                    section = re.search(r"([A-Z_]*)", line)[1]
+                    if section not in metadata:
+                        metadata[section] = [{}]
+                    else:
+                        metadata[section].append({})
+
+                # Dictionary type lines (key=value)
+                elif re.match(r"^\s{2}\s*[A-Z_0-9]+=.*\s*\n", line):  # Something=This
+                    key, value = re.search(
+                        r"\s*(?P<key>[A-Z_0-9]+)=\s*(?P<value>.*)", line
+                    ).groups()
+
+                    # Drop quotes and comma
+                    value = re.sub("^'|,$|',$|'$", "", value)
+
+                    # Convert numerical values to float and integers
+                    if re.match("[-+]{0,1}\d+\.\d+", value):
+                        value = float(value)
+                    elif re.match("[-+]{0,1}\d+$", value):
+                        value = int(value)
+
+                    # Add to the metadata as a dictionary
+                    # key = dict_line[0].strip().replace(" ", "_")
+                    if key in metadata[section][-1]:
+                        if type(metadata[section][-1][key]) is not list:
+                            metadata[section][-1][key] = [metadata[section][-1][key]]
+                        metadata[section][-1][key].append(value)
+                    else:
+                        metadata[section][-1][key] = value
                 else:
-                    metadata[section].append({})
+                    logging.error("Unrecognizable line format: " + line)
 
-            # Dictionary type lines (key=value)
-            elif re.match(r"^\s{2}\s*\w", line):  # Something=This
-                dict_line = re.split(
-                    r"=", line, maxsplit=1
-                )  # Make sure that only the first = is use to split
-                dict_line = [
-                    re.sub(r"^\s+|\s+$", "", item) for item in dict_line
-                ]  # Remove trailing white spaces
-
-                if re.match(
-                    r"\'.*\'", dict_line[1]
-                ):  # Is delimited by double quotes, definitely a string
-                    # Drop the quote signs and the white spaces before and after
-                    dict_line[1] = str(re.sub(r"^\s*|\s*$", "", dict_line[1][1:-1]))
-                else:
-                    # Try to convert the value of the dictionary in an integer or float
-                    dict_line[1] = _convert_to_number(dict_line[1])
-
-                # Add to the metadata as a dictionary
-                key = dict_line[0].strip().replace(" ", "_")
-                if key in metadata[section][-1]:
-                    if type(metadata[section][-1][key]) is not list:
-                        metadata[section][-1][key] = [metadata[section][-1][key]]
-                    metadata[section][-1][key].append(dict_line[1])
-                else:
-                    metadata[section][-1][key] = dict_line[1]
-
-            else:
-                assert RuntimeError, "Can't understand the line: " + line
+            except:
+                logging.error("Failed to read the line: " + line)
 
         # Simplify the single sections to a dictionary
         for section in metadata:
