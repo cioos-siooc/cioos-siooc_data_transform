@@ -21,24 +21,25 @@ pip install -e projects
 
 ## Running
 
+Specifying input (ODF) and ouput (NetCDF) folders in the default config file
+
 ```shell
-cd projects/odf_transform/odf_transform
+python odf_transform
 ```
 
-Specifying input (ODF) and ouput (NetCDF) folders in the config file
-
+Specifying a config file using `-c`
 ```shell
-python odf_to_netcdf.py
+python odf_transform -c /path/to/config/config.json
 ```
 
 Specifying input and output file/directories using `-i` and `-o`
 
 ```shell
-python odf_to_netcdf.py -i ../sample_data/test_files/ -o ./netcdf_files
+python odf_transform -i ../sample_data/test_files/ -o ./netcdf_files
 ```
 
 Running on a single file:
 
 ```shell
-python odf_to_netcdf.py ../sample_data/test_files/CTD_1994038_147_1_DN.ODF
+python odf_transform ../sample_data/test_files/CTD_1994038_147_1_DN.ODF
 ```

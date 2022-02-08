@@ -153,7 +153,7 @@ if __name__ == "__main__":
         prog="odf_transform", description="Convert ODF files to NetCDF"
     )
     parser.add_argument(
-        "-config",
+        "-c",
         type=str,
         dest="config_path",
         default=DEFAULT_CONFIG_PATH,
