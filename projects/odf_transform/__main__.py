@@ -22,7 +22,7 @@ DEFAULT_CONFIG_PATH = os.path.join(MODULE_PATH, "config.json")
 
 # Log to log file
 logging.captureWarnings(True)
-logging.basicConfig(filename="odf_transform.log", level=logging.INFO)
+logging.basicConfig(filename="odf_transform.log", level=logging.WARNING)
 formatter = logging.Formatter(
     "%(asctime)s %(processName)-10s %(name)s %(levelname)-8s %(message)s"
 )
@@ -69,26 +69,24 @@ def write_ctd_ncfile(
     # Let's convert to an xarray dataset
     ds = raw_data.to_xarray()
 
-    # Add file name to dataset
-    file_id = os.path.basename(odf_path)
-    ds["file_id"] = file_id
-    ds.attrs["filename"] = file_id
-
     # Write global attributes
-    ds.attrs.update(config["global_attributes"])  # From the config file
     ds.attrs.update(
         attributes.global_attributes_from_header(metadata)
     )  # From ODF header
+    ds.attrs.update(config["global_attributes"])  # From the config file
+    ds.attrs["filename"] = os.path.basename(odf_path)
+    ds.attrs["id"] = ds.attrs["filename"].replace(".ODF", "")
 
     # Add variables attributes from odf
     for var, attrs in metadata["variable_attributes"].items():
         if var in ds:
             ds[var].attrs = attrs
 
+    # Handle ODF flag variables
     ds = odf_parser.odf_flag_variables(ds, config.get("flag_convention"))
-    ds = attributes.generate_variables_from_header(
-        ds, metadata, config["cdm_data_type"]
-    )  # From ODF header
+
+    # Generate Variables from attributes
+    ds = attributes.generate_variables_from_header(ds, metadata)
 
     # geographic_area
     ds["geographic_area"] = get_geo_code(
@@ -109,6 +107,23 @@ def write_ctd_ncfile(
     ds = xarray_methods.convert_variables_to_erddap_format(ds)
     # Standardize variable attributes
     ds = xarray_methods.standardize_variable_attributes(ds)
+
+    # Handle dimensions
+    if ds.attrs["cdm_data_type"] == "Profile" and "index" in ds and "depth" in ds:
+        ds = ds.swap_dims({"index": "depth"}).drop_vars("index")
+
+    # Convert to iso date time and drop empty attributes
+    initial_attrs = set(ds.attrs.keys())
+    ds.attrs = {
+        key: value
+        if type(value) != pd.Timestamp
+        else value.strftime("%Y-%m-%dT%H:%M:%SZ")
+        for key, value in ds.attrs.items()
+        if value not in [None, ""]
+    }
+    dropped_attrs = initial_attrs - ds.attrs.keys()
+    if dropped_attrs:
+        logging.info(f"Drop empty attributes: {dropped_attrs}")
 
     # Finally save the xarray dataset to a NetCDF file!!!
     if output_path == None:

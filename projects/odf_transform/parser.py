@@ -360,8 +360,8 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         "sdn_parameter_name",
         "sdn_uom_urn",
         "sdn_uom_name",
-        "definition",
-        "convention",
+        "coverage_content_type",
+        "ioos_category"
     ]
 
     # Generate Standardized Attributes from vocabulary table
