@@ -250,7 +250,6 @@ def odf_flag_variables(ds, flag_convention=None):
     # Loop through each variables and detect flag variables
     previous_key = None
     for var in ds:
-        attrs = ds[var].attrs
         related_variables = None
 
         # Find related variable
@@ -361,7 +360,8 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         "sdn_uom_urn",
         "sdn_uom_name",
         "coverage_content_type",
-        "ioos_category"
+        "ioos_category",
+        "comments"
     ]
 
     # Generate Standardized Attributes from vocabulary table

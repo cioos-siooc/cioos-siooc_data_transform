@@ -42,6 +42,7 @@
         "default": {
             "standard_name": "status_flag",
             "coverage_content_type": "qualityInformation",
+            "ioos_category": "Quality",
             "flag_values": [
                 0,
                 1,
@@ -55,11 +56,13 @@
         },
         "QCFF": {
             "standard_name": "status_flag",
-            "coverage_content_type": "qualityInformation"
+            "coverage_content_type": "qualityInformation",
+            "ioos_category": "Quality"
         },
         "FFFF": {
             "standard_name": "status_flag",
-            "coverage_content_type": "qualityInformation"
+            "coverage_content_type": "qualityInformation",
+            "ioos_category": "Quality"
         }
     }
 }
