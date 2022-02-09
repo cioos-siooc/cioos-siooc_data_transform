@@ -11,7 +11,7 @@ import xarray as xr
 
 from datetime import datetime
 
-import json
+import os
 import gsw
 
 
@@ -50,21 +50,16 @@ class GF3Code:
         self.name = self.code + ("_%02g" % int(self.index) if self.index else "")
 
 
-def convert_odf_time(time_string, output_type=None):
+def convert_odf_time(time_string):
     """Simple tool to convert ODF timestamps to a datetime object"""
     if time_string == "17-NOV-1858 00:00:00.00":
-        time = pd.NaT
+        return pd.NaT
     elif re.search(":60.0+$", time_string):
-        time = pd.to_datetime(re.sub(":60.0+$", ":00.0", time_string)) + pd.Timedelta(
+        return pd.to_datetime(re.sub(":60.0+$", ":00.0", time_string)) + pd.Timedelta(
             "1min"
         )
     else:
-        time = pd.to_datetime(time_string, utc=True)
-
-    if output_type == str:
-        return time.strftime("%Y-%m-%dT%H:%M:%SZ")
-    else:
-        return time
+        return pd.to_datetime(time_string, utc=True)
 
 
 def read(filename, encoding_format="Windows-1252"):
@@ -139,6 +134,8 @@ def read(filename, encoding_format="Windows-1252"):
                         value = float(value)
                     elif re.match("[-+]{0,1}\d+$", value):
                         value = int(value)
+                    elif re.match("\d\d\-\w\w\w\-\d\d\d\d \d\d:\d\d:\d\d\.\d*",value):
+                        value = convert_odf_time(value)
 
                     # Add to the metadata as a dictionary
                     # key = dict_line[0].strip().replace(" ", "_")
