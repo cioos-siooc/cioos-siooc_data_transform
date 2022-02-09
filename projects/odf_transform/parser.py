@@ -459,12 +459,12 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
                         new_variable = re.sub(
                             "01$|XX$", "%02g" % gf3.index, row["variable_name"]
                         )
-                    if re.search("1$", row["variable_name"]):
+                    elif re.search("1$", row["variable_name"]):
                         new_variable = re.sub(
                             "1$", "%1g" % gf3.index, row["variable_name"]
                         )
                     else:
-                        new_variable = row["variable_name"] + "%02g" % gf3.index
+                        new_variable = row["variable_name"]
                 else:
                     new_variable = row["variable_name"]
 
@@ -484,9 +484,6 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
                                 input_args.append(ds[item])
                             else:
                                 input_args.append(item)
-                        row["apply_function"] = (
-                            row["apply_function"].rsplit("(")[0].strip()
-                        )
 
                     ds[new_variable] = xr.apply_ufunc(
                         eval(row["apply_function"]), *tuple(input_args), keep_attrs=True
