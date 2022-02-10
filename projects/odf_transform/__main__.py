@@ -8,7 +8,6 @@ import argparse
 
 from odf_transform import parser as odf_parser
 from odf_transform import attributes
-from odf_transform import review
 
 import cioos_data_transform.utils.xarray_methods as xarray_methods
 from cioos_data_transform.utils.utils import fix_path
