@@ -89,14 +89,14 @@ def global_attributes_from_header(odf_header):
         "institution": odf_header["CRUISE_HEADER"]["ORGANIZATION"],
         "program": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
         "project": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
-        "cruise_number": odf_header["CRUISE_HEADER"]["CRUISE_NUMBER"],
         "cruise_name": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
+        "cruise_number": odf_header["CRUISE_HEADER"]["CRUISE_NUMBER"],
         "cruise_description": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
         "chief_scientist": odf_header["CRUISE_HEADER"]["CHIEF_SCIENTIST"],
         "mission_start_date": odf_header["CRUISE_HEADER"].get("START_DATE"),
         "mission_end_date": odf_header["CRUISE_HEADER"].get("END_DATE"),
-        "id": "",
         "platform": odf_header["CRUISE_HEADER"]["PLATFORM"],
+        "id": "",
         "event_number": odf_header["EVENT_HEADER"]["EVENT_NUMBER"],
         "event_start_time": odf_header["EVENT_HEADER"]["START_DATE_TIME"],
         "event_end_time": odf_header["EVENT_HEADER"]["END_DATE_TIME"],
@@ -191,7 +191,7 @@ def generate_variables_from_header(ds, odf_header):
     attrs_to_var = {
         "institution": {},
         "cruise_name": {},
-        "cruise_id": {},
+        "cruise_number": {},
         "chief_scientist": {},
         "platform": {},
         "event_number": {},
@@ -235,9 +235,9 @@ def generate_variables_from_header(ds, odf_header):
             attrs = [attrs]
         for att in attrs:
             new_key = att.pop("name") if "name" in att else key
-            if key in ds.attrs:
-                ds[new_key] = ds.attrs[key]
-                ds[new_key].attrs = att
+
+            ds[new_key] = ds.attrs[key]
+            ds[new_key].attrs = att
 
     # Reorder variables
     variable_list = [var for var in ds.keys() if var not in initial_variable_order]
