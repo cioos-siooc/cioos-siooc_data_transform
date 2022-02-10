@@ -19,7 +19,7 @@
         "acknowledgement": "thanks etc ...",
         "naming_authority": "ca.gc.bio",
         "creator_name": "Bedford Institute of Ocean Science (BIO)",
-        "creator_email": " WebmasterBIO-IOB@dfo-mpo.gc.ca",
+        "creator_email": " BIO.Datashop@dfo-mpo.gc.ca",
         "creator_country": "Canada",
         "creator_sector": "government",
         "creator_url": "https://www.bio.gc.ca/",
@@ -40,6 +40,7 @@
     },
     "flag_convention": {
         "default": {
+            "dtype": "int",
             "standard_name": "status_flag",
             "coverage_content_type": "qualityInformation",
             "ioos_category": "Quality",
@@ -54,12 +55,14 @@
             ],
             "flag_meanings": "not_evaluated correct inconsistent_with_other_values doubtful erroneous modified missing"
         },
-        "QCFF": {
+        "QCFF_01": {
+            "dtype": "int",
             "standard_name": "status_flag",
             "coverage_content_type": "qualityInformation",
             "ioos_category": "Quality"
         },
-        "FFFF": {
+        "FFFF_01": {
+            "dtype": "int",
             "standard_name": "status_flag",
             "coverage_content_type": "qualityInformation",
             "ioos_category": "Quality"

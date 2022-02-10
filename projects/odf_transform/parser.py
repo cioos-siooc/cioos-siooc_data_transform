@@ -284,15 +284,22 @@ def odf_flag_variables(ds, flag_convention=None):
 
         # Add flag convention attributes if available within config file
         if flag_convention:
+            # Add configuration attributes
             if var in flag_convention:
                 ds[var].attrs.update(flag_convention[var])
             elif "default" in flag_convention:
                 ds[var].attrs.update(flag_convention["default"])
 
+            # Change variable type to configuration
+            if "dtype" in ds[var].attrs:
+                ds[var] = ds[var].astype(ds[var].attrs.pop("dtype"))
+
             # Match flag_values data type to variable data type
-            ds[var].attrs["flag_values"] = tuple(
-                np.array(ds[var].attrs["flag_values"]).astype(ds[var].dtype)
-            )
+            if "flag_values" in ds[var].attrs:
+                ds[var].attrs["flag_values"] = tuple(
+                    np.array(ds[var].attrs["flag_values"]).astype(ds[var].dtype)
+                )
+
         # Drop units variable from flag variables
         if "units" in ds[var].attrs:
             ds[var].attrs.pop("units")
