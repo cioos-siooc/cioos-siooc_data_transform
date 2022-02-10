@@ -189,41 +189,41 @@ def generate_variables_from_header(ds, odf_header):
 
     # General Attributes
     attrs_to_var = {
-        "institution": {},
-        "cruise_name": {},
-        "cruise_number": {},
-        "chief_scientist": {},
-        "platform": {},
-        "event_number": {},
-        "id": {},
-        "event_start_time": {},
-        "event_end_time": {},
-        "initial_latitude": {"units": "degrees_east"},
-        "initial_longitude": {"units": "degrees_east"},
+        "institution": {'ioos_category':"Other"},
+        "cruise_name": {'ioos_category':"Other"},
+        "cruise_number": {'ioos_category':"Other"},
+        "chief_scientist": {'ioos_category':"Other"},
+        "platform": {'ioos_category':"Other"},
+        "event_number": {'ioos_category':"Other"},
+        "id": {'ioos_category':"Identifier"},
+        "event_start_time": {'ioos_category':"Time"},
+        "event_end_time": {'ioos_category':"Time"},
+        "initial_latitude": {"units": "degrees_east","ioos_category":"Location"},
+        "initial_longitude": {"units": "degrees_east","ioos_category":"Location"},
     }
 
     if ds.attrs["cdm_data_type"] == "Profile":
         # Define profile specific variables
         attrs_to_var.update(
             {
-                "id": {"cf_role": "profile_id"},
-                "profile_direction": {},
+                "id": {"cf_role": "profile_id","ioos_category":"Other"},
+                "profile_direction": {"ioos_category":"Other"},
                 "event_start_time": [
-                    {"name": "time", "standard_name": "time"},
-                    {"name": "profile_start_time"},
+                    {"name": "time", "standard_name": "time","ioos_category":"Time"},
+                    {"name": "profile_start_time","ioos_category":"Time"},
                 ],
                 "event_end_time": {"name": "profile_end_time"},
                 "initial_latitude": {
                     "name": "latitude",
                     "long_name": "Latitude",
                     "units": "degrees_north",
-                    "standard_name": "latitude",
+                    "standard_name": "latitude","ioos_category":"Location"
                 },
                 "initial_longitude": {
                     "name": "longitude",
                     "long_name": "Longitude",
                     "units": "degrees_east",
-                    "standard_name": "longitude",
+                    "standard_name": "longitude","ioos_category":"Location"
                 },
             }
         )
