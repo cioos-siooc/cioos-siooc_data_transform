@@ -134,7 +134,7 @@ def read(filename, encoding_format="Windows-1252"):
                         value = float(value)
                     elif re.match("[-+]{0,1}\d+$", value):
                         value = int(value)
-                    elif re.match("\d\d\-\w\w\w\-\d\d\d\d \d\d:\d\d:\d\d\.\d*",value):
+                    elif re.match("\d\d\-\w\w\w\-\d\d\d\d \d\d:\d\d:\d\d\.\d*", value):
                         value = convert_odf_time(value)
 
                     # Add to the metadata as a dictionary
@@ -368,7 +368,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         "sdn_uom_name",
         "coverage_content_type",
         "ioos_category",
-        "comments"
+        "comments",
     ]
 
     # Generate Standardized Attributes from vocabulary table
@@ -474,10 +474,6 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
                         new_variable = row["variable_name"]
                 else:
                     new_variable = row["variable_name"]
-
-                if new_variable in ds:
-                    # If the new variable already exist in the dataset continue
-                    continue
 
                 # Generate new variable by either copying it or applying specified function to the initial variable
                 if row["apply_function"]:
