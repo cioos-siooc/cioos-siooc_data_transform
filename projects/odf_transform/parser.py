@@ -366,6 +366,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         "sdn_parameter_name",
         "sdn_uom_urn",
         "sdn_uom_name",
+        "gf3_code",
         "coverage_content_type",
         "ioos_category",
         "comments",
@@ -407,6 +408,11 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
 
         # If nothing matches, move to the next one
         if matching_terms.empty:
+            if "gf3_code" in attrs and "flag_values" not in attrs:
+                logger.warning(
+                    f"No matching vocabulary term is available for variable {var}: {attrs}"
+                )
+
             new_variable_order.append(var)
             continue
 
