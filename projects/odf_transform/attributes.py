@@ -170,7 +170,7 @@ def global_attributes_from_header(odf_header):
             + f"{global_attributes['organization']}  {global_attributes['institution']} "
             + f"on the {global_attributes['cruise_name'].title()} "
             + f"from {pd.to_datetime(global_attributes['mission_start_date']).strftime('%d-%b-%Y')} "
-            + f"to {global_attributes['mission_end_date']}."
+            + f"to {global_attributes['mission_end_date'].strftime('%d-%b-%Y')}."
         )
     else:
         raise RuntimeError(
@@ -189,41 +189,58 @@ def generate_variables_from_header(ds, odf_header):
 
     # General Attributes
     attrs_to_var = {
-        "institution": {'ioos_category':"Other"},
-        "cruise_name": {'ioos_category':"Other"},
-        "cruise_number": {'ioos_category':"Other"},
-        "chief_scientist": {'ioos_category':"Other"},
-        "platform": {'ioos_category':"Other"},
-        "event_number": {'ioos_category':"Other"},
-        "id": {'ioos_category':"Identifier"},
-        "event_start_time": {'ioos_category':"Time"},
-        "event_end_time": {'ioos_category':"Time"},
-        "initial_latitude": {"units": "degrees_east","ioos_category":"Location"},
-        "initial_longitude": {"units": "degrees_east","ioos_category":"Location"},
+        "institution": {"ioos_category": "Other"},
+        "cruise_name": {"ioos_category": "Other"},
+        "cruise_number": {"ioos_category": "Other"},
+        "chief_scientist": {"ioos_category": "Other"},
+        "platform": {"ioos_category": "Other"},
+        "event_number": {"ioos_category": "Other"},
+        "id": {"ioos_category": "Identifier"},
+        "event_start_time": {"ioos_category": "Time"},
+        "event_end_time": {"ioos_category": "Time"},
+        "initial_latitude": {"units": "degrees_east", "ioos_category": "Location"},
+        "initial_longitude": {"units": "degrees_east", "ioos_category": "Location"},
     }
 
     if ds.attrs["cdm_data_type"] == "Profile":
         # Define profile specific variables
         attrs_to_var.update(
             {
-                "id": {"cf_role": "profile_id","ioos_category":"Other"},
-                "profile_direction": {"ioos_category":"Other"},
+                "id": {"cf_role": "profile_id", "ioos_category": "Other"},
+                "profile_direction": {"ioos_category": "Other"},
                 "event_start_time": [
-                    {"name": "time", "standard_name": "time","ioos_category":"Time"},
-                    {"name": "profile_start_time","ioos_category":"Time"},
+                    {
+                        "name": "time",
+                        "standard_name": "time",
+                        "ioos_category": "Time",
+                        "coverage_content_type": "coordinate",
+                    },
+                    {
+                        "name": "profile_start_time",
+                        "long_name": "Profile Start Time",
+                        "ioos_category": "Time",
+                        "coverage_content_type": "auxiliaryInformation",
+                    },
                 ],
-                "event_end_time": {"name": "profile_end_time"},
+                "event_end_time": {
+                    "name": "profile_end_time",
+                    "long_name": "Profile End Time",
+                    "ioos_category": "Time",
+                    "coverage_content_type": "auxiliaryInformation",
+                },
                 "initial_latitude": {
                     "name": "latitude",
                     "long_name": "Latitude",
                     "units": "degrees_north",
-                    "standard_name": "latitude","ioos_category":"Location"
+                    "standard_name": "latitude",
+                    "ioos_category": "Location",
                 },
                 "initial_longitude": {
                     "name": "longitude",
                     "long_name": "Longitude",
                     "units": "degrees_east",
-                    "standard_name": "longitude","ioos_category":"Location"
+                    "standard_name": "longitude",
+                    "ioos_category": "Location",
                 },
             }
         )
