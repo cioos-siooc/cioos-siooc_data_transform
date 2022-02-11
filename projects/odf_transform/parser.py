@@ -62,6 +62,19 @@ def convert_odf_time(time_string):
         return pd.to_datetime(time_string, utc=True)
 
 
+def history_input(comment, date=datetime.now()):
+    return f"{date.strftime('%Y-%m-%dT%H:%M:%SZ')} {comment}\n"
+
+
+def update_variable_index(varname, index):
+    if varname.endswith(("XX", "01")):
+        return varname[:-2] + "%02g" % index
+    elif varname.endswith(("X", "1")):
+        return varname[:-1] + "%01g" % index
+    else:
+        return varname
+
+
 def read(filename, encoding_format="Windows-1252"):
     """
     Read_odf
@@ -356,7 +369,6 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         "sdn_parameter_name",
         "sdn_uom_urn",
         "sdn_uom_name",
-        "legacy_gf3_code",
         "coverage_content_type",
         "ioos_category",
         "comments",
@@ -374,7 +386,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         attrs = ds[var].attrs
 
         # Ignore variables with no attributes and flag variables
-        if attrs == {} or attrs.get("flag_values"):
+        if attrs == {} or "flag_values" in attrs or "legacy_gf3_code" not in attrs:
             new_variable_order.append(var)
             continue
 
@@ -385,24 +397,17 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
             # Add scale to to scale attribute
             attrs["scale"] = scale
 
-        # Find matching vocabulary for that GF3 Code (if available) or variable name
-        if "legacy_gf3_code" in attrs:
-            gf3 = GF3Code(attrs["legacy_gf3_code"])
-            name = gf3.code
-        else:
-            gf3 = None
-            name = var
+        # Find matching vocabulary for that GF3 Code
+        gf3 = GF3Code(attrs["legacy_gf3_code"])
         matching_terms = vocabulary.query(
-            f"Vocabulary in{tuple(organizations)} and name=='{name}'"
+            f"Vocabulary in{tuple(organizations)} and name=='{gf3.code}'"
         )
 
         # If nothing matches, move to the next one
         if matching_terms.empty:
-            if "legacy_gf3_code" in attrs and "flag_values" not in attrs:
-                logger.warning(
-                    f"No matching vocabulary term is available for variable {var}: {attrs}"
-                )
-
+            logger.warning(
+                f"No matching vocabulary term is available for variable {gf3.name}: {attrs}"
+            )
             new_variable_order.append(var)
             continue
 
@@ -446,7 +451,8 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         # No matching term, give a warning if not a flag and move on to the next iteration
         if len(matching_terms_and_units) == 0:
             logger.warning(
-                f"ODF File: {ds['file_id'].values} -> No Matching unit found for code: {var}, long_name: {attrs.get('long_name')}, units: {attrs.get('units')} in vocabulary {selected_organization}\n"
+                f"{ds.attrs['odf_filename']} -> No Matching unit found for code: "
+                + f"{var}: {({att: attrs[att] for att in ['long_name','units']})} in vocabulary {selected_organization}\n"
                 + f"{matching_terms[['accepted_units','accepted_scale','accepted_instruments']]}"
             )
             new_variable_order.append(var)
@@ -458,23 +464,16 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
             if row["variable_name"]:
                 # Apply suffix number of original variable
                 if gf3:
-                    if re.search("01$|XX$", row["variable_name"]):
-                        new_variable = re.sub(
-                            "01$|XX$", "%02g" % gf3.index, row["variable_name"]
-                        )
-                    elif re.search("1$", row["variable_name"]):
-                        new_variable = re.sub(
-                            "1$", "%1g" % gf3.index, row["variable_name"]
-                        )
-                    else:
-                        new_variable = row["variable_name"]
+                    new_variable = update_variable_index(
+                        row["variable_name"], gf3.index
+                    )
                 else:
                     new_variable = row["variable_name"]
 
                 # Generate new variable by either copying it or applying specified function to the initial variable
                 if row["apply_function"]:
                     input_args = []
-                    extra_args = re.search("\((P?.*)\)", row["apply_function"])
+                    extra_args = re.search("lambda (.*):", row["apply_function"])
                     if extra_args:
                         for item in extra_args[1].split(","):
                             if item in var:
@@ -487,18 +486,14 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
                     ds[new_variable] = xr.apply_ufunc(
                         eval(row["apply_function"]), *tuple(input_args), keep_attrs=True
                     )
-                    arg_str = tuple(
-                        arg.name if type(arg) is xr.DataArray else arg
-                        for arg in input_args
+                    ds.attrs["history"] += history_input(
+                        f"Generate new variable: {new_variable} = {row['apply_function']}"
                     )
-                    ds.attrs[
-                        "history"
-                    ] += f"{datetime.now().isoformat()} Generate new variable: {new_variable} = {row['apply_function']}{arg_str}"
                 else:
                     ds[new_variable] = ds[var].copy()
-                    ds.attrs[
-                        "history"
-                    ] += f"{datetime.now().isoformat()} Generate new variable: {new_variable} = {var}"
+                    ds.attrs["history"] += history_input(
+                        f"Generate new variable: {new_variable} = {var}"
+                    )
 
                 new_attrs = ds[new_variable].attrs
                 new_variable_order.append(new_variable)
@@ -516,14 +511,10 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
 
             # Update sdn_parameter_urn term available to match trailing number from the variable itself.
             if "sdn_parameter_urn" in new_attrs and "legacy_gf3_code" in new_attrs:
-                if new_attrs["sdn_parameter_urn"].endswith(("01", "XX")):
-                    new_attrs["sdn_parameter_urn"] = re.sub(
-                        r"(01|XX)$", "%02d" % gf3.index, new_attrs["sdn_parameter_urn"],
-                    )
-                elif new_attrs["sdn_parameter_urn"].endswith(("1", "X")):
-                    new_attrs["sdn_parameter_urn"] = re.sub(
-                        r"(1|X)$", "%1d" % gf3.index, new_attrs["sdn_parameter_urn"],
-                    )
+                new_attrs["sdn_parameter_urn"] = update_variable_index(
+                    new_attrs["sdn_parameter_urn"], gf3.index
+                )
+
     return ds[new_variable_order]
 
 
