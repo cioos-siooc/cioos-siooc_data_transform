@@ -87,16 +87,6 @@ def read(filename, encoding_format="Windows-1252"):
     :return:
     """
 
-    def _convert_to_number(value):
-        """Simple method to try to convert input (string, literals) to float or integer."""
-        try:
-            floated = float(value)
-            if floated.is_integer():
-                return int(floated)
-            return floated
-        except ValueError:
-            return value
-
     metadata = {}  # Start with an empty dictionary
     with open(filename, encoding=encoding_format) as f:
         line = ""
