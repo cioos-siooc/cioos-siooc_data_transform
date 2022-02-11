@@ -74,7 +74,7 @@ def write_ctd_ncfile(
         attributes.global_attributes_from_header(metadata)
     )  # From ODF header
     ds.attrs.update(config["global_attributes"])  # From the config file
-    ds.attrs["filename"] = os.path.basename(odf_path)
+    ds.attrs["odf_filename"] = os.path.basename(odf_path)
     ds.attrs["id"] = ds.attrs["filename"].replace(".ODF", "")
 
     # Add variables attributes from odf
