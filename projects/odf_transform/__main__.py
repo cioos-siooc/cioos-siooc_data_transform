@@ -10,6 +10,7 @@ from odf_transform import parser as odf_parser
 from odf_transform import attributes
 
 import cioos_data_transform.utils.xarray_methods as xarray_methods
+import cioos_data_transform.parse.seabird as seabird
 from cioos_data_transform.utils.utils import fix_path
 from cioos_data_transform.utils.utils import get_geo_code, read_geojson
 import pandas as pd
@@ -98,6 +99,10 @@ def write_ctd_ncfile(
         organizations=config["organisationVocabulary"],
         vocabulary=config["vocabulary"],
     )
+
+    if ds.attrs["instrument_manufacturer_header"].startswith('* Sea-Bird'):
+        ds = seabird.add_seabird_xmlcon_calibration_as_attributes(ds,ds.attrs['instrument_manufacturer_header'])
+        ds = seabird.update_attributes_from_seabird_header(ds,ds.attrs['instrument_manufacturer_header'])
 
     # Add geospatial and geometry related global attributes
     # Just add spatial/time range as attributes
