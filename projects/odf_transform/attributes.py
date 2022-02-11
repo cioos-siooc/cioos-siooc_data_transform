@@ -127,13 +127,28 @@ def global_attributes_from_header(odf_header):
         )
     )
 
-    # Map PLATFORM to seadatanet term
+    # Map PLATFORM to NERC C17
     global_attributes.update(match_platform(odf_header["CRUISE_HEADER"]["PLATFORM"]))
 
     # Convert ODF history to CF history
+    is_manufacturer_header = False
+    global_attributes["instrument_manufacturer_header"] = ""
     for history_group in odf_header["HISTORY_HEADER"]:
         date = history_group["CREATION_DATE"].strftime("%Y-%m-%dT%H:%M:%SZ")
         for row in history_group["PROCESS"]:
+            # Retrieve Instrument Manufacturer Header
+            if row.startswith("* Sea-Bird"):
+                is_manufacturer_header = True
+            if is_manufacturer_header:
+                global_attributes["instrument_manufacturer_header"] += row + "\n"
+            if row.startswith("*END*"):
+                is_manufacturer_header = False
+
+            # Ignore some specific lines within the history
+            if re.match("\#\s*\<.*|\*\* .*|\# name|\# span|\*END\*", row):
+                continue
+
+            # Add to history
             global_attributes["history"] += f"{date} {row}\n"
 
     # Instrument Specific Information
@@ -150,10 +165,6 @@ def global_attributes_from_header(odf_header):
                 ],
             }
         )
-        # Retrieve Seabird Format Instruments Calibration from history
-        calibration = re.findall("\#(\s*\<.*)", global_attributes["history"])
-        if calibration:
-            global_attributes["instrument_calibration"] = calibration
     # TODO map instrument to seadatanet L22 instrument
 
     # Derive cdm_data_type from DATA_TYPE
