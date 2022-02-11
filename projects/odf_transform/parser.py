@@ -185,7 +185,7 @@ def read(filename, encoding_format="Windows-1252"):
             attribute = {
                 "long_name": att.get("NAME"),
                 "units": att.get("UNITS"),
-                "gf3_code": var_name,
+                "legacy_gf3_code": var_name,
                 "type": att["TYPE"],
                 "null_value": att["NULL_VALUE"],
             }
@@ -366,7 +366,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         "sdn_parameter_name",
         "sdn_uom_urn",
         "sdn_uom_name",
-        "gf3_code",
+        "legacy_gf3_code",
         "coverage_content_type",
         "ioos_category",
         "comments",
@@ -396,8 +396,8 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
             attrs["scale"] = scale
 
         # Find matching vocabulary for that GF3 Code (if available) or variable name
-        if "gf3_code" in attrs:
-            gf3 = GF3Code(attrs["gf3_code"])
+        if "legacy_gf3_code" in attrs:
+            gf3 = GF3Code(attrs["legacy_gf3_code"])
             name = gf3.code
         else:
             gf3 = None
@@ -408,7 +408,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
 
         # If nothing matches, move to the next one
         if matching_terms.empty:
-            if "gf3_code" in attrs and "flag_values" not in attrs:
+            if "legacy_gf3_code" in attrs and "flag_values" not in attrs:
                 logger.warning(
                     f"No matching vocabulary term is available for variable {var}: {attrs}"
                 )
@@ -525,10 +525,15 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
                 new_attrs.pop("units")
 
             # Update sdn_parameter_urn term available to match trailing number from the variable itself.
-            if "sdn_parameter_urn" in new_attrs and "gf3_code" in new_attrs:
-                new_attrs["sdn_parameter_urn"] = re.sub(
-                    r"\d\d|XX$", "%02d" % gf3.index, new_attrs["sdn_parameter_urn"],
-                )
+            if "sdn_parameter_urn" in new_attrs and "legacy_gf3_code" in new_attrs:
+                if new_attrs["sdn_parameter_urn"].endswith(("01", "XX")):
+                    new_attrs["sdn_parameter_urn"] = re.sub(
+                        r"(01|XX)$", "%02d" % gf3.index, new_attrs["sdn_parameter_urn"],
+                    )
+                elif new_attrs["sdn_parameter_urn"].endswith(("1", "X")):
+                    new_attrs["sdn_parameter_urn"] = re.sub(
+                        r"(1|X)$", "%1d" % gf3.index, new_attrs["sdn_parameter_urn"],
+                    )
     return ds[new_variable_order]
 
 
