@@ -4,6 +4,8 @@ import xmltodict
 import logging
 import json
 
+import pandas as pd
+
 logger = logging.getLogger(__name__)
 
 
@@ -37,7 +39,11 @@ def update_attributes_from_seabird_header(ds, seabird_header):
         else:
             logger.error(f"Unknown binavg method: {bin_str}")
 
-        # Add cell method eo 
+        # Add cell method attribute and geospatial_vertical_resolution global attribute
+        if "decibar" in bin_str or  "meter" in bin_str:
+            ds.attrs["geospatial_vertical_resolution"] = bin_str
+        elif "second" in bin_str or "hour" in bin_str:
+            ds.attrs["time_coverage_resolution"] = pd.Timedelta(bin_str).isoformat()
         for var in ds:
             if (len(ds.dims) == 1 and len(ds[var].dims) == 1) or binvar in ds[var].dims:
                 ds[var].attrs["cell_method"] = f"{binvar}: mean (interval: {bin_str})"
@@ -61,7 +67,7 @@ def add_seabird_xmlcon_calibration_as_attributes(ds, seabird_header):
         "Pressure, Digiquartz with TC": ["PRESPR01"],
         "Conductivity": ["CNDCST01"],
         "Conductivity, 2": ["CNDCST02"],
-        "Altimeter": ["ADEPZZ01"],
+        "Altimeter": ["AHSFZZ01"],
         "PAR/Logarithmic, Satlantic": ["IRRDUV01"],
         "Oxygen, SBE 43": ["DOXYZZ01", "OXYOCPVL01"],
         "Oxygen, SBE 43, 2": ["DOXYZZ02", "OXYOCPVL02"],
