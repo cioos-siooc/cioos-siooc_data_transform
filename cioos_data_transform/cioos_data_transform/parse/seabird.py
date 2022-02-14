@@ -55,6 +55,7 @@ def update_attributes_from_seabird_header(ds, seabird_header):
     station = re.search("\*\* Station_Name: (.*)\n", seabird_header)
     if station:
         ds.attrs["station"] = station[1]
+        ds['station'] = station[1]
     return ds
 
 
