@@ -42,11 +42,9 @@ def match_institute(ices_code, institution):
     institution = re.sub("DFO\s*", "", institution)
 
     def _get_institute(is_matched):
-        selected_institutes = reference_institutes.loc[
-            is_matched, institute_attributes
-        ].dropna()
-
-        return selected_institutes.iloc[0].to_dict()
+        return (
+            reference_institutes.loc[is_matched, institute_attributes].iloc[0].to_dict()
+        )
 
     is_ices_code = reference_institutes["ices_edmo_code"] == ices_code
     is_institute = (
@@ -69,6 +67,7 @@ def match_platform(platform):
         return reference_vessel.loc[is_vessel, platform_attributes].iloc[0].to_dict()
     else:
         logger.warning(f"Unknown platform {platform}")
+        return {}
 
 
 def global_attributes_from_header(odf_header):
@@ -148,7 +147,9 @@ def global_attributes_from_header(odf_header):
                 continue
 
             # Add to history
-            global_attributes["history"] += history_input(row, history_group["CREATION_DATE"])
+            global_attributes["history"] += history_input(
+                row, history_group["CREATION_DATE"]
+            )
 
     # Instrument Specific Information
     if "INSTRUMENT_HEADER" in odf_header:
@@ -262,6 +263,10 @@ def generate_variables_from_header(ds, odf_header):
             attrs = [attrs]
         for att in attrs:
             new_key = att.pop("name") if "name" in att else key
+
+            # Ignore empty keys
+            if ds.attrs[key] in (None, pd.NaT):
+                continue
 
             ds[new_key] = ds.attrs[key]
             ds[new_key].attrs = att
