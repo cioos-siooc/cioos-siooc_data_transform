@@ -108,7 +108,7 @@ def read(filename, encoding_format="Windows-1252"):
         while "-- DATA --" not in line:
             line = f.readline()
 
-            if line == "-- DATA --\n":
+            if "-- DATA --" in line:
                 break
 
             # Collect each original odf header lines
@@ -124,21 +124,22 @@ def read(filename, encoding_format="Windows-1252"):
                         metadata[section].append({})
 
                 # Dictionary type lines (key=value)
-                elif re.match(r"^\s{2}\s*[A-Z_0-9]+=.*\s*\n", line):  # Something=This
-                    key, value = re.search(
-                        r"\s*(?P<key>[A-Z_0-9]+)=\s*(?P<value>.*)", line
-                    ).groups()
+                elif "=" in line:  # Something=This
+                    key, value = [item.strip() for item in line.split("=", 1)]
 
                     # Drop quotes and comma
                     value = re.sub("^'|,$|',$|'$", "", value)
 
                     # Convert numerical values to float and integers
-                    if re.match("[-+]{0,1}\d+\.\d+", value):
+                    if re.match("[-+]{0,1}\d+\.\d+$", value):
                         value = float(value)
                     elif re.match("[-+]{0,1}\d+$", value):
                         value = int(value)
                     elif re.match("\d\d\-\w\w\w\-\d\d\d\d \d\d:\d\d:\d\d\.\d*", value):
-                        value = convert_odf_time(value)
+                        try:
+                            value = convert_odf_time(value)
+                        except:
+                            logging.warning(f"Failed to read date {value} in line: {line}")
 
                     # Add to the metadata as a dictionary
                     # key = dict_line[0].strip().replace(" ", "_")
@@ -351,7 +352,8 @@ def fix_flag_variables(ds):
                 ds[var].attrs["ancillary_variables"].replace(flag_var, rename)
             )
         return ds
-    #  List of problematic flags that need to be renamed 
+
+    #  List of problematic flags that need to be renamed
     temp_flag = {
         "QTE90_01": "QTEMP_01",
         "QTE90_02": "QTEMP_02",
