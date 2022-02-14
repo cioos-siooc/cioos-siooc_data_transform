@@ -123,12 +123,12 @@ def write_ctd_ncfile(
     if ds.attrs["cdm_data_type"] == "Profile" and "index" in ds and "depth" in ds:
         ds = ds.swap_dims({"index": "depth"}).drop_vars("index")
 
-    # Convert to iso date time and drop empty attributes
+    # Convert to iso datetime and drop empty attributes
     initial_attrs = set(ds.attrs.keys())
     ds.attrs = {
         key: value
         if type(value) != pd.Timestamp
-        else value.strftime("%Y-%m-%dT%H:%M:%SZ")
+        else value.astimezone("UTC").strftime("%Y-%m-%dT%H:%M:%SZ")
         for key, value in ds.attrs.items()
         if value not in [None, ""]
     }
