@@ -100,9 +100,16 @@ def write_ctd_ncfile(
         vocabulary=config["vocabulary"],
     )
 
-    if ds.attrs["instrument_manufacturer_header"].startswith('* Sea-Bird'):
-        ds = seabird.add_seabird_xmlcon_calibration_as_attributes(ds,ds.attrs['instrument_manufacturer_header'])
-        ds = seabird.update_attributes_from_seabird_header(ds,ds.attrs['instrument_manufacturer_header'])
+    # Fix flag variables with some issues to map
+    ds = odf_parser.fix_flag_variables(ds)
+
+    if ds.attrs["instrument_manufacturer_header"].startswith("* Sea-Bird"):
+        ds = seabird.add_seabird_xmlcon_calibration_as_attributes(
+            ds, ds.attrs["instrument_manufacturer_header"]
+        )
+        ds = seabird.update_attributes_from_seabird_header(
+            ds, ds.attrs["instrument_manufacturer_header"]
+        )
 
     # Add geospatial and geometry related global attributes
     # Just add spatial/time range as attributes

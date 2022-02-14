@@ -313,6 +313,58 @@ def odf_flag_variables(ds, flag_convention=None):
     return ds
 
 
+def fix_flag_variables(ds):
+    """Fix different issues related to flag variables within the ODFs."""
+
+    def _replace_flag(ds, flag_var, rename=None):
+        if flag_var not in ds:
+            return ds
+
+        # Find related variables to this flag
+        related_variables = [
+            var
+            for var in ds
+            if flag_var in ds[var].attrs.get("ancillary_variables", "")
+        ]
+
+        # If no rename variable is given an it affects only one variable name it with the same name as the variable but with a preceding Q
+        if rename is None:
+            if len(related_variables) > 1:
+                logger.error(
+                    f"Multiple variables are affected by {flag_var}, I'm not sure how to rename it."
+                )
+            rename = "Q" + related_variables[0]
+
+        # Rename or drop flag variable
+        if rename not in ds:
+            ds = ds.rename({flag_var: rename})
+        elif rename in ds and ds[flag_var].values != ds[rename].values:
+            logger.error(
+                f"{flag_var} is different than the similar {rename} flag. I'm not sure which one is the right one."
+            )
+        elif rename in ds and ds[flag_var].values == ds[rename].values:
+            ds = ds.drop(flag_var)
+
+        # Update ancillary_variables attribute
+        for var in related_variables:
+            ds[var].attrs["ancillary_variables"] = (
+                ds[var].attrs["ancillary_variables"].replace(flag_var, rename)
+            )
+        return ds
+    #  List of problematic flags that need to be renamed 
+    temp_flag = {
+        "QTE90_01": "QTEMP_01",
+        "QTE90_02": "QTEMP_02",
+        "QFLOR_01": None,
+        "QFLOR_02": None,
+        "QFLOR_03": None,
+    }
+    for flag, rename in temp_flag.items():
+        ds = _replace_flag(ds, flag, rename)
+
+    return ds
+
+
 def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
     """
     This method is use to retrieve from an ODF variable code, units and units, matching vocabulary terms available.
