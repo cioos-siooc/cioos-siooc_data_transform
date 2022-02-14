@@ -43,7 +43,7 @@ def update_attributes_from_seabird_header(ds, seabird_header):
             logger.error(f"Unknown binavg method: {bin_str}")
 
         # Add cell method attribute and geospatial_vertical_resolution global attribute
-        if "decibar" in bin_str or  "meter" in bin_str:
+        if "decibar" in bin_str or "meter" in bin_str:
             ds.attrs["geospatial_vertical_resolution"] = bin_str
         elif "second" in bin_str or "hour" in bin_str:
             ds.attrs["time_coverage_resolution"] = pd.Timedelta(bin_str).isoformat()
@@ -55,7 +55,7 @@ def update_attributes_from_seabird_header(ds, seabird_header):
     station = re.search("\*\* Station_Name: (.*)\n", seabird_header)
     if station:
         ds.attrs["station"] = station[1]
-        ds['station'] = station[1]
+        ds["station"] = station[1]
     return ds
 
 
@@ -73,10 +73,14 @@ def add_seabird_xmlcon_calibration_as_attributes(ds, seabird_header):
         "Conductivity, 2": ["CNDCST02"],
         "Altimeter": ["AHSFZZ01"],
         "PAR/Logarithmic, Satlantic": ["IRRDUV01"],
+        "PAR/Irradiance, Biospherical/Licor": ["IRRDUV01"],
         "Oxygen, SBE 43": ["DOXYZZ01", "OXYOCPVL01"],
         "Oxygen, SBE 43, 2": ["DOXYZZ02", "OXYOCPVL02"],
         "Fluorometer, Seapoint Ultraviolet": ["CDOMZZ01"],
+        "Fluorometer, WET Labs ECO CDOM": ["CDOMZZ01"],
         "Fluorometer, Seapoint": ["CPHLPR01"],
+        "Fluorometer, WET Labs WETstar": ["CPHLPR01"],
+        "Fluorometer, WET Labs WETstar": ["CPHLPR01"],
         "pH": ["PHMASS01", "PHXXZZ01"],
         "OBS, WET Labs, ECO-BB": ["VSCTXX01"],
         "SPAR/Surface Irradiance": ["IRRDSV01"],
@@ -85,8 +89,8 @@ def add_seabird_xmlcon_calibration_as_attributes(ds, seabird_header):
     calibration_xml = re.findall("\#(\s*\<.*)\n", seabird_header)
 
     # If no calibration detected give a warning and return dataset
-    if calibration_xml == None:
-        logger.warn("No Seabird XML Calibration was detected")
+    if not calibration_xml :
+        logger.info("No Seabird XML Calibration was detected")
         return ds
 
     # Read XML and commented lines
