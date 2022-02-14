@@ -14,26 +14,29 @@ def update_attributes_from_seabird_header(ds, seabird_header):
     instrument = re.search("\* Sea\-Bird (.*) Data File:\n", seabird_header)
     sampler = re.search("SBE (?P<sampler>11plus).*\n", seabird_header)
     if instrument:
-        ds.attrs["instrument"] = f"Sea-Bird {instrument[1]}{sampler[1] if sampler else ''}"
-    
+        ds.attrs[
+            "instrument"
+        ] = f"Sea-Bird {instrument[1]}{sampler[1] if sampler else ''}"
+
     # Bin Averaged
     binavg = re.search(
-        "\# binavg_bintype \= (?P<bintype>.*)\n\# binavg_binsize \= (?P<binsize>\d+)\n", seabird_header
+        "\# binavg_bintype \= (?P<bintype>.*)\n\# binavg_binsize \= (?P<binsize>\d+)\n",
+        seabird_header,
     )
     if binavg:
         bin_str = f"{binavg['binsize']} {binavg['bintype']}"
         ds.attrs["geospatial_vertical_resolution"] = bin_str
-        if "decibar" in binavg['bintype']:
+        if "decibar" in binavg["bintype"]:
             vars = [
                 var for var in ds.filter_by_attrs(standard_name="sea_water_pressure")
             ]
-            binvar = (vars[0] if vars else "Sea Pressure")
+            binvar = vars[0] if vars else "Sea Pressure"
         elif "second" in bin_str or "hour" in bin_str:
             vars = [var for var in ds.filter_by_attrs(standard_name="time")]
-            binvar = (vars[0] if vars else "time")
+            binvar = vars[0] if vars else "time"
         elif "meter" in bin_str or "hour" in bin_str:
             vars = [var for var in ds.filter_by_attrs(standard_name="depth")]
-            binvar = (vars[0] if vars else "depth")
+            binvar = vars[0] if vars else "depth"
         elif "scan" in bin_str:
             binvar = "Scan Count"
         else:
@@ -49,9 +52,9 @@ def update_attributes_from_seabird_header(ds, seabird_header):
                 ds[var].attrs["cell_method"] = f"{binvar}: mean (interval: {bin_str})"
 
     # Manual inputs
-    station = re.search('\*\* Station_Name: (.*)\n',seabird_header)
+    station = re.search("\*\* Station_Name: (.*)\n", seabird_header)
     if station:
-        ds.attrs['station'] = station[1]
+        ds.attrs["station"] = station[1]
     return ds
 
 
