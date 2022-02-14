@@ -130,7 +130,7 @@ def write_ctd_ncfile(
         if type(value) != pd.Timestamp
         else value.astimezone("UTC").strftime("%Y-%m-%dT%H:%M:%SZ")
         for key, value in ds.attrs.items()
-        if value not in [None, ""]
+        if value not in [None, "",pd.NaT]
     }
     dropped_attrs = initial_attrs - ds.attrs.keys()
     if dropped_attrs:
