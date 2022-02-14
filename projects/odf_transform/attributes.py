@@ -2,7 +2,7 @@ import pandas as pd
 import re
 import json
 import os
-from .parser import convert_odf_time
+from .parser import convert_odf_time, history_input
 import logging
 
 logger = logging.getLogger(__name__)
@@ -134,7 +134,6 @@ def global_attributes_from_header(odf_header):
     is_manufacturer_header = False
     global_attributes["instrument_manufacturer_header"] = ""
     for history_group in odf_header["HISTORY_HEADER"]:
-        date = history_group["CREATION_DATE"].strftime("%Y-%m-%dT%H:%M:%SZ")
         for row in history_group["PROCESS"]:
             # Retrieve Instrument Manufacturer Header
             if row.startswith("* Sea-Bird"):
@@ -149,7 +148,7 @@ def global_attributes_from_header(odf_header):
                 continue
 
             # Add to history
-            global_attributes["history"] += f"{date} {row}\n"
+            global_attributes["history"] += history_input(row, history_group["CREATION_DATE"])
 
     # Instrument Specific Information
     if "INSTRUMENT_HEADER" in odf_header:
