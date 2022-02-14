@@ -167,13 +167,13 @@ def global_attributes_from_header(odf_header):
     # TODO map instrument to seadatanet L22 instrument
 
     # Derive cdm_data_type from DATA_TYPE
-    if odf_header["EVENT_HEADER"]["DATA_TYPE"] in ["CTD", "BOTL"]:
+    if odf_header["EVENT_HEADER"]["DATA_TYPE"] in ["CTD", "BOTL", "BT"]:
         global_attributes["cdm_data_type"] = "Profile"
         global_attributes["cdm_profile_variables"] = ""
         global_attributes["profile_direction"] = profile_direction_map[
             odf_header["EVENT_HEADER"]["EVENT_QUALIFIER2"]
         ]
-        type_profile = {"CTD": "CTD", "BOTL": "Bottle"}
+        type_profile = {"CTD": "CTD", "BOTL": "Bottle", "BT": "Bottle"}
         global_attributes["title"] = (
             f"{type_profile[odf_header['EVENT_HEADER']['DATA_TYPE']]} profile data collected "
             + f"from the {global_attributes['platform']} platform by "
