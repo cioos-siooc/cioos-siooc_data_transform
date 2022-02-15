@@ -9,9 +9,8 @@ import argparse
 from odf_transform import parser as odf_parser
 from odf_transform import attributes
 
-import cioos_data_transform.utils.xarray_methods as xarray_methods
+from cioos_data_transform.utils.xarray_methods import standardize_dataset
 import cioos_data_transform.parse.seabird as seabird
-from cioos_data_transform.utils.utils import fix_path
 from cioos_data_transform.utils.utils import get_geo_code, read_geojson
 import pandas as pd
 
@@ -74,8 +73,8 @@ def write_ctd_ncfile(
         attributes.global_attributes_from_header(metadata)
     )  # From ODF header
     ds.attrs.update(config["global_attributes"])  # From the config file
-    ds.attrs["odf_filename"] = os.path.basename(odf_path)
-    ds.attrs["id"] = ds.attrs["odf_filename"].replace(".ODF", "")
+    ds.attrs["original_filename"] = os.path.basename(odf_path)
+    ds.attrs["id"] = ds.attrs["original_filename"].replace(".ODF", "")
 
     # Add variables attributes from odf
     for var, attrs in metadata["variable_attributes"].items():
@@ -113,28 +112,15 @@ def write_ctd_ncfile(
 
     # Add geospatial and geometry related global attributes
     # Just add spatial/time range as attributes
-    ds = xarray_methods.get_spatial_coverage_attributes(ds)
-    # Add encoding information to xarray
-    ds = xarray_methods.convert_variables_to_erddap_format(ds)
-    # Standardize variable attributes
-    ds = xarray_methods.standardize_variable_attributes(ds)
+    initial_attrs = set(ds.attrs.keys())
+    ds = standardize_dataset(ds)
+    dropped_attrs = initial_attrs - ds.attrs.keys()
+    if dropped_attrs:
+        logging.info(f"Drop empty attributes: {dropped_attrs}")
 
     # Handle dimensions
     if ds.attrs["cdm_data_type"] == "Profile" and "index" in ds and "depth" in ds:
         ds = ds.swap_dims({"index": "depth"}).drop_vars("index")
-
-    # Convert to iso datetime and drop empty attributes
-    initial_attrs = set(ds.attrs.keys())
-    ds.attrs = {
-        key: value
-        if type(value) != pd.Timestamp
-        else value.astimezone("UTC").strftime("%Y-%m-%dT%H:%M:%SZ")
-        for key, value in ds.attrs.items()
-        if value not in [None, "",pd.NaT]
-    }
-    dropped_attrs = initial_attrs - ds.attrs.keys()
-    if dropped_attrs:
-        logging.info(f"Drop empty attributes: {dropped_attrs}")
 
     # Finally save the xarray dataset to a NetCDF file!!!
     if output_path == None:
