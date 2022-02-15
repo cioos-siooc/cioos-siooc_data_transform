@@ -135,11 +135,15 @@ def read(filename, encoding_format="Windows-1252"):
                         value = float(value)
                     elif re.match("[-+]{0,1}\d+$", value):
                         value = int(value)
-                    elif re.match("\d\d\-\w\w\w\-\d\d\d\d \d\d:\d\d:\d\d\.\d*", value):
+                    elif re.match(
+                        "\d{1,2}-\w\w\w\-\d\d\d\d \d\d:\d\d:\d\d\.\d*", value
+                    ):
                         try:
                             value = convert_odf_time(value)
                         except:
-                            logging.warning(f"Failed to read date {value} in line: {line}")
+                            logging.warning(
+                                f"Failed to read date {value} in line: {line}"
+                            )
 
                     # Add to the metadata as a dictionary
                     # key = dict_line[0].strip().replace(" ", "_")
@@ -192,6 +196,7 @@ def read(filename, encoding_format="Windows-1252"):
                 "legacy_gf3_code": var_name,
                 "type": att["TYPE"],
                 "null_value": att["NULL_VALUE"],
+                'resolution': 10**-att['PRINT_DECIMAL_PLACES']
             }
 
             # Add those variable attributes to the metadata output
@@ -339,11 +344,11 @@ def fix_flag_variables(ds):
         # Rename or drop flag variable
         if rename not in ds:
             ds = ds.rename({flag_var: rename})
-        elif rename in ds and ds[flag_var].values != ds[rename].values:
+        elif rename in ds and (ds[flag_var].values != ds[rename].values).any():
             logger.error(
                 f"{flag_var} is different than the similar {rename} flag. I'm not sure which one is the right one."
             )
-        elif rename in ds and ds[flag_var].values == ds[rename].values:
+        elif rename in ds and (ds[flag_var].values == ds[rename].values).all():
             ds = ds.drop(flag_var)
 
         # Update ancillary_variables attribute
@@ -440,7 +445,12 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         attrs = ds[var].attrs
 
         # Ignore variables with no attributes and flag variables
-        if attrs == {} or "flag_values" in attrs or "legacy_gf3_code" not in attrs:
+        if (
+            attrs == {}
+            or "flag_values" in attrs
+            or "legacy_gf3_code" not in attrs
+            or var.startswith(("QCFF", "FFFF"))
+        ):
             new_variable_order.append(var)
             continue
 
@@ -460,7 +470,8 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         # If nothing matches, move to the next one
         if matching_terms.empty:
             logger.warning(
-                f"No matching vocabulary term is available for variable {gf3.name}: {attrs}"
+                f"{ds.attrs['original_filename']}: "
+                + f"No matching vocabulary term is available for variable {gf3.name}: {attrs}"
             )
             new_variable_order.append(var)
             continue
@@ -505,7 +516,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         # No matching term, give a warning if not a flag and move on to the next iteration
         if len(matching_terms_and_units) == 0:
             logger.warning(
-                f"{ds.attrs['odf_filename']} -> No Matching unit found for code: "
+                f"{ds.attrs['original_filename']} -> No Matching unit found for code: "
                 + f"{var}: {({att: attrs[att] for att in ['long_name','units']})} in vocabulary {selected_organization}\n"
                 + f"{matching_terms[['accepted_units','accepted_scale','accepted_instruments']]}"
             )

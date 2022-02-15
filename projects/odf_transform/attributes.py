@@ -15,7 +15,7 @@ reference_institutes = pd.read_csv(
 )
 reference_vessel = pd.read_csv(
     os.path.join(module_path, "reference_vessel.csv"),
-    dtype={"platform_imo_number": "Int64"},
+    dtype={"wmo_platform_code": "Int64"},
 )
 
 institute_attributes = [
@@ -27,7 +27,7 @@ institute_attributes = [
     "ices_edmo_code",
     "sdn_institution_urn",
 ]
-platform_attributes = ["platform", "sdn_platform_urn", "platform_imo_number"]
+platform_attributes = ["platform", "sdn_platform_urn", "wmo_platform_code"]
 
 
 def titleize(text):
@@ -43,7 +43,10 @@ def match_institute(ices_code, institution):
 
     def _get_institute(is_matched):
         return (
-            reference_institutes.loc[is_matched, institute_attributes].iloc[0].to_dict()
+            reference_institutes.loc[is_matched, institute_attributes]
+            .iloc[0]
+            .dropna()
+            .to_dict()
         )
 
     is_ices_code = reference_institutes["ices_edmo_code"] == ices_code
@@ -62,9 +65,15 @@ def match_institute(ices_code, institution):
 
 def match_platform(platform):
     """Review ODF CRUISE_HEADER:PLATFORM"""
+    platform = re.sub("CCGS\s*|CGCB\s*", "", platform)
     is_vessel = reference_vessel["platform"].str.lower().str.contains(platform.lower())
     if is_vessel.any():
-        return reference_vessel.loc[is_vessel, platform_attributes].iloc[0].to_dict()
+        return (
+            reference_vessel.loc[is_vessel, platform_attributes]
+            .iloc[0]
+            .dropna()
+            .to_dict()
+        )
     else:
         logger.warning(f"Unknown platform {platform}")
         return {}
@@ -168,15 +177,17 @@ def global_attributes_from_header(odf_header):
     # TODO map instrument to seadatanet L22 instrument
 
     # Derive cdm_data_type from DATA_TYPE
-    if odf_header["EVENT_HEADER"]["DATA_TYPE"] in ["CTD", "BOTL", "BT"]:
+    type_profile = {"CTD": "CTD", "BOTL": "Bottle", "BT": "Bottle"}
+    data_type = odf_header["EVENT_HEADER"]["DATA_TYPE"]
+    if data_type in ["CTD", "BOTL", "BT"]:
         global_attributes["cdm_data_type"] = "Profile"
         global_attributes["cdm_profile_variables"] = ""
-        global_attributes["profile_direction"] = profile_direction_map[
-            odf_header["EVENT_HEADER"]["EVENT_QUALIFIER2"]
-        ]
-        type_profile = {"CTD": "CTD", "BOTL": "Bottle", "BT": "Bottle"}
+        if data_type == "CTD":
+            global_attributes["profile_direction"] = profile_direction_map[
+                odf_header["EVENT_HEADER"]["EVENT_QUALIFIER2"]
+            ]
         global_attributes["title"] = (
-            f"{type_profile[odf_header['EVENT_HEADER']['DATA_TYPE']]} profile data collected "
+            f"{type_profile[data_type]} profile data collected "
             + f"from the {global_attributes['platform']} platform by "
             + f"{global_attributes['organization']}  {global_attributes['institution']} "
             + f"on the {global_attributes['cruise_name'].title()} "
@@ -184,9 +195,16 @@ def global_attributes_from_header(odf_header):
             + f"to {global_attributes['mission_end_date'].strftime('%d-%b-%Y')}."
         )
     else:
-        raise RuntimeError(
+        logger.error(
             f"Incompatible with ODF DATA_TYPE {odf_header['EVENT_HEADER']['DATA_TYPE']} yet."
         )
+
+    # Search anywhere within ODF Header
+    station = re.search(
+        "\*\* Station_Name: (.*)',\n", "".join(odf_header["original_header"])
+    )
+    if station:
+        global_attributes["station"] = station[1]
 
     # Missing terms potentially, mooring_number, station,
     return global_attributes
@@ -207,6 +225,7 @@ def generate_variables_from_header(ds, odf_header):
         "platform": {"ioos_category": "Other"},
         "event_number": {"ioos_category": "Other"},
         "id": {"ioos_category": "Identifier"},
+        "station": {"ioos_category": "Location"},
         "event_start_time": {"ioos_category": "Time"},
         "event_end_time": {"ioos_category": "Time"},
         "initial_latitude": {"units": "degrees_east", "ioos_category": "Location"},
@@ -265,7 +284,7 @@ def generate_variables_from_header(ds, odf_header):
             new_key = att.pop("name") if "name" in att else key
 
             # Ignore empty keys
-            if ds.attrs[key] in (None, pd.NaT):
+            if key not in ds.attrs or ds.attrs[key] in (None, pd.NaT):
                 continue
 
             ds[new_key] = ds.attrs[key]
