@@ -69,6 +69,7 @@ def add_seabird_xmlcon_calibration_as_attributes(ds, seabird_header):
         "Temperature": ["TEMPP681", "TEMPP901", "TEMPS601", "TEMPS901", "TEMPPR01"],
         "Temperature, 2": ["TEMPP682", "TEMPP902", "TEMPS602", "TEMPS902", "TEMPPR02"],
         "Pressure, Digiquartz with TC": ["PRESPR01"],
+        "Pressure, Strain Gauge": ["PRESPR01"],
         "Conductivity": ["CNDCST01"],
         "Conductivity, 2": ["CNDCST02"],
         "Altimeter": ["AHSFZZ01"],
@@ -80,16 +81,18 @@ def add_seabird_xmlcon_calibration_as_attributes(ds, seabird_header):
         "Fluorometer, WET Labs ECO CDOM": ["CDOMZZ01"],
         "Fluorometer, Seapoint": ["CPHLPR01"],
         "Fluorometer, WET Labs WETstar": ["CPHLPR01"],
-        "Fluorometer, WET Labs WETstar": ["CPHLPR01"],
+        "Fluorometer, WET Labs ECO-AFL/FL": ["CPHLPR01"],
+        "Turbidity Meter, WET Labs, ECO-NTU": ["TURBXX01", "VSCTXX01"],
         "pH": ["PHMASS01", "PHXXZZ01"],
         "OBS, WET Labs, ECO-BB": ["VSCTXX01"],
         "SPAR/Surface Irradiance": ["IRRDSV01"],
+        "SPAR, Biospherical/Licor": ["IRRDSV01"],
     }
     # Retrieve instrument calibration xml
     calibration_xml = re.findall("\#(\s*\<.*)\n", seabird_header)
 
     # If no calibration detected give a warning and return dataset
-    if not calibration_xml :
+    if not calibration_xml:
         logger.info("No Seabird XML Calibration was detected")
         return ds
 
@@ -97,7 +100,7 @@ def add_seabird_xmlcon_calibration_as_attributes(ds, seabird_header):
     calibration_xml = "\n".join(calibration_xml)
     sensors = xmltodict.parse(calibration_xml)["Sensors"]["sensor"]
     sensors_comments = re.findall(
-        "\s*\<!--\s*(Frequency \d+|A/D voltage \d+|SPAR voltage), (.*)-->\n",
+        "\s*\<!--\s*(Frequency \d+|A/D voltage \d+|.* voltage){1}, (.*)-->\n",
         calibration_xml,
     )
     # Split each sensor calibrations to a dictionary
@@ -109,25 +112,37 @@ def add_seabird_xmlcon_calibration_as_attributes(ds, seabird_header):
         attrs = sensor[sensor_key]
         id = int(sensor["@Channel"])
         sensor_name = sensors_comments[id - 1][1].strip()
+        sensor_code = re.sub("\s+|\,\s+|\/", "_", sensor_name)
+
+        # Try fit IOOS 1.2
+        discriminant = re.search("_2", sensor_code)
+        if discriminant:
+            component = sensor_code[:-2]
+            discriminant = "2" if discriminant else "1"
+        else:
+            component = sensor_code
+
         sensors_attrs[sensor_name] = {
-            "instrument_id": id,
-            "instrument_name": sensor_name,
+            "make_model": sensor_name,
+            "calibration_date": attrs.pop("CalibrationDate"),
+            "component": component,
+            "discriminant": discriminant,
             "instrument_channel": sensors_comments[id - 1][0],
             "instrument_sbe_sensor_id": int(attrs.pop("@SensorID")),
             "instrument_serial_number": attrs.pop("SerialNumber"),
-            "instrument_calibration_date": attrs.pop("CalibrationDate"),
             "instrument_calibration_coefficients": json.dumps(attrs),
         }
-    # TODO it would be good to map Seabird SensorIDs to an L22 instrument term.
+
+    # TODO it would be good to map Seabird SensorIDs to an L22 instrument term as instrument attribute.
 
     # Add calibrations to each corresponding variable based on the gf3 code
-    for name, sensor_cal in sensors_attrs.items():
+    for name, attrs in sensors_attrs.items():
         if name not in seabird_to_bodc:
             logger.warning(f"Missing Seabird to BODC mapping of: {name}")
             continue
         for bodc in seabird_to_bodc[name]:
             vars = ds.filter_by_attrs(sdn_parameter_urn=f"SDN:P01::{bodc}")
             for var in vars:
-                ds[var].attrs.update(sensor_cal)
+                ds[var].attrs.update(attrs)
 
     return ds
