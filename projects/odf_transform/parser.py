@@ -196,7 +196,7 @@ def read(filename, encoding_format="Windows-1252"):
                 "legacy_gf3_code": var_name,
                 "type": att["TYPE"],
                 "null_value": att["NULL_VALUE"],
-                'resolution': 10**-att['PRINT_DECIMAL_PLACES']
+                "resolution": 10 ** -att["PRINT_DECIMAL_PLACES"],
             }
 
             # Add those variable attributes to the metadata output
