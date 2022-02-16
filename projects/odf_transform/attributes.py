@@ -264,6 +264,7 @@ def generate_variables_from_header(ds, odf_header):
                     "units": "degrees_north",
                     "standard_name": "latitude",
                     "ioos_category": "Location",
+                    "coverage_content_type": "coordinate",
                 },
                 "initial_longitude": {
                     "name": "longitude",
@@ -271,6 +272,7 @@ def generate_variables_from_header(ds, odf_header):
                     "units": "degrees_east",
                     "standard_name": "longitude",
                     "ioos_category": "Location",
+                    "coverage_content_type": "coordinate",
                 },
             }
         )
