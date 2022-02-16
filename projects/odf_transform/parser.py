@@ -528,7 +528,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
             # Make a copy of original variable
             if row["variable_name"]:
                 # Apply suffix number of original variable
-                if gf3:
+                if gf3 and gf3.code not in ("FLOR"):
                     new_variable = update_variable_index(
                         row["variable_name"], gf3.index
                     )
@@ -575,7 +575,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
                 new_attrs.pop("units")
 
             # Update sdn_parameter_urn term available to match trailing number from the variable itself.
-            if "sdn_parameter_urn" in new_attrs and "legacy_gf3_code" in new_attrs:
+            if "sdn_parameter_urn" in new_attrs and "legacy_gf3_code" in new_attrs and  gf3.code not in ("FLOR"):
                 new_attrs["sdn_parameter_urn"] = update_variable_index(
                     new_attrs["sdn_parameter_urn"], gf3.index
                 )
