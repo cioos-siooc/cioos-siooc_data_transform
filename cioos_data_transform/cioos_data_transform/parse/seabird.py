@@ -104,7 +104,7 @@ def add_seabird_xmlcon_calibration_as_attributes(ds, seabird_header):
         calibration_xml,
     )
     # Split each sensor calibrations to a dictionary
-    sensors_attrs = {}
+    sensors_map = {}
     for sensor in sensors:
         if len(sensor.keys()) < 2:
             continue
@@ -112,37 +112,41 @@ def add_seabird_xmlcon_calibration_as_attributes(ds, seabird_header):
         attrs = sensor[sensor_key]
         id = int(sensor["@Channel"])
         sensor_name = sensors_comments[id - 1][1].strip()
-        sensor_code = re.sub("\s+|\,\s+|\/", "_", sensor_name)
+        sensor_code = (re.sub("\s+|\,\s+|\/|\-", "_", sensor_name) + "_sensor").lower()
 
-        # Try fit IOOS 1.2
-        discriminant = re.search("_2", sensor_code)
-        if discriminant:
-            component = sensor_code[:-2]
-            discriminant = "2" if discriminant else "1"
-        else:
-            component = sensor_code
-
-        sensors_attrs[sensor_name] = {
-            "make_model": sensor_name,
+        # Try fit IOOS 1.2 which request to add a instrument variable for each
+        # instruments and link this variable to data variable by using the instrument attribute
+        # https://ioos.github.io/ioos-metadata/ioos-metadata-profile-v1-2.html#instrument
+        parsed_name = re.search("(.+)(\d*)$", sensor_name)
+        component = re.sub(", $", "", parsed_name[1])
+        discriminant = parsed_name[2] if parsed_name[2] else "1"
+        ds[sensor_code] = ""
+        ds[sensor_code].attrs = {
             "calibration_date": attrs.pop("CalibrationDate"),
-            "component": component,
-            "discriminant": discriminant,
+            "component": f"{sensor_code}_sn{attrs['SerialNumber']}",  # IOOS 1.2
+            "discriminant": discriminant,  # IOOS 1.2
+            "make_model": component,  # IOOS 1.2
+            "instrument_name": sensor_name,
             "instrument_channel": sensors_comments[id - 1][0],
             "instrument_sbe_sensor_id": int(attrs.pop("@SensorID")),
             "instrument_serial_number": attrs.pop("SerialNumber"),
             "instrument_calibration_coefficients": json.dumps(attrs),
         }
+        sensors_map[sensor_name] = sensor_code
 
     # TODO it would be good to map Seabird SensorIDs to an L22 instrument term as instrument attribute.
 
     # Add calibrations to each corresponding variable based on the gf3 code
-    for name, attrs in sensors_attrs.items():
+    for name, sensor_variable in sensors_map.items():
         if name not in seabird_to_bodc:
             logger.warning(f"Missing Seabird to BODC mapping of: {name}")
             continue
         for bodc in seabird_to_bodc[name]:
             vars = ds.filter_by_attrs(sdn_parameter_urn=f"SDN:P01::{bodc}")
             for var in vars:
-                ds[var].attrs.update(attrs)
+                if "instrument" in ds[var].attrs:
+                    ds[var].attrs["instrument"] += "," + sensor_variable
+                else:
+                    ds[var].attrs["instrument"] = sensor_variable
 
     return ds
