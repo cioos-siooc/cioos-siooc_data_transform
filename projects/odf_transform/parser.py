@@ -533,7 +533,18 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
                         row["variable_name"], gf3.index
                     )
                 else:
-                    new_variable = row["variable_name"]
+                    # If variable already exist within dataset and is gf3.
+                    # Increment the trailing number until no similar named variable exist.
+                    if row["variable_name"] in ds and gf3:
+                        new_variable = None
+                        trailing_number = 2
+                        while new_variable == None or new_variable in ds:
+                            new_variable = update_variable_index(
+                                row["variable_name"], trailing_number
+                            )
+                            trailing_number += 1
+                    else:
+                        new_variable = row["variable_name"]
 
                 # Generate new variable by either copying it or applying specified function to the initial variable
                 if row["apply_function"]:
@@ -575,7 +586,11 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
                 new_attrs.pop("units")
 
             # Update sdn_parameter_urn term available to match trailing number from the variable itself.
-            if "sdn_parameter_urn" in new_attrs and "legacy_gf3_code" in new_attrs and  gf3.code not in ("FLOR"):
+            if (
+                "sdn_parameter_urn" in new_attrs
+                and "legacy_gf3_code" in new_attrs
+                and gf3.code not in ("FLOR")
+            ):
                 new_attrs["sdn_parameter_urn"] = update_variable_index(
                     new_attrs["sdn_parameter_urn"], gf3.index
                 )
