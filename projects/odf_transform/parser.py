@@ -585,7 +585,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
             if "units" in new_attrs and row["units"] is None:
                 new_attrs.pop("units")
 
-            # Update sdn_parameter_urn term available to match trailing number from the variable itself.
+            # Update sdn_parameter_urn and long_name terms available to match trailing number from the variable itself.
             if (
                 "sdn_parameter_urn" in new_attrs
                 and "legacy_gf3_code" in new_attrs
@@ -594,6 +594,9 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
                 new_attrs["sdn_parameter_urn"] = update_variable_index(
                     new_attrs["sdn_parameter_urn"], gf3.index
                 )
+                # Add index to long name if bigger than 1
+                if gf3.index > 1:
+                    new_attrs["long_name"] += f", {gf3.index}"
 
     return ds[new_variable_order]
 
