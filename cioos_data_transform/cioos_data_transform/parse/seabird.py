@@ -59,7 +59,7 @@ def update_attributes_from_seabird_header(ds, seabird_header):
     return ds
 
 
-def add_seabird_xmlcon_calibration_as_attributes(ds, seabird_header):
+def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
     """
     Extract seabird xml calibration and give back to each respective variables based on 
     sdn_parameter_urn attribute as an attribute.
@@ -77,11 +77,14 @@ def add_seabird_xmlcon_calibration_as_attributes(ds, seabird_header):
         "PAR/Irradiance, Biospherical/Licor": ["IRRDUV01"],
         "Oxygen, SBE 43": ["DOXYZZ01", "OXYOCPVL01"],
         "Oxygen, SBE 43, 2": ["DOXYZZ02", "OXYOCPVL02"],
-        "Fluorometer, Seapoint Ultraviolet": ["CDOMZZ01"],
-        "Fluorometer, WET Labs ECO CDOM": ["CDOMZZ01"],
-        "Fluorometer, Seapoint": ["CPHLPR01"],
-        "Fluorometer, WET Labs WETstar": ["CPHLPR01"],
-        "Fluorometer, WET Labs ECO-AFL/FL": ["CPHLPR01"],
+        "Fluorometer, Seapoint Ultraviolet": ["CDOMZZ01", "CDOMZZ02"],
+        "Fluorometer, WET Labs ECO CDOM": ["CDOMZZ01", "CDOMZZ02"],
+        "Fluorometer, Chelsea UV Aquatracka": ["CDOMZZ01", "CDOMZZ02"],
+        "Fluorometer, Seapoint": ["CPHLPR01", "CPHLPR02"],
+        "Fluorometer, WET Labs WETstar": ["CPHLPR01", "CPHLPR02"],
+        "Fluorometer, WET Labs ECO-AFL/FL": ["CPHLPR01", "CPHLPR02"],
+        "Fluorometer, Chelsea Aqua": ["CPHLPR01", "CPHLPR02"],
+        "Fluorometer, Chelsea Aqua 3": ["CPHLPR01", "CPHLPR02"],
         "Turbidity Meter, WET Labs, ECO-NTU": ["TURBXX01", "VSCTXX01"],
         "pH": ["PHMASS01", "PHXXZZ01"],
         "OBS, WET Labs, ECO-BB": ["VSCTXX01"],
@@ -138,15 +141,32 @@ def add_seabird_xmlcon_calibration_as_attributes(ds, seabird_header):
 
     # Add calibrations to each corresponding variable based on the gf3 code
     for name, sensor_variable in sensors_map.items():
-        if name not in seabird_to_bodc:
-            logger.warning(f"Missing Seabird to BODC mapping of: {name}")
-            continue
-        for bodc in seabird_to_bodc[name]:
-            vars = ds.filter_by_attrs(sdn_parameter_urn=f"SDN:P01::{bodc}")
+        if match_by == "sdn_parameter_urn":
+            if name not in seabird_to_bodc:
+                logger.warning(f"Missing Seabird to BODC mapping of: {name}")
+                continue
+            values = [f"SDN:P01::{item}" for item in seabird_to_bodc[name]]
+        else:
+            values = [name]
+
+        has_matched = False
+        for value in values:
+            vars = ds.filter_by_attrs(**{match_by: value})
+
+            if match_by == "sdn_parameter_urn" and (
+                "Fluorometer" in name or "Turbidity" in name
+            ):
+                logger.warning(
+                    f"We can't link easily multiple {name} instruments via sdn_parameter_urn attribute. Any related data will be link to both instuments."
+                )
+
             for var in vars:
                 if "instrument" in ds[var].attrs:
                     ds[var].attrs["instrument"] += "," + sensor_variable
                 else:
                     ds[var].attrs["instrument"] = sensor_variable
+                has_matched = True
+        if has_matched == False:
+            logger.info(f"Failed to match instrument {name} to any variables.")
 
     return ds
