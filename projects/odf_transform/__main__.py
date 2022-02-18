@@ -61,7 +61,8 @@ def write_ctd_ncfile(
     odf_path, output_path=None, config=None, polygons={},
 ):
     """Method use to convert odf files to a CIOOS/ERDDAP compliant NetCDF format"""
-    print(os.path.split(odf_path)[-1])
+    odf_file = os.path.basename(odf_path)
+    print(odf_file)
     # Parse the ODF file with the CIOOS python parsing tool
     metadata, raw_data = odf_parser.read(odf_path)
 
@@ -73,7 +74,7 @@ def write_ctd_ncfile(
         attributes.global_attributes_from_header(metadata)
     )  # From ODF header
     ds.attrs.update(config["global_attributes"])  # From the config file
-    ds.attrs["original_filename"] = os.path.basename(odf_path)
+    ds.attrs["original_filename"] = odf_file
     ds.attrs["id"] = ds.attrs["original_filename"].replace(".ODF", "")
 
     # Add variables attributes from odf
