@@ -268,6 +268,7 @@ def odf_flag_variables(ds, flag_convention=None):
 
             # Rename variable so that we can link by variable name
             ds = ds.rename({var: f"Q{previous_key}"})
+            ds['history'] += history_input(f'Rename Parameter {var} as Q{previous_key}')
             var = f"Q{previous_key}"
 
         elif var.startswith(("QCFF", "FFFF")):
@@ -563,13 +564,14 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
                         eval(row["apply_function"]), *tuple(input_args), keep_attrs=True
                     )
                     ds.attrs["history"] += history_input(
-                        f"Generate new variable: {new_variable} = {row['apply_function']}"
+                        f"Add Parameter: {new_variable} = {row['apply_function']}"
                     )
                 else:
                     ds[new_variable] = ds[var].copy()
-                    ds.attrs["history"] += history_input(
-                        f"Generate new variable: {new_variable} = {var}"
-                    )
+                    if var != new_variable:
+                        ds.attrs["history"] += history_input(
+                            f"Add Parameter: {new_variable} = {var}"
+                        )
 
                 new_attrs = ds[new_variable].attrs
                 new_variable_order.append(new_variable)
@@ -597,7 +599,12 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
                 # Add index to long name if bigger than 1
                 if gf3.index > 1:
                     new_attrs["long_name"] += f", {gf3.index}"
-
+    
+    dropped_variables = [var for var in ds if var not in new_variable_order]
+    if dropped_variables:
+        ds.attrs['history'] += history_input(
+            f"Drop Parameters: " + ",".join(dropped_variables)
+        )
     return ds[new_variable_order]
 
 

@@ -74,6 +74,7 @@ def write_ctd_ncfile(
         attributes.global_attributes_from_header(metadata)
     )  # From ODF header
     ds.attrs.update(config["global_attributes"])  # From the config file
+    ds.attrs['history'] += history_input(f'Convert ODF to NetCDF with cioos_data_trasform.odf_transform V{__version__}')
     ds.attrs["original_filename"] = odf_file
     ds.attrs["id"] = ds.attrs["original_filename"].replace(".ODF", "")
 
