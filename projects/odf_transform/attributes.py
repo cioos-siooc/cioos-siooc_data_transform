@@ -106,6 +106,7 @@ def global_attributes_from_header(odf_header):
         "mission_end_date": odf_header["CRUISE_HEADER"].get("END_DATE"),
         "platform": odf_header["CRUISE_HEADER"]["PLATFORM"],
         "id": "",
+        "naming_authority": "",
         "event_number": odf_header["EVENT_HEADER"]["EVENT_NUMBER"],
         "event_start_time": odf_header["EVENT_HEADER"]["START_DATE_TIME"],
         "event_end_time": odf_header["EVENT_HEADER"]["END_DATE_TIME"],
@@ -121,7 +122,7 @@ def global_attributes_from_header(odf_header):
         "date_created": odf_header["EVENT_HEADER"]["ORIG_CREATION_DATE"],
         "date_modified": odf_header["EVENT_HEADER"]["CREATION_DATE"],
         "history": "",
-        "comment": odf_header["EVENT_HEADER"].get("EVENT_COMMENTS", ""),
+        "comments": odf_header["EVENT_HEADER"].get("EVENT_COMMENTS", ""),
         "original_odf_header": "\n".join(odf_header["original_header"]),
         "original_odf_header_json": json.dumps(
             odf_original_header, ensure_ascii=False, indent=False, default=str
@@ -142,21 +143,32 @@ def global_attributes_from_header(odf_header):
     # Convert ODF history to CF history
     is_manufacturer_header = False
     global_attributes["instrument_manufacturer_header"] = ""
+    global_attributes['internal_processing_notes'] = ""
+    global_attributes['seabird_processing_modules'] = ""
     for history_group in odf_header["HISTORY_HEADER"]:
+        # Convert single processes to list
+        if type(history_group['PROCESS']) is str:
+            history_group['PROCESS'] = [history_group['PROCESS']]
+
         for row in history_group["PROCESS"]:
             # Retrieve Instrument Manufacturer Header
             if row.startswith("* Sea-Bird"):
+                global_attributes["history"] += "# SEA-BIRD INSTRUMENTS HEADER\n"
                 is_manufacturer_header = True
             if is_manufacturer_header:
                 global_attributes["instrument_manufacturer_header"] += row + "\n"
+            else:
+                global_attributes['internal_processing_notes'] += row + "\n"
+            
+            # End of manufacturer header
             if row.startswith("*END*"):
                 is_manufacturer_header = False
+                global_attributes["history"] += "# ODF Internal Processing Notes\n"
 
             # Ignore some specific lines within the history
-            if re.match("\#\s*\<.*|\*\* .*|\# name|\# span|\*END\*", row):
+            if re.match("^(\#\s*\<.*|\*\* .*|\# (name|span|nquan|nvalues|unit|interval|start_time|bad_flag)|\* |\*END\*)", row):
                 continue
-
-            # Add to history
+            # Add to history    
             global_attributes["history"] += history_input(
                 row, history_group["CREATION_DATE"]
             )
