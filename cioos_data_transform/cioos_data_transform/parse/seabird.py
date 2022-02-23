@@ -9,14 +9,23 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def update_attributes_from_seabird_header(ds, seabird_header):
-    # Instrument
+def get_seabird_instrument_from_header(seabird_header):
     instrument = re.search("\* Sea\-Bird (.*) Data File:\n", seabird_header)
     sampler = re.search("SBE (?P<sampler>11plus).*\n", seabird_header)
     if instrument:
-        ds.attrs[
-            "instrument"
-        ] = f"Sea-Bird {instrument[1]}{sampler[1] if sampler else ''}"
+        return  f"{instrument[1]}{sampler[1] if sampler else ''}"
+    else:
+        None
+
+def get_sbe_instrument_type(instrument):
+    if re.match('SBE (9|16|19|37)'):
+        return 'CTD'
+    else:
+        None
+
+def update_attributes_from_seabird_header(ds, seabird_header, parse_manual_inputs=False):
+    # Instrument
+    ds.attrs['instrument']  = get_seabird_instrument_from_header(seabird_header)
 
     # Bin Averaged
     binavg = re.search(
@@ -30,7 +39,7 @@ def update_attributes_from_seabird_header(ds, seabird_header):
             vars = [
                 var for var in ds.filter_by_attrs(standard_name="sea_water_pressure")
             ]
-            binvar = vars[0] if vars else "Sea Pressure"
+            binvar = vars[0] if vars else "sea_water_pressure"
         elif "second" in bin_str or "hour" in bin_str:
             vars = [var for var in ds.filter_by_attrs(standard_name="time")]
             binvar = vars[0] if vars else "time"
@@ -52,10 +61,11 @@ def update_attributes_from_seabird_header(ds, seabird_header):
                 ds[var].attrs["cell_method"] = f"{binvar}: mean (interval: {bin_str})"
 
     # Manual inputs
-    station = re.search("\*\* Station_Name: (.*)\n", seabird_header)
-    if station:
-        ds.attrs["station"] = station[1]
-        ds["station"] = station[1]
+    manual_inputs = re.findall("\*\* (?P<key>.*): (?P<value>.*)\n", seabird_header)
+    if parse_manual_inputs:
+        for key,value in manual_inputs:
+            ds.attrs[key.replace(' ','_').lower()] = value
+
     return ds
 
 
