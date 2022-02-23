@@ -154,7 +154,7 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
             vars = ds.filter_by_attrs(**{match_by: value})
 
             if (
-                len(vars)>0 
+                len(vars)>1 
                 and match_by == "sdn_parameter_urn" 
                 and "Fluorometer" in name or "Turbidity" in name
             ):
