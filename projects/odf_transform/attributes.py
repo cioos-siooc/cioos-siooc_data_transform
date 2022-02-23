@@ -4,6 +4,7 @@ import json
 import os
 from .parser import convert_odf_time
 from cioos_data_transform.utils.xarray_methods import history_input
+from cioos_data_transform.parse.seabird import get_seabird_instrument_from_header
 import logging
 
 logger = logging.getLogger(__name__)
@@ -165,7 +166,7 @@ def global_attributes_from_header(odf_header):
                 is_manufacturer_header = False
                 global_attributes["history"] += "# ODF Internal Processing Notes\n"
 
-            # Ignore some specific lines within the history
+            # Ignore some specific lines within the history (mostly seabird header ones)
             if re.match("^(\#\s*\<.*|\*\* .*|\# (name|span|nquan|nvalues|unit|interval|start_time|bad_flag)|\* |\*END\*)", row):
                 continue
             # Add to history    
@@ -174,16 +175,17 @@ def global_attributes_from_header(odf_header):
             )
 
     # Instrument Specific Information
-    if "INSTRUMENT_HEADER" in odf_header:
-        global_attributes.update(
-            {
-                "instrument_type": odf_header["INSTRUMENT_HEADER"]["INST_TYPE"],
-                "instrument_model": odf_header["INSTRUMENT_HEADER"]["MODEL"],
-                "instrument_serial_number": odf_header["INSTRUMENT_HEADER"][
-                    "SERIAL_NUMBER"
-                ],
-            }
-        )
+    if global_attributes["instrument_manufacturer_header"]:
+        global_attributes['instrument'] = get_seabird_instrument_from_header(global_attributes["instrument_manufacturer_header"])
+    elif "INSTRUMENT_HEADER" in odf_header:
+        global_attributes['instrument'] =  odf_header["INSTRUMENT_HEADER"]["INST_TYPE"] + ' ' + odf_header["INSTRUMENT_HEADER"]["MODEL"]
+    
+    if re.search('(SBE\s*(9|16|19|25|37))', global_attributes['instrument']):
+        global_attributes['instrument_type'] = "CTD"
+    else:
+        logging.warning(f"Unknown instrument type for {global_attributes['instrument']}")
+        
+    global_attributes["instrument_serial_number"] =  odf_header["INSTRUMENT_HEADER"]["SERIAL_NUMBER"]
     # TODO map instrument to seadatanet L22 instrument
 
     # Derive cdm_data_type from DATA_TYPE
