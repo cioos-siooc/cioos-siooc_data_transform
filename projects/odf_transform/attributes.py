@@ -182,9 +182,6 @@ def global_attributes_from_header(odf_header):
                 "instrument_serial_number": odf_header["INSTRUMENT_HEADER"][
                     "SERIAL_NUMBER"
                 ],
-                "instrument_description": odf_header["INSTRUMENT_HEADER"][
-                    "DESCRIPTION"
-                ],
             }
         )
     # TODO map instrument to seadatanet L22 instrument
