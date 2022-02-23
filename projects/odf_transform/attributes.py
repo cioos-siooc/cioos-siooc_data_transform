@@ -2,7 +2,8 @@ import pandas as pd
 import re
 import json
 import os
-from .parser import convert_odf_time, history_input
+from .parser import convert_odf_time
+from cioos_data_transform.utils.xarray_methods import history_input
 import logging
 
 logger = logging.getLogger(__name__)
