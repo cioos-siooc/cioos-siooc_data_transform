@@ -366,6 +366,8 @@ def fix_flag_variables(ds):
         "QFLOR_01": None,
         "QFLOR_02": None,
         "QFLOR_03": None,
+        "QCRAT_01": "QCNDC_01",
+        "QCRAT_02": "QCNDC_02",
     }
     for flag, rename in temp_flag.items():
         ds = _replace_flag(ds, flag, rename)
