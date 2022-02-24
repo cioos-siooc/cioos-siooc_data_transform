@@ -21,7 +21,18 @@ def get_sbe_instrument_type(instrument):
     if re.match('SBE (9|16|19|37)'):
         return 'CTD'
     else:
+        logging.warning(
+            f"Unknown instrument typt for {instrument}"
+        )
         None
+
+def get_seabird_processing_history(seabird_header):
+    if '# </Sensors>\n' in seabird_header:
+       return seabird_header.split('# </Sensors>\n')[1]
+    else:
+        logging.warning('Failed to retrieve Seabird Processing Modules history')
+        return None
+    
 
 def update_attributes_from_seabird_header(ds, seabird_header, parse_manual_inputs=False):
     # Instrument
