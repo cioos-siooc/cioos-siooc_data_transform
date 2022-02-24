@@ -4,7 +4,7 @@ import json
 import os
 from .parser import convert_odf_time
 from cioos_data_transform.utils.xarray_methods import history_input
-from cioos_data_transform.parse.seabird import get_seabird_instrument_from_header
+from cioos_data_transform.parse.seabird import get_seabird_instrument_from_header, get_seabird_processing_history
 import logging
 
 logger = logging.getLogger(__name__)
@@ -159,7 +159,8 @@ def global_attributes_from_header(odf_header):
             if is_manufacturer_header:
                 global_attributes["instrument_manufacturer_header"] += row + "\n"
             else:
-                global_attributes['internal_processing_notes'] += row + "\n"
+                global_attributes['internal_processing_notes'] += history_input(row, history_group["CREATION_DATE"]
+            )
             
             # End of manufacturer header
             if row.startswith("*END*"):
@@ -177,6 +178,7 @@ def global_attributes_from_header(odf_header):
     # Instrument Specific Information
     if global_attributes["instrument_manufacturer_header"]:
         global_attributes['instrument'] = get_seabird_instrument_from_header(global_attributes["instrument_manufacturer_header"])
+        global_attributes['seabid_processing_modules'] = get_seabird_processing_history(global_attributes["instrument_manufacturer_header"])
     elif "INSTRUMENT_HEADER" in odf_header:
         global_attributes['instrument'] =  odf_header["INSTRUMENT_HEADER"]["INST_TYPE"] + ' ' + odf_header["INSTRUMENT_HEADER"]["MODEL"]
     
@@ -234,7 +236,8 @@ def generate_variables_from_header(ds, odf_header):
         "cruise_name": {"ioos_category": "Other"},
         "cruise_number": {"ioos_category": "Other"},
         "chief_scientist": {"ioos_category": "Other"},
-        "platform": {"ioos_category": "Other"},
+        "wmo_platform_code": {"name":"platform_id","ioos_category": "Other","standard_name":"platform_id","dtype":str},
+        "platform": {"name":"platform","ioos_category": "Other","standard_name":"platform_name"},
         "event_number": {"ioos_category": "Other"},
         "id": {"ioos_category": "Identifier"},
         "station": {"ioos_category": "Location"},
@@ -296,13 +299,15 @@ def generate_variables_from_header(ds, odf_header):
             attrs = [attrs]
         for att in attrs:
             new_key = att.pop("name") if "name" in att else key
-
+            dtype = att.pop("dtype") if "dtype" in att else None
             # Ignore empty keys
             if key not in ds.attrs or ds.attrs[key] in (None, pd.NaT):
                 continue
 
             ds[new_key] = ds.attrs[key]
             ds[new_key].attrs = att
+            if dtype:
+                ds[new_key] = ds[new_key].astype(dtype)
 
     # Reorder variables
     variable_list = [var for var in ds.keys() if var not in initial_variable_order]
