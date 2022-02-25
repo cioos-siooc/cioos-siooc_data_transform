@@ -132,11 +132,21 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
     for sensor in sensors:
         if len(sensor.keys()) < 2:
             continue
+
         sensor_key = list(sensor.keys())[1].strip()
         attrs = sensor[sensor_key]
         id = int(sensor["@Channel"])
         sensor_name = sensors_comments[id - 1][1].strip()
-        sensor_code = (re.sub("\s+|\,\s+|\/|\-", "_", sensor_name) + "_sensor").lower()
+
+        # Format Instrument Variable Name (This tries to isolate type an index from the seabird commented variable name ~long_name)
+        sensor_code_items= [
+            re.search('^([a-zA-Z]+)(\,|\/){0,1}',sensor_name),
+            re.search('(Ultraviolet)',sensor_name),
+            re.search(', (\d+)', sensor_name)
+        ]
+        sensor_code = '_'.join([item[1] for item in sensor_code_items if item]).lower()
+        if sensor_code in ds:
+            logging.error(f"Duplicated instrument variable {sensor_code}")
 
         # Try fit IOOS 1.2 which request to add a instrument variable for each
         # instruments and link this variable to data variable by using the instrument attribute
@@ -144,9 +154,9 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         parsed_name = re.search("(.+)(\d*)$", sensor_name)
         component = re.sub(", $", "", parsed_name[1])
         discriminant = parsed_name[2] if parsed_name[2] else "1"
-        ds[sensor_code] = ""
+        ds[sensor_code] = json.dumps(attrs)
         ds[sensor_code].attrs = {
-            "calibration_date": attrs.pop("CalibrationDate"),
+            "calibration_date": pd.to_datetime(attrs.pop("CalibrationDate")).isoformat(),
             "component": f"{sensor_code}_sn{attrs['SerialNumber']}",  # IOOS 1.2
             "discriminant": discriminant,  # IOOS 1.2
             "make_model": component,  # IOOS 1.2
