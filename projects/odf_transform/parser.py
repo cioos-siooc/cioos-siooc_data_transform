@@ -407,10 +407,12 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         if accepted_terms == None:
             # No required term
             return True
-        elif re.search("^none$|^dimensionless$", accepted_terms, re.IGNORECASE):
-            # Truly expect no units
+        
+        accepted_units_list = accepted_terms.split("|")
+        if any(unit in ['none','dimensionless'] for unit in accepted_units_list):
+            # Include unitless data
             return True
-        elif term in accepted_terms.split("|"):
+        elif term in accepted_units_list:
             # Match exactely one of the listed terms
             return True
         elif regexp and re.search(accepted_terms, term, search_flag):
