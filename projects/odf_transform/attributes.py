@@ -11,10 +11,8 @@ logger = logging.getLogger(__name__)
 
 module_path = os.path.dirname(__file__)
 profile_direction_map = {"DN": "downward", "FLAT": "stable", "UP": "upward"}
-reference_institutes = pd.read_csv(
-    os.path.join(module_path, "reference_institute.csv"),
-    dtype={"ices_edmo_code": "Int64", "ioc_country_code": "Int64"},
-)
+
+# This could be potentially be replaced by using the NERC Server instead
 reference_vessel = pd.read_csv(
     os.path.join(module_path, "reference_vessel.csv"),
     dtype={"wmo_platform_code": "Int64"},
@@ -39,32 +37,6 @@ def titleize(text):
     )
 
 
-def match_institute(ices_code, institution):
-    """Review ODF COUNTRY_INSTITUTE_CODE and ORGANIZATION and map to reference organization."""
-    institution = re.sub("DFO\s*", "", institution)
-
-    def _get_institute(is_matched):
-        return (
-            reference_institutes.loc[is_matched, institute_attributes]
-            .iloc[0]
-            .dropna()
-            .to_dict()
-        )
-
-    is_ices_code = reference_institutes["ices_edmo_code"] == ices_code
-    is_institute = (
-        reference_institutes["dfo_code"].str.contains(institution) == True
-    ) | (reference_institutes["institution"].str.contains(institution) == True)
-
-    if is_ices_code.any():
-        return _get_institute(is_ices_code)
-    elif is_institute.any():
-        return _get_institute(is_institute)
-    else:
-        logger.warn(f"Unknown ices_code {ices_code} and institution {institution}")
-        return {}
-
-
 def match_platform(platform):
     """Review ODF CRUISE_HEADER:PLATFORM"""
     platform = re.sub("CCGS\s*|CGCB\s*", "", platform)
@@ -81,7 +53,7 @@ def match_platform(platform):
         return {}
 
 
-def global_attributes_from_header(odf_header):
+def global_attributes_from_header(ds, odf_header):
     """
     Method use to define the standard global attributes from an ODF Header parsed by the read function.
     """
@@ -94,9 +66,7 @@ def global_attributes_from_header(odf_header):
 
     odf_original_header = odf_header.copy()
     odf_original_header.pop("variable_attributes")
-    global_attributes = {
-        "organization": "Fisheries and Oceans Canada (DFO)",
-        "institution": odf_header["CRUISE_HEADER"]["ORGANIZATION"],
+    ds.attrs.update({
         "program": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
         "project": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
         "cruise_name": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
@@ -106,8 +76,6 @@ def global_attributes_from_header(odf_header):
         "mission_start_date": odf_header["CRUISE_HEADER"].get("START_DATE"),
         "mission_end_date": odf_header["CRUISE_HEADER"].get("END_DATE"),
         "platform": odf_header["CRUISE_HEADER"]["PLATFORM"],
-        "id": "",
-        "naming_authority": "",
         "event_number": odf_header["EVENT_HEADER"]["EVENT_NUMBER"],
         "event_start_time": odf_header["EVENT_HEADER"]["START_DATE_TIME"],
         "event_end_time": odf_header["EVENT_HEADER"]["END_DATE_TIME"],
@@ -128,15 +96,7 @@ def global_attributes_from_header(odf_header):
         "original_odf_header_json": json.dumps(
             odf_original_header, ensure_ascii=False, indent=False, default=str
         ),
-    }
-
-    # Map COUNTRY_INSTITUTE_CODE to Institute Reference
-    global_attributes.update(
-        match_institute(
-            odf_header["CRUISE_HEADER"]["COUNTRY_INSTITUTE_CODE"],
-            odf_header["CRUISE_HEADER"]["ORGANIZATION"],
-        )
-    )
+    })
 
     # Map PLATFORM to NERC C17
     global_attributes.update(match_platform(odf_header["CRUISE_HEADER"]["PLATFORM"]))
