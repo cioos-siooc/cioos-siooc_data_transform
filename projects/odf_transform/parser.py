@@ -117,7 +117,7 @@ def read(filename, encoding_format="Windows-1252"):
             try:
                 # Sections
                 if re.match(r"\s{0,1}[A-Z_]+,{0,1}\s*\n", line):
-                    section = re.search(r"([A-Z_]*)", line)[1]
+                    section = re.search(r"\s*([A-Z_]*)", line)[1]
                     if section not in metadata:
                         metadata[section] = [{}]
                     else:
