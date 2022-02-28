@@ -99,13 +99,13 @@ def global_attributes_from_header(ds, odf_header):
     })
 
     # Map PLATFORM to NERC C17
-    global_attributes.update(match_platform(odf_header["CRUISE_HEADER"]["PLATFORM"]))
+    ds.attrs.update(match_platform(odf_header["CRUISE_HEADER"]["PLATFORM"]))
 
     # Convert ODF history to CF history
     is_manufacturer_header = False
-    global_attributes["instrument_manufacturer_header"] = ""
-    global_attributes['internal_processing_notes'] = ""
-    global_attributes['seabird_processing_modules'] = ""
+    ds.attrs["instrument_manufacturer_header"] = ""
+    ds.attrs['internal_processing_notes'] = ""
+    ds.attrs['seabird_processing_modules'] = ""
     for history_group in odf_header["HISTORY_HEADER"]:
         # Convert single processes to list
         if type(history_group['PROCESS']) is str:
@@ -114,63 +114,67 @@ def global_attributes_from_header(ds, odf_header):
         for row in history_group["PROCESS"]:
             # Retrieve Instrument Manufacturer Header
             if row.startswith("* Sea-Bird"):
-                global_attributes["history"] += "# SEA-BIRD INSTRUMENTS HEADER\n"
+                ds.attrs["history"] += "# SEA-BIRD INSTRUMENTS HEADER\n"
                 is_manufacturer_header = True
             if is_manufacturer_header:
-                global_attributes["instrument_manufacturer_header"] += row + "\n"
+                ds.attrs["instrument_manufacturer_header"] += row + "\n"
             else:
-                global_attributes['internal_processing_notes'] += history_input(row, history_group["CREATION_DATE"]
+                ds.attrs['internal_processing_notes'] += history_input(row, history_group["CREATION_DATE"]
             )
             
             # End of manufacturer header
             if row.startswith("*END*"):
                 is_manufacturer_header = False
-                global_attributes["history"] += "# ODF Internal Processing Notes\n"
+                ds.attrs["history"] += "# ODF Internal Processing Notes\n"
 
             # Ignore some specific lines within the history (mostly seabird header ones)
             if re.match("^(\#\s*\<.*|\*\* .*|\# (name|span|nquan|nvalues|unit|interval|start_time|bad_flag)|\* |\*END\*)", row):
                 continue
             # Add to history    
-            global_attributes["history"] += history_input(
+            ds.attrs["history"] += history_input(
                 row, history_group["CREATION_DATE"]
             )
 
     # Instrument Specific Information
-    if global_attributes["instrument_manufacturer_header"]:
-        global_attributes['instrument'] = get_seabird_instrument_from_header(global_attributes["instrument_manufacturer_header"])
-        global_attributes['seabid_processing_modules'] = get_seabird_processing_history(global_attributes["instrument_manufacturer_header"])
+    if ds.attrs["instrument_manufacturer_header"]:
+        ds.attrs['instrument'] = get_seabird_instrument_from_header(ds.attrs["instrument_manufacturer_header"])
+        ds.attrs['seabid_processing_modules'] = get_seabird_processing_history(ds.attrs["instrument_manufacturer_header"])
     elif "INSTRUMENT_HEADER" in odf_header:
-        global_attributes['instrument'] =  odf_header["INSTRUMENT_HEADER"]["INST_TYPE"] + ' ' + odf_header["INSTRUMENT_HEADER"]["MODEL"]
-    
-    if re.search('(SBE\s*(9|16|19|25|37))', global_attributes['instrument']):
-        global_attributes['instrument_type'] = "CTD"
+        ds.attrs['instrument'] =  f'{odf_header["INSTRUMENT_HEADER"]["INST_TYPE"]} {odf_header["INSTRUMENT_HEADER"]["MODEL"]}'
+        ds.attrs["instrument_serial_number"] =  odf_header["INSTRUMENT_HEADER"]["SERIAL_NUMBER"]
     else:
-        logging.warning(f"Unknown instrument type for {global_attributes['instrument']}")
-        
-    global_attributes["instrument_serial_number"] =  odf_header["INSTRUMENT_HEADER"]["SERIAL_NUMBER"]
+        logging.warning(f'No Instrument field available')
+        ds.attrs['instrument'] = ""
+        ds.attrs['instrument_serial_number'] = ""
+    
+    if re.search('(SBE\s*(9|16|19|25|37))|CTD|Guildline|GUILDLN', ds.attrs['instrument'],re.IGNORECASE):
+        ds.attrs['instrument_type'] = "CTD"
+    else:
+        logging.warning(f"Unknown instrument type for instrument:{ds.attrs['instrument']}; odf: {odf_header['INSTRUMENT_HEADER']}")
+
     # TODO map instrument to seadatanet L22 instrument
 
     # Derive cdm_data_type from DATA_TYPE
     type_profile = {"CTD": "CTD", "BOTL": "Bottle", "BT": "Bottle"}
     data_type = odf_header["EVENT_HEADER"]["DATA_TYPE"]
     if data_type in ["CTD", "BOTL", "BT"]:
-        global_attributes["cdm_data_type"] = "Profile"
-        global_attributes["cdm_profile_variables"] = ""
+        ds.attrs["cdm_data_type"] = "Profile"
+        ds.attrs["cdm_profile_variables"] = ""
         if data_type == "CTD":
-            global_attributes["profile_direction"] = profile_direction_map[
+            ds.attrs["profile_direction"] = profile_direction_map[
                 odf_header["EVENT_HEADER"]["EVENT_QUALIFIER2"]
             ]
-        global_attributes["title"] = (
+        ds.attrs["title"] = (
             f"{type_profile[data_type]} profile data collected "
-            + f"from the {global_attributes['platform']} platform by "
-            + f"{global_attributes['organization']}  {global_attributes['institution']} "
-            + f"on the {global_attributes['cruise_name'].title()} "
-            + f"from {pd.to_datetime(global_attributes['mission_start_date']).strftime('%d-%b-%Y')} "
-            + f"to {global_attributes['mission_end_date'].strftime('%d-%b-%Y')}."
+            + f"from the {ds.attrs['platform']} platform by "
+            + f"{ds.attrs['organization']}  {ds.attrs['institution']} "
+            + f"on the {ds.attrs['cruise_name'].title()} "
+            + f"from {pd.to_datetime(ds.attrs['mission_start_date']).strftime('%d-%b-%Y')} "
+            + f"to {ds.attrs['mission_end_date'].strftime('%d-%b-%Y')}."
         )
     else:
         logger.error(
-            f"Incompatible with ODF DATA_TYPE {odf_header['EVENT_HEADER']['DATA_TYPE']} yet."
+            f"ODF_transform is not yet incompatible with ODF DATA_TYPE: {odf_header['EVENT_HEADER']['DATA_TYPE']}"
         )
 
     # Search anywhere within ODF Header
@@ -178,10 +182,10 @@ def global_attributes_from_header(ds, odf_header):
         "\*\* Station_Name: (.*)',\n", "".join(odf_header["original_header"])
     )
     if station:
-        global_attributes["station"] = station[1]
+        ds.attrs["station"] = station[1]
 
     # Missing terms potentially, mooring_number, station,
-    return global_attributes
+    return ds
 
 
 def generate_variables_from_header(ds, odf_header):
