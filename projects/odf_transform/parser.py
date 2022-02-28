@@ -268,7 +268,7 @@ def odf_flag_variables(ds, flag_convention=None):
 
             # Rename variable so that we can link by variable name
             ds = ds.rename({var: f"Q{previous_key}"})
-            ds['history'] += history_input(f'Rename Parameter {var} as Q{previous_key}')
+            ds.attrs['history'] += history_input(f'Rename Parameter {var} as Q{previous_key}')
             var = f"Q{previous_key}"
 
         elif var.startswith(("QCFF", "FFFF")):
@@ -475,7 +475,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         # If nothing matches, move to the next one
         if matching_terms.empty:
             logger.warning(
-                f"{ds.attrs['original_filename']}: "
+                f"{ds.attrs['original_filename']} -> "
                 + f"No matching vocabulary term is available for variable {gf3.name}: {attrs}"
             )
             new_variable_order.append(var)
