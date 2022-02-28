@@ -198,7 +198,9 @@ def standardize_variable_attributes(ds):
             and "flag_values" not in ds[var].attrs
         ):
             ds[var].attrs["actual_range"] = tuple(
-                    np.array((ds[var].min().item(0),ds[var].max().item(0))).astype(ds[var].dtype)
+                np.array((ds[var].min().item(0), ds[var].max().item(0))).astype(
+                    ds[var].dtype
+                )
             )
 
         ds[var].attrs = standardize_attributes_values(ds[var].attrs, attribute_order)

@@ -13,31 +13,35 @@ def get_seabird_instrument_from_header(seabird_header):
     instrument = re.search("\* Sea\-Bird (.*) Data File:\n", seabird_header)
     sampler = re.search("SBE (?P<sampler>11plus).*\n", seabird_header)
     if instrument:
-        return  f"{instrument[1]}{sampler[1] if sampler else ''}"
+        return f"{instrument[1]}{sampler[1] if sampler else ''}"
     else:
         None
 
+
 def get_sbe_instrument_type(instrument):
-    if re.match('SBE (9|16|19|37)'):
-        return 'CTD'
+    if re.match("SBE (9|16|19|37)"):
+        return "CTD"
     else:
-        logging.warning(
-            f"Unknown instrument typt for {instrument}"
-        )
+        logger.warning(f"Unknown instrument typt for {instrument}")
         None
+
 
 def get_seabird_processing_history(seabird_header):
     sbe_hist = "\# (datcnv|filter|align|celltm|loopedit|derive|Derive|binavg|split|strip|section|wild|window).*"
-    if '# datcnv' in seabird_header:
-       return '\n'.join([line for line in seabird_header.split('\n') if re.match(sbe_hist,line)])
+    if "# datcnv" in seabird_header:
+        return "\n".join(
+            [line for line in seabird_header.split("\n") if re.match(sbe_hist, line)]
+        )
     else:
-        logging.warning('Failed to retrieve Seabird Processing Modules history')
+        logger.warning("Failed to retrieve Seabird Processing Modules history")
         return None
-    
 
-def update_attributes_from_seabird_header(ds, seabird_header, parse_manual_inputs=False):
+
+def update_attributes_from_seabird_header(
+    ds, seabird_header, parse_manual_inputs=False
+):
     # Instrument
-    ds.attrs['instrument']  = get_seabird_instrument_from_header(seabird_header)
+    ds.attrs["instrument"] = get_seabird_instrument_from_header(seabird_header)
 
     # Bin Averaged
     binavg = re.search(
@@ -75,8 +79,8 @@ def update_attributes_from_seabird_header(ds, seabird_header, parse_manual_input
     # Manual inputs
     manual_inputs = re.findall("\*\* (?P<key>.*): (?P<value>.*)\n", seabird_header)
     if parse_manual_inputs:
-        for key,value in manual_inputs:
-            ds.attrs[key.replace(' ','_').lower()] = value
+        for key, value in manual_inputs:
+            ds.attrs[key.replace(" ", "_").lower()] = value
 
     return ds
 
@@ -147,7 +151,7 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         ]
         sensor_code = '_'.join([item[1] for item in sensor_code_items if item]).lower() + '_sensor'
         if sensor_code in ds:
-            logging.error(f"Duplicated instrument variable {sensor_code}")
+            logger.error(f"Duplicated instrument variable {sensor_code}")
 
         # Try fit IOOS 1.2 which request to add a instrument variable for each
         # instruments and link this variable to data variable by using the instrument attribute
@@ -157,7 +161,9 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         discriminant = parsed_name[2] if parsed_name[2] else "1"
         ds[sensor_code] = json.dumps(attrs)
         ds[sensor_code].attrs = {
-            "calibration_date": pd.to_datetime(attrs.pop("CalibrationDate"), errors='ignore'),
+            "calibration_date": pd.to_datetime(
+                attrs.pop("CalibrationDate"), errors="ignore"
+            ),
             "component": f"{sensor_code}_sn{attrs['SerialNumber']}",  # IOOS 1.2
             "discriminant": discriminant,  # IOOS 1.2
             "make_model": component,  # IOOS 1.2
@@ -186,9 +192,10 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
             vars = ds.filter_by_attrs(**{match_by: value})
 
             if (
-                len(vars)>1 
-                and match_by == "sdn_parameter_urn" 
-                and "Fluorometer" in name or "Turbidity" in name
+                len(vars) > 1
+                and match_by == "sdn_parameter_urn"
+                and "Fluorometer" in name
+                or "Turbidity" in name
             ):
                 logger.warning(
                     f"We can't link easily multiple {name} instruments via sdn_parameter_urn attribute. Any related data will be link to both instuments."

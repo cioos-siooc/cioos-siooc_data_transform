@@ -71,9 +71,11 @@ def write_ctd_ncfile(
     ds = raw_data.to_xarray()
 
     # Write global attributes
-    ds.attrs = config['global_attributes']
-    ds = attributes.global_attributes_from_header(ds,metadata)
-    ds.attrs['history'] += f'# Convert ODF to NetCDF with cioos_data_trasform.odf_transform V {__version__}'
+    ds.attrs = config["global_attributes"]
+    ds = attributes.global_attributes_from_header(ds, metadata)
+    ds.attrs[
+        "history"
+    ] += f"# Convert ODF to NetCDF with cioos_data_trasform.odf_transform V {__version__}"
     ds.attrs["original_filename"] = odf_file
     ds.attrs["id"] = ds.attrs["original_filename"].replace(".ODF", "")
 

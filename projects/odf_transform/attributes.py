@@ -4,7 +4,10 @@ import json
 import os
 from .parser import convert_odf_time
 from cioos_data_transform.utils.xarray_methods import history_input
-from cioos_data_transform.parse.seabird import get_seabird_instrument_from_header, get_seabird_processing_history
+from cioos_data_transform.parse.seabird import (
+    get_seabird_instrument_from_header,
+    get_seabird_processing_history,
+)
 import logging
 
 logger = logging.getLogger(__name__)
@@ -66,37 +69,41 @@ def global_attributes_from_header(ds, odf_header):
 
     odf_original_header = odf_header.copy()
     odf_original_header.pop("variable_attributes")
-    ds.attrs.update({
-        "program": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
-        "project": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
-        "cruise_name": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
-        "cruise_number": odf_header["CRUISE_HEADER"]["CRUISE_NUMBER"],
-        "cruise_description": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
-        "chief_scientist": odf_header["CRUISE_HEADER"]["CHIEF_SCIENTIST"],
-        "mission_start_date": odf_header["CRUISE_HEADER"].get("START_DATE"),
-        "mission_end_date": odf_header["CRUISE_HEADER"].get("END_DATE"),
-        "platform": odf_header["CRUISE_HEADER"]["PLATFORM"],
-        "event_number": odf_header["EVENT_HEADER"]["EVENT_NUMBER"],
-        "event_start_time": odf_header["EVENT_HEADER"]["START_DATE_TIME"],
-        "event_end_time": odf_header["EVENT_HEADER"]["END_DATE_TIME"],
-        "initial_latitude": _reviewLat(odf_header["EVENT_HEADER"]["INITIAL_LATITUDE"]),
-        "initial_longitude": _reviewLon(
-            odf_header["EVENT_HEADER"]["INITIAL_LONGITUDE"]
-        ),
-        "end_latitude": _reviewLat(odf_header["EVENT_HEADER"]["END_LATITUDE"]),
-        "end_longitude": _reviewLon(odf_header["EVENT_HEADER"]["END_LONGITUDE"]),
-        "sampling_interval": odf_header["EVENT_HEADER"]["SAMPLING_INTERVAL"],
-        "sounding": odf_header["EVENT_HEADER"]["SOUNDING"],
-        "depth_off_bottom": odf_header["EVENT_HEADER"]["DEPTH_OFF_BOTTOM"],
-        "date_created": odf_header["EVENT_HEADER"]["ORIG_CREATION_DATE"],
-        "date_modified": odf_header["EVENT_HEADER"]["CREATION_DATE"],
-        "history": "",
-        "comments": odf_header["EVENT_HEADER"].get("EVENT_COMMENTS", ""),
-        "original_odf_header": "\n".join(odf_header["original_header"]),
-        "original_odf_header_json": json.dumps(
-            odf_original_header, ensure_ascii=False, indent=False, default=str
-        ),
-    })
+    ds.attrs.update(
+        {
+            "program": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
+            "project": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
+            "cruise_name": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
+            "cruise_number": odf_header["CRUISE_HEADER"]["CRUISE_NUMBER"],
+            "cruise_description": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
+            "chief_scientist": odf_header["CRUISE_HEADER"]["CHIEF_SCIENTIST"],
+            "mission_start_date": odf_header["CRUISE_HEADER"].get("START_DATE"),
+            "mission_end_date": odf_header["CRUISE_HEADER"].get("END_DATE"),
+            "platform": odf_header["CRUISE_HEADER"]["PLATFORM"],
+            "event_number": odf_header["EVENT_HEADER"]["EVENT_NUMBER"],
+            "event_start_time": odf_header["EVENT_HEADER"]["START_DATE_TIME"],
+            "event_end_time": odf_header["EVENT_HEADER"]["END_DATE_TIME"],
+            "initial_latitude": _reviewLat(
+                odf_header["EVENT_HEADER"]["INITIAL_LATITUDE"]
+            ),
+            "initial_longitude": _reviewLon(
+                odf_header["EVENT_HEADER"]["INITIAL_LONGITUDE"]
+            ),
+            "end_latitude": _reviewLat(odf_header["EVENT_HEADER"]["END_LATITUDE"]),
+            "end_longitude": _reviewLon(odf_header["EVENT_HEADER"]["END_LONGITUDE"]),
+            "sampling_interval": odf_header["EVENT_HEADER"]["SAMPLING_INTERVAL"],
+            "sounding": odf_header["EVENT_HEADER"]["SOUNDING"],
+            "depth_off_bottom": odf_header["EVENT_HEADER"]["DEPTH_OFF_BOTTOM"],
+            "date_created": odf_header["EVENT_HEADER"]["ORIG_CREATION_DATE"],
+            "date_modified": odf_header["EVENT_HEADER"]["CREATION_DATE"],
+            "history": "",
+            "comments": odf_header["EVENT_HEADER"].get("EVENT_COMMENTS", ""),
+            "original_odf_header": "\n".join(odf_header["original_header"]),
+            "original_odf_header_json": json.dumps(
+                odf_original_header, ensure_ascii=False, indent=False, default=str
+            ),
+        }
+    )
 
     # Map PLATFORM to NERC C17
     ds.attrs.update(match_platform(odf_header["CRUISE_HEADER"]["PLATFORM"]))
@@ -104,12 +111,12 @@ def global_attributes_from_header(ds, odf_header):
     # Convert ODF history to CF history
     is_manufacturer_header = False
     ds.attrs["instrument_manufacturer_header"] = ""
-    ds.attrs['internal_processing_notes'] = ""
-    ds.attrs['seabird_processing_modules'] = ""
+    ds.attrs["internal_processing_notes"] = ""
+    ds.attrs["seabird_processing_modules"] = ""
     for history_group in odf_header["HISTORY_HEADER"]:
         # Convert single processes to list
-        if type(history_group['PROCESS']) is str:
-            history_group['PROCESS'] = [history_group['PROCESS']]
+        if type(history_group["PROCESS"]) is str:
+            history_group["PROCESS"] = [history_group["PROCESS"]]
 
         for row in history_group["PROCESS"]:
             # Retrieve Instrument Manufacturer Header
@@ -119,38 +126,54 @@ def global_attributes_from_header(ds, odf_header):
             if is_manufacturer_header:
                 ds.attrs["instrument_manufacturer_header"] += row + "\n"
             else:
-                ds.attrs['internal_processing_notes'] += history_input(row, history_group["CREATION_DATE"]
-            )
-            
+                ds.attrs["internal_processing_notes"] += history_input(
+                    row, history_group["CREATION_DATE"]
+                )
+
             # End of manufacturer header
             if row.startswith("*END*"):
                 is_manufacturer_header = False
                 ds.attrs["history"] += "# ODF Internal Processing Notes\n"
 
             # Ignore some specific lines within the history (mostly seabird header ones)
-            if re.match("^(\#\s*\<.*|\*\* .*|\# (name|span|nquan|nvalues|unit|interval|start_time|bad_flag)|\* |\*END\*)", row):
+            if re.match(
+                "^(\#\s*\<.*|\*\* .*|\# (name|span|nquan|nvalues|unit|interval|start_time|bad_flag)|\* |\*END\*)",
+                row,
+            ):
                 continue
-            # Add to history    
-            ds.attrs["history"] += history_input(
-                row, history_group["CREATION_DATE"]
-            )
+            # Add to history
+            ds.attrs["history"] += history_input(row, history_group["CREATION_DATE"])
 
     # Instrument Specific Information
     if ds.attrs["instrument_manufacturer_header"]:
-        ds.attrs['instrument'] = get_seabird_instrument_from_header(ds.attrs["instrument_manufacturer_header"])
-        ds.attrs['seabid_processing_modules'] = get_seabird_processing_history(ds.attrs["instrument_manufacturer_header"])
+        ds.attrs["instrument"] = get_seabird_instrument_from_header(
+            ds.attrs["instrument_manufacturer_header"]
+        )
+        ds.attrs["seabid_processing_modules"] = get_seabird_processing_history(
+            ds.attrs["instrument_manufacturer_header"]
+        )
     elif "INSTRUMENT_HEADER" in odf_header:
-        ds.attrs['instrument'] =  f'{odf_header["INSTRUMENT_HEADER"]["INST_TYPE"]} {odf_header["INSTRUMENT_HEADER"]["MODEL"]}'
-        ds.attrs["instrument_serial_number"] =  odf_header["INSTRUMENT_HEADER"]["SERIAL_NUMBER"]
+        ds.attrs[
+            "instrument"
+        ] = f'{odf_header["INSTRUMENT_HEADER"]["INST_TYPE"]} {odf_header["INSTRUMENT_HEADER"]["MODEL"]}'
+        ds.attrs["instrument_serial_number"] = odf_header["INSTRUMENT_HEADER"][
+            "SERIAL_NUMBER"
+        ]
     else:
-        logging.warning(f'No Instrument field available')
-        ds.attrs['instrument'] = ""
-        ds.attrs['instrument_serial_number'] = ""
-    
-    if re.search('(SBE\s*(9|16|19|25|37))|CTD|Guildline|GUILDLN', ds.attrs['instrument'],re.IGNORECASE):
-        ds.attrs['instrument_type'] = "CTD"
+        logging.warning(f"No Instrument field available")
+        ds.attrs["instrument"] = ""
+        ds.attrs["instrument_serial_number"] = ""
+
+    if re.search(
+        "(SBE\s*(9|16|19|25|37))|CTD|Guildline|GUILDLN",
+        ds.attrs["instrument"],
+        re.IGNORECASE,
+    ):
+        ds.attrs["instrument_type"] = "CTD"
     else:
-        logging.warning(f"Unknown instrument type for instrument:{ds.attrs['instrument']}; odf: {odf_header['INSTRUMENT_HEADER']}")
+        logging.warning(
+            f"Unknown instrument type for instrument:{ds.attrs['instrument']}; odf: {odf_header['INSTRUMENT_HEADER']}"
+        )
 
     # TODO map instrument to seadatanet L22 instrument
 
@@ -200,8 +223,17 @@ def generate_variables_from_header(ds, odf_header):
         "cruise_name": {"ioos_category": "Other"},
         "cruise_number": {"ioos_category": "Other"},
         "chief_scientist": {"ioos_category": "Other"},
-        "wmo_platform_code": {"name":"platform_id","ioos_category": "Other","standard_name":"platform_id","dtype":str},
-        "platform": {"name":"platform","ioos_category": "Other","standard_name":"platform_name"},
+        "wmo_platform_code": {
+            "name": "platform_id",
+            "ioos_category": "Other",
+            "standard_name": "platform_id",
+            "dtype": str,
+        },
+        "platform": {
+            "name": "platform",
+            "ioos_category": "Other",
+            "standard_name": "platform_name",
+        },
         "event_number": {"ioos_category": "Other"},
         "id": {"ioos_category": "Identifier"},
         "station": {"ioos_category": "Location"},
