@@ -27,8 +27,9 @@ def get_sbe_instrument_type(instrument):
         None
 
 def get_seabird_processing_history(seabird_header):
-    if '# </Sensors>\n' in seabird_header:
-       return seabird_header.split('# </Sensors>\n')[1]
+    sbe_hist = "\# (datcnv|filter|align|celltm|loopedit|derive|Derive|binavg|split|strip|section|wild|window).*"
+    if '# datcnv' in seabird_header:
+       return '\n'.join([line for line in seabird_header.split('\n') if re.match(sbe_hist,line)])
     else:
         logging.warning('Failed to retrieve Seabird Processing Modules history')
         return None
@@ -144,7 +145,7 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
             re.search('(Ultraviolet)',sensor_name),
             re.search(', (\d+)', sensor_name)
         ]
-        sensor_code = '_'.join([item[1] for item in sensor_code_items if item]).lower()
+        sensor_code = '_'.join([item[1] for item in sensor_code_items if item]).lower() + '_sensor'
         if sensor_code in ds:
             logging.error(f"Duplicated instrument variable {sensor_code}")
 
@@ -156,7 +157,7 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         discriminant = parsed_name[2] if parsed_name[2] else "1"
         ds[sensor_code] = json.dumps(attrs)
         ds[sensor_code].attrs = {
-            "calibration_date": pd.to_datetime(attrs.pop("CalibrationDate")).isoformat(),
+            "calibration_date": pd.to_datetime(attrs.pop("CalibrationDate"), errors='ignore'),
             "component": f"{sensor_code}_sn{attrs['SerialNumber']}",  # IOOS 1.2
             "discriminant": discriminant,  # IOOS 1.2
             "make_model": component,  # IOOS 1.2
