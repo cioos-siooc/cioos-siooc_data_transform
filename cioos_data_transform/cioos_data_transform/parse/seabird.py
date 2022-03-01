@@ -1,11 +1,11 @@
 """Module that regroups tools used to integrate data from seabird instruments."""
 import re
 import xmltodict
-import logging
 import json
 
 import pandas as pd
 
+import logging
 logger = logging.getLogger(__name__)
 
 
@@ -19,7 +19,7 @@ def get_seabird_instrument_from_header(seabird_header):
 
 
 def get_sbe_instrument_type(instrument):
-    if re.match("SBE (9|16|19|37)"):
+    if re.match("SBE\s*(9|16|19|25|37)"):
         return "CTD"
     else:
         logger.warning(f"Unknown instrument typt for {instrument}")
@@ -111,11 +111,16 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         "Fluorometer, WET Labs ECO-AFL/FL": ["CPHLPR01", "CPHLPR02"],
         "Fluorometer, Chelsea Aqua": ["CPHLPR01", "CPHLPR02"],
         "Fluorometer, Chelsea Aqua 3": ["CPHLPR01", "CPHLPR02"],
+        "Oxygen Current, Beckman/YSI": [],
+        "Oxygen Temperature, Beckman/YSI": [],
+        "Transmissometer, WET Labs C-Star": ["ATTNZS01"],
         "Turbidity Meter, WET Labs, ECO-NTU": ["TURBXX01", "VSCTXX01"],
         "pH": ["PHMASS01", "PHXXZZ01"],
         "OBS, WET Labs, ECO-BB": ["VSCTXX01"],
         "SPAR/Surface Irradiance": ["IRRDSV01"],
         "SPAR, Biospherical/Licor": ["IRRDSV01"],
+        "User Polynomial": [],
+        "User Polynomial, 2": [],
     }
     # Retrieve instrument calibration xml
     calibration_xml = re.findall("\#(\s*\<.*)\n", seabird_header)
@@ -144,12 +149,21 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         sensor_name = sensors_comments[id - 1][1].strip()
 
         # Format Instrument Variable Name (This tries to isolate type an index from the seabird commented variable name ~long_name)
-        sensor_code_items= [
-            re.search('^([a-zA-Z]+)(\,|\/){0,1}',sensor_name),
-            re.search('(Ultraviolet)',sensor_name),
-            re.search(', (\d+)', sensor_name)
+        sensor_code_items = [
+            re.search("^([a-zA-Z]+)(\,|\/){0,1}", sensor_name),
+            re.search("(?P<cdom>Ultraviolet|CDOM)", sensor_name),
+            re.search(", (\d+)", sensor_name),
         ]
-        sensor_code = '_'.join([item[1] for item in sensor_code_items if item]).lower() + '_sensor'
+        sensor_code = (
+            "_".join(
+                [
+                    "_".join(item.groupdict().keys()) if item.groupdict() else item[1]
+                    for item in sensor_code_items
+                    if item
+                ]
+            ).lower()
+            + "_sensor"
+        )
         if sensor_code in ds:
             logger.error(f"Duplicated instrument variable {sensor_code}")
 

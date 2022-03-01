@@ -22,19 +22,20 @@ DEFAULT_CONFIG_PATH = os.path.join(MODULE_PATH, "config.json")
 
 # Log to log file
 logging.captureWarnings(True)
-logging.basicConfig(filename="odf_transform.log", level=logging.WARNING)
-formatter = logging.Formatter(
-    "%(asctime)s %(processName)-10s %(name)s %(levelname)-8s %(message)s"
+logging.basicConfig(
+    filename="odf_transform.log",
+    level=logging.WARNING,
+    format="%(asctime)s: %(processName)-10s %(name)s [%(levelname)s] -> %(message)s",
 )
-logger = logging.getLogger()
+logger = logging.getLogger("odf_transform")
 
 # set up logging to console
 console = logging.StreamHandler()
 console.setLevel(logging.DEBUG)
-formatter = logging.Formatter("[%(levelname)-8s] %(message)s")
+formatter = logging.Formatter("%(name)s [%(levelname)s] %(message)s")
 console.setFormatter(formatter)
 # add the handler to the root logger
-logging.getLogger("").addHandler(console)
+logger.addHandler(console)
 
 
 def read_config(config_file):
