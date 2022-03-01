@@ -522,8 +522,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         if len(matching_terms_and_units) == 0:
             logger.warning(
                 f"{ds.attrs['original_filename']} -> No Matching unit found for code: "
-                + f"{var}: {({att: attrs[att] for att in ['long_name','units']})} in vocabulary {selected_organization}\n"
-                + f"{matching_terms[['accepted_units','accepted_scale','accepted_instruments']]}"
+                + f"{var}: {({att: attrs[att] for att in ['long_name','units']})} in vocabulary {selected_organization}"
             )
             new_variable_order.append(var)
             continue

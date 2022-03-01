@@ -41,7 +41,7 @@ def titleize(text):
 
 def match_platform(platform):
     """Review ODF CRUISE_HEADER:PLATFORM"""
-    platform = re.sub("CCGS\s*|CGCB\s*|FRV\s*|NGCC\s*|^_", "", platform)
+    platform = re.sub("CCGS\s*|CGCB\s*|FRV\s*|NGCC\s*|^_", "", platform).strip()
     is_vessel = reference_vessel["platform"].str.lower().str.contains(platform.lower())
     if is_vessel.any():
         return (

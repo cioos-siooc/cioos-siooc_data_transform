@@ -25,18 +25,18 @@ logging.captureWarnings(True)
 logging.basicConfig(
     filename="odf_transform.log",
     level=logging.WARNING,
-    format="%(asctime)s: %(processName)s %(name)s [%(levelname)s] %(message)s",
+    format="%(odf_file)s - %(asctime)s [%(levelname)s] %(processName)s %(name)s: %(message)s",
 )
 logger = logging.getLogger()
 
 # set up logging to console
 console = logging.StreamHandler()
 console.setLevel(logging.DEBUG)
-formatter = logging.Formatter("%(name)s [%(levelname)s] %(message)s")
+formatter = logging.Formatter("%(odf_file)s - %(name)s [%(levelname)s] %(message)s")
 console.setFormatter(formatter)
 # add the handler to the root logger
 logger.addHandler(console)
-
+logger = logging.LoggerAdapter(logger,{'odf_file': None})
 
 def read_config(config_file):
     """Function to load configuration json file and vocabulary file."""
@@ -64,6 +64,10 @@ def write_ctd_ncfile(
 ):
     """Method use to convert odf files to a CIOOS/ERDDAP compliant NetCDF format"""
     odf_file = os.path.basename(odf_path)
+    seabird.logger = logging.LoggerAdapter(seabird.logger,{'odf_file':odf_file})
+    attributes.logger = logging.LoggerAdapter(attributes.logger,{'odf_file':odf_file})
+    odf_parser.logger = logging.LoggerAdapter(odf_parser.logger,{'odf_file': odf_file})
+    # logger = logging.LoggerAdapter(logging.getLogger('write_ctd_nc_file'),{'odf_file':odf_file})
 
     print(odf_file)
     # Parse the ODF file with the CIOOS python parsing tool
@@ -148,6 +152,9 @@ def convert_odf_files(config, odf_files_list=[], output_path=""):
         os.mkdir(output_path)
 
     for f in odf_files_list:
+        logger_file = logging.LoggerAdapter(
+            logging.getLogger('read_odf'),{'odf_file':f}
+            )
         try:
             print(f)
             write_ctd_ncfile(
@@ -157,7 +164,7 @@ def convert_odf_files(config, odf_files_list=[], output_path=""):
                 config=config,
             )
         except Exception as e:
-            logger.error(f"Failed to convert: {f}", exc_info=True)
+            logger_file.error(f"Failed to convert: {f}", exc_info=True)
 
 
 def read_geojson_file_list(file_list):
