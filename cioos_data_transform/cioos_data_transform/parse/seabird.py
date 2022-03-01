@@ -208,8 +208,10 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
             if (
                 len(vars) > 1
                 and match_by == "sdn_parameter_urn"
-                and "Fluorometer" in name
-                or "Turbidity" in name
+                and (
+                    "Fluorometer" in name
+                    or "Turbidity" in name
+                    )
             ):
                 logger.warning(
                     f"We can't link easily multiple {name} instruments via sdn_parameter_urn attribute. Any related data will be link to both instuments."
