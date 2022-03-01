@@ -107,6 +107,7 @@ def read(filename, encoding_format="Windows-1252"):
         # Read header one line at the time
         while "-- DATA --" not in line:
             line = f.readline()
+            line = line.replace('\n','')
 
             if "-- DATA --" in line:
                 break
@@ -116,7 +117,7 @@ def read(filename, encoding_format="Windows-1252"):
 
             try:
                 # Sections
-                if re.match(r"\s{0,1}[A-Z_]+,{0,1}\s*\n", line):
+                if re.match(r"\s{0,1}[A-Z_]+,{0,1}\s*", line):
                     section = re.search(r"\s*([A-Z_]*)", line)[1]
                     if section not in metadata:
                         metadata[section] = [{}]
@@ -141,8 +142,8 @@ def read(filename, encoding_format="Windows-1252"):
                         try:
                             value = convert_odf_time(value)
                         except:
-                            logging.warning(
-                                f"Failed to read date {value} in line: {line}"
+                            logger.warning(
+                                f"Failed to read date '{value}' in line: {line}"
                             )
 
                     # Add to the metadata as a dictionary
@@ -154,10 +155,10 @@ def read(filename, encoding_format="Windows-1252"):
                     else:
                         metadata[section][-1][key] = value
                 else:
-                    logging.error("Unrecognizable line format: " + line)
+                    logger.error(f"Unrecognizable line format: {line}")
 
             except:
-                logging.error("Failed to read the line: " + line)
+                logger.error(f"Failed to read the line: {line}")
 
         # Simplify the single sections to a dictionary
         for section in metadata:

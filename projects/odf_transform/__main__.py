@@ -153,7 +153,7 @@ def convert_odf_files(config, odf_files_list=[], output_path=""):
 
     for f in odf_files_list:
         logger_file = logging.LoggerAdapter(
-            logging.getLogger('read_odf'),{'odf_file':f}
+            logging.getLogger('read_odf'),{'odf_file':os.path.basename(f)}
             )
         try:
             print(f)
