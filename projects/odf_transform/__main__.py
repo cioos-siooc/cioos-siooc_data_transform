@@ -25,9 +25,9 @@ logging.captureWarnings(True)
 logging.basicConfig(
     filename="odf_transform.log",
     level=logging.WARNING,
-    format="%(asctime)s: %(processName)-10s %(name)s [%(levelname)s] -> %(message)s",
+    format="%(asctime)s: %(processName)s %(name)s [%(levelname)s] %(message)s",
 )
-logger = logging.getLogger("odf_transform")
+logger = logging.getLogger()
 
 # set up logging to console
 console = logging.StreamHandler()
@@ -64,9 +64,17 @@ def write_ctd_ncfile(
 ):
     """Method use to convert odf files to a CIOOS/ERDDAP compliant NetCDF format"""
     odf_file = os.path.basename(odf_path)
+
     print(odf_file)
     # Parse the ODF file with the CIOOS python parsing tool
     metadata, raw_data = odf_parser.read(odf_path)
+
+    # Review ODF data type compatible with odf_transform
+    if metadata["EVENT_HEADER"]["DATA_TYPE"] not in ["CTD", "BT", "BOTL"]:
+        logger.error(
+            f'ODF_transform is not yet compatible with ODF Data Type: {metadata["EVENT_HEADER"]["DATA_TYPE"]}'
+        )
+        return
 
     # Let's convert to an xarray dataset
     ds = raw_data.to_xarray()
