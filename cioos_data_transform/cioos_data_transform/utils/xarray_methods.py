@@ -7,8 +7,13 @@ import datetime as dt
 This Module regroup diverse methods used to handle xarray datasets and generate CIOOS/ERDDAP compliant datasets.
 """
 
+
 def history_input(comment, date=dt.datetime.now()):
-    return f"{date.strftime('%Y-%m-%dT%H:%M:%SZ')} {comment}\n"
+    if type(date) == dt.datetime:
+        return f"{date.strftime('%Y-%m-%dT%H:%M:%SZ')} {comment}\n"
+    else:
+        return f"{date} {comment}\n"
+
 
 def standardize_dataset(ds):
     """Global method that applies the different standardizations tools."""
