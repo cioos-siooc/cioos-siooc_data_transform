@@ -9,7 +9,6 @@ from cioos_data_transform.parse.seabird import (
     get_seabird_processing_history,
 )
 import logging
-
 logger = logging.getLogger(__name__)
 
 module_path = os.path.dirname(__file__)
@@ -42,7 +41,7 @@ def titleize(text):
 
 def match_platform(platform):
     """Review ODF CRUISE_HEADER:PLATFORM"""
-    platform = re.sub("CCGS\s*|CGCB\s*", "", platform)
+    platform = re.sub("CCGS\s*|CGCB\s*|FRV\s*|NGCC\s*|^_", "", platform)
     is_vessel = reference_vessel["platform"].str.lower().str.contains(platform.lower())
     if is_vessel.any():
         return (
@@ -160,7 +159,7 @@ def global_attributes_from_header(ds, odf_header):
             "SERIAL_NUMBER"
         ]
     else:
-        logging.warning(f"No Instrument field available")
+        logger.warning(f"No Instrument field available")
         ds.attrs["instrument"] = ""
         ds.attrs["instrument_serial_number"] = ""
 
@@ -170,9 +169,11 @@ def global_attributes_from_header(ds, odf_header):
         re.IGNORECASE,
     ):
         ds.attrs["instrument_type"] = "CTD"
+    elif re.search('Bathythermograph Manual',ds.attrs['instrument']):
+        ds.attrs['instrument_type'] = "BT"
     else:
-        logging.warning(
-            f"Unknown instrument type for instrument:{ds.attrs['instrument']}; odf: {odf_header['INSTRUMENT_HEADER']}"
+        logger.warning(
+            f"Unknown instrument type for instrument: {ds.attrs['instrument']}; odf['INSTRUMENT_HEADER']: {odf_header.get('INSTRUMENT_HEADER')}"
         )
 
     # TODO map instrument to seadatanet L22 instrument
