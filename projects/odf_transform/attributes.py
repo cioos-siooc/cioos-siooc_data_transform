@@ -151,7 +151,8 @@ def global_attributes_from_header(ds, odf_header):
         ds.attrs["seabid_processing_modules"] = get_seabird_processing_history(
             ds.attrs["instrument_manufacturer_header"]
         )
-    elif "INSTRUMENT_HEADER" in odf_header:
+    
+    if "INSTRUMENT_HEADER" in odf_header and ds.attrs.get('instruemnt')==None:
         ds.attrs[
             "instrument"
         ] = f'{odf_header["INSTRUMENT_HEADER"]["INST_TYPE"]} {odf_header["INSTRUMENT_HEADER"]["MODEL"]}'
@@ -193,9 +194,13 @@ def global_attributes_from_header(ds, odf_header):
             + f"from the {ds.attrs['platform']} platform by "
             + f"{ds.attrs['organization']}  {ds.attrs['institution']} "
             + f"on the {ds.attrs['cruise_name'].title()} "
-            + f"from {pd.to_datetime(ds.attrs['mission_start_date']).strftime('%d-%b-%Y')} "
-            + f"to {ds.attrs['mission_end_date'].strftime('%d-%b-%Y')}."
         )
+        if ds.attrs['mission_start_date'] and ds.attrs['mission_end_date']:
+            ds.attrs['title'] += (
+                f"from {ds.attrs['mission_start_date'].strftime('%d-%b-%Y')} "
+                + f"to {ds.attrs['mission_end_date'].strftime('%d-%b-%Y')}."
+            )
+        
     else:
         logger.error(
             f"ODF_transform is not yet incompatible with ODF DATA_TYPE: {odf_header['EVENT_HEADER']['DATA_TYPE']}"

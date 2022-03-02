@@ -11,10 +11,10 @@ logger = logging.getLogger(__name__)
 
 
 def get_seabird_instrument_from_header(seabird_header):
-    instrument = re.search("\* Sea\-Bird (.*) Data File:\n", seabird_header)
-    sampler = re.search("SBE (?P<sampler>11plus).*\n", seabird_header)
+    """ Retrieve main instrument model from Sea-Bird CNV header"""
+    instrument = re.findall("\* (?:Sea\-Bird ){0,1}SBE (?P<sampler>\d[^\s]*)", seabird_header)
     if instrument:
-        return f"{instrument[1]}{sampler[1] if sampler else ''}"
+        return f"Sea-Bird SBE {''.join(instrument)}"
     else:
         None
 
@@ -167,7 +167,9 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
             + "_sensor"
         )
         if sensor_code in ds:
-            logger.error(f"Duplicated instrument variable {sensor_code}")
+            n_duplicated = len([var for var in ds if var.startswith(sensor_code)])
+            logger.warning(f"Duplicated instrument variable {sensor_code} -> renamed {sensor_code}_{n_duplicated} ")
+            sensor_code += f"_{n_duplicated}"
 
         # Try fit IOOS 1.2 which request to add a instrument variable for each
         # instruments and link this variable to data variable by using the instrument attribute

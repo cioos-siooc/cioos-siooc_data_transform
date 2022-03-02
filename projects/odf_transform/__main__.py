@@ -159,9 +159,10 @@ def convert_odf_files(config, odf_files_list=[], output_path=""):
 
     if not os.path.isdir(output_path):
         os.mkdir(output_path)
-
-    for f in tqdm(odf_files_list):
+    pbar = tqdm(unit='file',desc='ODF Conversion To NetCDF: ', total=len(odf_files_list))
+    for f in odf_files_list:
         logger.extra['odf_file'] = os.path.basename(f)
+        pbar.set_description_str(f'Convert ODF ({os.path.basename(f)}): ')
         try:
             write_ctd_ncfile(
                 odf_path=f,
@@ -171,6 +172,7 @@ def convert_odf_files(config, odf_files_list=[], output_path=""):
             )
         except Exception as e:
             logger.error(f"Failed to convert: {f}", exc_info=True)
+        pbar.update(1)
 
 def read_geojson_file_list(file_list):
     """Read geojson files"""
