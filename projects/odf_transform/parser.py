@@ -476,8 +476,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         # If nothing matches, move to the next one
         if matching_terms.empty:
             logger.warning(
-                f"{ds.attrs['original_filename']} -> "
-                + f"No matching vocabulary term is available for variable {gf3.name}: {attrs}"
+                f"No matching vocabulary term is available for variable {gf3.name}: {attrs}"
             )
             new_variable_order.append(var)
             continue
@@ -522,7 +521,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         # No matching term, give a warning if not a flag and move on to the next iteration
         if len(matching_terms_and_units) == 0:
             logger.warning(
-                f"{ds.attrs['original_filename']} -> No Matching unit found for code: "
+                f"No Matching unit found for code: "
                 + f"{var}: {({att: attrs[att] for att in ['long_name','units']})} in vocabulary {selected_organization}"
             )
             new_variable_order.append(var)

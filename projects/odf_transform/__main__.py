@@ -24,7 +24,7 @@ DEFAULT_CONFIG_PATH = os.path.join(MODULE_PATH, "config.json")
 # Log to log file
 logging.captureWarnings(True)
 
-logger = logging.getLogger('odf_transform')
+logger = logging.getLogger()
 logger.setLevel('INFO')
 log_file = logging.FileHandler("odf_transform.log")
 formatter = logging.Formatter("%(odf_file)s - %(asctime)s [%(levelname)s] %(processName)s %(name)s: %(message)s")
@@ -32,7 +32,7 @@ log_file.setFormatter(formatter)
 log_file.setLevel(logging.WARNING)
 logger.addHandler(log_file)
 
-# # set up logging to console
+# Set up logging to console (errors only)
 console = logging.StreamHandler()
 console.setLevel(logging.ERROR)
 console.setFormatter(formatter)
@@ -159,6 +159,7 @@ def convert_odf_files(config, odf_files_list=[], output_path=""):
 
     if not os.path.isdir(output_path):
         os.mkdir(output_path)
+
     pbar = tqdm(unit='file',desc='ODF Conversion To NetCDF: ', total=len(odf_files_list))
     for f in odf_files_list:
         logger.extra['odf_file'] = os.path.basename(f)
