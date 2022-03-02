@@ -4,6 +4,7 @@ import xmltodict
 import json
 
 import pandas as pd
+import difflib
 
 import logging
 logger = logging.getLogger(__name__)
@@ -151,7 +152,8 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         # Format Instrument Variable Name (This tries to isolate type an index from the seabird commented variable name ~long_name)
         sensor_code_items = [
             re.search("^([a-zA-Z]+)(\,|\/){0,1}", sensor_name),
-            re.search("(?P<cdom>Ultraviolet|CDOM)", sensor_name),
+            re.search("(?P<cdom>Ultraviolet|UV|CDOM)", sensor_name),
+            re.search("(Wet Labs|Chelsea|Seapoint)", sensor_name),
             re.search(", (\d+)", sensor_name),
         ]
         sensor_code = (
@@ -205,6 +207,7 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         for value in values:
             vars = ds.filter_by_attrs(**{match_by: value})
 
+            # Some variables are not necessearily BODC specifc, we'll try to match them based on the long_name
             if (
                 len(vars) > 1
                 and match_by == "sdn_parameter_urn"
@@ -213,9 +216,15 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
                     or "Turbidity" in name
                     )
             ):
-                logger.warning(
-                    f"We can't link easily multiple {name} instruments via sdn_parameter_urn attribute. Any related data will be link to both instuments."
-                )
+                # Find the closest match based on the file name
+                var_longname = difflib.get_close_matches(name,[vars[var].attrs['long_name'] for var in vars])
+                vars = vars[[var for var in vars if ds[var].attrs['long_name'] in var_longname]]
+
+                # If there's still multiple matches give a warning
+                if len(vars)>1:
+                    logger.warning(
+                        f"We can't link easily multiple {name} instruments via sdn_parameter_urn attribute. Any related data will be link to both instuments."
+                    )
 
             for var in vars:
                 if "instrument" in ds[var].attrs:
