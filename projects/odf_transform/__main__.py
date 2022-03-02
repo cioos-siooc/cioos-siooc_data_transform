@@ -15,6 +15,8 @@ import cioos_data_transform.parse.seabird as seabird
 from cioos_data_transform.utils.utils import get_geo_code, read_geojson
 import pandas as pd
 
+from tqdm import tqdm
+import multiprocessing
 import logging
 
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -22,21 +24,25 @@ DEFAULT_CONFIG_PATH = os.path.join(MODULE_PATH, "config.json")
 
 # Log to log file
 logging.captureWarnings(True)
-logging.basicConfig(
-    filename="odf_transform.log",
-    level=logging.WARNING,
-    format="%(odf_file)s - %(asctime)s [%(levelname)s] %(processName)s %(name)s: %(message)s",
-)
-logger = logging.getLogger()
 
-# set up logging to console
+logger = logging.getLogger('odf_transform')
+logger.setLevel('INFO')
+log_file = logging.FileHandler("odf_transform.log")
+formatter = logging.Formatter("%(odf_file)s - %(asctime)s [%(levelname)s] %(processName)s %(name)s: %(message)s")
+log_file.setFormatter(formatter)
+log_file.setLevel(logging.WARNING)
+logger.addHandler(log_file)
+
+# # set up logging to console
 console = logging.StreamHandler()
-console.setLevel(logging.DEBUG)
-formatter = logging.Formatter("%(odf_file)s - %(name)s [%(levelname)s] %(message)s")
+console.setLevel(logging.ERROR)
 console.setFormatter(formatter)
-# add the handler to the root logger
 logger.addHandler(console)
-logger = logging.LoggerAdapter(logger,{'odf_file': None})
+
+logger = logging.LoggerAdapter(logger,{'odf_file':None})
+seabird.logger = logging.LoggerAdapter(seabird.logger,{'odf_file': None})
+attributes.logger = logging.LoggerAdapter(attributes.logger,{'odf_file': None})
+odf_parser.logger = logging.LoggerAdapter(odf_parser.logger,{'odf_file': None})
 
 def read_config(config_file):
     """Function to load configuration json file and vocabulary file."""
@@ -64,12 +70,13 @@ def write_ctd_ncfile(
 ):
     """Method use to convert odf files to a CIOOS/ERDDAP compliant NetCDF format"""
     odf_file = os.path.basename(odf_path)
-    seabird.logger = logging.LoggerAdapter(seabird.logger,{'odf_file':odf_file})
-    attributes.logger = logging.LoggerAdapter(attributes.logger,{'odf_file':odf_file})
-    odf_parser.logger = logging.LoggerAdapter(odf_parser.logger,{'odf_file': odf_file})
-    # logger = logging.LoggerAdapter(logging.getLogger('write_ctd_nc_file'),{'odf_file':odf_file})
+    log = {'odf_file': odf_file}
 
-    print(odf_file)
+    # Update submodule LoggerAdapter
+    seabird.logger.extra.update(log)
+    attributes.logger.extra.update(log)
+    odf_parser.logger.extra.update(log)
+
     # Parse the ODF file with the CIOOS python parsing tool
     metadata, raw_data = odf_parser.read(odf_path)
 
@@ -141,6 +148,8 @@ def write_ctd_ncfile(
     # Finally save the xarray dataset to a NetCDF file!!!
     if output_path == None:
         output_path = odf_path + ".nc"
+    elif os.path.isdir(output_path):
+        output_path = os.path.join(output_path,odf_file + ".nc")
     ds.to_netcdf(output_path)
 
 
@@ -151,21 +160,17 @@ def convert_odf_files(config, odf_files_list=[], output_path=""):
     if not os.path.isdir(output_path):
         os.mkdir(output_path)
 
-    for f in odf_files_list:
-        logger_file = logging.LoggerAdapter(
-            logging.getLogger('read_odf'),{'odf_file':os.path.basename(f)}
-            )
+    for f in tqdm(odf_files_list):
+        logger.extra['odf_file'] = os.path.basename(f)
         try:
-            print(f)
             write_ctd_ncfile(
                 odf_path=f,
                 polygons=polygons,
-                output_path=output_path + "{}.nc".format(os.path.basename(f)),
+                output_path=output_path,
                 config=config,
             )
         except Exception as e:
-            logger_file.error(f"Failed to convert: {f}", exc_info=True)
-
+            logger.error(f"Failed to convert: {f}", exc_info=True)
 
 def read_geojson_file_list(file_list):
     """Read geojson files"""
@@ -209,14 +214,15 @@ if __name__ == "__main__":
     args = parser.parse_args()
     config = read_config(args.config_path)
     odf_path = args.odf_path
-    output_path = args.output_path + "/"
+    output_path = args.output_path
 
     if not odf_path:
         raise Exception("No odf_path")
-
     elif os.path.isdir(odf_path):
         odf_files_list = glob.glob(odf_path + "/**/*.ODF", recursive=True)
     elif os.path.isfile(odf_path):
         odf_files_list = [odf_path]
+    else:
+        odf_files_list = glob.glob(odf_path, recursive=True)
     print(f"Convert {len(odf_files_list)} ODF files")
     convert_odf_files(config, odf_files_list, output_path)
