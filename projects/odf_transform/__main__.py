@@ -10,13 +10,12 @@ import argparse
 from odf_transform import parser as odf_parser
 from odf_transform import attributes
 
-from cioos_data_transform.utils.xarray_methods import standardize_dataset, history_input
+from cioos_data_transform.utils.xarray_methods import standardize_dataset
 import cioos_data_transform.parse.seabird as seabird
 from cioos_data_transform.utils.utils import get_geo_code, read_geojson
 import pandas as pd
 
 from tqdm import tqdm
-import multiprocessing
 import logging
 
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -39,6 +38,7 @@ console.setLevel(logging.ERROR)
 console.setFormatter(formatter)
 logger.addHandler(console)
 
+# Adapt Logger to have incorporated the odf_file name
 logger = logging.LoggerAdapter(logger,{'odf_file':None})
 seabird.logger = logging.LoggerAdapter(seabird.logger,{'odf_file': None})
 attributes.logger = logging.LoggerAdapter(attributes.logger,{'odf_file': None})
@@ -47,7 +47,7 @@ odf_parser.logger = logging.LoggerAdapter(odf_parser.logger,{'odf_file': None})
 def read_config(config_file):
     """Function to load configuration json file and vocabulary file."""
     # read json file with information on dataset etc.
-    with open(config_file) as fid:
+    with open(config_file, encoding='UTF-8') as fid:
         config = json.load(fid)
 
     # If config.json is default in package set relative paths to module path
