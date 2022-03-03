@@ -147,7 +147,7 @@ def read(filename, encoding_format="Windows-1252"):
                             )
 
                     # Add to the metadata as a dictionary
-                    # key = dict_line[0].strip().replace(" ", "_")
+                    key = key.strip().replace(" ", "_")
                     if key in metadata[section][-1]:
                         if type(metadata[section][-1][key]) is not list:
                             metadata[section][-1][key] = [metadata[section][-1][key]]

@@ -1,3 +1,4 @@
+from datetime import datetime
 import pandas as pd
 import re
 import json
@@ -106,7 +107,7 @@ def global_attributes_from_header(ds, odf_header):
             ),
         }
     )
-
+    
     # Map PLATFORM to NERC C17
     ds.attrs.update(match_platform(odf_header["CRUISE_HEADER"]["PLATFORM"]))
 
@@ -198,7 +199,12 @@ def global_attributes_from_header(ds, odf_header):
             + f"{ds.attrs['organization']}  {ds.attrs['institution']} "
             + f"on the {ds.attrs['cruise_name'].title()} "
         )
-        if ds.attrs["mission_start_date"] and ds.attrs["mission_end_date"]:
+        if (
+            ds.attrs["mission_start_date"] 
+            and ds.attrs["mission_end_date"]
+            and type(ds.attrs["mission_start_date"]) is datetime 
+            and type(ds.attrs["mission_end_date"]) is datetime
+        ):
             ds.attrs["title"] += (
                 f"from {ds.attrs['mission_start_date'].strftime('%d-%b-%Y')} "
                 + f"to {ds.attrs['mission_end_date'].strftime('%d-%b-%Y')}."

@@ -158,11 +158,6 @@ def convert_odf_file(input):
     if type(input)== tuple:
         file, polygons, output_path, config = input
     logger.extra['odf_file'] = os.path.basename(file)
-    # logger_converter = logging.LoggerAdapter(
-    #     logging.getLogger('convert_odf_file'),
-    #     {'odf_file',os.path.basename(file)}
-    #     )
-    # print(file)
     try:
         write_ctd_ncfile(
                     odf_path=file,
