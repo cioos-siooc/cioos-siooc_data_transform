@@ -8,7 +8,9 @@ from cioos_data_transform.parse.seabird import (
     get_seabird_instrument_from_header,
     get_seabird_processing_history,
 )
+from difflib import get_close_matches
 import logging
+
 logger = logging.getLogger(__name__)
 
 module_path = os.path.dirname(__file__)
@@ -19,6 +21,7 @@ reference_vessel = pd.read_csv(
     os.path.join(module_path, "reference_vessel.csv"),
     dtype={"wmo_platform_code": "Int64"},
 )
+platform_mapping = {key.lower():key for key in reference_vessel['platform']}
 
 institute_attributes = [
     "institution",
@@ -40,12 +43,12 @@ def titleize(text):
 
 
 def match_platform(platform):
-    """Review ODF CRUISE_HEADER:PLATFORM"""
-    platform = re.sub("CCGS\s*|CGCB\s*|FRV\s*|NGCC\s*|^_", "", platform).strip()
-    is_vessel = reference_vessel["platform"].str.lower().str.contains(platform.lower())
-    if is_vessel.any():
+    """Review ODF CRUISE_HEADER:PLATFORM and match to closest"""
+    platform = re.sub("CCGS_*\s*|CGCB\s*|FRV\s*|NGCC\s*|^_|MV\s*", "", platform).strip()
+    matched_vessel = get_close_matches(platform.lower(), platform_mapping.keys())
+    if matched_vessel:
         return (
-            reference_vessel.loc[is_vessel, platform_attributes]
+            reference_vessel[reference_vessel["platform"] == platform_mapping[matched_vessel[0]]]
             .iloc[0]
             .dropna()
             .to_dict()
