@@ -26,7 +26,7 @@ logging.captureWarnings(True)
 
 logger = logging.getLogger()
 logger.setLevel('INFO')
-log_file = logging.FileHandler("odf_transform.log")
+log_file = logging.FileHandler("odf_transform.log", encoding='UTF-8')
 formatter = logging.Formatter("%(odf_file)s - %(asctime)s [%(levelname)s] %(processName)s %(name)s: %(message)s")
 log_file.setFormatter(formatter)
 log_file.setLevel(logging.WARNING)
