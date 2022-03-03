@@ -121,7 +121,7 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         "SPAR/Surface Irradiance": ["IRRDSV01"],
         "SPAR, Biospherical/Licor": ["IRRDSV01"],
         "User Polynomial": [],
-        "User Polynomial, 2": [],
+        "User Polynomial, 2": []
     }
     # Retrieve instrument calibration xml
     calibration_xml = re.findall("\#(\s*\<.*)\n", seabird_header)
