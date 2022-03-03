@@ -5,7 +5,7 @@ import json
 
 import pandas as pd
 import difflib
-
+from xml.parsers.expat import ExpatError
 import logging
 logger = logging.getLogger(__name__)
 
@@ -133,7 +133,12 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
 
     # Read XML and commented lines
     calibration_xml = "\n".join(calibration_xml)
-    sensors = xmltodict.parse(calibration_xml)["Sensors"]["sensor"]
+    try:
+        sensors = xmltodict.parse(calibration_xml)["Sensors"]["sensor"]
+    except ExpatError :
+        logger.error('Failed to parsed Sea-Bird Instrument Calibration XML')
+        return ds
+
     sensors_comments = re.findall(
         "\s*\<!--\s*(Frequency \d+|A/D voltage \d+|.* voltage){1}, (.*)-->\n",
         calibration_xml,
