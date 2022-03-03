@@ -140,9 +140,15 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         return ds
 
     sensors_comments = re.findall(
-        "\s*\<!--\s*(Frequency \d+|A/D voltage \d+|.* voltage){1}, (.*)-->\n",
+        "\s*\<!--\s*(Frequency \d+|A/D voltage \d+|.* voltage|Count){1}, (.*)-->\n",
         calibration_xml,
     )
+    
+    # Make sure that the sensor count match the senor_comments count
+    if len(sensors_comments) != len(sensors):
+        logger.error('Failed to detect same count of sensors and sensors_comments')
+        return ds
+
     # Split each sensor calibrations to a dictionary
     sensors_map = {}
     for sensor in sensors:
