@@ -154,6 +154,26 @@ def write_ctd_ncfile(
     ds.to_netcdf(output_path)
 
 
+def convert_odf_file(input):
+    if type(input)== tuple:
+        file, polygons, output_path, config = input
+    logger.extra['odf_file'] = os.path.basename(file)
+    # logger_converter = logging.LoggerAdapter(
+    #     logging.getLogger('convert_odf_file'),
+    #     {'odf_file',os.path.basename(file)}
+    #     )
+    # print(file)
+    try:
+        write_ctd_ncfile(
+                    odf_path=file,
+                    polygons=polygons,
+                    output_path=output_path,
+                    config=config,
+                )
+    except Exception as e:
+        logger.error(f"Failed to convert: {file}", exc_info=True)
+
+
 def convert_odf_files(config, odf_files_list=[], output_path=""):
     """Principal method to convert multiple ODF files to NetCDF"""
     polygons = read_geojson_file_list(config["geojsonFileList"])
@@ -165,16 +185,8 @@ def convert_odf_files(config, odf_files_list=[], output_path=""):
     for f in odf_files_list:
         logger.extra['odf_file'] = os.path.basename(f)
         pbar.set_description_str(f'Convert ODF ({os.path.basename(f)}): ')
-        try:
-            write_ctd_ncfile(
-                odf_path=f,
-                polygons=polygons,
-                output_path=output_path,
-                config=config,
-            )
-        except Exception as e:
-            logger.error(f"Failed to convert: {f}", exc_info=True)
         pbar.update(1)
+        convert_odf_file((f,polygons,output_path,config))
 
 def read_geojson_file_list(file_list):
     """Read geojson files"""
