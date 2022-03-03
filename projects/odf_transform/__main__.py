@@ -76,6 +76,7 @@ def write_ctd_ncfile(
     seabird.logger.extra.update(log)
     attributes.logger.extra.update(log)
     odf_parser.logger.extra.update(log)
+    logger.extra.update(log)
 
     # Parse the ODF file with the CIOOS python parsing tool
     metadata, raw_data = odf_parser.read(odf_path)
