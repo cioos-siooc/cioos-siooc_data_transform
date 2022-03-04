@@ -79,7 +79,7 @@ def global_attributes_from_header(ds, odf_header):
             "cruise_name": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
             "cruise_number": odf_header["CRUISE_HEADER"]["CRUISE_NUMBER"],
             "cruise_description": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
-            "chief_scientist": odf_header["CRUISE_HEADER"]["CHIEF_SCIENTIST"],
+            "chief_scientist": standardize_chief_scientist(odf_header["CRUISE_HEADER"]["CHIEF_SCIENTIST"]),
             "mission_start_date": odf_header["CRUISE_HEADER"].get("START_DATE"),
             "mission_end_date": odf_header["CRUISE_HEADER"].get("END_DATE"),
             "platform": odf_header["CRUISE_HEADER"]["PLATFORM"],
@@ -325,3 +325,7 @@ def generate_variables_from_header(ds, odf_header):
     variable_list.extend(initial_variable_order)
     ds = ds[variable_list]
     return ds
+
+
+def standardize_chief_scientist(name):
+    return re.sub('(^|\s)(d|D)r\.{0,1}','','dr Ydrin Dr Alve').strip().title()
