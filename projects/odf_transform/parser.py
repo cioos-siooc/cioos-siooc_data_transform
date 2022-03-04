@@ -107,7 +107,7 @@ def read(filename, encoding_format="Windows-1252"):
         # Read header one line at the time
         while "-- DATA --" not in line:
             line = f.readline()
-            line = line.replace('\n','')
+            line = line.replace("\n", "")
 
             if "-- DATA --" in line:
                 break
@@ -269,7 +269,9 @@ def odf_flag_variables(ds, flag_convention=None):
 
             # Rename variable so that we can link by variable name
             ds = ds.rename({var: f"Q{previous_key}"})
-            ds.attrs['history'] += history_input(f'Rename Parameter {var} as Q{previous_key}')
+            ds.attrs["history"] += history_input(
+                f"Rename Parameter {var} as Q{previous_key}"
+            )
             var = f"Q{previous_key}"
 
         elif var.startswith(("QCFF", "FFFF")):
@@ -370,7 +372,9 @@ def fix_flag_variables(ds):
         "QCRAT_01": "QCNDC_01",
         "QCRAT_02": "QCNDC_02",
         "QTURB_01": None,
-        "QWETECOBB_01": None
+        "QWETECOBB_01": None,
+        "QUNKN_01": None,
+        "QUNKN_02": None,
     }
     for flag, rename in temp_flag.items():
         ds = _replace_flag(ds, flag, rename)
@@ -410,9 +414,9 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         if accepted_terms == None:
             # No required term
             return True
-        
+
         accepted_units_list = accepted_terms.split("|")
-        if any(unit in ['none','dimensionless'] for unit in accepted_units_list):
+        if any(unit in ["none", "dimensionless"] for unit in accepted_units_list):
             # Include unitless data
             return True
         elif term in accepted_units_list:
@@ -604,10 +608,10 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
                 # Add index to long name if bigger than 1
                 if gf3.index > 1:
                     new_attrs["long_name"] += f", {gf3.index}"
-    
+
     dropped_variables = [var for var in ds if var not in new_variable_order]
     if dropped_variables:
-        ds.attrs['history'] += history_input(
+        ds.attrs["history"] += history_input(
             f"Drop Parameters: " + ",".join(dropped_variables)
         )
     return ds[new_variable_order]
