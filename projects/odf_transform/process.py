@@ -138,6 +138,9 @@ def write_ctd_ncfile(
     if ds.attrs["cdm_data_type"] == "Profile" and "index" in ds and "depth" in ds:
         ds = ds.swap_dims({"index": "depth"}).drop_vars("index")
 
+    # Log variables available per file
+    logger.info(f"Variable List: {[var for var in ds]}")
+
     # Finally save the xarray dataset to a NetCDF file!!!
     if output_path == None:
         output_path = odf_path + ".nc"

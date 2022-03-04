@@ -16,8 +16,11 @@ DEFAULT_CONFIG_PATH = os.path.join(MODULE_PATH, "config.json")
 # Log to log file
 logging.captureWarnings(True)
 
+# Log
 logger = logging.getLogger()
 logger.setLevel("INFO")
+
+# Log issues with covnersion
 log_file = logging.FileHandler("odf_transform.log", encoding="UTF-8")
 formatter = logging.Formatter(
     "%(odf_file)s - %(asctime)s [%(levelname)s] %(processName)s %(name)s: %(message)s"
@@ -25,6 +28,16 @@ formatter = logging.Formatter(
 log_file.setFormatter(formatter)
 log_file.setLevel(logging.WARNING)
 logger.addHandler(log_file)
+
+# Set logger to log variable names
+var_log_file = logging.FileHandler("odf_transform_variables.log", encoding="UTF-8")
+formatter = logging.Formatter(
+    "%(odf_file)s - %(asctime)s: %(message)s"
+)
+var_log_file.setFormatter(formatter)
+var_log_file.setLevel(logging.INFO)
+var_log_file.addFilter(logging.Filter(name="odf_transform.process"))
+logger.addHandler(var_log_file)
 
 # Set up logging to console (errors only)
 console = logging.StreamHandler()
@@ -88,5 +101,6 @@ if __name__ == "__main__":
                 total=len(inputs),
                 desc="ODF Conversion to NetCDF: ",
                 unit="file",
-            )        )
+            )
+        )
 
