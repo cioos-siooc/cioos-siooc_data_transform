@@ -328,4 +328,4 @@ def generate_variables_from_header(ds, odf_header):
 
 
 def standardize_chief_scientist(name):
-    return re.sub('(^|\s)(d|D)r\.{0,1}','','dr Ydrin Dr Alve').strip().title()
+    return re.sub('(^|\s)(d|D)r\.{0,1}','',name).strip().title()
