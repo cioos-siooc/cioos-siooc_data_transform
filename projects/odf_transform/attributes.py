@@ -74,8 +74,6 @@ def global_attributes_from_header(ds, odf_header):
     odf_original_header.pop("variable_attributes")
     ds.attrs.update(
         {
-            "program": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
-            "project": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
             "cruise_name": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
             "cruise_number": odf_header["CRUISE_HEADER"]["CRUISE_NUMBER"],
             "cruise_description": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
@@ -126,6 +124,7 @@ def global_attributes_from_header(ds, odf_header):
             if row.startswith("* Sea-Bird"):
                 ds.attrs["history"] += "# SEA-BIRD INSTRUMENTS HEADER\n"
                 is_manufacturer_header = True
+                ds.attrs["instrument_manufacturer_header"] = "" # Consider only the latest seabird procesisng_modules
             if is_manufacturer_header:
                 ds.attrs["instrument_manufacturer_header"] += row + "\n"
             else:
@@ -249,7 +248,7 @@ def generate_variables_from_header(ds, odf_header):
             "ioos_category": "Other",
             "standard_name": "platform_name",
         },
-        "event_number": {"ioos_category": "Other"},
+        "event_number": {"dtype":int, "ioos_category": "Other"},
         "id": {"ioos_category": "Identifier"},
         "station": {"ioos_category": "Location"},
         "event_start_time": {"ioos_category": "Time"},
