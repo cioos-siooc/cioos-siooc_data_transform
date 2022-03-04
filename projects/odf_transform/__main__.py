@@ -31,9 +31,7 @@ logger.addHandler(log_file)
 
 # Set logger to log variable names
 var_log_file = logging.FileHandler("odf_transform_variables.log", encoding="UTF-8")
-formatter = logging.Formatter(
-    "%(odf_file)s - %(asctime)s: %(message)s"
-)
+formatter = logging.Formatter("%(odf_file)s - %(asctime)s: %(message)s")
 var_log_file.setFormatter(formatter)
 var_log_file.setLevel(logging.INFO)
 var_log_file.addFilter(logging.Filter(name="odf_transform.process"))
@@ -68,8 +66,22 @@ if __name__ == "__main__":
         "-o",
         type=str,
         dest="output_path",
-        default=config.get("output_path", "./output/"),
-        help="Enter the folder to write your NetCDF files to. Next to the original ODF file.'",
+        default=None,
+        help="Enter the folder to write your NetCDF files to (Default: next to the original ODF file).",
+        required=False,
+    )
+    parser.add_argument(
+        "--n_workers",
+        type=str,
+        dest="n_workers",
+        default=4,
+        help="Amount of workers used while processing in parallel",
+        required=False,
+    )
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Overwrite all NetCDF files.",
         required=False,
     )
 
@@ -89,18 +101,56 @@ if __name__ == "__main__":
         odf_files_list = glob.glob(odf_path, recursive=True)
     print(f"Convert {len(odf_files_list)} ODF files")
 
+    # Review keep files that needs an update only
+    if args.overwrite:
+        logger.info(f"Overwrite all {len(odf_files_list)}")
+    elif output_path == None or os.path.isdir(output_path):
+        overwrite_list = []
+        new_list = []
+        for file in odf_files_list:
+            filename = os.path.basename(file)
+            ncfile = (
+                file + ".nc"
+                if output_path == None
+                else os.path.join(output_path, filename + ".nc")
+            )
+            if not os.path.exists(ncfile):
+                new_list.append(file)
+            elif os.path.getmtime(ncfile) < os.path.getmtime(file):
+                overwrite_list.append(file)
+        print(
+            f"Create {len(new_list)}/{len(odf_files_list)} files - "
+            + f"Overwrite {len(overwrite_list)}/{len(odf_files_list)} files"
+        )
+        odf_files_list = overwrite_list
+        odf_files_list += new_list
+    
+    # No file to convert
+    if odf_files_list==[]:
+        print('No file to convert')
+        quit()
+
     # Get Polygon regions
     polygons = read_geojson_file_list(config["geojsonFileList"])
 
     # Generate inputs and run conversion with multiprocessing
     inputs = [(file, polygons, output_path, config) for file in odf_files_list]
-    with Pool(3) as p:
-        r = list(
-            tqdm(
-                p.imap(convert_odf_file, inputs),
-                total=len(inputs),
-                desc="ODF Conversion to NetCDF: ",
-                unit="file",
+    tqdm_dict = {          
+        "total": len(inputs),
+        "desc": "ODF Conversion to NetCDF: ",
+        "unit": "file"
+        }
+    if len(inputs)>100:
+        print(f"Run ODF conversion in multiprocessing on {args.n_workers} workers")
+        with Pool(args.n_workers) as p:
+            r = list(
+                tqdm(
+                    p.imap(convert_odf_file, inputs),**tqdm_dict
+                )
             )
-        )
+    elif 0<len(inputs)<100:
+        print("Run ODF Conversion")
+        for item in tqdm(inputs,**tqdm_dict):
+            convert_odf_file(item)
+
 
