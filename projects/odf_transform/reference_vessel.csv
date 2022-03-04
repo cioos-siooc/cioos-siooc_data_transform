@@ -25,16 +25,15 @@ Otter Bay,Canadian Coast Guard,Mid Shore Science Vessel,Canada,18D3,,CG3262,SDN:
 Capt Jacques Cartier,Canadian Coast Guard,Offshore Fishery Science Vessel,Canada,18CR,9781841,CFA3098,SDN:C17::18CR
 Viola M. Davidson,Canadian Coast Guard,Research vessel,Canada,18AU,,CGEC,SDN:C17::18AU
 Sir Wilfrid Laurier,Canadian Coast Guard,Arctic Class 2,Canada,	18LU,8320456,CGJK,SDN:C17::18LU
-Fugro Discovery,Fugro,Hydrographic Survey Vessel,Panama,,9152882,,SDN:C17::PADS
-Dawson,Unknown,Research Vessel,Canada,,6726802,CGBV,SDN:C17::18DA
-Lady Hammond,Bedford Institute of Oceanography,Research Vessel,Canada,,7214844,,SDN:C17::18LH
-Beluga II,Canadian Coast Guard,self-propelled boad,Canada,,,,SDN:C17::18BP
-Parizeau,Canadian Coast Guard,Research Vessel,Canada,,6711728,CGBS,SDN:C17::18PZ
-Des Groseilliers,Canadian Coast Guard,Research Vessel,Canada,,8006385,CGDX,SDN:C17::18GO
+Fugro Discovery,Fugro,Hydrographic Survey Vessel,Panama,PADS,9152882,,SDN:C17::PADS
+Dawson,Unknown,Research Vessel,Canada,18DA,6726802,CGBV,SDN:C17::18DA
+Lady Hammond,Bedford Institute of Oceanography,Research Vessel,Canada,18LH,7214844,,SDN:C17::18LH
+Beluga II,Canadian Coast Guard,self-propelled boad,Canada,18BP,,,SDN:C17::18BP
+Parizeau,Canadian Coast Guard,Research Vessel,Canada,18PZ,6711728,CGBS,SDN:C17::18PZ
+Des Groseilliers,Canadian Coast Guard,Research Vessel,Canada,18GO,8006385,CGDX,SDN:C17::18GO
+Endeavor,University of Rhode Island,Research Vessel,United States,32EV,7604300,WCE5063,SDN:C17::32EV
 E.E.Prince,,,,,,,
 C6-4828,,,,,,,
 JL HART,,,,,,,
 VESSEL OF OPPORTUNITY,,,,,,,
 Pack_Kat,,,,,,,
-Launch Sigma_T,,,,,,,
-Endeavor,University of Rhode Island,Research Vessel,United States,,7604300,WCE5063,SDN:C17::32EV
