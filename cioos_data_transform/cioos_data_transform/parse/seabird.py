@@ -7,12 +7,15 @@ import pandas as pd
 import difflib
 from xml.parsers.expat import ExpatError
 import logging
+
 logger = logging.getLogger(__name__)
 
 
 def get_seabird_instrument_from_header(seabird_header):
     """ Retrieve main instrument model from Sea-Bird CNV header"""
-    instrument = re.findall("\* (?:Sea\-Bird ){0,1}SBE (?P<sampler>\d[^\s]*)", seabird_header)
+    instrument = re.findall(
+        "\* (?:Sea\-Bird ){0,1}SBE (?P<sampler>\d[^\s]*)", seabird_header
+    )
     if instrument:
         return f"Sea-Bird SBE {''.join(instrument)}"
     else:
@@ -121,7 +124,7 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         "SPAR/Surface Irradiance": ["IRRDSV01"],
         "SPAR, Biospherical/Licor": ["IRRDSV01"],
         "User Polynomial": [],
-        "User Polynomial, 2": []
+        "User Polynomial, 2": [],
     }
     # Retrieve instrument calibration xml
     calibration_xml = re.findall("\#(\s*\<.*)\n", seabird_header)
@@ -135,18 +138,18 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
     calibration_xml = "\n".join(calibration_xml)
     try:
         sensors = xmltodict.parse(calibration_xml)["Sensors"]["sensor"]
-    except ExpatError :
-        logger.error('Failed to parsed Sea-Bird Instrument Calibration XML')
+    except ExpatError:
+        logger.error("Failed to parsed Sea-Bird Instrument Calibration XML")
         return ds
 
     sensors_comments = re.findall(
         "\s*\<!--\s*(Frequency \d+|A/D voltage \d+|.* voltage|Count){1}, (.*)-->\n",
         calibration_xml,
     )
-    
+
     # Make sure that the sensor count match the senor_comments count
     if len(sensors_comments) != len(sensors):
-        logger.error('Failed to detect same count of sensors and sensors_comments')
+        logger.error("Failed to detect same count of sensors and sensors_comments")
         return ds
 
     # Split each sensor calibrations to a dictionary
@@ -179,7 +182,9 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         )
         if sensor_code in ds:
             n_duplicated = len([var for var in ds if var.startswith(sensor_code)])
-            logger.warning(f"Duplicated instrument variable {sensor_code} -> renamed {sensor_code}_{n_duplicated} ")
+            logger.warning(
+                f"Duplicated instrument variable {sensor_code} -> renamed {sensor_code}_{n_duplicated} "
+            )
             sensor_code += f"_{n_duplicated}"
 
         # Try fit IOOS 1.2 which request to add a instrument variable for each
@@ -224,17 +229,18 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
             if (
                 len(vars) > 1
                 and match_by == "sdn_parameter_urn"
-                and (
-                    "Fluorometer" in name
-                    or "Turbidity" in name
-                    )
+                and ("Fluorometer" in name or "Turbidity" in name)
             ):
                 # Find the closest match based on the file name
-                var_longname = difflib.get_close_matches(name,[vars[var].attrs['long_name'] for var in vars])
-                vars = vars[[var for var in vars if ds[var].attrs['long_name'] in var_longname]]
+                var_longname = difflib.get_close_matches(
+                    name, [vars[var].attrs["long_name"] for var in vars]
+                )
+                vars = vars[
+                    [var for var in vars if ds[var].attrs["long_name"] in var_longname]
+                ]
 
                 # If there's still multiple matches give a warning
-                if len(vars)>1:
+                if len(vars) > 1:
                     logger.warning(
                         f"We can't link easily multiple {name} instruments via sdn_parameter_urn attribute. Any related data will be link to both instuments."
                     )
