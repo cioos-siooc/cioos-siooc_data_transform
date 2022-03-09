@@ -197,15 +197,15 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         ds[sensor_code].attrs = {
             "calibration_date": pd.to_datetime(
                 attrs.pop("CalibrationDate"), errors="ignore"
-            ),
+            ),  # IOOS 1.2, NCEI 2.0
             "component": f"{sensor_code}_sn{attrs['SerialNumber']}",  # IOOS 1.2
             "discriminant": discriminant,  # IOOS 1.2
-            "make_model": component,  # IOOS 1.2
-            "instrument_name": sensor_name,
-            "instrument_channel": sensors_comments[id - 1][0],
-            "instrument_sbe_sensor_id": int(attrs.pop("@SensorID")),
-            "instrument_serial_number": attrs.pop("SerialNumber"),
-            "instrument_calibration_coefficients": json.dumps(attrs),
+            "make_model": component,  # IOOS 1.2, NCEI 2.0
+            "long_name": sensor_name,
+            "channel": sensors_comments[id - 1][0],
+            "sbe_sensor_id": int(attrs.pop("@SensorID")),
+            "serial_number": attrs.pop("SerialNumber"),  # NCEI 2.0
+            "calibration": json.dumps(attrs),
         }
         sensors_map[sensor_name] = sensor_code
 
