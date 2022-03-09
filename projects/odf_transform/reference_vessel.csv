@@ -1,4 +1,4 @@
-platform,platform_owner,platform_type,country_of_origin,ices_platform_codes,wmo_platform_code,call_sign,sdn_platform_urn
+platform_name,platform_owner,platform_type,country_of_origin,ices_platform_codes,wmo_platform_code,call_sign,sdn_platform_urn
 RRS James Cook,National Environment Research Council,Research Vessel,United Kingdom,740H,9338242,MLRM6,SDN:C17::740H
 Neil Armstrong,Woods Hole Oceanographic Institution,Research Vessel,United States,33VB,9688946,WRNU,SDN:C17::33VB
 Atlantis,U.S. Navy,Research Vessel,United States,33AT,9105798,KAQP,SDN:C17::33AT

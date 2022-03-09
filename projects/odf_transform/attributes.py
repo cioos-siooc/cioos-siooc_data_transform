@@ -20,9 +20,9 @@ profile_direction_map = {"DN": "downward", "FLAT": "stable", "UP": "upward"}
 # This could be potentially be replaced by using the NERC Server instead
 reference_vessel = pd.read_csv(
     os.path.join(module_path, "reference_vessel.csv"),
-    dtype={"wmo_platform_code": "Int64"},
+    dtype={"wmo_platform_code": "string"},
 )
-platform_mapping = {key.lower():key for key in reference_vessel['platform']}
+platform_mapping = {key.lower(): key for key in reference_vessel["platform_name"]}
 
 institute_attributes = [
     "institution",
@@ -33,7 +33,7 @@ institute_attributes = [
     "ices_edmo_code",
     "sdn_institution_urn",
 ]
-platform_attributes = ["platform", "sdn_platform_urn", "wmo_platform_code"]
+platform_attributes = ["platform_name", "sdn_platform_urn", "wmo_platform_code"]
 
 
 def titleize(text):
@@ -49,7 +49,9 @@ def match_platform(platform):
     matched_vessel = get_close_matches(platform.lower(), platform_mapping.keys())
     if matched_vessel:
         return (
-            reference_vessel[reference_vessel["platform"] == platform_mapping[matched_vessel[0]]]
+            reference_vessel[
+                reference_vessel["platform_name"] == platform_mapping[matched_vessel[0]]
+            ]
             .iloc[0]
             .dropna()
             .to_dict()
@@ -77,10 +79,11 @@ def global_attributes_from_header(ds, odf_header):
             "cruise_name": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
             "cruise_number": odf_header["CRUISE_HEADER"]["CRUISE_NUMBER"],
             "cruise_description": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
-            "chief_scientist": standardize_chief_scientist(odf_header["CRUISE_HEADER"]["CHIEF_SCIENTIST"]),
+            "chief_scientist": standardize_chief_scientist(
+                odf_header["CRUISE_HEADER"]["CHIEF_SCIENTIST"]
+            ),
             "mission_start_date": odf_header["CRUISE_HEADER"].get("START_DATE"),
             "mission_end_date": odf_header["CRUISE_HEADER"].get("END_DATE"),
-            "platform": odf_header["CRUISE_HEADER"]["PLATFORM"],
             "event_number": odf_header["EVENT_HEADER"]["EVENT_NUMBER"],
             "event_start_time": odf_header["EVENT_HEADER"]["START_DATE_TIME"],
             "event_end_time": odf_header["EVENT_HEADER"]["END_DATE_TIME"],
@@ -105,7 +108,7 @@ def global_attributes_from_header(ds, odf_header):
             ),
         }
     )
-    
+
     # Map PLATFORM to NERC C17
     ds.attrs.update(match_platform(odf_header["CRUISE_HEADER"]["PLATFORM"]))
 
@@ -124,7 +127,9 @@ def global_attributes_from_header(ds, odf_header):
             if row.startswith("* Sea-Bird"):
                 ds.attrs["history"] += "# SEA-BIRD INSTRUMENTS HEADER\n"
                 is_manufacturer_header = True
-                ds.attrs["instrument_manufacturer_header"] = "" # Consider only the latest seabird procesisng_modules
+                ds.attrs[
+                    "instrument_manufacturer_header"
+                ] = ""  # Consider only the latest seabird procesisng_modules
             if is_manufacturer_header:
                 ds.attrs["instrument_manufacturer_header"] += row + "\n"
             else:
@@ -199,9 +204,9 @@ def global_attributes_from_header(ds, odf_header):
             + f"on the {ds.attrs['cruise_name'].title()} "
         )
         if (
-            ds.attrs["mission_start_date"] 
+            ds.attrs["mission_start_date"]
             and ds.attrs["mission_end_date"]
-            and type(ds.attrs["mission_start_date"]) is datetime 
+            and type(ds.attrs["mission_start_date"]) is datetime
             and type(ds.attrs["mission_end_date"]) is datetime
         ):
             ds.attrs["title"] += (
@@ -246,9 +251,14 @@ def generate_variables_from_header(ds, odf_header):
         "platform": {
             "name": "platform",
             "ioos_category": "Other",
+            "standard_name": "platform",
+        },
+        "platform": {
+            "name": "platform_name",
+            "ioos_category": "Other",
             "standard_name": "platform_name",
         },
-        "event_number": {"dtype":int, "ioos_category": "Other"},
+        "event_number": {"dtype": int, "ioos_category": "Other"},
         "id": {"ioos_category": "Identifier"},
         "station": {"ioos_category": "Location"},
         "event_start_time": {"ioos_category": "Time"},
@@ -327,4 +337,5 @@ def generate_variables_from_header(ds, odf_header):
 
 
 def standardize_chief_scientist(name):
-    return re.sub('(^|\s)(d|D)r\.{0,1}','',name).strip().title()
+    return re.sub("(^|\s)(d|D)r\.{0,1}", "", name).strip().title()
+
