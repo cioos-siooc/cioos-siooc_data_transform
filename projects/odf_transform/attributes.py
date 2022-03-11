@@ -127,9 +127,6 @@ def global_attributes_from_header(ds, odf_header):
             if row.startswith("* Sea-Bird"):
                 ds.attrs["history"] += "# SEA-BIRD INSTRUMENTS HEADER\n"
                 is_manufacturer_header = True
-                ds.attrs[
-                    "instrument_manufacturer_header"
-                ] = ""  # Consider only the latest seabird procesisng_modules
             if is_manufacturer_header:
                 ds.attrs["instrument_manufacturer_header"] += row + "\n"
             else:
