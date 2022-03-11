@@ -157,7 +157,7 @@ def global_attributes_from_header(ds, odf_header):
             ds.attrs["instrument_manufacturer_header"]
         )
 
-    if "INSTRUMENT_HEADER" in odf_header and ds.attrs.get("instruemnt") == None:
+    if "INSTRUMENT_HEADER" in odf_header and ds.attrs.get("instrument") == None:
         ds.attrs[
             "instrument"
         ] = f'{odf_header["INSTRUMENT_HEADER"]["INST_TYPE"]} {odf_header["INSTRUMENT_HEADER"]["MODEL"]}'
