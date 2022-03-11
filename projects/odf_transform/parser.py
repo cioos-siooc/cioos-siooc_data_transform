@@ -195,7 +195,6 @@ def read(filename, encoding_format="Windows-1252"):
                 "long_name": att.get("NAME"),
                 "units": att.get("UNITS"),
                 "legacy_gf3_code": var_name,
-                "type": att["TYPE"],
                 "null_value": att["NULL_VALUE"],
                 "resolution": 10 ** -att["PRINT_DECIMAL_PLACES"],
             }
@@ -217,10 +216,6 @@ def read(filename, encoding_format="Windows-1252"):
             quotechar="'",
             header=None,
             names=metadata["variable_attributes"].keys(),
-            dtype={
-                key: odf_dtypes[att.pop("type")]
-                for key, att in metadata["variable_attributes"].items()
-            },
             na_values={
                 key: att.pop("null_value")
                 for key, att in metadata["variable_attributes"].items()
@@ -338,8 +333,10 @@ def fix_flag_variables(ds):
         ]
 
         # Update long_name if flag is related to only one variable
-        if len(related_variables)==1:
-            ds[flag_var].attrs['long_name'] = flag_long_name_prefix + ds[related_variables[0]].attrs['long_name']
+        if len(related_variables) == 1:
+            ds[flag_var].attrs["long_name"] = (
+                flag_long_name_prefix + ds[related_variables[0]].attrs["long_name"]
+            )
 
         # If no rename variable is given an it affects only one variable name it with the same name as the variable but with a preceding Q
         if rename is None:
@@ -348,7 +345,7 @@ def fix_flag_variables(ds):
                     f"Multiple variables are affected by {flag_var}, I'm not sure how to rename it."
                 )
             rename = "Q" + related_variables[0]
-        
+
         # Rename or drop flag variable
         if rename not in ds:
             ds = ds.rename({flag_var: rename})
