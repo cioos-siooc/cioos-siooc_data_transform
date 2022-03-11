@@ -337,6 +337,10 @@ def fix_flag_variables(ds):
             if flag_var in ds[var].attrs.get("ancillary_variables", "")
         ]
 
+        # Update long_name if flag is related to only one variable
+        if len(related_variables)==1:
+            ds[flag_var].attrs['long_name'] = flag_long_name_prefix + ds[related_variables[0]].attrs['long_name']
+
         # If no rename variable is given an it affects only one variable name it with the same name as the variable but with a preceding Q
         if rename is None:
             if len(related_variables) > 1:
@@ -344,7 +348,7 @@ def fix_flag_variables(ds):
                     f"Multiple variables are affected by {flag_var}, I'm not sure how to rename it."
                 )
             rename = "Q" + related_variables[0]
-
+        
         # Rename or drop flag variable
         if rename not in ds:
             ds = ds.rename({flag_var: rename})
