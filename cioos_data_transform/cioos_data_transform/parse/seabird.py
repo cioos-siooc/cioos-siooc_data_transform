@@ -107,6 +107,7 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         "PAR/Irradiance, Biospherical/Licor": ["IRRDUV01"],
         "Oxygen, SBE 43": ["DOXYZZ01", "OXYOCPVL01"],
         "Oxygen, SBE 43, 2": ["DOXYZZ02", "OXYOCPVL02"],
+        "Oxygen Current, Beckman/YSI": ["DOXYZZ01", "OXYOCPVL01"],
         "Oxygen Temperature, Beckman/YSI": ["DOXYZZ01", "OXYOCPVL01"],
         "Fluorometer, Seapoint Ultraviolet": ["CDOMZZ01", "CDOMZZ02"],
         "Fluorometer, WET Labs ECO CDOM": ["CDOMZZ01", "CDOMZZ02"],
@@ -117,8 +118,6 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         "Fluorometer, Chelsea Aqua": ["CPHLPR01", "CPHLPR02"],
         "Fluorometer, Chelsea Aqua 3": ["CPHLPR01", "CPHLPR02"],
         "Fluorometer, Seatech/WET Labs FLF": ["CPHLPR01", "CPHLPR02"],
-        "Oxygen Current, Beckman/YSI": [],
-        "Oxygen Temperature, Beckman/YSI": [],
         "Transmissometer, WET Labs C-Star": ["ATTNZS01"],
         "Transmissometer, Chelsea/Seatech": ["ATTNZS01"],
         "Turbidity Meter, WET Labs, ECO-NTU": ["TURBXX01", "VSCTXX01"],
@@ -140,10 +139,12 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         logger.info("No Seabird XML Calibration was detected")
         return ds
 
-    # Read XML and commented lines
+    # Read XML and commented lines, drop encoding line
     calibration_xml = "\n".join(calibration_xml)
+    calibration_xml = re.sub("\<\?xml.*\>\n",'',calibration_xml) 
     try:
-        sensors = xmltodict.parse(calibration_xml)["Sensors"]["sensor"]
+        sensors = xmltodict.parse(calibration_xml.replace(
+            '<?xml version="1.0" encoding="UTF-8"?>',''))["Sensors"]["sensor"]
     except ExpatError:
         logger.error("Failed to parsed Sea-Bird Instrument Calibration XML")
         return ds
@@ -172,14 +173,17 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         # Format Instrument Variable Name (This tries to isolate type an index from the seabird commented variable name ~long_name)
         sensor_code_items = [
             re.search("^([a-zA-Z]+)(\,|\/){0,1}", sensor_name),
-            re.search("(?P<cdom>Ultraviolet|UV|CDOM)", sensor_name),
+            re.search(
+                "(?P<cdom>Ultraviolet|UV|CDOM)|(?P<temperature>Oxygen Temperature)|(?P<current>Oxygen Current)",
+                sensor_name,
+            ),
             re.search("(Wet Labs|Chelsea|Seapoint)", sensor_name),
             re.search(", (\d+)", sensor_name),
         ]
         sensor_code = (
             "_".join(
                 [
-                    "_".join(item.groupdict().keys()) if item.groupdict() else item[1]
+                    "_".join([key for key,value in item.groupdict().items() if value]) if item.groupdict() else item[1]
                     for item in sensor_code_items
                     if item
                 ]
