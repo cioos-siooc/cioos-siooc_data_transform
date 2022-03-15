@@ -34,6 +34,12 @@ institute_attributes = [
     "sdn_institution_urn",
 ]
 platform_attributes = ["platform_name", "sdn_platform_urn", "wmo_platform_code"]
+bcd_stations = {
+    "666": "Halifax Station 2",
+    "667": "Prince5",
+    "668": "BBMP",
+    "669": "Prince5",
+}
 
 
 def titleize(text):
@@ -219,8 +225,25 @@ def global_attributes_from_header(ds, odf_header):
     station = re.search(
         "\*\* Station_Name: (.*)',\n", "".join(odf_header["original_header"])
     )
+
     if station:
         ds.attrs["station"] = station[1]
+    if ds.attrs["cruise_number"].startswith("BCD"):
+        station_number = ds.attrs["cruise_number"][-3:]
+        if station_number in bcd_stations.keys():
+            ds.attrs["station"] = bcd_stations[station_number]
+        else:
+            logger.warning(f"Unknown BCD station {station_number}")
+
+    if (
+        "program" in ds.attrs
+        and ds.attrs["program"] == "Atlantic Zone Monitoring Program"
+    ):
+        if 1 <= ds.attrs["event_start_time"].month <= 7:
+            season = "Spring"
+        else:
+            season = "Fall"
+        ds.attrs["cruise_name"] += f"{season} {ds.attrs['event_start_time'].year}"
 
     # Missing terms potentially, mooring_number, station,
     return ds
@@ -334,4 +357,3 @@ def generate_variables_from_header(ds, odf_header):
 
 def standardize_chief_scientist(name):
     return re.sub("(^|\s)(d|D)r\.{0,1}", "", name).strip().title()
-
