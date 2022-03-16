@@ -149,7 +149,7 @@ def generate_instruments_variables_from_xml(ds, seabird_header):
         sensors = xmltodict.parse(calibration_xml)["Sensors"]["sensor"]
     except ExpatError:
         logger.error("Failed to parsed Sea-Bird Instrument Calibration XML")
-        return ds
+        return ds, {}
 
     sensors_comments = re.findall(
         "\s*\<!--\s*(Frequency \d+|A/D voltage \d+|.* voltage|Count){1}, (.*)-->\n",
@@ -159,69 +159,55 @@ def generate_instruments_variables_from_xml(ds, seabird_header):
     # Make sure that the sensor count match the sensor_comments count
     if len(sensors_comments) != len(sensors):
         logger.error("Failed to detect same count of sensors and sensors_comments")
-        return ds
+        return ds, {}
 
     # Split each sensor calibrations to a dictionary
     sensors_map = {}
     for sensor in sensors:
         if len(sensor.keys()) < 2:
+            # No sensor connected
             continue
 
         sensor_key = list(sensor.keys())[1].strip()
         attrs = sensor[sensor_key]
         id = int(sensor["@Channel"])
-        sensor_name = sensors_comments[id - 1][1].strip()
+        channel, description = sensors_comments[id - 1]
 
-        # Format Instrument Variable Name (This tries to isolate type an index from the seabird commented variable name ~long_name)
-        sensor_code_items = [
-            re.search("^([a-zA-Z]+)(\,|\/){0,1}", sensor_name),
-            re.search(
-                "(?P<cdom>Ultraviolet|UV|CDOM)|(?P<temperature>Oxygen Temperature)|(?P<current>Oxygen Current)",
-                sensor_name,
-            ),
-            re.search("(Wet Labs|Chelsea|Seapoint)", sensor_name),
-            re.search(", (\d+)", sensor_name),
-        ]
-        sensor_code = (
-            "_".join(
-                [
-                    "_".join([key for key, value in item.groupdict().items() if value])
-                    if item.groupdict()
-                    else item[1]
-                    for item in sensor_code_items
-                    if item
-                ]
-            ).lower()
-            + "_sensor"
-        )
-        if sensor_code in ds:
-            n_duplicated = len([var for var in ds if var.startswith(sensor_code)])
-            logger.warning(
-                f"Duplicated instrument variable {sensor_code} -> renamed {sensor_code}_{n_duplicated} "
-            )
-            sensor_code += f"_{n_duplicated}"
+        # Define senor variable name
+        if "UserPolynomial" in sensor_key and attrs.get("SensorName"):
+            sensor_name = attrs.pop("SensorName").strip()
+            sensor_var_name = re.sub("[^\d\w]+", "_", sensor_name)
+        else:
+            sensor_var_name = sensor_key
+            sensor_name = description.strip()
+
+        # Add trailing number if present
+        if re.search(", \d+", sensor_name):
+            sensor_number = int(re.search(", (\d+)", sensor_name)[1])
+            sensor_var_name += f"_{sensor_number}"
+        else:
+            sensor_number = 1
+
+        if sensor_var_name in ds:
+            logger.warning(f"Duplicated instrument variable {sensor_var_name}")
 
         # Try fit IOOS 1.2 which request to add a instrument variable for each
         # instruments and link this variable to data variable by using the instrument attribute
         # https://ioos.github.io/ioos-metadata/ioos-metadata-profile-v1-2.html#instrument
-        parsed_name = re.search("(.+)(\d*)$", sensor_name)
-        component = re.sub(", $", "", parsed_name[1])
-        discriminant = parsed_name[2] if parsed_name[2] else "1"
-        ds[sensor_code] = json.dumps(attrs)
-        ds[sensor_code].attrs = {
+        ds[sensor_var_name] = json.dumps(attrs)
+        ds[sensor_var_name].attrs = {
             "calibration_date": pd.to_datetime(
                 attrs.pop("CalibrationDate"), errors="ignore"
             ),  # IOOS 1.2, NCEI 2.0
-            "component": f"{sensor_code}_sn{attrs['SerialNumber']}",  # IOOS 1.2
-            "discriminant": str(discriminant),  # IOOS 1.2
-            "make_model": component,  # IOOS 1.2, NCEI 2.0
-            "long_name": sensor_name,
-            "channel": sensors_comments[id - 1][0],
+            "component": f"{sensor_var_name}_sn{attrs['SerialNumber']}",  # IOOS 1.2
+            "discriminant": str(sensor_number),  # IOOS 1.2
+            "make_model": sensor_name,  # IOOS 1.2, NCEI 2.0
+            "channel": channel,
             "sbe_sensor_id": int(attrs.pop("@SensorID")),
             "serial_number": attrs.pop("SerialNumber"),  # NCEI 2.0
             "calibration": json.dumps(attrs),
         }
-        sensors_map[sensor_name] = sensor_code
+        sensors_map[sensor_name] = sensor_name
 
     return ds, sensors_map
 
@@ -238,10 +224,14 @@ def generate_instruments_variables_from_sensor(ds, seabird_header):
                 + sensor_items[1],
             }
         else:
-            attrs = re.search(
-                "(?P<channel>Frequency \d+|Stored Volt\s+\d+)\s+(?P<sensor_description>.*)",
+            attrs_dict = re.search(
+                "(?P<channel>Frequency \d+|Stored Volt\s+\d+|Extrnl Volt  \d+)\s+(?P<sensor_description>.*)",
                 sensor,
-            ).groupdict()
+            )
+            if attrs_dict == None:
+                logger.error(f"Failed to read sensor item: {sensor}")
+                continue
+            attrs = attrs_dict.groupdict()
         sensor_code = f"sensor_{id}"
         ds[sensor_code] = sensor
         ds[sensor_code].attrs = attrs
