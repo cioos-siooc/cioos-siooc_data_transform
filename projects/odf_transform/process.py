@@ -119,7 +119,7 @@ def write_ctd_ncfile(
     ds = odf_parser.fix_flag_variables(ds)
 
     if ds.attrs["instrument_manufacturer_header"].startswith("* Sea-Bird"):
-        ds = seabird.add_seabird_calibration(
+        ds = seabird.add_seabird_instruments(
             ds, ds.attrs["instrument_manufacturer_header"], match_by="sdn_parameter_urn"
         )
         ds = seabird.update_attributes_from_seabird_header(

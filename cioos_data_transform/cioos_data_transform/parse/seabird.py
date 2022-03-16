@@ -10,6 +10,45 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+seabird_to_bodc = {
+    "Temperature": ["TEMPP681", "TEMPP901", "TEMPS601", "TEMPS901", "TEMPPR01"],
+    "Temperature, 2": ["TEMPP682", "TEMPP902", "TEMPS602", "TEMPS902", "TEMPPR02"],
+    "Pressure, Digiquartz with TC": ["PRESPR01"],
+    "Pressure, Strain Gauge": ["PRESPR01"],
+    "Conductivity": ["CNDCST01"],
+    "Conductivity, 2": ["CNDCST02"],
+    "Altimeter": ["AHSFZZ01"],
+    "PAR/Logarithmic, Satlantic": ["IRRDUV01"],
+    "PAR/Irradiance, Biospherical/Licor": ["IRRDUV01"],
+    "Oxygen, SBE 43": ["DOXYZZ01", "OXYOCPVL01"],
+    "Oxygen, SBE 43, 2": ["DOXYZZ02", "OXYOCPVL02"],
+    "Oxygen Current, Beckman/YSI": ["DOXYZZ01", "OXYOCPVL01"],
+    "Oxygen Temperature, Beckman/YSI": ["DOXYZZ01", "OXYOCPVL01"],
+    "Fluorometer, Seapoint Ultraviolet": ["CDOMZZ01", "CDOMZZ02"],
+    "Fluorometer, WET Labs ECO CDOM": ["CDOMZZ01", "CDOMZZ02"],
+    "Fluorometer, Chelsea UV Aquatracka": ["CDOMZZ01", "CDOMZZ02"],
+    "Fluorometer, Seapoint": ["CPHLPR01", "CPHLPR02"],
+    "Fluorometer, WET Labs WETstar": ["CPHLPR01", "CPHLPR02"],
+    "Fluorometer, Wetlabs Wetstar": ["CPHLPR01", "CPHLPR02"],
+    "Fluorometer, WET Labs ECO-AFL/FL": ["CPHLPR01", "CPHLPR02"],
+    "Fluorometer, Chelsea Aqua": ["CPHLPR01", "CPHLPR02"],
+    "Fluorometer, Chelsea Aqua 3": ["CPHLPR01", "CPHLPR02"],
+    "Fluorometer, Seatech/WET Labs FLF": ["CPHLPR01", "CPHLPR02"],
+    "Transmissometer, WET Labs C-Star": ["ATTNZS01"],
+    "Transmissometer, Chelsea/Seatech": ["ATTNZS01"],
+    "Turbidity Meter, WET Labs, ECO-NTU": ["TURBXX01", "VSCTXX01"],
+    "Turbidity Meter, Seapoint": ["TURBXX01", "VSCTXX01"],
+    "OBS, Backscatterance (D & A)": ["TURBXX01", "VSCTXX01"],
+    "pH": ["PHMASS01", "PHXXZZ01"],
+    "OBS, WET Labs, ECO-BB": ["VSCTXX01"],
+    "OBS, Seapoint Turbidity": ["VSCTXX01", "TURBXX01", "VSCTXX01"],
+    "SPAR/Surface Irradiance": ["IRRDSV01"],
+    "SPAR, Biospherical/Licor": ["IRRDSV01"],
+    "User Polynomial": [],
+    "User Polynomial, 2": [],
+    "User Polynomial, 3": [],
+}
+
 
 def get_seabird_instrument_from_header(seabird_header):
     """ Retrieve main instrument model from Sea-Bird CNV header"""
@@ -89,62 +128,18 @@ def update_attributes_from_seabird_header(
     return ds
 
 
-def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
-    """
-    Extract seabird xml calibration and give back to each respective variables based on 
-    sdn_parameter_urn attribute as an attribute.
-    """
+def generate_instruments_variables_from_xml(ds, seabird_header):
 
-    seabird_to_bodc = {
-        "Temperature": ["TEMPP681", "TEMPP901", "TEMPS601", "TEMPS901", "TEMPPR01"],
-        "Temperature, 2": ["TEMPP682", "TEMPP902", "TEMPS602", "TEMPS902", "TEMPPR02"],
-        "Pressure, Digiquartz with TC": ["PRESPR01"],
-        "Pressure, Strain Gauge": ["PRESPR01"],
-        "Conductivity": ["CNDCST01"],
-        "Conductivity, 2": ["CNDCST02"],
-        "Altimeter": ["AHSFZZ01"],
-        "PAR/Logarithmic, Satlantic": ["IRRDUV01"],
-        "PAR/Irradiance, Biospherical/Licor": ["IRRDUV01"],
-        "Oxygen, SBE 43": ["DOXYZZ01", "OXYOCPVL01"],
-        "Oxygen, SBE 43, 2": ["DOXYZZ02", "OXYOCPVL02"],
-        "Oxygen Current, Beckman/YSI": ["DOXYZZ01", "OXYOCPVL01"],
-        "Oxygen Temperature, Beckman/YSI": ["DOXYZZ01", "OXYOCPVL01"],
-        "Fluorometer, Seapoint Ultraviolet": ["CDOMZZ01", "CDOMZZ02"],
-        "Fluorometer, WET Labs ECO CDOM": ["CDOMZZ01", "CDOMZZ02"],
-        "Fluorometer, Chelsea UV Aquatracka": ["CDOMZZ01", "CDOMZZ02"],
-        "Fluorometer, Seapoint": ["CPHLPR01", "CPHLPR02"],
-        "Fluorometer, WET Labs WETstar": ["CPHLPR01", "CPHLPR02"],
-        "Fluorometer, WET Labs ECO-AFL/FL": ["CPHLPR01", "CPHLPR02"],
-        "Fluorometer, Chelsea Aqua": ["CPHLPR01", "CPHLPR02"],
-        "Fluorometer, Chelsea Aqua 3": ["CPHLPR01", "CPHLPR02"],
-        "Fluorometer, Seatech/WET Labs FLF": ["CPHLPR01", "CPHLPR02"],
-        "Transmissometer, WET Labs C-Star": ["ATTNZS01"],
-        "Transmissometer, Chelsea/Seatech": ["ATTNZS01"],
-        "Turbidity Meter, WET Labs, ECO-NTU": ["TURBXX01", "VSCTXX01"],
-        "Turbidity Meter, Seapoint": ["TURBXX01", "VSCTXX01"],
-        "OBS, Backscatterance (D & A)": ["TURBXX01", "VSCTXX01"],
-        "pH": ["PHMASS01", "PHXXZZ01"],
-        "OBS, WET Labs, ECO-BB": ["VSCTXX01"],
-        "SPAR/Surface Irradiance": ["IRRDSV01"],
-        "SPAR, Biospherical/Licor": ["IRRDSV01"],
-        "User Polynomial": [],
-        "User Polynomial, 2": [],
-        "User Polynomial, 3": [],
-    }
-    # Retrieve instrument calibration xml
-    calibration_xml = re.findall("\#(\s*\<.*)\n", seabird_header)
-
-    # If no calibration detected give a warning and return dataset
-    if not calibration_xml:
-        logger.info("No Seabird XML Calibration was detected")
-        return ds
+    # Retrieve Sensors xml section within seabird header
+    calibration_xml = re.sub(
+        "\n\#\s",
+        "\n",
+        re.search("\<Sensors .+\<\/Sensors\>", seabird_header, re.DOTALL)[0],
+    )
 
     # Read XML and commented lines, drop encoding line
-    calibration_xml = "\n".join(calibration_xml)
-    calibration_xml = re.sub("\<\?xml.*\>\n",'',calibration_xml) 
     try:
-        sensors = xmltodict.parse(calibration_xml.replace(
-            '<?xml version="1.0" encoding="UTF-8"?>',''))["Sensors"]["sensor"]
+        sensors = xmltodict.parse(calibration_xml)["Sensors"]["sensor"]
     except ExpatError:
         logger.error("Failed to parsed Sea-Bird Instrument Calibration XML")
         return ds
@@ -154,7 +149,7 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         calibration_xml,
     )
 
-    # Make sure that the sensor count match the senor_comments count
+    # Make sure that the sensor count match the sensor_comments count
     if len(sensors_comments) != len(sensors):
         logger.error("Failed to detect same count of sensors and sensors_comments")
         return ds
@@ -183,7 +178,9 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         sensor_code = (
             "_".join(
                 [
-                    "_".join([key for key,value in item.groupdict().items() if value]) if item.groupdict() else item[1]
+                    "_".join([key for key, value in item.groupdict().items() if value])
+                    if item.groupdict()
+                    else item[1]
                     for item in sensor_code_items
                     if item
                 ]
@@ -219,9 +216,48 @@ def add_seabird_calibration(ds, seabird_header, match_by="long_name"):
         }
         sensors_map[sensor_name] = sensor_code
 
-    # TODO it would be good to map Seabird SensorIDs to an L22 instrument term as instrument attribute.
+    return ds, sensors_map
 
-    # Add calibrations to each corresponding variable based on the gf3 code
+
+def generate_instruments_variables_from_sensor(ds, seabird_header):
+    """Parse older Seabird Header sensor information and generate instrument variables"""
+    sensors = re.findall("\# sensor (?P<id>\d+) = (?P<text>.*)\n", seabird_header)
+    for id, sensor in sensors:
+        if "Voltage" in sensor:
+            sensor_items = sensor.split(",", 1)
+            attrs = {
+                "channel": sensor_items[0],
+                "sensor_description": sensor_items[0].replace("Voltage", "").strip()
+                + sensor_items[1],
+            }
+        else:
+            attrs = re.search(
+                "(?P<channel>Frequency \d+|Stored Volt\s+\d+)\s+(?P<sensor_description>.*)",
+                sensor,
+            ).groupdict()
+        sensor_code = f"sensor_{id}"
+        ds[sensor_code] = sensor
+        ds[sensor_code].attrs = attrs
+    return ds
+
+
+def add_seabird_instruments(ds, seabird_header, match_by="long_name"):
+    """
+    Extract seabird sensor information and generate instrument variables which follow the IOOS 1.2 convention
+    """
+    # Retrieve sensors information
+    if "# <Sensors count" in seabird_header:
+        ds, sensors_map = generate_instruments_variables_from_xml(ds, seabird_header)
+    elif "# sensor" in seabird_header:
+        ds = generate_instruments_variables_from_sensor(ds, seabird_header)
+        logger.info("Unable to map old seabird sensor header to appropriate variables")
+        return ds
+    else:
+        # If no calibration detected give a warning and return dataset
+        logger.info("No Seabird sensors information was detected")
+        return ds
+
+    # Match instrument variables to their associated variables
     for name, sensor_variable in sensors_map.items():
         if match_by == "sdn_parameter_urn":
             if name not in seabird_to_bodc:
