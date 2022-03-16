@@ -91,6 +91,7 @@ if __name__ == "__main__":
     output_path = args.output_path
 
     # Retrieve files to convert
+    print("Retrieve files to process")
     if not odf_path:
         raise Exception("No odf_path")
     elif os.path.isdir(odf_path):
@@ -124,10 +125,10 @@ if __name__ == "__main__":
         )
         odf_files_list = overwrite_list
         odf_files_list += new_list
-    
+
     # No file to convert
-    if odf_files_list==[]:
-        print('No file to convert')
+    if odf_files_list == []:
+        print("No file to convert")
         quit()
 
     # Get Polygon regions
@@ -135,22 +136,17 @@ if __name__ == "__main__":
 
     # Generate inputs and run conversion with multiprocessing
     inputs = [(file, polygons, output_path, config) for file in odf_files_list]
-    tqdm_dict = {          
+    tqdm_dict = {
         "total": len(inputs),
         "desc": "ODF Conversion to NetCDF: ",
-        "unit": "file"
-        }
-    if len(inputs)>100:
+        "unit": "file",
+    }
+    if len(inputs) > 100:
         print(f"Run ODF conversion in multiprocessing on {args.n_workers} workers")
         with Pool(args.n_workers) as p:
-            r = list(
-                tqdm(
-                    p.imap(convert_odf_file, inputs),**tqdm_dict
-                )
-            )
-    elif 0<len(inputs)<100:
+            r = list(tqdm(p.imap(convert_odf_file, inputs), **tqdm_dict))
+    elif 0 < len(inputs) < 100:
         print("Run ODF Conversion")
-        for item in tqdm(inputs,**tqdm_dict):
+        for item in tqdm(inputs, **tqdm_dict):
             convert_odf_file(item)
-
 
