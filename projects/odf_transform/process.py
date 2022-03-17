@@ -142,10 +142,13 @@ def write_ctd_ncfile(
     logger.info(f"Variable List: {[var for var in ds]}")
 
     # Finally save the xarray dataset to a NetCDF file!!!
+
     if output_path == None:
         output_path = odf_path + ".nc"
     elif os.path.isdir(output_path):
-        output_path = os.path.join(output_path, odf_file + ".nc")
+        output_path = os.path.join(
+            output_path, odf_file + config.get("addFileNameSuffix", "") + ".nc"
+        )
     ds.to_netcdf(output_path)
 
 
