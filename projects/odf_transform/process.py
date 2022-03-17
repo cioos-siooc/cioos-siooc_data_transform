@@ -36,8 +36,7 @@ def read_config(config_file):
 
     # If config.json is default in package set relative paths to module path
     if os.path.join(MODULE_PATH, "config.json") == DEFAULT_CONFIG_PATH:
-        config["odf_path"] = os.path.join(MODULE_PATH, config["odf_path"][2:])
-        config["output_path"] = os.path.join(MODULE_PATH, config["output_path"][2:])
+        config["fileDir"] = os.path.join(MODULE_PATH, config["fileDir"][2:])
         config["geojsonFileList"] = [
             os.path.join(MODULE_PATH, fpath[2:]) for fpath in config["geojsonFileList"]
         ]

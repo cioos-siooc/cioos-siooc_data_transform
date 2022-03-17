@@ -7,6 +7,7 @@ import argparse
 
 from multiprocessing import Pool
 from tqdm import tqdm
+import re
 
 import logging
 
@@ -59,7 +60,7 @@ if __name__ == "__main__":
         "-i",
         type=str,
         dest="odf_path",
-        default=config.get("odf_path"),
+        default=None,
         help="ODF file or directory with ODF files. Recursive",
     )
     parser.add_argument(
@@ -87,25 +88,45 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     config = read_config(args.config_path)
-    odf_path = args.odf_path
-    output_path = args.output_path
 
-    # Retrieve files to convert
+    # Handle output_path
+    if args.output_path:
+        config['output_path'] = args.output_path
+
+    # Handle Input FIles
     print("Retrieve files to process")
-    if not odf_path:
-        raise Exception("No odf_path")
-    elif os.path.isdir(odf_path):
-        odf_files_list = glob.glob(odf_path + "/**/*.ODF", recursive=True)
-    elif os.path.isfile(odf_path):
-        odf_files_list = [odf_path]
+    if args.odf_path:
+        odf_files_list = glob.glob(args.odf_path, recursive=True)
+    elif os.path.isfile(config['fileDir']):
+        odf_files_list = [config['fileDir']]
+    elif os.path.isdir(config['fileDir']):
+        odf_files_list = glob.glob(config['fileDir'] + "/**/*.ODF", recursive=config["recursive"])
+        
+        # Filter results with regex
+        if config["fileNameRegex"]:
+            odf_files_list = [
+                file
+                for file in odf_files_list
+                if re.match(config["fileNameRegex"], os.path.basename(file))
+            ]
+        if config['pathRegex']:
+            odf_files_list = [
+                file
+                for file in odf_files_list
+                if re.match(config["pathRegex"], file)
+            ]
     else:
-        odf_files_list = glob.glob(odf_path, recursive=True)
+        logger.error(f"Unknown fileDir input: {config['fileDir']}")
     print(f"Convert {len(odf_files_list)} ODF files")
 
     # Review keep files that needs an update only
+    output_path = config['output_path']
+
     if args.overwrite:
+        # overwrite all files
         logger.info(f"Overwrite all {len(odf_files_list)}")
     elif output_path == None or os.path.isdir(output_path):
+        # Consider file if not netcdf equivalent exist or netcdf is older than odf
         overwrite_list = []
         new_list = []
         for file in odf_files_list:

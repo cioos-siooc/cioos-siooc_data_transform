@@ -1,6 +1,10 @@
 {
-    "odf_path": "./sample_data/test_files/",
-    "output_path": "./output/",
+    "fileDir": "./sample_data/test_files/",
+    "fileNameRegex": ".*.ODF",
+    "recursive": true,
+    "pathRegex": null,
+    "output_path": null,
+    "addFileNameSuffix": "_dev",
     "geojsonFileList": [
         "./geojson_files/ios_polygons.geojson",
         "./geojson_files/MLI_St-LawrenceBoxes.geojson",
