@@ -184,7 +184,9 @@ if __name__ == "__main__":
             ncfile = (
                 file + ".nc"
                 if output_path == None
-                else os.path.join(output_path, filename + ".nc")
+                else os.path.join(
+                    output_path, filename + config["addFileNameSuffix"] + ".nc"
+                )
             )
             if not os.path.exists(ncfile):
                 new_list.append(file)
