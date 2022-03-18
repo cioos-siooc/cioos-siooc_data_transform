@@ -44,6 +44,50 @@ console.setLevel(logging.ERROR)
 console.setFormatter(formatter)
 logger.addHandler(console)
 
+
+def input_from_program_log(program_log_path, files, polygons, output_path, config):
+    # Load the different logs and map the list of files available to the programs
+    program_logs = [
+        item
+        for item in os.listdir(program_log_path)
+        if os.path.isfile(os.path.join(program_log_path, item))
+    ]
+    inputs = []
+    for log in program_logs:
+        df_log = pd.read_csv(os.path.join(program_log_path, log)).set_index("mission")
+        # Add program name based on filename
+        program = log.rsplit(".", 1)[0]
+        df_log["program"] = program
+        logger.info(f"Retrieve files from {program}")
+        for mission, attrs in tqdm(
+            df_log.iterrows(), unit="mission", total=df_log.shape[0], desc=program
+        ):
+            # Retrieve the files associated with this program
+            mission_files = [
+                file
+                for file in files
+                if re.search(mission.strip(), os.path.basename(file))
+            ]
+            logger.info(f"{len(mission_files)} were matched to the mission {mission}")
+            if mission_files == []:
+                continue
+            # Make a copy of the configuration
+            mission_config = config.copy()
+            mission_config["global_attributes"].update(dict(attrs))
+            for mission_file in mission_files:
+                inputs.append((mission_file, polygons, output_path, mission_config))
+
+    return inputs
+
+
+def get_input(item):
+    vargs = vars(args)
+    if vargs.get(item):
+        return vargs.get(item)
+    else:
+        return config[item]
+
+
 if __name__ == "__main__":
     config = read_config(DEFAULT_CONFIG_PATH)
     parser = argparse.ArgumentParser(
@@ -59,7 +103,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-i",
         type=str,
-        dest="odf_path",
+        dest="fileDir",
         default=None,
         help="ODF file or directory with ODF files. Recursive",
     )
@@ -69,6 +113,13 @@ if __name__ == "__main__":
         dest="output_path",
         default=None,
         help="Enter the folder to write your NetCDF files to (Default: next to the original ODF file).",
+        required=False,
+    )
+    parser.add_argument(
+        "-p",
+        type=str,
+        dest="program_logs_path",
+        help="Path to program logs to ingest",
         required=False,
     )
     parser.add_argument(
@@ -90,39 +141,38 @@ if __name__ == "__main__":
     config = read_config(args.config_path)
 
     # Handle output_path
-    if args.output_path:
-        config['output_path'] = args.output_path
+    if get_input("output_path"):
+        config["output_path"] = args.output_path
 
     # Handle Input FIles
     print("Retrieve files to process")
-    if args.odf_path:
-        odf_files_list = glob.glob(args.odf_path, recursive=True)
-    elif os.path.isfile(config['fileDir']):
-        odf_files_list = [config['fileDir']]
-    elif os.path.isdir(config['fileDir']):
-        odf_files_list = glob.glob(config['fileDir'] + "/**/*.ODF", recursive=config["recursive"])
-        
-        # Filter results with regex
-        if config["fileNameRegex"]:
-            odf_files_list = [
-                file
-                for file in odf_files_list
-                if re.match(config["fileNameRegex"], os.path.basename(file))
-            ]
-        if config['pathRegex']:
-            odf_files_list = [
-                file
-                for file in odf_files_list
-                if re.match(config["pathRegex"], file)
-            ]
+    fileDir = get_input("fileDir")
+    if os.path.isfile(fileDir):
+        odf_files_list = [fileDir]
+    elif os.path.isdir(fileDir):
+        odf_files_list = glob.glob(
+            fileDir + "/**/*.ODF", recursive=get_input("recursive")
+        )
     else:
-        logger.error(f"Unknown fileDir input: {config['fileDir']}")
-    print(f"Convert {len(odf_files_list)} ODF files")
+        odf_files_list = glob.glob(fileDir, recursive=get_input("recursive"))
+
+    # Filter results with regex
+    if config["fileNameRegex"]:
+        odf_files_list = [
+            file
+            for file in odf_files_list
+            if re.match(config["fileNameRegex"], os.path.basename(file))
+        ]
+    if config["pathRegex"]:
+        odf_files_list = [
+            file for file in odf_files_list if re.match(config["pathRegex"], file)
+        ]
+    print(f"{len(odf_files_list)} ODF files are available")
 
     # Review keep files that needs an update only
-    output_path = config['output_path']
+    output_path = config["output_path"]
 
-    if args.overwrite:
+    if get_input("overwrite"):
         # overwrite all files
         logger.info(f"Overwrite all {len(odf_files_list)}")
     elif output_path == None or os.path.isdir(output_path):
@@ -155,8 +205,20 @@ if __name__ == "__main__":
     # Get Polygon regions
     polygons = read_geojson_file_list(config["geojsonFileList"])
 
-    # Generate inputs and run conversion with multiprocessing
-    inputs = [(file, polygons, output_path, config) for file in odf_files_list]
+    # Generate inputs
+    if get_input("program_logs_path"):
+        inputs = input_from_program_log(
+            get_input("program_logs_path"),
+            odf_files_list,
+            polygons,
+            output_path,
+            config,
+        )
+    else:
+        inputs = [(file, polygons, output_path, config) for file in odf_files_list]
+
+    logger.info(f"{len(inputs)} files will be converted")
+
     tqdm_dict = {
         "total": len(inputs),
         "desc": "ODF Conversion to NetCDF: ",
