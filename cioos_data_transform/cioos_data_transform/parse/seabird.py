@@ -39,6 +39,7 @@ seabird_to_bodc = {
     "Fluorometer, WET Labs ECO-AFL/FL": ["CPHLPR01", "CPHLPR02"],
     "Fluorometer, Chelsea Aqua": ["CPHLPR01", "CPHLPR02"],
     "Fluorometer, Chelsea Aqua 3": ["CPHLPR01", "CPHLPR02"],
+    "Fluorometer, Chelsea Minitracka": ["CPHLPR01", "CPHLPR02"],
     "Fluorometer, Seatech/WET Labs FLF": ["CPHLPR01", "CPHLPR02"],
     "Transmissometer, WET Labs C-Star": ["ATTNZS01"],
     "Transmissometer, Chelsea/Seatech": ["ATTNZS01"],
@@ -155,6 +156,11 @@ def generate_instruments_variables_from_xml(ds, seabird_header):
         "\s*\<!--\s*(Frequency \d+|A/D voltage \d+|.* voltage|Count){1}, (.*)-->\n",
         calibration_xml,
     )
+    # Consider only channels with sensor mounted
+    sensors = [sensor for sensor in sensors if len(sensor) > 1]
+    sensors_comments = [
+        (con, name) for con, name in sensors_comments if not name.startswith("Free")
+    ]
 
     # Make sure that the sensor count match the sensor_comments count
     if len(sensors_comments) != len(sensors):
