@@ -230,7 +230,7 @@ def generate_instruments_variables_from_sensor(ds, seabird_header):
             }
         else:
             attrs_dict = re.search(
-                "(?P<channel>Frequency \d+|Stored Volt\s+\d+|Extrnl Volt  \d+)\s+(?P<sensor_description>.*)",
+                "(?P<channel>Frequency\s+\d+|Stored Volt\s+\d+|Extrnl Volt  \d+)\s+(?P<sensor_description>.*)",
                 sensor,
             )
             if attrs_dict == None:
