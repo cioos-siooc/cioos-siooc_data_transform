@@ -83,7 +83,7 @@ def global_attributes_from_header(ds, odf_header):
     ds.attrs.update(
         {
             "cruise_name": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
-            "cruise_number": odf_header["CRUISE_HEADER"]["CRUISE_NUMBER"],
+            "cruise_number": str(odf_header["CRUISE_HEADER"]["CRUISE_NUMBER"]),
             "cruise_description": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
             "chief_scientist": standardize_chief_scientist(
                 odf_header["CRUISE_HEADER"]["CHIEF_SCIENTIST"]
