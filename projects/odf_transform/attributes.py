@@ -277,7 +277,7 @@ def generate_variables_from_header(ds, odf_header):
             "ioos_category": "Other",
             "standard_name": "platform_name",
         },
-        "event_number": {"dtype": int, "ioos_category": "Other"},
+        "event_number": {"dtype": str, "ioos_category": "Other"},
         "id": {"ioos_category": "Identifier"},
         "station": {"ioos_category": "Location"},
         "event_start_time": {"ioos_category": "Time"},
