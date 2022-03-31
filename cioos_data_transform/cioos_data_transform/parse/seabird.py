@@ -181,6 +181,11 @@ def generate_instruments_variables_from_xml(ds, seabird_header):
             sensor_var_name = sensor_key
             sensor_name = description.strip()
 
+        if "Oxygen" in sensor_name:
+            subsensors = re.search("Current|Temp|Phase|Concentration", description)
+            if subsensors:
+                sensor_var_name += "_" + subsensors[0]
+
         # Add trailing number if present
         if re.search(", \d+", sensor_name):
             sensor_number = int(re.search(", (\d+)", sensor_name)[1])
