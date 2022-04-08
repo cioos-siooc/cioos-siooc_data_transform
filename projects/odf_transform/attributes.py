@@ -201,7 +201,7 @@ def global_attributes_from_header(ds, odf_header):
             ]
         ds.attrs["title"] = (
             f"{type_profile[data_type]} profile data collected "
-            + f"from the {ds.attrs['platform']} platform by "
+            + f"from the {ds.attrs['platform']} {ds.attrs['platform_name']} by "
             + f"{ds.attrs['organization']}  {ds.attrs['institution']} "
             + f"on the {ds.attrs['cruise_name'].title()} "
         )

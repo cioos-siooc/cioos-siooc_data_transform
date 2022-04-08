@@ -7,6 +7,7 @@ import argparse
 
 from multiprocessing import Pool
 from tqdm import tqdm
+
 import re
 
 import logging
@@ -45,7 +46,25 @@ console.setFormatter(formatter)
 logger.addHandler(console)
 
 
-def input_from_program_log(program_log_path, files, polygons, output_path, config):
+def input_from_program_logs(program_log_path, files, polygons, output_path, config):
+    """Generate input based on the program logs available
+
+    input_from_program_logs compile all the different program logs available within the directory 
+    and match each files that neeeds a conversion to the appropriate mission. For each mission, 
+    it updates the configuration global attributes to include any extra attributes available within the log.
+
+    A list of inputs is then generated which can be run by the ODF conversion tool..
+
+    Args:
+        program_log_path (string): 
+        files (list): List of files
+        polygons (dict): dictionary of geojson regions
+        output_path (str): path to output files to 
+        config (dict)): [description]
+
+    Returns:
+        list: list of inputs to run the conversion for each files and and their specific mission attributes.
+    """
     # Load the different logs and map the list of files available to the programs
     program_logs = [
         item
@@ -53,39 +72,61 @@ def input_from_program_log(program_log_path, files, polygons, output_path, confi
         if os.path.isfile(os.path.join(program_log_path, item))
     ]
     inputs = []
+    df_logs = pd.DataFrame()
+    logger.info(f"Load Program Logs: {program_logs}")
     for log in program_logs:
-        df_log = pd.read_csv(os.path.join(program_log_path, log)).set_index("mission")
-        # Add program name based on filename
-        program = log.rsplit(".", 1)[0]
-        df_log["program"] = program
-        logger.info(f"Retrieve files from {program}")
-        for mission, attrs in tqdm(
-            df_log.iterrows(), unit="mission", total=df_log.shape[0], desc=program
-        ):
-            # Retrieve the files associated with this program
-            mission_files = [
-                file
-                for file in files
-                if re.search(mission.strip(), os.path.basename(file))
-            ]
-            logger.info(f"{len(mission_files)} were matched to the mission {mission}")
-            if mission_files == []:
-                continue
-            # Make a copy of the configuration
-            mission_config = config.copy()
-            mission_config["global_attributes"].update(dict(attrs))
-            for mission_file in mission_files:
-                inputs.append((mission_file, polygons, output_path, mission_config))
+        try:
+            df_log = pd.read_csv(os.path.join(program_log_path, log))
+        except:
+            logger.warning(f"Failed to parse program log {program_log_path}\{log}")
+            continue
+
+        # Extract the program name from the file name
+        if "program" not in df_log:
+            df_log["program"] = log.rsplit(".", 1)[0]
+
+        # Append to previous logs
+        df_logs = df_logs.append(df_log)
+
+    # Review duplicated mission input in log
+    if df_logs["mission"].duplicated().any():
+        duplicated_mission = df_logs.loc[df_logs["mission"].duplicated()]
+        logger.error(f"Duplicated mission inputs were detected: {duplicated_mission}")
+        return None
+
+    # Ignore files that the mission isn't listed
+    search_regexp = "|".join(df_logs["mission"].tolist())
+    files = [file for file in files if re.search(search_regexp, file)]
+    if len(files) == 0:
+        return None
+    logger.info(f"{len(files)} files are associated to a mission.")
+
+    # Add program name based on filename
+    logger.info(f"Retrieve mission matching files")
+    for mission, df_mission in tqdm(
+        df_logs.groupby("mission"),
+        unit="mission",
+        total=df_logs.shape[0],
+        desc="Generate input per mission",
+    ):
+        # Retrieve the files associated with this program
+        mission_files = [
+            file for file in files if re.search(mission, os.path.basename(file))
+        ]
+        logger.info(f"{len(mission_files)} were matched to the mission {mission}")
+        if len(mission_files) == 0:
+            continue
+        # Make a copy of the configuration
+        mission_config = config.copy()
+        mission_config["global_attributes"].update(
+            df_mission.iloc[0].dropna().to_dict()
+        )
+        inputs += [
+            (mission_file, polygons, output_path, mission_config)
+            for mission_file in mission_files
+        ]
 
     return inputs
-
-
-def get_input(item):
-    vargs = vars(args)
-    if vargs.get(item):
-        return vargs.get(item)
-    else:
-        return config[item]
 
 
 if __name__ == "__main__":
@@ -136,25 +177,21 @@ if __name__ == "__main__":
         help="Overwrite all NetCDF files.",
         required=False,
     )
+    args = parser.parse_args().__dict__
 
-    args = parser.parse_args()
-    config = read_config(args.config_path)
-
-    # Handle output_path
-    if get_input("output_path"):
-        config["output_path"] = args.output_path
+    # Read config and overwrite config with inputs to console
+    config = read_config(args["config_path"])
+    config.update({key: value for key, value in args.items() if value})
 
     # Handle Input FIles
     print("Retrieve files to process")
-    fileDir = get_input("fileDir")
+    fileDir = config["fileDir"]
     if os.path.isfile(fileDir):
         odf_files_list = [fileDir]
     elif os.path.isdir(fileDir):
-        odf_files_list = glob.glob(
-            fileDir + "/**/*.ODF", recursive=get_input("recursive")
-        )
+        odf_files_list = glob.glob(fileDir + "/**/*.ODF", recursive=config["recursive"])
     else:
-        odf_files_list = glob.glob(fileDir, recursive=get_input("recursive"))
+        odf_files_list = glob.glob(fileDir, recursive=config["recursive"])
 
     # Filter results with regex
     if config["fileNameRegex"]:
@@ -172,7 +209,7 @@ if __name__ == "__main__":
     # Review keep files that needs an update only
     output_path = config["output_path"]
 
-    if get_input("overwrite"):
+    if config["overwrite"]:
         # overwrite all files
         logger.info(f"Overwrite all {len(odf_files_list)}")
     elif output_path == None or os.path.isdir(output_path):
@@ -208,13 +245,9 @@ if __name__ == "__main__":
     polygons = read_geojson_file_list(config["geojsonFileList"])
 
     # Generate inputs
-    if get_input("program_logs_path"):
-        inputs = input_from_program_log(
-            get_input("program_logs_path"),
-            odf_files_list,
-            polygons,
-            output_path,
-            config,
+    if config["program_logs_path"]:
+        inputs = input_from_program_logs(
+            config["program_logs_path"], odf_files_list, polygons, output_path, config,
         )
     else:
         inputs = [(file, polygons, output_path, config) for file in odf_files_list]
@@ -227,8 +260,10 @@ if __name__ == "__main__":
         "unit": "file",
     }
     if len(inputs) > 100:
-        print(f"Run ODF conversion in multiprocessing on {args.n_workers} workers")
-        with Pool(args.n_workers) as p:
+        logger.info(
+            f"Run ODF conversion in multiprocessing with {config['n_workers']} workers"
+        )
+        with Pool(config["n_workers"]) as p:
             r = list(tqdm(p.imap(convert_odf_file, inputs), **tqdm_dict))
     elif 0 < len(inputs) < 100:
         print("Run ODF Conversion")
