@@ -159,7 +159,9 @@ def generate_instruments_variables_from_xml(ds, seabird_header):
     # Consider only channels with sensor mounted
     sensors = [sensor for sensor in sensors if len(sensor) > 1]
     sensors_comments = [
-        (con, name) for con, name in sensors_comments if not name.startswith("Free")
+        (con, name)
+        for con, name in sensors_comments
+        if not name.startswith(("Free", "Unavailable"))
     ]
 
     # Make sure that the sensor count match the sensor_comments count
@@ -169,15 +171,10 @@ def generate_instruments_variables_from_xml(ds, seabird_header):
 
     # Split each sensor calibrations to a dictionary
     sensors_map = {}
-    for sensor in sensors:
-        if len(sensor.keys()) < 2:
-            # No sensor connected
-            continue
-
+    for sensor, sensor_comment in zip(sensors, sensors_comments):
         sensor_key = list(sensor.keys())[1].strip()
         attrs = sensor[sensor_key]
-        id = int(sensor["@Channel"])
-        channel, description = sensors_comments[id - 1]
+        channel, description = sensor_comment
 
         # Define senor variable name
         if "UserPolynomial" in sensor_key and attrs.get("SensorName"):
