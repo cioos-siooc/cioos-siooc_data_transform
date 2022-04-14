@@ -46,7 +46,7 @@ class GF3Code:
         if index:
             self.index = int(index[0])
         else:
-            self.index = None
+            self.index = 1
         self.name = self.code + ("_%02g" % int(self.index) if self.index else "")
 
 
