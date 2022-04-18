@@ -8,6 +8,8 @@ import argparse
 from multiprocessing import Pool
 from tqdm import tqdm
 
+tqdm.pandas()
+
 import re
 
 import logging
@@ -15,21 +17,24 @@ import logging
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_CONFIG_PATH = os.path.join(MODULE_PATH, "config.json")
 
+if __name__=='__main__':
 # Log to log file
 logging.captureWarnings(True)
 
 # Log
-logger = logging.getLogger()
-logger.setLevel("INFO")
+    main_logger = logging.getLogger("main")
+    logger = logging.LoggerAdapter(main_logger, {"odf_file": None})
+    logger.propagate = False
+    main_logger.setLevel("INFO")
 
-# Log issues with covnersion
+    # Log issues with conversion
 log_file = logging.FileHandler("odf_transform.log", encoding="UTF-8")
 formatter = logging.Formatter(
     "%(odf_file)s - %(asctime)s [%(levelname)s] %(processName)s %(name)s: %(message)s"
 )
 log_file.setFormatter(formatter)
 log_file.setLevel(logging.WARNING)
-logger.addHandler(log_file)
+    main_logger.addHandler(log_file)
 
 # Set logger to log variable names
 var_log_file = logging.FileHandler("odf_transform_variables.log", encoding="UTF-8")
@@ -37,13 +42,13 @@ formatter = logging.Formatter("%(odf_file)s - %(asctime)s: %(message)s")
 var_log_file.setFormatter(formatter)
 var_log_file.setLevel(logging.INFO)
 var_log_file.addFilter(logging.Filter(name="odf_transform.process"))
-logger.addHandler(var_log_file)
+    main_logger.addHandler(var_log_file)
 
 # Set up logging to console (errors only)
 console = logging.StreamHandler()
 console.setLevel(logging.ERROR)
 console.setFormatter(formatter)
-logger.addHandler(console)
+    main_logger.addHandler(console)
 
 
 def input_from_program_logs(program_log_path, files, polygons, output_path, config):
@@ -177,7 +182,14 @@ if __name__ == "__main__":
         help="Overwrite all NetCDF files.",
         required=False,
     )
+    parser.add_argument(
+        "--verbose", action="store_true", help="Output INFO to console", required=False,
+    )
     args = parser.parse_args().__dict__
+
+    # Output info to console if requested
+    if args['verbose']:
+        console.setLevel(logging.INFO)
 
     # Read config and overwrite config with inputs to console
     config = read_config(args["config_path"])
@@ -204,7 +216,7 @@ if __name__ == "__main__":
         odf_files_list = [
             file for file in odf_files_list if re.match(config["pathRegex"], file)
         ]
-    print(f"{len(odf_files_list)} ODF files are available")
+    logger.info(f"{len(odf_files_list)} ODF files are available")
 
     # Review keep files that needs an update only
     output_path = config["output_path"]
@@ -229,7 +241,7 @@ if __name__ == "__main__":
                 new_list.append(file)
             elif os.path.getmtime(ncfile) < os.path.getmtime(file):
                 overwrite_list.append(file)
-        print(
+        logger.info(
             f"Create {len(new_list)}/{len(odf_files_list)} files - "
             + f"Overwrite {len(overwrite_list)}/{len(odf_files_list)} files"
         )
@@ -238,7 +250,7 @@ if __name__ == "__main__":
 
     # No file to convert
     if odf_files_list == []:
-        print("No file to convert")
+        logger.info("No file to convert")
         quit()
 
     # Get Polygon regions
