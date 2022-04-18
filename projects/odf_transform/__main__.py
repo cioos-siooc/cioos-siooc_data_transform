@@ -17,7 +17,7 @@ import logging
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_CONFIG_PATH = os.path.join(MODULE_PATH, "config.json")
 
-if __name__=='__main__':
+if __name__ == "__main__":
     # Log to log file
     logging.captureWarnings(True)
 
@@ -195,7 +195,7 @@ if __name__ == "__main__":
     args = parser.parse_args().__dict__
 
     # Output info to console if requested
-    if args['verbose']:
+    if args["verbose"]:
         console.setLevel(logging.INFO)
 
     # Read config and overwrite config with inputs to console
