@@ -18,36 +18,36 @@ MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_CONFIG_PATH = os.path.join(MODULE_PATH, "config.json")
 
 if __name__=='__main__':
-# Log to log file
-logging.captureWarnings(True)
+    # Log to log file
+    logging.captureWarnings(True)
 
-# Log
+    # Log
     main_logger = logging.getLogger("main")
     logger = logging.LoggerAdapter(main_logger, {"odf_file": None})
     logger.propagate = False
     main_logger.setLevel("INFO")
 
     # Log issues with conversion
-log_file = logging.FileHandler("odf_transform.log", encoding="UTF-8")
-formatter = logging.Formatter(
-    "%(odf_file)s - %(asctime)s [%(levelname)s] %(processName)s %(name)s: %(message)s"
-)
-log_file.setFormatter(formatter)
-log_file.setLevel(logging.WARNING)
+    log_file = logging.FileHandler("odf_transform.log", encoding="UTF-8")
+    formatter = logging.Formatter(
+        "%(odf_file)s - %(asctime)s [%(levelname)s] %(processName)s %(name)s: %(message)s"
+    )
+    log_file.setFormatter(formatter)
+    log_file.setLevel(logging.WARNING)
     main_logger.addHandler(log_file)
 
-# Set logger to log variable names
-var_log_file = logging.FileHandler("odf_transform_variables.log", encoding="UTF-8")
-formatter = logging.Formatter("%(odf_file)s - %(asctime)s: %(message)s")
-var_log_file.setFormatter(formatter)
-var_log_file.setLevel(logging.INFO)
-var_log_file.addFilter(logging.Filter(name="odf_transform.process"))
+    # Set logger to log variable names
+    var_log_file = logging.FileHandler("odf_transform_variables.log", encoding="UTF-8")
+    formatter = logging.Formatter("%(odf_file)s - %(asctime)s: %(message)s")
+    var_log_file.setFormatter(formatter)
+    var_log_file.setLevel(logging.INFO)
+    var_log_file.addFilter(logging.Filter(name="odf_transform.process"))
     main_logger.addHandler(var_log_file)
 
-# Set up logging to console (errors only)
-console = logging.StreamHandler()
-console.setLevel(logging.ERROR)
-console.setFormatter(formatter)
+    # Set up logging to console (errors only)
+    console = logging.StreamHandler()
+    console.setLevel(logging.ERROR)
+    console.setFormatter(formatter)
     main_logger.addHandler(console)
 
 
@@ -70,13 +70,23 @@ def input_from_program_logs(program_log_path, files, polygons, output_path, conf
     Returns:
         list: list of inputs to run the conversion for each files and and their specific mission attributes.
     """
+
+    def generate_mission_config(mission_attrs):
+
+        output = config.copy()
+        output["global_attributes"] = {
+            **output["global_attributes"],
+            **mission_attrs.dropna().drop("mission_file_list").to_dict(),
+        }
+        return output
+
     # Load the different logs and map the list of files available to the programs
     program_logs = [
         item
         for item in os.listdir(program_log_path)
         if os.path.isfile(os.path.join(program_log_path, item))
     ]
-    inputs = []
+
     df_logs = pd.DataFrame()
     logger.info(f"Load Program Logs: {program_logs}")
     for log in program_logs:
@@ -91,7 +101,7 @@ def input_from_program_logs(program_log_path, files, polygons, output_path, conf
             df_log["program"] = log.rsplit(".", 1)[0]
 
         # Append to previous logs
-        df_logs = df_logs.append(df_log)
+        df_logs = df_logs.append(df_log, ignore_index=True)
 
     # Review duplicated mission input in log
     if df_logs["mission"].duplicated().any():
@@ -106,29 +116,26 @@ def input_from_program_logs(program_log_path, files, polygons, output_path, conf
         return None
     logger.info(f"{len(files)} files are associated to a mission.")
 
-    # Add program name based on filename
+    logger.info("Group files available for conversion by missions")
+    df_logs["mission_file_list"] = df_logs.progress_apply(
+        lambda x: [file for file in files if re.search(x["mission"], file)] or None,
+        axis=1,
+    )
+    # Drop Mission with no files available
+    df_logs = df_logs.dropna(subset=["mission_file_list"])
+
+    logger.info(
+        f"Generate Mission Specific Configuration for {len(files)} files associated with {len(df_logs)} missions"
+    )
+    df_logs["mission_config"] = df_logs.progress_apply(generate_mission_config, axis=1)
+
+    # Generate input for each files
+    inputs = []
     logger.info(f"Retrieve mission matching files")
-    for mission, df_mission in tqdm(
-        df_logs.groupby("mission"),
-        unit="mission",
-        total=df_logs.shape[0],
-        desc="Generate input per mission",
-    ):
-        # Retrieve the files associated with this program
-        mission_files = [
-            file for file in files if re.search(mission, os.path.basename(file))
-        ]
-        logger.info(f"{len(mission_files)} were matched to the mission {mission}")
-        if len(mission_files) == 0:
-            continue
-        # Make a copy of the configuration
-        mission_config = config.copy()
-        mission_config["global_attributes"].update(
-            df_mission.iloc[0].dropna().to_dict()
-        )
+    for mission, df_mission in df_logs.iterrows():
         inputs += [
-            (mission_file, polygons, output_path, mission_config)
-            for mission_file in mission_files
+            (mission_file, polygons, output_path, df_mission["mission_config"])
+            for mission_file in df_mission["mission_file_list"]
         ]
 
     return inputs
