@@ -243,7 +243,7 @@ def global_attributes_from_header(ds, odf_header):
             season = "Spring"
         else:
             season = "Fall"
-        ds.attrs["cruise_name"] += f"{season} {ds.attrs['event_start_time'].year}"
+        ds.attrs["cruise_name"] = f"{season} {ds.attrs['event_start_time'].year}"
 
     # Missing terms potentially, mooring_number, station,
     return ds
