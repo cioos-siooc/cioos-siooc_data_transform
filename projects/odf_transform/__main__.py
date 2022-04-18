@@ -22,10 +22,8 @@ if __name__ == "__main__":
     logging.captureWarnings(True)
 
     # Log
-    main_logger = logging.getLogger("main")
-    logger = logging.LoggerAdapter(main_logger, {"odf_file": None})
-    logger.propagate = False
-    main_logger.setLevel("INFO")
+    logger = logging.getLogger()
+    logger.setLevel("INFO")
 
     # Log issues with conversion
     log_file = logging.FileHandler("odf_transform.log", encoding="UTF-8")
@@ -34,7 +32,7 @@ if __name__ == "__main__":
     )
     log_file.setFormatter(formatter)
     log_file.setLevel(logging.WARNING)
-    main_logger.addHandler(log_file)
+    logger.addHandler(log_file)
 
     # Set logger to log variable names
     var_log_file = logging.FileHandler("odf_transform_variables.log", encoding="UTF-8")
@@ -42,13 +40,15 @@ if __name__ == "__main__":
     var_log_file.setFormatter(formatter)
     var_log_file.setLevel(logging.INFO)
     var_log_file.addFilter(logging.Filter(name="odf_transform.process"))
-    main_logger.addHandler(var_log_file)
+    logger.addHandler(var_log_file)
 
     # Set up logging to console (errors only)
     console = logging.StreamHandler()
     console.setLevel(logging.ERROR)
     console.setFormatter(formatter)
-    main_logger.addHandler(console)
+    logger.addHandler(console)
+
+    logger = logging.LoggerAdapter(logger, {"odf_file": None})
 
 
 def input_from_program_logs(program_log_path, files, polygons, output_path, config):
@@ -76,7 +76,7 @@ def input_from_program_logs(program_log_path, files, polygons, output_path, conf
         output = config.copy()
         output["global_attributes"] = {
             **output["global_attributes"],
-            **mission_attrs.dropna().drop("mission_file_list").to_dict(),
+            **mission_attrs.dropna().drop(["mission", "mission_file_list"]).to_dict(),
         }
         return output
 
