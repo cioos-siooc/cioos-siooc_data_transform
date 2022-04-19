@@ -131,7 +131,7 @@ def write_ctd_ncfile(
     ds = standardize_dataset(ds)
     dropped_attrs = initial_attrs - ds.attrs.keys()
     if dropped_attrs:
-        logging.info(f"Drop empty attributes: {dropped_attrs}")
+        logger.info(f"Drop empty attributes: {dropped_attrs}")
 
     # Handle dimensions
     if ds.attrs["cdm_data_type"] == "Profile" and "index" in ds and "depth" in ds:
