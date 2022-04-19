@@ -34,13 +34,6 @@ institute_attributes = [
     "sdn_institution_urn",
 ]
 platform_attributes = ["platform_name", "sdn_platform_urn", "wmo_platform_code"]
-bcd_stations = {
-    "666": "Halifax Station 2",
-    "667": "Prince5",
-    "668": "BBMP",
-    "669": "Prince5",
-}
-
 
 def titleize(text):
     do_not_change = ["AZMP", "(AZMP)", "ADCP", "(ADCP)", "CTD", "a", "the"]
@@ -73,10 +66,10 @@ def global_attributes_from_header(ds, odf_header):
     """
 
     def _reviewLat(value):
-        return None if value == -99.9 else value
+        return value if value != -99.9 else None
 
     def _reviewLon(value):
-        return None if value == -999.9 else value
+        return value if value != -999.9 else None
 
     odf_original_header = odf_header.copy()
     odf_original_header.pop("variable_attributes")
@@ -225,25 +218,14 @@ def global_attributes_from_header(ds, odf_header):
     station = re.search(
         "\*\* Station_Name: (.*)',\n", "".join(odf_header["original_header"])
     )
-
     if station:
         ds.attrs["station"] = station[1]
-    if ds.attrs["cruise_number"].startswith("BCD"):
-        station_number = ds.attrs["cruise_number"][-3:]
-        if station_number in bcd_stations.keys():
-            ds.attrs["station"] = bcd_stations[station_number]
-        else:
-            logger.warning(f"Unknown BCD station {station_number}")
 
-    if (
-        "program" in ds.attrs
-        and ds.attrs["program"] == "Atlantic Zone Monitoring Program"
-    ):
-        if 1 <= ds.attrs["event_start_time"].month <= 7:
-            season = "Spring"
-        else:
-            season = "Fall"
-        ds.attrs["cruise_name"] = f"{season} {ds.attrs['event_start_time'].year}"
+    # Overwrite cruise_name to format "{program} {season} {year}" format
+    season = "Spring" if 1 <= ds.attrs["event_start_time"].month <= 7 else "Fall"
+    ds.attrs[
+        "cruise_name"
+    ] = f"{ds.attrs['program']} {season} {ds.attrs['event_start_time'].year}"
 
     # Missing terms potentially, mooring_number, station,
     return ds
