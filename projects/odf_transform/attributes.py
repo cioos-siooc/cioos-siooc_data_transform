@@ -16,6 +16,8 @@ logger = logging.getLogger(__name__)
 
 module_path = os.path.dirname(__file__)
 profile_direction_map = {"DN": "downward", "FLAT": "stable", "UP": "upward"}
+with open(os.path.join(module_path, "attribute_corrections.json")) as f:
+    attribute_corrections = json.load(f)
 
 # This could be potentially be replaced by using the NERC Server instead
 reference_vessel = pd.read_csv(
@@ -34,6 +36,7 @@ institute_attributes = [
     "sdn_institution_urn",
 ]
 platform_attributes = ["platform_name", "sdn_platform_urn", "wmo_platform_code"]
+
 
 def titleize(text):
     do_not_change = ["AZMP", "(AZMP)", "ADCP", "(ADCP)", "CTD", "a", "the"]
@@ -189,8 +192,8 @@ def global_attributes_from_header(ds, odf_header):
         ds.attrs["cdm_data_type"] = "Profile"
         ds.attrs["cdm_profile_variables"] = ""
         if data_type == "CTD":
-            ds.attrs["profile_direction"] = profile_direction_map[
-                odf_header["EVENT_HEADER"]["EVENT_QUALIFIER2"]
+            ds.attrs["profile_direction"] = odf_header["EVENT_HEADER"][
+                "EVENT_QUALIFIER2"
             ]
         ds.attrs["title"] = (
             f"{type_profile[data_type]} profile data collected "
@@ -214,20 +217,44 @@ def global_attributes_from_header(ds, odf_header):
             f"ODF_transform is not yet incompatible with ODF DATA_TYPE: {odf_header['EVENT_HEADER']['DATA_TYPE']}"
         )
 
+    ## FIX ODF ATTRIBUTES
+    # Chief scientists
+    ds.attrs["chief_scientist"] = re.sub("\s+(\~|\/)", ",", ds.attrs["chief_scientist"])
+
+    # event_number should be number otherwise get rid of it
+    if type(ds.attrs["event_number"]) is not int:
+        ds.attrs.pop("event_number")
+
     # Search anywhere within ODF Header
     station = re.search(
-        "\*\* Station_Name: (.*)',\n", "".join(odf_header["original_header"])
+        "station[\w\s]*:\s*(\w*)", "".join(odf_header["original_header"]), re.IGNORECASE
     )
     if station:
         ds.attrs["station"] = station[1]
 
+        # Standardize stations with convention AA02, AA2 and AA_02 to AA02
+        if re.match("[A-Za-z]+\_*\d+", ds.attrs["station"]):
+            station_items = re.search(
+                "([A-Za-z]+)_*(\d+)", ds.attrs["station"]
+            ).groups()
+            ds.attrs[
+                "station"
+            ] = f"{station_items[0].upper()}{int(station_items[1]):02g}"
+
     # Overwrite cruise_name to format "{program} {season} {year}" format
-    season = "Spring" if 1 <= ds.attrs["event_start_time"].month <= 7 else "Fall"
+    if ds.attrs["program"] == "Atlantic Zone Monitoring Program":
+        season = "Spring" if 1 <= ds.attrs["event_start_time"].month <= 7 else "Fall"
+    else:
+        season = ""
     ds.attrs[
         "cruise_name"
     ] = f"{ds.attrs['program']} {season} {ds.attrs['event_start_time'].year}"
 
-    # Missing terms potentially, mooring_number, station,
+    # Apply attributes corrections from attribute_correction json
+    for att, items in attribute_corrections.items():
+        if att in ds.attrs:
+            for key, value in items.items():
+                ds.attrs[att] = ds.attrs[att].replace(key, value)
     return ds
 
 

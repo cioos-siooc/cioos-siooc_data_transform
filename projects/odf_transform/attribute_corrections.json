@@ -1,0 +1,12 @@
+{
+    "chief_scientist": {
+        "Don Clark": "Donald Clark",
+        "Don Gordon": "Donald Gordon",
+        "Ed Horne": "Edward Horne"
+    },
+    "profile_direction": {
+        "DN": "downward",
+        "FLAT": "stable",
+        "UP": "upward"
+    }
+}
