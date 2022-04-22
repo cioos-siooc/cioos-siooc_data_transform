@@ -230,16 +230,19 @@ def global_attributes_from_header(ds, odf_header):
         "station[\w\s]*:\s*(\w*)", "".join(odf_header["original_header"]), re.IGNORECASE
     )
     if station:
-        ds.attrs["station"] = station[1]
+        station = station[1].strip()
 
         # Standardize stations with convention AA02, AA2 and AA_02 to AA02
-        if re.match("[A-Za-z]+\_*\d+", ds.attrs["station"]):
-            station_items = re.search(
-                "([A-Za-z]+)_*(\d+)", ds.attrs["station"]
-            ).groups()
+        if re.match("[A-Za-z]+\_*\d+", station):
+            station_items = re.search("([A-Za-z]+)_*(\d+)", station).groups()
             ds.attrs[
                 "station"
             ] = f"{station_items[0].upper()}{int(station_items[1]):02g}"
+        # Station is just number convert to string with 001
+        elif re.match("\d+", station):
+            ds.attrs["station"] = f"{int(station):03g}"
+        else:
+            ds.attrs["station"] = station
 
     # Overwrite cruise_name to format "{program} {season} {year}" format
     if ds.attrs["program"] == "Atlantic Zone Monitoring Program":
