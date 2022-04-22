@@ -239,7 +239,7 @@ def global_attributes_from_header(ds, odf_header):
                 "station"
             ] = f"{station_items[0].upper()}{int(station_items[1]):02g}"
         # Station is just number convert to string with 001
-        elif re.match("[0-9]+", station):
+        elif re.match("^[0-9]+$", station):
             ds.attrs["station"] = f"{int(station):03g}"
         else:
             ds.attrs["station"] = station
