@@ -1,6 +1,7 @@
 import glob
 import json
 import os
+import re
 
 import numpy as np
 
@@ -144,10 +145,21 @@ def write_ctd_ncfile(
 
     if output_path == None:
         output_path = odf_path + ".nc"
-    elif os.path.isdir(output_path):
-        output_path = os.path.join(
-            output_path, odf_file + config.get("addFileNameSuffix", "") + ".nc"
-        )
+
+    # If outputpath is formatted like an fstring run it
+    if re.search("\{\w*\}", output_path):
+        output_path = eval(f'f"{output_path}"')
+
+    # Add file suffix if present within the config
+    if config.get("addFileNameSuffix"):
+        output_path = re.sub("\.nc$", config["addFileNameSuffix"] + ".nc", output_path)
+
+    # Review if output path folders exists if not create them
+    dirname = os.path.dirname(output_path)
+    if not os.path.isdir(dirname):
+        logger.info(f'Generate output directory: {output_path}')
+        os.makedirs(dirname)
+
     ds.to_netcdf(output_path)
 
 
