@@ -229,7 +229,7 @@ def global_attributes_from_header(ds, odf_header):
     station = re.search(
         "station[\w\s]*:\s*(\w*)", "".join(odf_header["original_header"]), re.IGNORECASE
     )
-    if station:
+    if station and not ds.attrs["station"]:
         station = station[1].strip()
 
         # Standardize stations with convention AA02, AA2 and AA_02 to AA02
