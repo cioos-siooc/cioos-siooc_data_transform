@@ -259,7 +259,7 @@ def global_attributes_from_header(ds, odf_header):
             ]
         # Add program {season} to as project for some specific programs
         if ds.attrs["program"] in ("Atlantic Zone Monitoring Program","Groundfish"):
-            ds.attrs["project"] = cruise_name
+            ds.attrs["project"] = " ".join(cruise_name)
 
         cruise_name += [str(ds.attrs["event_start_time"].year)]
         ds.attrs["cruise_name"] = " ".join(cruise_name)
