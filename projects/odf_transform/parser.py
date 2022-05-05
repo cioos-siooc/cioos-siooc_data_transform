@@ -137,7 +137,7 @@ def read(filename, encoding_format="Windows-1252"):
                     elif re.match("[-+]{0,1}\d+$", value):
                         value = int(value)
                     elif re.match(
-                        "\d{1,2}-\w\w\w\-\d\d\d\d\s*\d\d:\d\d:\d\d\.\d*", value
+                        "\d{1,2}-\w\w\w\-\d\d\d\d\s*\d\d:\d\d:\d\d\.*\d*", value
                     ):
                         try:
                             value = convert_odf_time(value)
