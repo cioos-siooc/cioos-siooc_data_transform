@@ -4,7 +4,7 @@
     "recursive": true,
     "pathRegex": null,
     "program_logs_path": null,
-    "output_path": "./output/{ds.attrs.get('program','other')}/{ds.attrs.get('cruise_name','unknown_cruise')}/{odf_file}.nc",
+    "output_path": "./output/{'/'.join([item for item in [ds.attrs.get('program','Others'),ds.attrs.get('project'),ds.attrs.get('cruise_name')] if item])}/{odf_file}.nc",
     "addFileNameSuffix": "_dev",
     "overwrite": false,
     "geojsonFileList": [
