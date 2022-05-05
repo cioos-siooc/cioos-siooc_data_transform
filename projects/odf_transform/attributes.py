@@ -221,9 +221,9 @@ def global_attributes_from_header(ds, odf_header):
     # Chief scientists
     ds.attrs["chief_scientist"] = re.sub("\s+(\~|\/)", ",", ds.attrs["chief_scientist"])
 
-    # event_number should be number otherwise get rid of it
-    if type(ds.attrs["event_number"]) is not int:
-        ds.attrs.pop("event_number")
+    # # event_number should be number otherwise get rid of it
+    # if type(ds.attrs["event_number"]) is not int:
+    #     ds.attrs.pop("event_number")
 
     # Search anywhere within ODF Header
     station = re.search(
@@ -259,7 +259,7 @@ def global_attributes_from_header(ds, odf_header):
             ]
         # Add program {season} to as project for some specific programs
         if ds.attrs["program"] in ("Atlantic Zone Monitoring Program","Groundfish"):
-            ds.attrs["project"] = cruise_name
+            ds.attrs["project"] = " ".join(cruise_name)
 
         cruise_name += [str(ds.attrs["event_start_time"].year)]
         ds.attrs["cruise_name"] = " ".join(cruise_name)
