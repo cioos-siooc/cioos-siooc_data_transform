@@ -268,8 +268,11 @@ def global_attributes_from_header(ds, odf_header):
 
     # Review attributes format
     for attr in ['event_start_time','event_end_time']:
-        if ds.attrs.get(attr) and  type(ds.attrs[attr]) is not pd.Timestamp:
+        if ds.attrs.get(attr) not in  (None, pd.NaT) and  type(ds.attrs[attr]) is not pd.Timestamp:
             logging.warning(f"{attr} failed to be converted to timestamp: {ds.attrs[attr]}")
+
+    # Drop empty attributes
+    ds.attrs = {key:value for key,value in ds.attrs.items() if value not in (None,pd.NaT)}
     return ds
 
 
