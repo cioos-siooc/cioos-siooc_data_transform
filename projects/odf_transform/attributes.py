@@ -240,18 +240,21 @@ def global_attributes_from_header(ds, odf_header):
             ] = f"{station_items[0].upper()}{int(station_items[1]):02g}"
         # Station is just number convert to string with 001
         elif re.match("^[0-9]+$", station):
-            ds.attrs["station"] = f"{int(station):03g}"
+            # Ignore station that are actually the event_number
+            if int(station)!=ds.atts.get('event_number'):
+                ds.attrs["station"] = f"{int(station):03g}"
         else:
             ds.attrs["station"] = station
 
-    # Overwrite cruise_name to format "{program} {season} {year}" format
-    if ds.attrs["program"] == "Atlantic Zone Monitoring Program":
-        season = "Spring" if 1 <= ds.attrs["event_start_time"].month <= 7 else "Fall"
-    else:
-        season = ""
-    ds.attrs[
-        "cruise_name"
-    ] = f"{ds.attrs['program']} {season} {ds.attrs['event_start_time'].year}"
+    # Overwrite cruise_name to format "{program} {season} {year}" format if program exist
+    if "program" in ds.attrs:
+        if ds.attrs["program"] == "Atlantic Zone Monitoring Program":
+            season = "Spring" if 1 <= ds.attrs["event_start_time"].month <= 7 else "Fall"
+        else:
+            season = ""
+        ds.attrs[
+            "cruise_name"
+        ] = f"{ds.attrs['program']} {season} {ds.attrs['event_start_time'].year}"
 
     # Apply attributes corrections from attribute_correction json
     for att, items in attribute_corrections.items():
