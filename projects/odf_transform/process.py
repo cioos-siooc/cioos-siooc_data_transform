@@ -11,7 +11,7 @@ from odf_transform.__main__ import __version__
 
 from cioos_data_transform.utils.xarray_methods import standardize_dataset
 import cioos_data_transform.parse.seabird as seabird
-from cioos_data_transform.utils.utils import get_geo_code, read_geojson
+from cioos_data_transform.utils.utils import get_geo_code, read_geojson, get_nearest_station
 import pandas as pd
 
 import logging
@@ -27,7 +27,7 @@ odf_parser.logger = logging.LoggerAdapter(odf_parser.logger, {"odf_file": None})
 
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_CONFIG_PATH = os.path.join(MODULE_PATH, "config.json")
-
+reference_stations = pd.read_csv(os.path.join(MODULE_PATH,"reference_stations.csv"))
 
 def read_config(config_file):
     """Function to load configuration json file and vocabulary file."""
@@ -103,10 +103,14 @@ def write_ctd_ncfile(
     # Generate Variables from attributes
     ds = attributes.generate_variables_from_header(ds, metadata)
 
-    # geographic_area
+    # geographic_area and station
     ds["geographic_area"] = get_geo_code(
         [ds["longitude"].mean(), ds["latitude"].mean()], polygons
     )
+    nearest_station = get_nearest_station(reference_stations[['station','latitude','longitude']].to_records(index=False),(ds['latitude'],ds['longitude']),1)
+    if nearest_station:
+        ds.attrs["station"] = nearest_station
+        ds["station"] = nearest_station
 
     # Add Vocabulary attributes
     ds = odf_parser.get_vocabulary_attributes(

@@ -1,7 +1,7 @@
 from shapely.geometry import Polygon, Point
 import json
 import os
-
+import geopy.distance
 
 # general utility functions common to multiple classes
 def fix_path(path):
@@ -117,3 +117,25 @@ def compare_file_list(sub_set, global_set, opt="not-in"):
     elif opt == "in":
         list_ = [a in ss for a in gs]
     return [i for i in compress(global_set, list_)]
+
+def get_nearest_station(stations,point,max_distance=None):
+    """
+    Compute the distance of point to a list of stations and return the nearest station.
+    Optionally within a maximum distance in kilometer. 
+    inputs : 
+        - stations: List of tuple with ((station_name,latitude, longitude),...)
+        - point: Tuple of the reference location (latitude, longitude)
+        - max_distance (optional): maximum distance to match a station otherwise return None
+    output :
+        - Nearest station
+        - if max_distance==None: Distance from reference point to nearest station in km
+    """
+    distance =  tuple((station, geopy.distance.geodesic((lat,lon),point).km) for station,lat,lon in stations)
+    nearest_station = min(distance, key= lambda x: x[1])
+    if max_distance==None:
+        return nearest_station 
+    elif nearest_station[1]<max_distance:
+        return nearest_station[0]
+    else:
+        return None
+
