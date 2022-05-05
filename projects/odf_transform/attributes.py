@@ -250,6 +250,8 @@ def global_attributes_from_header(ds, odf_header):
     if "program" in ds.attrs:
         if ds.attrs["program"] == "Atlantic Zone Monitoring Program":
             season = "Spring" if 1 <= ds.attrs["event_start_time"].month <= 7 else "Fall"
+        elif "Groundfish" in ds.attrs['program']:
+            season = "Summer" if 5 <= ds.attrs["event_start_time"].month <= 9 else "Winter"
         else:
             season = ""
         ds.attrs[
