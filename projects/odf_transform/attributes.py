@@ -229,7 +229,7 @@ def global_attributes_from_header(ds, odf_header):
     station = re.search(
         "station[\w\s]*:\s*(\w*)", "".join(odf_header["original_header"]), re.IGNORECASE
     )
-    if station:
+    if station and not ds.attrs["station"]:
         station = station[1].strip()
 
         # Standardize stations with convention AA02, AA2 and AA_02 to AA02
@@ -246,17 +246,14 @@ def global_attributes_from_header(ds, odf_header):
         else:
             ds.attrs["station"] = station
 
-    # Overwrite cruise_name to format "{program} {season} {year}" format if program exist
-    if "program" in ds.attrs:
-        if ds.attrs["program"] == "Atlantic Zone Monitoring Program":
-            season = "Spring" if 1 <= ds.attrs["event_start_time"].month <= 7 else "Fall"
-        elif "Groundfish" in ds.attrs['program']:
-            season = "Summer" if 5 <= ds.attrs["event_start_time"].month <= 9 else "Winter"
-        else:
-            season = ""
-        ds.attrs[
-            "cruise_name"
-        ] = f"{ds.attrs['program']} {season} {ds.attrs['event_start_time'].year}"
+    # Overwrite cruise_name to format "{program} {season [optional, AZMP]} {year}" format
+    cruise_name = [ds.attrs["program"]]
+    if ds.attrs["program"] == "Atlantic Zone Monitoring Program":
+        cruise_name += [
+            "Spring" if 1 <= ds.attrs["event_start_time"].month <= 7 else "Fall"
+        ]
+    cruise_name += [str(ds.attrs["event_start_time"].year)]
+    ds.attrs["cruise_name"] = " ".join(cruise_name)
 
     # Apply attributes corrections from attribute_correction json
     for att, items in attribute_corrections.items():
