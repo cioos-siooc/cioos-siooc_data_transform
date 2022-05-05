@@ -265,6 +265,11 @@ def global_attributes_from_header(ds, odf_header):
         if att in ds.attrs:
             for key, value in items.items():
                 ds.attrs[att] = ds.attrs[att].replace(key, value)
+
+    # Review attributes format
+    for attr in ['event_start_time','event_end_time']:
+        if ds.attrs.get(attr) and  type(ds.attrs[attr]) is not pd.Timestamp:
+            logging.warning(f"{attr} failed to be converted to timestamp: {ds.attrs[attr]}")
     return ds
 
 
