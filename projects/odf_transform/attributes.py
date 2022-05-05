@@ -241,7 +241,7 @@ def global_attributes_from_header(ds, odf_header):
         # Station is just number convert to string with 001
         elif re.match("^[0-9]+$", station):
             # Ignore station that are actually the event_number
-            if int(station)!=ds.atts.get('event_number'):
+            if int(station)!=ds.attrs.get('event_number'):
                 ds.attrs["station"] = f"{int(station):03g}"
         else:
             ds.attrs["station"] = station
