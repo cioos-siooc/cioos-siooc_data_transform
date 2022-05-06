@@ -258,7 +258,7 @@ def global_attributes_from_header(ds, odf_header):
                 "Summer" if 5 <= ds.attrs["event_start_time"].month <= 9 else "Winter"
             ]
         # Add program {season} to as project for some specific programs
-        if ds.attrs["program"] in ("Atlantic Zone Monitoring Program","Groundfish"):
+        if ds.attrs["program"] in ("Atlantic Zone Monitoring Program","Groundfish") and "project" not in ds.attrs:
             ds.attrs["project"] = " ".join(cruise_name)
 
         cruise_name += [str(ds.attrs["event_start_time"].year)]
