@@ -48,10 +48,8 @@ def convert_variables_to_erddap_format(ds):
                     timezone = ""
 
                 # Format encoding output
-                ds[var].encoding = {
-                    "units": "seconds since 1970-01-01 00:00:00" + timezone,
-                    "dtype": "float64",
-                }
+                ds[var].encoding = {"units": f"seconds since 1970-01-01 00:00:00{timezone}", "dtype": "float64"}
+
 
             else:
                 # Should be a string

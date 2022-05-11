@@ -208,7 +208,8 @@ if __name__ == "__main__":
     if os.path.isfile(fileDir):
         odf_files_list = [fileDir]
     elif os.path.isdir(fileDir):
-        odf_files_list = glob.glob(fileDir + "/**/*.ODF", recursive=config["recursive"])
+        odf_files_list = glob.glob(f"{fileDir}/**/*.ODF", recursive=config["recursive"])
+
     else:
         odf_files_list = glob.glob(fileDir, recursive=config["recursive"])
 
@@ -231,19 +232,14 @@ if __name__ == "__main__":
     if config["overwrite"]:
         # overwrite all files
         logger.info(f"Overwrite all {len(odf_files_list)}")
-    elif output_path == None or os.path.isdir(output_path):
+    elif output_path is None or os.path.isdir(output_path):
         # Consider file if not netcdf equivalent exist or netcdf is older than odf
         overwrite_list = []
         new_list = []
         for file in odf_files_list:
             filename = os.path.basename(file)
-            ncfile = (
-                file + ".nc"
-                if output_path == None
-                else os.path.join(
-                    output_path, filename + config["addFileNameSuffix"] + ".nc"
-                )
-            )
+            ncfile = f"{file}.nc" if output_path is None else os.path.join(output_path, filename + config["addFileNameSuffix"] + ".nc")
+
             if not os.path.exists(ncfile):
                 new_list.append(file)
             elif os.path.getmtime(ncfile) < os.path.getmtime(file):

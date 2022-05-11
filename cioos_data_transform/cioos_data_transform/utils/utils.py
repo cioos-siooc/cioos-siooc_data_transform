@@ -132,8 +132,8 @@ def get_nearest_station(stations,point,max_distance=None):
     """
     distance =  tuple((station, geopy.distance.geodesic((lat,lon),point).km) for station,lat,lon in stations)
     nearest_station = min(distance, key= lambda x: x[1])
-    if max_distance==None:
-        return nearest_station 
+    if max_distance is None:
+        return nearest_station
     elif nearest_station[1]<max_distance:
         return nearest_station[0]
     else:

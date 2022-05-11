@@ -72,14 +72,12 @@ def get_seabird_instrument_from_header(seabird_header):
 def get_sbe_instrument_type(instrument):
     if re.match("SBE\s*(9|16|19|25|37)"):
         return "CTD"
-    else:
-        logger.warning(f"Unknown instrument typt for {instrument}")
-        None
+    logger.warning(f"Unknown instrument typt for {instrument}")
 
 
 def get_seabird_processing_history(seabird_header):
-    sbe_hist = "\# (datcnv|filter|align|celltm|loopedit|derive|Derive|binavg|split|strip|section|wild|window).*"
     if "# datcnv" in seabird_header:
+        sbe_hist = "\# (datcnv|filter|align|celltm|loopedit|derive|Derive|binavg|split|strip|section|wild|window).*"
         return "\n".join(
             [line for line in seabird_header.split("\n") if re.match(sbe_hist, line)]
         )
@@ -90,7 +88,7 @@ def get_seabird_processing_history(seabird_header):
 
 def update_attributes_from_seabird_header(
     ds, seabird_header, parse_manual_inputs=False
-):
+):  # sourcery skip: identity-comprehension, remove-redundant-if
     # Instrument
     ds.attrs["instrument"] = get_seabird_instrument_from_header(seabird_header)
 
@@ -236,7 +234,7 @@ def generate_instruments_variables_from_sensor(ds, seabird_header):
                 "(?P<channel>Frequency\s+\d+|Stored Volt\s+\d+|Extrnl Volt  \d+)\s+(?P<sensor_description>.*)",
                 sensor,
             )
-            if attrs_dict == None:
+            if attrs_dict is None:
                 logger.error(f"Failed to read sensor item: {sensor}")
                 continue
             attrs = attrs_dict.groupdict()

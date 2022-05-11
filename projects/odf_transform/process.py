@@ -57,10 +57,10 @@ def read_geojson_file_list(file_list):
     return polygons_dict
 
 
-def write_ctd_ncfile(
-    odf_path, output_path=None, config=None, polygons={},
-):
+def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
     """Method use to convert odf files to a CIOOS/ERDDAP compliant NetCDF format"""
+    if polygons is None:
+        polygons = {}
     odf_file = os.path.basename(odf_path)
     log = {"odf_file": odf_file}
 
@@ -143,10 +143,10 @@ def write_ctd_ncfile(
         ds = ds.swap_dims({"index": "depth"}).drop_vars("index")
 
     # Log variables available per file
-    logger.info(f"Variable List: {[var for var in ds]}")
+    logger.info(f"Variable List: {list(ds)}")
 
     # Finally save the xarray dataset to a NetCDF file!!!
-    if output_path == None:
+    if output_path is None:
         output_path = odf_path + ".nc"
 
     # If outputpath is formatted like an fstring run it

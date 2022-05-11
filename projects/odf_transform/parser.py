@@ -42,12 +42,9 @@ class GF3Code:
 
     def __init__(self, code):
         self.code = re.search("^[^_]*", code)[0]
-        index = re.search("\d+$", code)
-        if index:
-            self.index = int(index[0])
-        else:
-            self.index = 1
-        self.name = self.code + ("_%02g" % int(self.index) if self.index else "")
+        index = re.search(r"\d+$", code)
+        self.index = int(index[0]) if index else 1
+        self.name = self.code + ("_%02g" % self.index if self.index else "")
 
 
 def convert_odf_time(time_string):
@@ -124,7 +121,6 @@ def read(filename, encoding_format="Windows-1252"):
                     else:
                         metadata[section].append({})
 
-                # Dictionary type lines (key=value)
                 elif "=" in line:  # Something=This
                     key, value = [item.strip() for item in line.split("=", 1)]
 
@@ -141,7 +137,7 @@ def read(filename, encoding_format="Windows-1252"):
                     ):
                         try:
                             value = convert_odf_time(value)
-                        except:
+                        except Exception:
                             logger.warning(
                                 f"Failed to read date '{value}' in line: {line}"
                             )
@@ -157,7 +153,7 @@ def read(filename, encoding_format="Windows-1252"):
                 else:
                     logger.error(f"Unrecognizable line format: {line}")
 
-            except:
+            except Exception:
                 logger.error(f"Failed to read the line: {line}")
 
         # Simplify the single sections to a dictionary
@@ -412,7 +408,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         - unknown if unit exists but the "accepted_units" input is empty.
         - False if not matching units
         """
-        if accepted_terms == None:
+        if accepted_terms is None:
             # No required term
             return True
 
