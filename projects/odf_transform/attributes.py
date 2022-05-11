@@ -222,8 +222,12 @@ def global_attributes_from_header(ds, odf_header):
     ds.attrs["chief_scientist"] = re.sub("\s+(\~|\/)", ",", ds.attrs["chief_scientist"])
 
     # # event_number should be number otherwise get rid of it
-    # if type(ds.attrs["event_number"]) is not int:
-    #     ds.attrs.pop("event_number")
+    if type(ds.attrs["event_number"]) is not int:
+        event_number = re.search(r'\*\* Event[\s\:]*(\d+)'),"".join(odf_header["original_header"]), re.IGNORECASE)
+        if event_number:
+            ds.attrs["event_number"] = event_number[1]
+        # else:
+            # ds.attrs.pop("event_number")
 
     # Search anywhere within ODF Header
     station = re.search(
