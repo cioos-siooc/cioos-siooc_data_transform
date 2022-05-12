@@ -58,9 +58,8 @@ def match_platform(platform):
             .dropna()
             .to_dict()
         )
-    else:
-        logger.warning(f"Unknown platform {platform}")
-        return {}
+    logger.warning(f"Unknown platform {platform}")
+    return {}
 
 
 def global_attributes_from_header(ds, odf_header):
