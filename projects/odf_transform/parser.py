@@ -48,7 +48,7 @@ class GF3Code:
 
 
 def convert_odf_time(time_string):
-    """Simple tool to convert ODF timestamps to a datetime object"""
+    """Convert ODF timestamps to a datetime object"""
     if time_string == "17-NOV-1858 00:00:00.00":
         return pd.NaT
     elif re.search(":60.0+$", time_string):
@@ -216,6 +216,7 @@ def read(filename, encoding_format="Windows-1252"):
                 key: att.pop("null_value")
                 for key, att in metadata["variable_attributes"].items()
             },
+            date_parser=convert_odf_time,
             parse_dates=time_columns,
             encoding=encoding_format,
         )
