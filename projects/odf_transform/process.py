@@ -133,7 +133,7 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
     # Add geospatial and geometry related global attributes
     # Just add spatial/time range as attributes
     initial_attrs = set(ds.attrs.keys())
-    ds = standardize_dataset(ds)
+    ds = standardize_dataset(ds, utc=True)
     dropped_attrs = initial_attrs - ds.attrs.keys()
     if dropped_attrs:
         logger.info(f"Drop empty attributes: {dropped_attrs}")

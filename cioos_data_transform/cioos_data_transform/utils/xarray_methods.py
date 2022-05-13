@@ -15,16 +15,16 @@ def history_input(comment, date=dt.datetime.now()):
         return f"{date} {comment}\n"
 
 
-def standardize_dataset(ds):
+def standardize_dataset(ds, utc=None):
     """Global method that applies the different standardizations tools."""
     ds = get_spatial_coverage_attributes(ds)
-    ds = convert_variables_to_erddap_format(ds)
+    ds = convert_variables_to_erddap_format(ds, utc=utc)
     ds = standardize_variable_attributes(ds)
     ds.attrs = standardize_global_attributes(ds.attrs)
     return ds
 
 
-def convert_variables_to_erddap_format(ds):
+def convert_variables_to_erddap_format(ds, utc=None):
     """
     convert_variables_to_erddap_format converts each variables within an xarray to an
     ERDDAP compatible/recommended format.
@@ -34,26 +34,26 @@ def convert_variables_to_erddap_format(ds):
     variables_to_review = list(ds.keys())
     variables_to_review.extend(ds.coords.keys())
     for var in variables_to_review:
-        if ds[var].dtype not in [float, int, "float64", "float32", "int64", "int32"]:
-            # Convert Datetime to seconds since 1970-01-01
-            if ds[var].dtype.name.startswith("datetime"):
-                # Convert Datetime to seconds since 1970-01-01
-                if "units" in ds[var].attrs:
-                    ds[var].attrs.pop("units")
-                # Timezone aware data
-                if "tz" in ds[var].dtype.name:
-                    timezone = "Z"
-                    ds[var].attrs["timezone"] = "UTC"
-                else:
-                    timezone = ""
+        if ds[var].dtype in [float, int, "float64", "float32", "int64", "int32"]:
+            continue
+        # Try to convert to datetime64 if possible and encde to seconds since 1970-01-01
+        try:
+            ds[var] = ds[var].astype('datetime64')
+            if "units " in ds[var].attrs:
+                ds[var].attrs.pop("units")
 
-                # Format encoding output
-                ds[var].encoding = {"units": f"seconds since 1970-01-01 00:00:00{timezone}", "dtype": "float64"}
-
-
+            # Timezone aware data
+            if utc :
+                timezone = "Z"
+                ds[var].attrs["timezone"] = "UTC"
             else:
-                # Should be a string
-                ds[var] = ds[var].astype(str)
+                timezone = ""
+
+            # Format encoding output
+            ds[var].encoding = {"units": f"seconds since 1970-01-01 00:00:00{timezone}", "dtype": "float64"}
+        except Exception as e:
+            # Should be a string
+            ds[var] = ds[var].astype(str)
 
     return ds
 
@@ -68,10 +68,8 @@ def standardize_attributes_values(attrs, order):
     for attr, value in ordered_attrs.items():
         if value in [None, "", pd.NaT]:
             continue
-        if type(value) == pd.Timestamp:
-            if value.tz:
-                value = value.astimezone("UTC")
-            value = value.strftime("%Y-%m-%dT%H:%M:%SZ")
+        if type(value) in (pd.Timestamp, dt.datetime):
+            value = value.isoformat()
 
         new_attrs[attr] = value
 
