@@ -9,7 +9,7 @@ import pandas as pd
 import numpy as np
 import xarray as xr
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 import os
 import gsw
@@ -47,16 +47,20 @@ class GF3Code:
         self.name = self.code + ("_%02g" % self.index if self.index else "")
 
 
-def convert_odf_time(time_string):
+def convert_odf_time(time_string, timezone=timezone.utc):
     """Convert ODF timestamps to a datetime object"""
     if time_string == "17-NOV-1858 00:00:00.00":
         return pd.NaT
-    elif re.search(":60.0+$", time_string):
-        return pd.to_datetime(re.sub(":60.0+$", ":00.0", time_string)) + pd.Timedelta(
-            "1min"
-        )
+    
+    dt = pd.Timedelta("1min") if re.search(":60.0+$", time_string) else pd.Timedelta(0)
+    if re.match('\d\d-\w\w\w-\d\d\d\d\s*\d\d\:\d\d\:\d\d\.\d+',time_string):
+        t = datetime.strptime(time_string,r'%d-%b-%Y %H:%M:%S.%f') + dt
+    elif re.match('\d\d-\w\w\w-\d\d\d\d\s*\d\d\:\d\d\:\d\d',time_string):
+        t = datetime.strptime(time_string,r'%d-%b-%Y %H:%M:%S') + dt
     else:
-        return pd.to_datetime(time_string, utc=True)
+        logger.error(f'Failed to parse time string {time_string}')
+        return
+    return t.replace(tzinfo=timezone)
 
 
 def history_input(comment, date=datetime.now()):
