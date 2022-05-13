@@ -27,6 +27,7 @@ odf_parser.logger = logging.LoggerAdapter(odf_parser.logger, {"odf_file": None})
 
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_CONFIG_PATH = os.path.join(MODULE_PATH, "config.json")
+ODF_TRANSFORM_MODULE_PATH = MODULE_PATH
 reference_stations = pd.read_csv(os.path.join(MODULE_PATH,"reference_stations.csv"))[['station','latitude','longitude']].to_records(index=False)
 
 def read_config(config_file):
@@ -35,16 +36,11 @@ def read_config(config_file):
     with open(config_file, encoding="UTF-8") as fid:
         config = json.load(fid)
 
-    # If config.json is default in package set relative paths to module path
-    if os.path.join(MODULE_PATH, "config.json") == DEFAULT_CONFIG_PATH:
-        config["fileDir"] = os.path.join(MODULE_PATH, config["fileDir"][2:])
-        config["geojsonFileList"] = [
-            os.path.join(MODULE_PATH, fpath[2:]) for fpath in config["geojsonFileList"]
-        ]
-        config["vocabularyFile"] = os.path.join(MODULE_PATH, config["vocabularyFile"])
+    # Apply fstring to geojson paths
+    config["geojsonFileList"] = [eval(f"f'{fpath}'") for fpath in config["geojsonFileList"]]
 
     # Read Vocabulary file
-    vocab = pd.read_csv(config["vocabularyFile"], index_col=["Vocabulary", "name"])
+    vocab = pd.read_csv(eval(f"f'{config['vocabularyFile']}'"), index_col=["Vocabulary", "name"])
     config["vocabulary"] = vocab.fillna(np.nan).replace({np.nan: None})
     return config
 

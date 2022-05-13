@@ -204,7 +204,7 @@ if __name__ == "__main__":
 
     # Handle Input FIles
     print("Retrieve files to process")
-    fileDir = config["fileDir"]
+    fileDir = eval(f"f'{config['fileDir']}'")
     if os.path.isfile(fileDir):
         odf_files_list = [fileDir]
     elif os.path.isdir(fileDir):
