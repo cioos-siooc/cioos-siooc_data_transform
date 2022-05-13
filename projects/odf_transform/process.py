@@ -130,7 +130,9 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
     if dropped_attrs:
         logger.info(f"Drop empty attributes: {dropped_attrs}")
 
-    # Handle dimensions
+    # Handle coordinates and dimensions
+    coords = [coord for coord in ['time','latitude','longitude','depth'] if coord in ds]
+    ds = ds.set_coords(coords)
     if ds.attrs["cdm_data_type"] == "Profile" and "index" in ds and "depth" in ds:
         ds = ds.swap_dims({"index": "depth"}).drop_vars("index")
 
