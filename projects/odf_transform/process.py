@@ -27,7 +27,7 @@ odf_parser.logger = logging.LoggerAdapter(odf_parser.logger, {"odf_file": None})
 
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_CONFIG_PATH = os.path.join(MODULE_PATH, "config.json")
-reference_stations = pd.read_csv(os.path.join(MODULE_PATH,"reference_stations.csv"))
+reference_stations = pd.read_csv(os.path.join(MODULE_PATH,"reference_stations.csv"))[['station','latitude','longitude']].to_records(index=False)
 
 def read_config(config_file):
     """Function to load configuration json file and vocabulary file."""
@@ -80,19 +80,15 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
         )
         return
 
-    # Let's convert to an xarray dataset
+    # Convert to an xarray dataset
     ds = raw_data.to_xarray()
 
-    # Write global attributes
+    # Write global and variable attributes
     ds.attrs = config["global_attributes"]
     ds = attributes.global_attributes_from_header(ds, metadata)
     ds.attrs[
         "history"
     ] += f"# Convert ODF to NetCDF with cioos_data_trasform.odf_transform V {__version__}"
-    ds.attrs["original_filename"] = odf_file
-    ds.attrs["id"] = ds.attrs["original_filename"].replace(".ODF", "")
-
-    # Add variables attributes from odf
     for var, attrs in metadata["variable_attributes"].items():
         if var in ds:
             ds[var].attrs = attrs
@@ -100,17 +96,12 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
     # Handle ODF flag variables
     ds = odf_parser.odf_flag_variables(ds, config.get("flag_convention"))
 
-    # Generate Variables from attributes
-    ds = attributes.generate_variables_from_header(ds, metadata)
-
-    # geographic_area and station
-    ds["geographic_area"] = get_geo_code(
+    # Define coordinates variables from attributes, assign geographic_area and nearest stations
+    ds = attributes.retrieve_coordinates(ds)
+    ds.attrs["geographic_area"] = get_geo_code(
         [ds["longitude"].mean(), ds["latitude"].mean()], polygons
     )
-    nearest_station = get_nearest_station(reference_stations[['station','latitude','longitude']].to_records(index=False),(ds['latitude'],ds['longitude']),1)
-    if nearest_station:
-        ds.attrs["station"] = nearest_station
-        ds["station"] = nearest_station
+    ds.attrs["station"] = get_nearest_station(reference_stations,(ds['latitude'],ds['longitude']),1)
 
     # Add Vocabulary attributes
     ds = odf_parser.get_vocabulary_attributes(
@@ -122,6 +113,7 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
     # Fix flag variables with some issues to map
     ds = odf_parser.fix_flag_variables(ds)
 
+    # Instrument specific variables and attributes
     if ds.attrs["instrument_manufacturer_header"].startswith("* Sea-Bird"):
         ds = seabird.add_seabird_instruments(
             ds, ds.attrs["instrument_manufacturer_header"], match_by="sdn_parameter_urn"
@@ -132,9 +124,9 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
 
     # Add geospatial and geometry related global attributes
     # Just add spatial/time range as attributes
-    initial_attrs = set(ds.attrs.keys())
+    initial_attrs = ds.attrs.keys()
     ds = standardize_dataset(ds, utc=True)
-    dropped_attrs = initial_attrs - ds.attrs.keys()
+    dropped_attrs = [var for var in initial_attrs if var not in ds.attrs]
     if dropped_attrs:
         logger.info(f"Drop empty attributes: {dropped_attrs}")
 
@@ -145,11 +137,9 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
     # Log variables available per file
     logger.info(f"Variable List: {list(ds)}")
 
-    # Finally save the xarray dataset to a NetCDF file!!!
+    # Save dataset to a NetCDF file
     if output_path is None:
         output_path = odf_path + ".nc"
-
-    # If outputpath is formatted like an fstring run it
     if re.search("\{\w*\}", output_path):
         output_path = eval(f'f"{output_path}"')
 

@@ -3,7 +3,7 @@ import pandas as pd
 import re
 import json
 import os
-from .parser import convert_odf_time
+
 from cioos_data_transform.utils.xarray_methods import history_input
 from cioos_data_transform.parse.seabird import (
     get_seabird_instrument_from_header,
@@ -275,7 +275,7 @@ def global_attributes_from_header(ds, odf_header):
 
     # Review attributes format
     for attr in ['event_start_time','event_end_time']:
-        if ds.attrs.get(attr) not in  (None, pd.NaT) and  type(ds.attrs[attr]) is not pd.Timestamp:
+        if ds.attrs.get(attr) not in  (None, pd.NaT) and  type(ds.attrs[attr]) is not datetime:
             logging.warning(f"{attr} failed to be converted to timestamp: {ds.attrs[attr]}")
 
     # Drop empty attributes
@@ -283,109 +283,46 @@ def global_attributes_from_header(ds, odf_header):
     return ds
 
 
-def generate_variables_from_header(ds, odf_header):
+def retrieve_coordinates(ds):
     """
     Method use to generate metadata variables from the ODF Header to a xarray Dataset.
     """
-    initial_variable_order = list(ds.keys())
-
-    # General Attributes
-    attrs_to_var = {
-        "institution": {"ioos_category": "Other"},
-        "cruise_name": {"ioos_category": "Other"},
-        "cruise_number": {"ioos_category": "Other"},
-        "chief_scientist": {"ioos_category": "Other"},
-        "wmo_platform_code": {
-            "name": "platform_id",
-            "ioos_category": "Other",
-            "standard_name": "platform_id",
-            "dtype": str,
-        },
-        "platform": {
-            "name": "platform",
-            "ioos_category": "Other",
-            "standard_name": "platform",
-        },
-        "platform": {
-            "name": "platform_name",
-            "ioos_category": "Other",
-            "standard_name": "platform_name",
-        },
-        "event_number": {"dtype": str, "ioos_category": "Other"},
-        "id": {"ioos_category": "Identifier"},
-        "station": {"ioos_category": "Location"},
-        "event_start_time": {"ioos_category": "Time"},
-        "event_end_time": {"ioos_category": "Time"},
-        "initial_latitude": {"units": "degrees_east", "ioos_category": "Location"},
-        "initial_longitude": {"units": "degrees_east", "ioos_category": "Location"},
-    }
 
     if ds.attrs["cdm_data_type"] == "Profile":
-        # Define profile specific variables
-        attrs_to_var.update(
-            {
-                "id": {"cf_role": "profile_id", "ioos_category": "Other"},
-                "profile_direction": {"ioos_category": "Other"},
-                "event_start_time": [
-                    {
-                        "name": "time",
-                        "standard_name": "time",
-                        "ioos_category": "Time",
-                        "coverage_content_type": "coordinate",
-                    },
-                    {
-                        "name": "profile_start_time",
-                        "long_name": "Profile Start Time",
-                        "ioos_category": "Time",
-                        "coverage_content_type": "auxiliaryInformation",
-                    },
-                ],
-                "event_end_time": {
-                    "name": "profile_end_time",
-                    "long_name": "Profile End Time",
-                    "ioos_category": "Time",
-                    "coverage_content_type": "auxiliaryInformation",
-                },
-                "initial_latitude": {
-                    "name": "latitude",
-                    "long_name": "Latitude",
-                    "units": "degrees_north",
-                    "standard_name": "latitude",
-                    "ioos_category": "Location",
-                    "coverage_content_type": "coordinate",
-                },
-                "initial_longitude": {
-                    "name": "longitude",
-                    "long_name": "Longitude",
-                    "units": "degrees_east",
-                    "standard_name": "longitude",
-                    "ioos_category": "Location",
-                    "coverage_content_type": "coordinate",
-                },
-            }
-        )
-        ds.attrs["cdm_profile_variables"] = ",".join(attrs_to_var.keys())
+        ds['time'] = ds.attrs['event_start_time']
+        ds['latitude'] = ds.attrs['initial_latitude']
+        ds['longitude'] = ds.attrs['initial_longitude']
+        if 'depth' not in ds:
+            logger.warning('No depth information available')
+    else:
+        logger.error(f"odf_converter is not yet compatible with {ds.attrs['cdm_data_type']}")
+    # Apply attributes to each coordinate variables
+    coordinate_attributes= {
+        "time": {
+            "name": "time",
+            "standard_name": "time",
+            "ioos_category": "Time",
+            "coverage_content_type": "coordinate",
+        },                
+        "latitude": {
+            "long_name": "Latitude",
+            "units": "degrees_north",
+            "standard_name": "latitude",
+            "ioos_category": "Location",
+            "coverage_content_type": "coordinate",
+        },
+        "longitude": {
+            "long_name": "Longitude",
+            "units": "degrees_east",
+            "standard_name": "longitude",
+            "ioos_category": "Location",
+            "coverage_content_type": "coordinate",
+        },
 
-    # Add new variables and attributes
-    for key, attrs in attrs_to_var.items():
-        if type(attrs) is dict:
-            attrs = [attrs]
-        for att in attrs:
-            new_key = att.pop("name") if "name" in att else key
-            dtype = att.pop("dtype") if "dtype" in att else None
-            # Ignore empty keys
-            if key not in ds.attrs or ds.attrs[key] in (None, pd.NaT):
-                continue
-
-            ds[new_key] = ds.attrs[key]
-            ds[new_key].attrs = att
-            if dtype:
-                ds[new_key] = ds[new_key].astype(dtype)
-
-    # Reorder variables
-    variable_list = [var for var in ds.keys() if var not in initial_variable_order]
-    variable_list.extend(initial_variable_order)
-    ds = ds[variable_list]
+    }
+    for var,attrs in coordinate_attributes.items():
+        if var in ds:
+            ds[var].attrs = attrs
     return ds
 
 
