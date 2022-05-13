@@ -55,7 +55,7 @@
     },
     "flag_convention": {
         "default": {
-            "dtype": "int",
+            "dtype": "bytes",
             "standard_name": "status_flag",
             "coverage_content_type": "qualityInformation",
             "ioos_category": "Quality",
@@ -71,7 +71,7 @@
             "flag_meanings": "not_evaluated correct inconsistent_with_other_values doubtful erroneous modified missing"
         },
         "QCFF_01": {
-            "dtype": "int",
+            "dtype": "bytes",
             "standard_name": "status_flag",
             "coverage_content_type": "qualityInformation",
             "ioos_category": "Quality",
@@ -82,7 +82,7 @@
             "flag_meanings": "undefined undefined"
         },
         "FFFF_01": {
-            "dtype": "int",
+            "dtype": "bytes",
             "standard_name": "status_flag",
             "coverage_content_type": "qualityInformation",
             "ioos_category": "Quality",
