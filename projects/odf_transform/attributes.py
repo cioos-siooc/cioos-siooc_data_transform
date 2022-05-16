@@ -256,11 +256,11 @@ def global_attributes_from_header(ds, odf_header):
         project = [ds.attrs['program']]
 
         # Project specific season
-        if project == "Atlantic Zone Monitoring Program":
+        if ds.attrs['program'] == "Atlantic Zone Monitoring Program":
             project += [
                 "Spring" if 1 <= ds.attrs["event_start_time"].month <= 7 else "Fall"
             ]
-        elif project == "Maritime Region Ecosystem Survey":
+        elif s.attrs['program'] == "Maritime Region Ecosystem Survey":
             project += [
                 "Summer" if 5 <= ds.attrs["event_start_time"].month <= 9 else "Winter"
             ]
@@ -269,7 +269,7 @@ def global_attributes_from_header(ds, odf_header):
             ds.attrs["project"] = project
         
         # Add a cruise_name year specific
-        ds.attrs['cruise_name'] = f"{ds.attrs['project']} {ds.attrs['event_start_time'].year}"
+        ds.attrs['cruise_name'] = f"{project} {ds.attrs['event_start_time'].year}"
 
     # Apply attributes corrections from attribute_correction json
     for att, items in attribute_corrections.items():
