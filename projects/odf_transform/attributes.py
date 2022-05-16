@@ -260,7 +260,7 @@ def global_attributes_from_header(ds, odf_header):
             project += [
                 "Spring" if 1 <= ds.attrs["event_start_time"].month <= 7 else "Fall"
             ]
-        elif s.attrs['program'] == "Maritime Region Ecosystem Survey":
+        elif ds.attrs['program'] == "Maritime Region Ecosystem Survey":
             project += [
                 "Summer" if 5 <= ds.attrs["event_start_time"].month <= 9 else "Winter"
             ]
