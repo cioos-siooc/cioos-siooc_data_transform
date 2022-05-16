@@ -251,23 +251,25 @@ def global_attributes_from_header(ds, odf_header):
         else:
             ds.attrs["station"] = station
 
-    # Overwrite cruise_name to format "{program} {season [optional, AZMP]} {year}" format if program exist
-    if "program" in ds.attrs:
-        cruise_name = [ds.attrs["program"]]
-        if ds.attrs["program"] == "Atlantic Zone Monitoring Program":
-            cruise_name += [
+    # Standardize project and cruise_name
+    if ds.attrs.get('program') not in (None,'Other') and ds.attrs('project') is None:
+        project = [ds.attrs['program']]
+
+        # Project specific season
+        if project == "Atlantic Zone Monitoring Program":
+            project += [
                 "Spring" if 1 <= ds.attrs["event_start_time"].month <= 7 else "Fall"
             ]
-        elif ds.attrs["program"] == "Maritime Region Ecosystem Survey":
-            cruise_name += [
+        elif project == "Maritime Region Ecosystem Survey":
+            project += [
                 "Summer" if 5 <= ds.attrs["event_start_time"].month <= 9 else "Winter"
             ]
-        # Add program {season} to as project for some specific programs
-        if ds.attrs["program"] in ("Atlantic Zone Monitoring Program","Groundfish") and "project" not in ds.attrs:
-            ds.attrs["project"] = " ".join(cruise_name)
-
-        cruise_name += [str(ds.attrs["event_start_time"].year)]
-        ds.attrs["cruise_name"] = " ".join(cruise_name)
+        project = " ".join(project)
+        if ds.attrs['program'] != project:
+            ds.attrs["project"] = project
+            
+    # Define cruise name
+    ds.attrs["cruise_name"] = f"{ds.attrs['project']} {ds.attrs['event_start_time'].year}"
 
     # Apply attributes corrections from attribute_correction json
     for att, items in attribute_corrections.items():
