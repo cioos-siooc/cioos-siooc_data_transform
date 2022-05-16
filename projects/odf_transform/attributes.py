@@ -252,7 +252,7 @@ def global_attributes_from_header(ds, odf_header):
             ds.attrs["station"] = station
 
     # Standardize project and cruise_name
-    if ds.attrs.get('program') not in (None,'Other') and ds.attrs('project') is None:
+    if ds.attrs.get('program') not in (None,'Other') and ds.attrs.get('project') is None:
         project = [ds.attrs['program']]
 
         # Project specific season
@@ -267,7 +267,7 @@ def global_attributes_from_header(ds, odf_header):
         project = " ".join(project)
         if ds.attrs['program'] != project:
             ds.attrs["project"] = project
-            
+
     # Define cruise name
     ds.attrs["cruise_name"] = f"{ds.attrs['project']} {ds.attrs['event_start_time'].year}"
 
