@@ -58,8 +58,8 @@ def convert_odf_time(time_string, timezone=timezone.utc):
     elif re.match('\d\d-\w\w\w-\d\d\d\d\s*\d\d\:\d\d\:\d\d',time_string):
         t = datetime.strptime(time_string,r'%d-%b-%Y %H:%M:%S') + dt
     else:
-        logger.error(f'Failed to parse time string {time_string}')
-        return
+        logger.warning(f'Unknown time format: {time_string}')
+        t = pd.to_datetime(time_string).to_pydatetime()
     return t.replace(tzinfo=timezone)
 
 
@@ -137,7 +137,7 @@ def read(filename, encoding_format="Windows-1252"):
                     elif re.match("[-+]{0,1}\d+$", value):
                         value = int(value)
                     elif re.match(
-                        "\d{1,2}-\w\w\w\-\d\d\d\d\s*\d\d:\d\d:\d\d\.*\d*", value
+                        "^\d{1,2}-\w\w\w\-\d\d\d\d\s*\d\d:\d\d:\d\d\.*\d*$", value
                     ):
                         try:
                             value = convert_odf_time(value)
