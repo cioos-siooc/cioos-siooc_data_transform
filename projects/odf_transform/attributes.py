@@ -227,10 +227,10 @@ def global_attributes_from_header(ds, odf_header):
         event_number = re.search(r'\*\* Event[\s\:]*(\d+)',"".join(odf_header["original_header"]), re.IGNORECASE)
         if event_number:
             ds.attrs["event_number"] = event_number[1]
-        # else:
-            # ds.attrs.pop("event_number")
+        else:
+            logger.warning(f"event_number {event_number} isn't just a number")
 
-    # Search anywhere within ODF Header
+    # Search station anywhere within ODF Header
     station = re.search(
         "station[\w\s]*:\s*(\w*)", "".join(odf_header["original_header"]), re.IGNORECASE
     )
@@ -251,7 +251,7 @@ def global_attributes_from_header(ds, odf_header):
         else:
             ds.attrs["station"] = station
 
-    # Standardize project and cruise_name
+    # Standardize project and cruise_name (AZMP, AZOMP and Groundfish)
     if ds.attrs.get('program') not in (None,'Other') and ds.attrs.get('project') is None:
         project = [ds.attrs['program']]
 
@@ -268,8 +268,8 @@ def global_attributes_from_header(ds, odf_header):
         if ds.attrs['program'] != project:
             ds.attrs["project"] = project
         
-    # Replace cruise_name by "{project} {year}"
-    ds.attrs['cruise_name'] = f"{project} {ds.attrs['event_start_time'].year}"
+        # Replace cruise_name by "{project} {year}"
+        ds.attrs['cruise_name'] = f"{project} {ds.attrs['event_start_time'].year}"
 
     # Apply attributes corrections from attribute_correction json
     for att, items in attribute_corrections.items():
