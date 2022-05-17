@@ -253,7 +253,7 @@ def global_attributes_from_header(ds, odf_header):
 
     # Standardize project and cruise_name (AZMP, AZOMP and MARES)
     if ds.attrs.get('program') == "Atlantic Zone Monitoring Program" and ds.attrs['project'] is None:
-        if ds.attrs['project'] is None:
+        if ds.attrs.get('project') is None:
             ds.attrs['project'] = f"{ds.attrs.get('project')} {'Spring' if 1 <= ds.attrs['event_start_time'].month <= 7 else 'Fall'}"
             ds.attrs['cruise_name'] = f"{ds.attrs['project']} {ds.attrs['event_start_time'].year}"
         elif 'cruise_name' in ds.attrs:
