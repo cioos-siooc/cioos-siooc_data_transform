@@ -262,7 +262,7 @@ def global_attributes_from_header(ds, odf_header):
     elif ds.attrs.get('program') == "Maritime Region Ecosystem Survey":
         ds.attrs['project'] = f"{ds.attrs.get('project')} {'Summer' if 5 <= ds.attrs['event_start_time'].month <= 9 else 'Winter'}"
         ds.attrs['cruise_name'] = f"{ds.attrs['project']} {ds.attrs['event_start_time'].year}"
-    elif ds.attrs.get('program') == "Atlantic Zone Off-Shore Monitoring Program.csv":
+    elif ds.attrs.get('program') == "Atlantic Zone Off-Shore Monitoring Program":
         ds.attrs['cruise_name'] = f"{ds.attrs['program']} {ds.attrs['event_start_time'].year}"
 
     # Apply attributes corrections from attribute_correction json
