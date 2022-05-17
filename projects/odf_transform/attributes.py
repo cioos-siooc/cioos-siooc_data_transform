@@ -251,25 +251,19 @@ def global_attributes_from_header(ds, odf_header):
         else:
             ds.attrs["station"] = station
 
-    # Standardize project and cruise_name (AZMP, AZOMP and Groundfish)
-    if ds.attrs.get('program') not in (None,'Other') and ds.attrs.get('project') is None:
-        project = [ds.attrs['program']]
-
-        # Project specific season
-        if ds.attrs['program'] == "Atlantic Zone Monitoring Program":
-            project += [
-                "Spring" if 1 <= ds.attrs["event_start_time"].month <= 7 else "Fall"
-            ]
-        elif ds.attrs['program'] == "Maritime Region Ecosystem Survey":
-            project += [
-                "Summer" if 5 <= ds.attrs["event_start_time"].month <= 9 else "Winter"
-            ]
-        project = " ".join(project)
-        if ds.attrs['program'] != project:
-            ds.attrs["project"] = project
-        
-        # Replace cruise_name by "{project} {year}"
-        ds.attrs['cruise_name'] = f"{project} {ds.attrs['event_start_time'].year}"
+    # Standardize project and cruise_name (AZMP, AZOMP and MARES)
+    if ds.attrs.get('program') == "Atlantic Zone Monitoring Program" and ds.attrs['project'] is None:
+        if ds.attrs['project'] is None:
+            ds.attrs['project'] = f"{ds.attrs.get('project')} {'Spring' if 1 <= ds.attrs['event_start_time'].month <= 7 else 'Fall'}"
+            ds.attrs['cruise_name'] = f"{ds.attrs['project']} {ds.attrs['event_start_time'].year}"
+        elif 'cruise_name' in ds.attrs:
+            # Ignore cruise_name for station specific AZMP projects
+            ds.attrs.pop('cruise_name')
+    elif ds.attrs.get('program') == "Maritime Region Ecosystem Survey" and ds.attrs['project'] is None:
+        ds.attrs['project'] = f"{ds.attrs.get('project')} {'Summer' if 5 <= ds.attrs['event_start_time'].month <= 9 else 'Winter'}"
+        ds.attrs['cruise_name'] = f"{ds.attrs['project']} {ds.attrs['event_start_time'].year}"
+    elif ds.attrs.get('program') == "Atlantic Zone Off-Shore Monitoring Program.csv":
+        ds.attrs['cruise_name'] = f"{ds.attrs['program']} {ds.attrs['event_start_time'].year}"
 
     # Apply attributes corrections from attribute_correction json
     for att, items in attribute_corrections.items():
