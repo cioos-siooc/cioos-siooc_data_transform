@@ -268,8 +268,8 @@ def global_attributes_from_header(ds, odf_header):
         if ds.attrs['program'] != project:
             ds.attrs["project"] = project
         
-        # Add a cruise_name year specific
-        ds.attrs['cruise_name'] = f"{project} {ds.attrs['event_start_time'].year}"
+    # Replace cruise_name by "{project} {year}"
+    ds.attrs['cruise_name'] = f"{project} {ds.attrs['event_start_time'].year}"
 
     # Apply attributes corrections from attribute_correction json
     for att, items in attribute_corrections.items():
