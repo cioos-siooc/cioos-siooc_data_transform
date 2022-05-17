@@ -182,12 +182,8 @@ def read(filename, encoding_format="Windows-1252"):
             # Generate variable name
             if "CODE" in att:
                 var_name = GF3Code(att["CODE"]).name
-            elif (
-                "NAME" in att
-                and "WMO_CODE" in att
-                and att["NAME"].startswith(att["WMO_CODE"])
-            ):
-                var_name = GF3Code(att["NAME"]).name
+            elif "WMO_CODE" in att:
+                var_name = GF3Code(att["WMO_CODE"]).name
             else:
                 raise RuntimeError("Unrecognizable ODF variable attributes")
 
