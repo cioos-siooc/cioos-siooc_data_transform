@@ -53,7 +53,7 @@ def convert_odf_time(time_string, timezone=timezone.utc):
         return pd.NaT
     
     dt = pd.Timedelta("1min") if re.search(":60.0+$", time_string) else pd.Timedelta(0)
-    if re.match('\d\d-\w\w\w-\d\d\d\d\s*\d\d\:\d\d\:\d\d\.\d+',time_string):
+    if re.match('\d+-\w\w\w-\d\d\d\d\s*\d+\:\d\d\:\d\d\.\d+',time_string):
         t = datetime.strptime(time_string,r'%d-%b-%Y %H:%M:%S.%f') + dt
     elif re.match('\d\d-\w\w\w-\d\d\d\d\s*\d\d\:\d\d\:\d\d',time_string):
         t = datetime.strptime(time_string,r'%d-%b-%Y %H:%M:%S') + dt
