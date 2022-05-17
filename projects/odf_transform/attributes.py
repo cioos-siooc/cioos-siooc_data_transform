@@ -255,13 +255,13 @@ def global_attributes_from_header(ds, odf_header):
     # Standardize project and cruise_name (AZMP, AZOMP and MARES)
     if ds.attrs.get('program') == "Atlantic Zone Monitoring Program":
         if ds.attrs.get('project') is None:
-            ds.attrs['project'] = f"{ds.attrs.get('project')} {'Spring' if 1 <= ds.attrs['event_start_time'].month <= 7 else 'Fall'}"
+            ds.attrs['project'] = f"{ds.attrs.get('program')} {'Spring' if 1 <= ds.attrs['event_start_time'].month <= 7 else 'Fall'}"
             ds.attrs['cruise_name'] = f"{ds.attrs['project']} {ds.attrs['event_start_time'].year}"
         elif 'cruise_name' in ds.attrs:
             # Ignore cruise_name for station specific AZMP projects
             ds.attrs.pop('cruise_name')
     elif ds.attrs.get('program') == "Maritime Region Ecosystem Survey":
-        ds.attrs['project'] = f"{ds.attrs.get('project')} {'Summer' if 5 <= ds.attrs['event_start_time'].month <= 9 else 'Winter'}"
+        ds.attrs['project'] = f"{ds.attrs.get('program')} {'Summer' if 5 <= ds.attrs['event_start_time'].month <= 9 else 'Winter'}"
         ds.attrs['cruise_name'] = f"{ds.attrs['project']} {ds.attrs['event_start_time'].year}"
     elif ds.attrs.get('program') == "Atlantic Zone Off-Shore Monitoring Program":
         ds.attrs['cruise_name'] = f"{ds.attrs['program']} {ds.attrs['event_start_time'].year}"
