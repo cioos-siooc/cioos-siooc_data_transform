@@ -52,14 +52,16 @@ def convert_odf_time(time_string, timezone=timezone.utc):
     if time_string == "17-NOV-1858 00:00:00.00":
         return pd.NaT
     
-    dt = pd.Timedelta("1min") if re.search(":60.0+$", time_string) else pd.Timedelta(0)
+    dt = pd.Timedelta("1min") if re.search(":60.0+", time_string) else pd.Timedelta(0)
+    if dt.total_seconds()>0:
+        time_string = re.sub(':60.0+',':00.00',time_string)
     if re.match('\d+-\w\w\w-\d\d\d\d\s*\d+\:\d\d\:\d\d\.\d+',time_string):
         t = datetime.strptime(time_string,r'%d-%b-%Y %H:%M:%S.%f') + dt
     elif re.match('\d\d-\w\w\w-\d\d\d\d\s*\d\d\:\d\d\:\d\d',time_string):
         t = datetime.strptime(time_string,r'%d-%b-%Y %H:%M:%S') + dt
     else:
         logger.warning(f'Unknown time format: {time_string}')
-        t = pd.to_datetime(time_string).to_pydatetime()
+        t = pd.to_datetime(time_string).to_pydatetime() + dt 
     return t.replace(tzinfo=timezone)
 
 
@@ -141,9 +143,9 @@ def read(filename, encoding_format="Windows-1252"):
                     ):
                         try:
                             value = convert_odf_time(value)
-                        except Exception:
+                        except Exception as e:
                             logger.warning(
-                                f"Failed to read date '{value}' in line: {line}"
+                                f"Failed to read date '{value}' in line: {line} ERROR: {e}"
                             )
 
                     # Add to the metadata as a dictionary
