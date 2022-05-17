@@ -97,7 +97,7 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
     ds.attrs["geographic_area"] = get_geo_code(
         [ds["longitude"].mean(), ds["latitude"].mean()], polygons
     )
-    ds.attrs["station"] = get_nearest_station(reference_stations,(ds['latitude'],ds['longitude']),1)
+    ds.attrs["station"] = get_nearest_station(reference_stations,(ds['latitude'],ds['longitude']),1) or ds.attrs.get('station')
 
     # Add Vocabulary attributes
     ds = odf_parser.get_vocabulary_attributes(
