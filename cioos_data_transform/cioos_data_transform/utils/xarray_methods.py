@@ -69,7 +69,7 @@ def standardize_attributes_values(attrs, order):
         if value in [None, "", pd.NaT]:
             continue
         if type(value) in (pd.Timestamp, dt.datetime):
-            value = value.isoformat()
+            value = value.isoformat(timespec='milliseconds')
 
         new_attrs[attr] = value
 
