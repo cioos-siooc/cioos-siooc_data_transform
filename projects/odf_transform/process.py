@@ -28,7 +28,9 @@ odf_parser.logger = logging.LoggerAdapter(odf_parser.logger, {"odf_file": None})
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_CONFIG_PATH = os.path.join(MODULE_PATH, "config.json")
 ODF_TRANSFORM_MODULE_PATH = MODULE_PATH
-reference_stations = pd.read_csv(os.path.join(MODULE_PATH,"reference_stations.csv"))[['station','latitude','longitude']].to_records(index=False)
+reference_stations = pd.read_csv(os.path.join(MODULE_PATH,"reference_stations.csv"))
+reference_stations_position_list = reference_stations[['station','latitude','longitude']].to_records(index=False)
+
 
 def read_config(config_file):
     """Function to load configuration json file and vocabulary file."""
@@ -97,11 +99,11 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
     ds.attrs["geographic_area"] = get_geo_code(
         [ds["longitude"].mean(), ds["latitude"].mean()], polygons
     )
-    nearest_station = get_nearest_station(reference_stations,(ds['latitude'],ds['longitude']),1)
+    nearest_station = get_nearest_station(reference_stations_position_list,(ds['latitude'],ds['longitude']),1)
     if nearest_station:
         ds.attrs["station"] = nearest_station
-    elif ds.attrs('station'):
-        logger.info(f"Station {ds.attrs['station']} [{ds['latitude']}N, {ds['longitude']}E] is missing from the reference_station.")
+    elif ds.attrs.get('station') and ds.attrs.get('station') not in reference_stations['station'].tolist():
+        logger.warning(f"Station {ds.attrs['station']} [{ds['latitude'].mean().values}N, {ds['longitude'].mean().values}E] is missing from the reference_station.")
 
     # Add Vocabulary attributes
     ds = odf_parser.get_vocabulary_attributes(
