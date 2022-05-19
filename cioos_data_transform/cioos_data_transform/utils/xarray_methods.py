@@ -69,9 +69,12 @@ def standardize_attributes_values(attrs, order):
         if value in [None, "", pd.NaT]:
             continue
         if type(value) is pd.Timestamp:
-            value = value.to_pydatetime().isoformat(timespec='milliseconds')
-        elif type(value) is dt.datetime:
-            value = value.isoformat(timespec='milliseconds')
+            value = value.to_pydatetime()
+        if type(value) is dt.datetime:
+            # Convert to UTC if timezone aware
+            if value.tzinfo:
+                value = value.astimezone(dt.timezone.utc)
+            value = value.isoformat(timespec='milliseconds').replace('+00:00','Z')
 
         new_attrs[attr] = value
 
