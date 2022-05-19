@@ -229,6 +229,7 @@ def global_attributes_from_header(ds, odf_header):
             ds.attrs["event_number"] = int(event_number[1])
         else:
             logger.warning(f"Failed to retrieve an event_number in header. Original event_number {ds.attrs['event_number']} isn't just a number")
+            ds.attrs.pop("event_number")
 
     # Search station anywhere within ODF Header
     station = re.search(
