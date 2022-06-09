@@ -201,5 +201,290 @@
         "cruise_number": 97003,
         "station": "Mooring B2",
         "event_number": 51
+    },
+    "CTD_98002_011_1_DN": {
+        "cruise_number": 98002,
+        "station": "NA",
+        "event_number": 11
+    },
+    "CTD_98002_012_1_DN": {
+        "cruise_number": 98002,
+        "station": "RL07",
+        "event_number": 12
+    },
+    "CTD_98002_013_1_DN": {
+        "cruise_number": 98002,
+        "station": "RL08",
+        "event_number": 13
+    },
+    "CTD_98002_015_1_DN": {
+        "cruise_number": 98002,
+        "station": "RL05",
+        "event_number": 15
+    },
+    "CTD_98002_019_1_DN": {
+        "cruise_number": 98002,
+        "station": "LAHAVE01",
+        "event_number": 19
+    },
+    "CTD_98002_023_1_DN": {
+        "cruise_number": 98002,
+        "station": "HL03",
+        "event_number": 23
+    },
+    "CTD_98002_029_1_DN": {
+        "cruise_number": 98002,
+        "station": "HL07",
+        "event_number": 29
+    },
+    "CTD_98002_030_1_DN": {
+        "cruise_number": 98002,
+        "station": "HL08",
+        "event_number": 30
+    },
+    "CTD_98002_032_1_DN": {
+        "cruise_number": 98002,
+        "station": "LEB",
+        "event_number": 32
+    },
+    "CTD_98002_033_1_DN": {
+        "cruise_number": 98002,
+        "station": "GWA00",
+        "event_number": 33
+    },
+    "CTD_98002_034_1_DN": {
+        "cruise_number": 98002,
+        "station": "GWA01",
+        "event_number": 34
+    },
+    "CTD_98002_036_1_DN": {
+        "cruise_number": 98002,
+        "station": "GUL_01",
+        "event_number": 36
+    },
+    "CTD_98002_046_1_DN": {
+        "cruise_number": 98002,
+        "station": "NL01",
+        "event_number": 46
+    },
+    "CTD_98002_054_1_DN": {
+        "cruise_number": 98002,
+        "station": "SIB",
+        "event_number": 54
+    },
+    "CTD_98002_055_1_DN": {
+        "cruise_number": 98002,
+        "station": "EB",
+        "event_number": 55
+    },
+    "CTD_98050_002_1_DN": {
+        "cruise_number": 98050,
+        "station": "LEB",
+        "event_number": 2
+    },
+    "CTD_98050_003_1_DN": {
+        "cruise_number": 98050,
+        "station": "NL02",
+        "event_number": 3
+    },
+    "CTD_98050_004_1_DN": {
+        "cruise_number": 98050,
+        "station": "GWA01",
+        "event_number": 4
+    },
+    "CTD_98050_006_1_DN": {
+        "cruise_number": 98050,
+        "station": "GUL_01",
+        "event_number": 6
+    },
+    "CTD_98050_016_1_DN": {
+        "cruise_number": 98050,
+        "station": "CSL05",
+        "event_number": 16
+    },
+    "CTD_98050_017_1_DN": {
+        "cruise_number": 98050,
+        "station": "CSL04",
+        "event_number": 17
+    },
+    "CTD_98050_023_1_DN": {
+        "cruise_number": 98050,
+        "station": "HL08",
+        "event_number": 23
+    },
+    "CTD_98050_024_1_DN": {
+        "cruise_number": 98050,
+        "station": "RL07",
+        "event_number": 24
+    },
+    "CTD_98050_025_1_DN": {
+        "cruise_number": 98050,
+        "station": "HL06",
+        "event_number": 25
+    },
+    "CTD_98050_029_1_DN": {
+        "cruise_number": 98050,
+        "station": "HL02A",
+        "event_number": 29
+    },
+    "CTD_98050_031_1_DN": {
+        "cruise_number": 98050,
+        "station": "HL03",
+        "event_number": 31
+    },
+    "CTD_98050_036_1_DN": {
+        "cruise_number": 98050,
+        "station": "BBL04",
+        "event_number": 36
+    },
+    "CTD_98050_041_1_DN": {
+        "cruise_number": 98050,
+        "station": "RL02",
+        "event_number": 41
+    },
+    "CTD_98050_043_1_DN": {
+        "cruise_number": 98050,
+        "station": "RL04",
+        "event_number": 43
+    },
+    "CTD_98050_046_1_DN": {
+        "cruise_number": 98050,
+        "station": "NL03",
+        "event_number": 46
+    },
+    "CTD_99003_048_1_DN": {
+        "cruise_number": 99003,
+        "station": "BBL05",
+        "event_number": 48
+    },
+    "CTD_99003_053_1_DN": {
+        "cruise_number": 99003,
+        "station": "BBL06",
+        "event_number": 53
+    },
+    "CTD_99003_079_1_DN": {
+        "cruise_number": 99003,
+        "station": "HL07",
+        "event_number": 79
+    },
+    "CTD_99003_087_1_DN": {
+        "cruise_number": 99003,
+        "station": "HL06",
+        "event_number": 87
+    },
+    "CTD_99003_100_1_DN": {
+        "cruise_number": 99003,
+        "station": "GUL01",
+        "event_number": 100
+    },
+    "CTD_99003_188_1_DN": {
+        "cruise_number": 99003,
+        "station": "CANSO",
+        "event_number": 188
+    },
+    "CTD_99003_197_1_DN": {
+        "cruise_number": 99003,
+        "station": "ED",
+        "event_number": 197
+    },
+    "CTD_99003_198_1_DN": {
+        "cruise_number": 99003,
+        "station": "LEB",
+        "event_number": 198
+    },
+    "CTD_99054_036_1_DN": {
+        "cruise_number": 99054,
+        "station": "BBL06",
+        "event_number": 36
+    },
+    "CTD_99054_050_1_DN": {
+        "cruise_number": 99054,
+        "station": "RL06",
+        "event_number": 50
+    },
+    "CTD_99054_057_1_DN": {
+        "cruise_number": 99054,
+        "station": "RL04",
+        "event_number": 57
+    },
+    "CTD_99054_072_1_DN": {
+        "cruise_number": 99054,
+        "station": "LL09",
+        "event_number": 72
+    },
+    "CTD_99054_118_1_DN": {
+        "cruise_number": 99054,
+        "station": "CSL02",
+        "event_number": 118
+    },
+    "CTD_99054_138_1_DN": {
+        "cruise_number": 99054,
+        "station": "SPB01",
+        "event_number": 138
+    },
+    "CTD_99054_139_1_DN": {
+        "cruise_number": 99054,
+        "station": "SPB02",
+        "event_number": 139
+    },
+    "CTD_99054_145_1_DN": {
+        "cruise_number": 99054,
+        "station": "SPB03",
+        "event_number": 145
+    },
+    "CTD_99054_146_1_DN": {
+        "cruise_number": 99054,
+        "station": "SPB04",
+        "event_number": 146
+    },
+    "CTD_99054_151_1_DN": {
+        "cruise_number": 99054,
+        "station": "SPB05",
+        "event_number": 151
+    },
+    "CTD_99054_152_1_DN": {
+        "cruise_number": 99054,
+        "station": "SPB05.5",
+        "event_number": 152
+    },
+    "CTD_99054_172_1_DN": {
+        "cruise_number": 99054,
+        "station": "SPB10",
+        "event_number": 172
+    },
+    "CTD_99054_173_1_DN": {
+        "cruise_number": 99054,
+        "station": "GUL04",
+        "event_number": 173
+    },
+    "CTD_99054_178_1_DN": {
+        "cruise_number": 99054,
+        "station": "GULD03",
+        "event_number": 178
+    },
+    "CTD_99054_181_1_DN": {
+        "cruise_number": 99054,
+        "station": "GUL01",
+        "event_number": 181
+    },
+    "CTD_99054_183_1_DN": {
+        "cruise_number": 99054,
+        "station": "NA",
+        "event_number": 183
+    },
+    "CTD_99054_187_1_DN": {
+        "cruise_number": 99054,
+        "station": "HL07",
+        "event_number": 187
+    },
+    "CTD_99054_211_1_DN": {
+        "cruise_number": 99054,
+        "station": "HL03",
+        "event_number": 211
+    },
+    "CTD_99054_226_1_DN": {
+        "cruise_number": 99054,
+        "station": "HL02",
+        "event_number": 226
     }
 }
