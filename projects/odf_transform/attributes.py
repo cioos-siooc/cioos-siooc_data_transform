@@ -40,6 +40,8 @@ platform_attributes = ["platform_name", "sdn_platform_urn", "wmo_platform_code"]
 stationless_programs = (
     "Maritime Region Ecosystem Survey"
 )
+station_mapping = {"Prince 5": "Prince5"}
+
 def titleize(text):
     do_not_change = ["AZMP", "(AZMP)", "ADCP", "(ADCP)", "CTD", "a", "the"]
     return " ".join(
@@ -238,8 +240,11 @@ def global_attributes_from_header(ds, odf_header):
     if station and not "station" in ds.attrs and ds.attrs.get("project","") not in stationless_programs:
         station = station[1].strip()
 
+        if station in station_mapping:
+            station = station_mapping[station]
+            
         # Standardize stations with convention AA02, AA2 and AA_02 to AA02
-        if re.match("[A-Za-z]+\_*\d+", station):
+        elif re.match("[A-Za-z]+\_*\d+", station):
             station_items = re.search("([A-Za-z]+)_*(\d+)", station).groups()
             ds.attrs[
                 "station"
