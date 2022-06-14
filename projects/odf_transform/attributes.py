@@ -242,7 +242,7 @@ def global_attributes_from_header(ds, odf_header):
 
         if station in station_mapping:
             station = station_mapping[station]
-            
+
         # Standardize stations with convention AA02, AA2 and AA_02 to AA02
         elif re.match("[A-Za-z]+\_*\d+", station):
             station_items = re.search("([A-Za-z]+)_*(\d+)", station).groups()
@@ -269,7 +269,7 @@ def global_attributes_from_header(ds, odf_header):
     elif ds.attrs.get('program') == "Maritime Region Ecosystem Survey":
         ds.attrs['project'] = f"{ds.attrs.get('program')} {'Summer' if 5 <= ds.attrs['event_start_time'].month <= 9 else 'Winter'}"
         ds.attrs['cruise_name'] = f"{ds.attrs['project']} {ds.attrs['event_start_time'].year}"
-    elif ds.attrs.get('program') == "Atlantic Zone Off-Shore Monitoring Program":
+    elif ds.attrs.get('program') == "Atlantic Zone Off-Shelf Monitoring Program":
         ds.attrs['cruise_name'] = f"{ds.attrs['program']} {ds.attrs['event_start_time'].year}"
 
     # Apply attributes corrections from attribute_correction json
