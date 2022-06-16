@@ -331,4 +331,5 @@ def retrieve_coordinates(ds):
 
 
 def standardize_chief_scientist(name):
+    name = re.sub("Bill Maceachern","William Maceachern", name)
     return re.sub("(^|\s)(d|D)r\.{0,1}", "", name).strip().title()
