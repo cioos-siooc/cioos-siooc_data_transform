@@ -38,7 +38,7 @@ institute_attributes = [
 platform_attributes = ["platform_name", "sdn_platform_urn", "wmo_platform_code"]
 
 stationless_programs = (
-    "Maritime Region Ecosystem Survey"
+    "Maritime Region Ecosystem Survey",
 )
 station_mapping = {"Prince 5": "Prince5"}
 
@@ -241,8 +241,7 @@ def global_attributes_from_header(ds, odf_header):
         station = station[1].strip()
 
         if station in station_mapping:
-            station = station_mapping[station]
-
+            ds.attrs["station"] = station_mapping[station]
         # Standardize stations with convention AA02, AA2 and AA_02 to AA02
         elif re.match("[A-Za-z]+\_*\d+", station):
             station_items = re.search("([A-Za-z]+)_*(\d+)", station).groups()
