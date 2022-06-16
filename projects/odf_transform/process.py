@@ -99,7 +99,7 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
     ds.attrs["geographic_area"] = get_geo_code(
         [ds["longitude"].mean(), ds["latitude"].mean()], polygons
     )
-    MAXIMUM_DISTANCE_NEAREST_STATION_MATCH = 2 #km
+    MAXIMUM_DISTANCE_NEAREST_STATION_MATCH = 3 #km
     nearest_station = get_nearest_station(reference_stations_position_list,(ds['latitude'],ds['longitude']),MAXIMUM_DISTANCE_NEAREST_STATION_MATCH)
     if nearest_station:
         ds.attrs["station"] = nearest_station
