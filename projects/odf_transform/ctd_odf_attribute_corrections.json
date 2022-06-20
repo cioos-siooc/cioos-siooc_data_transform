@@ -70,7 +70,7 @@
     },
     "CTD_95016_18c_3_DN.ODF": {
         "cruise_number": "95016",
-        "station": "AR7W_22",
+        "station": "AR7W22",
         "event_number": "18"
     },
     "CTD_97003_049a_1_DN.ODF": {
@@ -195,7 +195,7 @@
     },
     "CTD_98002_011_1_DN.ODF": {
         "cruise_number": 98002,
-        "station": "NA",
+        "station": null,
         "event_number": 11
     },
     "CTD_98002_012_1_DN.ODF": {
@@ -460,7 +460,7 @@
     },
     "CTD_99054_183_1_DN.ODF": {
         "cruise_number": 99054,
-        "station": "NA",
+        "station": null,
         "event_number": 183
     },
     "CTD_99054_187_1_DN.ODF": {
@@ -730,17 +730,17 @@
     },
     "CTD_HUD2004055_040_1_DN": {
         "cruise_number": "HUD2004055",
-        "station": "SS-B4",
+        "station": "SSB4",
         "event_number": 40
     },
     "CTD_HUD2004055_045_1_DN": {
         "cruise_number": "HUD2004055",
-        "station": "SS-B0",
+        "station": "SSB0",
         "event_number": 45
     },
     "CTD_HUD2004055_046_1_DN": {
         "cruise_number": "HUD2004055",
-        "station": "SS-B2",
+        "station": "SSB2",
         "event_number": 46
     },
     "CTD_HUD2004055_055_1_DN": {
@@ -765,17 +765,17 @@
     },
     "CTD_HUD2005055_071_1_DN": {
         "cruise_number": "HUD2005055",
-        "station": "SS-B4",
+        "station": "SSB4",
         "event_number": 71
     },
     "CTD_HUD2005055_072_1_DN": {
         "cruise_number": "HUD2005055",
-        "station": "SS-E",
+        "station": "SSE",
         "event_number": 72
     },
     "CTD_HUD2005055_076_1_DN": {
         "cruise_number": "HUD2005055",
-        "station": "SS-B2",
+        "station": "SSB2",
         "event_number": 76
     },
     "CTD_HUD2005055_077_1_DN": {
@@ -805,7 +805,7 @@
     },
     "CTD_HUD2005055_149_1_DN": {
         "cruise_number": "HUD2005055",
-        "station": "SS-B0",
+        "station": "SSB0",
         "event_number": 149
     }
 }
