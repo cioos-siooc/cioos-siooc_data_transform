@@ -59,10 +59,9 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
     """Method use to convert odf files to a CIOOS/ERDDAP compliant NetCDF format"""
     if polygons is None:
         polygons = {}
-    odf_file = os.path.basename(odf_path)
-    log = {"odf_file": odf_file}
 
-    # Update submodule LoggerAdapter
+    # Update submodule LoggerAdapter to include the odf_path 
+    log = {"odf_path": odf_path}
     seabird.logger.extra.update(log)
     attributes.logger.extra.update(log)
     odf_parser.logger.extra.update(log)
@@ -145,8 +144,9 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
     # Save dataset to a NetCDF file
     if output_path is None:
         output_path = odf_path + ".nc"
-    if re.search("\{\w*\}", output_path):
-        output_path = eval(f'f"{output_path}"')
+    if re.search("\{|\}", output_path):
+        # if output_path is f-string, evaluate the output_path
+        output_path = os.path.join(eval(f'f"{output_path}"'),os.path.basename(odf_path) + '.nc')
 
     # Add file suffix if present within the config
     if config.get("addFileNameSuffix"):
