@@ -20,22 +20,11 @@ with open(os.path.join(module_path, "attribute_corrections.json")) as f:
     attribute_corrections = json.load(f)
 
 # This could be potentially be replaced by using the NERC Server instead
-reference_vessel = pd.read_csv(
-    os.path.join(module_path, "reference_vessel.csv"),
+reference_platforms = pd.read_csv(
+    os.path.join(module_path, "reference_platforms.csv"),
     dtype={"wmo_platform_code": "string"},
 )
-platform_mapping = {key.lower(): key for key in reference_vessel["platform_name"]}
-
-institute_attributes = [
-    "institution",
-    "institution_fr",
-    "country",
-    "ioc_country_code",
-    "iso_3166_country_code",
-    "ices_edmo_code",
-    "sdn_institution_urn",
-]
-platform_attributes = ["platform_name", "sdn_platform_urn", "wmo_platform_code"]
+platform_mapping = {key.lower(): key for key in reference_platforms["platform_name"]}
 
 stationless_programs = (
     "Maritime Region Ecosystem Survey",
@@ -51,11 +40,11 @@ def titleize(text):
 def match_platform(platform):
     """Review ODF CRUISE_HEADER:PLATFORM and match to closest"""
     platform = re.sub("CCGS_*\s*|CGCB\s*|FRV\s*|NGCC\s*|^_|MV\s*", "", platform).strip()
-    matched_vessel = get_close_matches(platform.lower(), platform_mapping.keys())
-    if matched_vessel:
+    matched_platform = get_close_matches(platform.lower(), platform_mapping.keys())
+    if matched_platform:
         return (
-            reference_vessel[
-                reference_vessel["platform_name"] == platform_mapping[matched_vessel[0]]
+            reference_platforms[
+                reference_platforms["platform_name"] == platform_mapping[matched_platform[0]]
             ]
             .iloc[0]
             .dropna()
