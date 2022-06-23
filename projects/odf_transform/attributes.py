@@ -263,7 +263,7 @@ def global_attributes_from_header(ds, odf_header):
     for attr in ['event_start_time','event_end_time']:
         if ds.attrs.get(attr) not in  (None, pd.NaT) and  type(ds.attrs[attr]) is not datetime:
             logging.warning(f"{attr} failed to be converted to timestamp: {ds.attrs[attr]}")
-        elif ds.attrs[attr]>datetime(1900,1,1):
+        elif ds.attrs[attr] < pd.Timestamp(1900,1,1).tz_localize('UTC'):
             logging.warning(f"{attr} is before 1900-01-01 which is very suspicious")
 
     # Drop empty attributes
