@@ -40,7 +40,6 @@ platform_attributes = ["platform_name", "sdn_platform_urn", "wmo_platform_code"]
 stationless_programs = (
     "Maritime Region Ecosystem Survey",
 )
-station_mapping = {"Prince 5": "Prince5"}
 
 def titleize(text):
     do_not_change = ["AZMP", "(AZMP)", "ADCP", "(ADCP)", "CTD", "a", "the"]
@@ -121,7 +120,6 @@ def global_attributes_from_header(ds, odf_header):
     is_manufacturer_header = False
     ds.attrs["instrument_manufacturer_header"] = ""
     ds.attrs["internal_processing_notes"] = ""
-    ds.attrs["seabird_processing_modules"] = ""
     for history_group in odf_header["HISTORY_HEADER"]:
         # Convert single processes to list
         if type(history_group["PROCESS"]) is str:
@@ -150,7 +148,7 @@ def global_attributes_from_header(ds, odf_header):
                 row,
             ):
                 continue
-            # Add to history
+            # Add to cf history
             ds.attrs["history"] += history_input(row, history_group["CREATION_DATE"])
 
     # Instrument Specific Information
@@ -158,7 +156,7 @@ def global_attributes_from_header(ds, odf_header):
         ds.attrs["instrument"] = get_seabird_instrument_from_header(
             ds.attrs["instrument_manufacturer_header"]
         )
-        ds.attrs["seabid_processing_modules"] = get_seabird_processing_history(
+        ds.attrs["seabird_processing_modules"] = get_seabird_processing_history(
             ds.attrs["instrument_manufacturer_header"]
         )
     elif "INSTRUMENT_HEADER" in odf_header:
@@ -221,9 +219,6 @@ def global_attributes_from_header(ds, odf_header):
         )
 
     ## FIX ODF ATTRIBUTES
-    # Chief scientists
-    ds.attrs["chief_scientist"] = re.sub("\s+(\~|\/)", ",", ds.attrs["chief_scientist"])
-
     # # event_number should be number otherwise get rid of it
     if type(ds.attrs["event_number"]) is not int:
         event_number = re.search(r'\*\* Event[\s\:\#]*(\d+)',"".join(odf_header["original_header"]), re.IGNORECASE)
@@ -240,10 +235,8 @@ def global_attributes_from_header(ds, odf_header):
     if station and not "station" in ds.attrs and ds.attrs.get("project","") not in stationless_programs:
         station = station[1].strip()
 
-        if station in station_mapping:
-            ds.attrs["station"] = station_mapping[station]
         # Standardize stations with convention AA02, AA2 and AA_02 to AA02
-        elif re.match("[A-Za-z]+\_*\d+", station):
+        if re.match("[A-Za-z]+\_*\d+", station):
             station_items = re.search("([A-Za-z]+)_*(\d+)", station).groups()
             ds.attrs[
                 "station"
@@ -281,6 +274,8 @@ def global_attributes_from_header(ds, odf_header):
     for attr in ['event_start_time','event_end_time']:
         if ds.attrs.get(attr) not in  (None, pd.NaT) and  type(ds.attrs[attr]) is not datetime:
             logging.warning(f"{attr} failed to be converted to timestamp: {ds.attrs[attr]}")
+        elif ds.attrs[attr]>datetime(1900,1,1):
+            logging.warning(f"{attr} is before 1900-01-01 which is very suspicious")
 
     # Drop empty attributes
     ds.attrs = {key:value for key,value in ds.attrs.items() if value not in (None,pd.NaT)}
@@ -330,5 +325,5 @@ def retrieve_coordinates(ds):
 
 
 def standardize_chief_scientist(name):
-    name = re.sub("Bill Maceachern","William Maceachern", name)
+    name = re.sub("\s+(\~|\/)", ",", name)
     return re.sub("(^|\s)(d|D)r\.{0,1}", "", name).strip().title()
