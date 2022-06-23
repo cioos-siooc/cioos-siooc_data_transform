@@ -72,7 +72,7 @@ def get_seabird_instrument_from_header(seabird_header):
 def get_sbe_instrument_type(instrument):
     if re.match("SBE\s*(9|16|19|25|37)"):
         return "CTD"
-    logger.warning(f"Unknown instrument typt for {instrument}")
+    logger.warning(f"Unknown instrument type for {instrument}")
 
 
 def get_seabird_processing_history(seabird_header):
