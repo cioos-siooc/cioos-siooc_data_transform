@@ -203,7 +203,7 @@ if __name__ == "__main__":
     config.update({key: value for key, value in args.items() if value})
 
     # Handle Input FIles
-    print("Retrieve files to process")
+    logger.info("Retrieve files to process")
     fileDir = eval(f"f'{config['fileDir']}'")
     if os.path.isfile(fileDir):
         odf_files_list = [fileDir]
@@ -232,17 +232,31 @@ if __name__ == "__main__":
     if config["overwrite"]:
         # overwrite all files
         logger.info(f"Overwrite all {len(odf_files_list)}")
-    elif output_path is None or os.path.isdir(output_path):
-        # Consider file if not netcdf equivalent exist or netcdf is older than odf
+    elif os.path.isfile(output_path):
+        logger.info(f"Overwrite file: {output_path}")
+    else:
+        # Get directory where all the files should be outputted
+        if output_path is None:
+            search_output_path = fileDir
+        else:
+            # Start at head of a fstring path or just the output_path
+            search_output_path = output_path.split('{',1)[0]
+        
+        # Get files available in output_path
+        search_output_path_files = glob.glob(search_output_path + '/**/*.ODF.nc',recursive=True)
+        outputted_files = {os.path.basename(file): {"path":file, "last_modified": os.path.getmtime(file)} for file in search_output_path_files}
+
+        # Output new file if not netcdf equivalent exist or netcdf is older than odf
         overwrite_list = []
         new_list = []
         for file in odf_files_list:
             filename = os.path.basename(file)
-            ncfile = f"{file}.nc" if output_path is None else os.path.join(output_path, filename + config["addFileNameSuffix"] + ".nc")
+            ncfile = f"{filename + config['addFileNameSuffix']}.nc"
 
-            if not os.path.exists(ncfile):
+            if ncfile not in outputted_files:
                 new_list.append(file)
-            elif os.path.getmtime(ncfile) < os.path.getmtime(file):
+            elif outputted_files[ncfile]["last_modified"] < os.path.getmtime(file):
+                # source file is more recent than the corresponding netcdf
                 overwrite_list.append(file)
         logger.info(
             f"Create {len(new_list)}/{len(odf_files_list)} files - "
@@ -250,11 +264,6 @@ if __name__ == "__main__":
         )
         odf_files_list = overwrite_list
         odf_files_list += new_list
-
-    # No file to convert
-    if odf_files_list == []:
-        logger.info("No file to convert")
-        quit()
 
     # Get Polygon regions
     polygons = read_geojson_file_list(config["geojsonFileList"])
@@ -267,7 +276,11 @@ if __name__ == "__main__":
     else:
         inputs = [(file, polygons, output_path, config) for file in odf_files_list]
 
-    logger.info(f"{len(inputs)} files will be converted")
+    if inputs:
+        logger.info(f"{len(inputs)} files will be converted")
+    else:
+        logger.info("No file to convert")
+        quit()
 
     tqdm_dict = {
         "total": len(inputs),
