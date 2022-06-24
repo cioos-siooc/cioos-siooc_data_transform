@@ -2,7 +2,7 @@ name: Test ODF to Netcdf conversion
 
 on:
   push:
-    branches-ignore: [master]
+    branches-ignore: [master, dev]
 
   pull_request:
 
@@ -13,9 +13,14 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: "3.x" # Version range or exact version of a Python version to use, using SemVer's version range syntax
-          architecture: "x64" # optional x64 or x86. Defaults to x64 if not specified
-      - run: python -m pip install -e cioos_data_transform
-      - run: python -m pip install -e projects
-      - working-directory: projects/
-        run: python odf_transform -i ./odf_transform/sample_data
+          python-version: "3.x" 
+          architecture: "x64"
+      - name: Install Dependencies and Packages
+        run: |
+          python -m pip install -e cioos_data_transform
+          python -m pip install -e projects
+          python -m pip install pytest
+
+      - name: Run Unittests
+        run: |
+          python -m pytest --import-mode=append test/
