@@ -39,7 +39,7 @@ def titleize(text):
 
 def match_platform(platform):
     """Review ODF CRUISE_HEADER:PLATFORM and match to closest"""
-    platform = re.sub("CCGS_*\s*|CGCB\s*|FRV\s*|NGCC\s*|^_|MV\s*", "", platform).strip()
+    platform = re.sub(r"CCGS_*\s*|CGCB\s*|FRV\s*|NGCC\s*|^_|MV\s*", "", platform).strip()
     matched_platform = get_close_matches(platform.lower(), platform_mapping.keys())
     if matched_platform:
         return (
@@ -133,7 +133,7 @@ def global_attributes_from_header(ds, odf_header):
 
             # Ignore some specific lines within the history (mostly seabird header ones)
             if re.match(
-                "^(\#\s*\<.*|\*\* .*|\# (name|span|nquan|nvalues|unit|interval|start_time|bad_flag)|\* |\*END\*)",
+                r"^(\#\s*\<.*|\*\* .*|\# (name|span|nquan|nvalues|unit|interval|start_time|bad_flag)|\* |\*END\*)",
                 row,
             ):
                 continue
@@ -161,12 +161,12 @@ def global_attributes_from_header(ds, odf_header):
         ds.attrs["instrument_serial_number"] = ""
 
     if re.search(
-        "(SBE\s*(9|16|19|25|37))|CTD|Guildline|GUILDLN",
+        r"(SBE\s*(9|16|19|25|37))|CTD|Guildline|GUILDLN",
         ds.attrs["instrument"],
         re.IGNORECASE,
     ):
         ds.attrs["instrument_type"] = "CTD"
-    elif re.search("Bathythermograph Manual", ds.attrs["instrument"]):
+    elif re.search(r"Bathythermograph Manual", ds.attrs["instrument"]):
         ds.attrs["instrument_type"] = "BT"
     else:
         logger.warning(
@@ -219,19 +219,19 @@ def global_attributes_from_header(ds, odf_header):
 
     # Search station anywhere within ODF Header
     station = re.search(
-        "station[\w\s]*:\s*(\w*)", "".join(odf_header["original_header"]), re.IGNORECASE
+        r"station[\w\s]*:\s*(\w*)", "".join(odf_header["original_header"]), re.IGNORECASE
     )
     if station and not "station" in ds.attrs and ds.attrs.get("project","") not in stationless_programs:
         station = station[1].strip()
 
         # Standardize stations with convention AA02, AA2 and AA_02 to AA02
-        if re.match("[A-Za-z]+\_*\d+", station):
-            station_items = re.search("([A-Za-z]+)_*(\d+)", station).groups()
+        if re.match(r"[A-Za-z]+\_*\d+", station):
+            station_items = re.search(r"([A-Za-z]+)_*(\d+)", station).groups()
             ds.attrs[
                 "station"
             ] = f"{station_items[0].upper()}{int(station_items[1]):02g}"
         # Station is just number convert to string with 001
-        elif re.match("^[0-9]+$", station):
+        elif re.match(r"^[0-9]+$", station):
             # Ignore station that are actually the event_number
             if int(station)!=ds.attrs.get('event_number'):
                 logger.warning(f'Station name is suspicious since its just a number: {station}')
@@ -314,5 +314,5 @@ def retrieve_coordinates(ds):
 
 
 def standardize_chief_scientist(name):
-    name = re.sub("\s+(\~|\/)", ",", name)
-    return re.sub("(^|\s)(d|D)r\.{0,1}", "", name).strip().title()
+    name = re.sub(r"\s+(\~|\/)", ",", name)
+    return re.sub(r"(^|\s)(d|D)r\.{0,1}", "", name).strip().title()

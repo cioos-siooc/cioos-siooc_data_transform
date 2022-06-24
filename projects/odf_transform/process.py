@@ -102,7 +102,7 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
     nearest_station = get_nearest_station(reference_stations_position_list,(ds['latitude'],ds['longitude']),MAXIMUM_DISTANCE_NEAREST_STATION_MATCH)
     if nearest_station:
         ds.attrs["station"] = nearest_station
-    elif ds.attrs.get('station') and ds.attrs.get('station') not in reference_stations['station'].tolist() and re.match("[^0-9]",ds.attrs['station']):
+    elif ds.attrs.get('station') and ds.attrs.get('station') not in reference_stations['station'].tolist() and re.match(r"[^0-9]",ds.attrs['station']):
         logger.warning(f"Station {ds.attrs['station']} [{ds['latitude'].mean().values}N, {ds['longitude'].mean().values}E] is missing from the reference_station.")
 
     # Add Vocabulary attributes
@@ -144,13 +144,13 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
     # Save dataset to a NetCDF file
     if output_path is None:
         output_path = odf_path + ".nc"
-    if re.search("\{|\}", output_path):
+    if re.search(r"\{|\}", output_path):
         # if output_path is f-string, evaluate the output_path
         output_path = os.path.join(eval(f'f"{output_path}"'),os.path.basename(odf_path) + '.nc')
 
     # Add file suffix if present within the config
     if config.get("addFileNameSuffix"):
-        output_path = re.sub("\.nc$", config["addFileNameSuffix"] + ".nc", output_path)
+        output_path = re.sub(r"\.nc$", config["addFileNameSuffix"] + ".nc", output_path)
 
     # Review if output path folders exists if not create them
     dirname = os.path.dirname(output_path)

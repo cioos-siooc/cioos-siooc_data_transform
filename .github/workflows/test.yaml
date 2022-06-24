@@ -1,9 +1,6 @@
 name: Test ODF to Netcdf conversion
 
 on:
-  push:
-    branches-ignore: [master, dev]
-
   pull_request:
 
 jobs:

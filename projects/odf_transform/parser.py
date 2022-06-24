@@ -41,7 +41,7 @@ class GF3Code:
     """
 
     def __init__(self, code):
-        self.code = re.search("^[^_]*", code)[0]
+        self.code = re.search(r"^[^_]*", code)[0]
         index = re.search(r"\d+$", code)
         self.index = int(index[0]) if index else 1
         self.name = self.code + ("_%02g" % self.index if self.index else "")
@@ -52,12 +52,12 @@ def convert_odf_time(time_string, timezone=timezone.utc):
     if time_string == "17-NOV-1858 00:00:00.00":
         return pd.NaT
     
-    dt = pd.Timedelta("1min") if re.search(":60.0+", time_string) else pd.Timedelta(0)
+    dt = pd.Timedelta("1min") if re.search(r":60.0+", time_string) else pd.Timedelta(0)
     if dt.total_seconds()>0:
-        time_string = re.sub(':60.0+',':00.00',time_string)
-    if re.match('\d+-\w\w\w-\d\d\d\d\s*\d+\:\d\d\:\d\d\.\d+',time_string):
+        time_string = re.sub(r':60.0+',':00.00',time_string)
+    if re.match(r'\d+-\w\w\w-\d\d\d\d\s*\d+\:\d\d\:\d\d\.\d+',time_string):
         t = datetime.strptime(time_string,r'%d-%b-%Y %H:%M:%S.%f') + dt
-    elif re.match('\d\d-\w\w\w-\d\d\d\d\s*\d\d\:\d\d\:\d\d',time_string):
+    elif re.match(r'\d\d-\w\w\w-\d\d\d\d\s*\d\d\:\d\d\:\d\d',time_string):
         t = datetime.strptime(time_string,r'%d-%b-%Y %H:%M:%S') + dt
     else:
         logger.warning(f'Unknown time format: {time_string}')
@@ -92,7 +92,7 @@ def read(filename, encoding_format="Windows-1252"):
             d. Each section items are grouped as a dictionary
             e. dictionary items are converted to datetime (deactivated), string, integer or float format.
         2. Read the data  following the header with Pandas.read_csv() method
-            a. Use defined separator  to distinguish columns (default "\s+").
+            a. Use defined separator  to distinguish columns (default r"\s+").
             b. Convert each column of the pandas data frame to the matching format specified in
             the TYPE attribute of the ODF associated PARAMETER_HEADER
 
@@ -131,15 +131,15 @@ def read(filename, encoding_format="Windows-1252"):
                     key, value = [item.strip() for item in line.split("=", 1)]
 
                     # Drop quotes and comma
-                    value = re.sub("^'|,$|',$|'$", "", value)
+                    value = re.sub(r"^'|,$|',$|'$", "", value)
 
                     # Convert numerical values to float and integers
-                    if re.match("[-+]{0,1}\d+\.\d+$", value):
+                    if re.match(r"[-+]{0,1}\d+\.\d+$", value):
                         value = float(value)
-                    elif re.match("[-+]{0,1}\d+$", value):
+                    elif re.match(r"[-+]{0,1}\d+$", value):
                         value = int(value)
                     elif re.match(
-                        "^\d{1,2}-\w\w\w\-\d\d\d\d\s*\d\d:\d\d:\d\d\.*\d*$", value
+                        r"^\d{1,2}-\w\w\w\-\d\d\d\d\s*\d\d:\d\d:\d\d\.*\d*$", value
                     ):
                         try:
                             value = convert_odf_time(value)
@@ -559,7 +559,7 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
                 # Generate new variable by either copying it or applying specified function to the initial variable
                 if row["apply_function"]:
                     input_args = []
-                    extra_args = re.search("lambda (.*):", row["apply_function"])
+                    extra_args = re.search(r"lambda (.*):", row["apply_function"])
                     if extra_args:
                         for item in extra_args[1].split(","):
                             if item in var:

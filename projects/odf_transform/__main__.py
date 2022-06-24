@@ -93,7 +93,7 @@ def input_from_program_logs(program_log_path, files, polygons, output_path, conf
         try:
             df_log = pd.read_csv(os.path.join(program_log_path, log))
         except:
-            logger.warning(f"Failed to parse program log {program_log_path}\{log}")
+            logger.warning(f"Failed to parse program log {os.path.join(program_log_path,log)}")
             continue
 
         # Extract the program name from the file name

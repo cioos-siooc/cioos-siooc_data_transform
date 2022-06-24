@@ -6,10 +6,6 @@ import re
 import odf_transform.process
 
 import xarray as xr
-def test_attributes(ref, test):
-    for key, value in ref.items():
-        if str(test[key]) != str(value):
-            raise RuntimeError(f"Reference attribute {key}: {value} !=  Test {key}: {test[key]}")
 
 class TestBIOODFConversion(unittest.TestCase):
     def test_bio_odf_sample_data_conversion(self):

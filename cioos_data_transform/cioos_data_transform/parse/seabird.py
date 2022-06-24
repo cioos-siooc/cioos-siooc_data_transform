@@ -61,7 +61,7 @@ seabird_to_bodc = {
 def get_seabird_instrument_from_header(seabird_header):
     """ Retrieve main instrument model from Sea-Bird CNV header"""
     instrument = re.findall(
-        "\* (?:Sea\-Bird ){0,1}SBE (?P<sampler>\d[^\s]*)", seabird_header
+        r"\* (?:Sea\-Bird ){0,1}SBE (?P<sampler>\d[^\s]*)", seabird_header
     )
     if instrument:
         return f"Sea-Bird SBE {''.join(instrument)}"
@@ -70,14 +70,14 @@ def get_seabird_instrument_from_header(seabird_header):
 
 
 def get_sbe_instrument_type(instrument):
-    if re.match("SBE\s*(9|16|19|25|37)"):
+    if re.match(r"SBE\s*(9|16|19|25|37)"):
         return "CTD"
     logger.warning(f"Unknown instrument type for {instrument}")
 
 
 def get_seabird_processing_history(seabird_header):
     if "# datcnv" in seabird_header:
-        sbe_hist = "\# (datcnv|filter|align|celltm|loopedit|derive|Derive|binavg|split|strip|section|wild|window).*"
+        sbe_hist = r"\# (datcnv|filter|align|celltm|loopedit|derive|Derive|binavg|split|strip|section|wild|window).*"
         return "\n".join(
             [line for line in seabird_header.split("\n") if re.match(sbe_hist, line)]
         )
@@ -94,7 +94,7 @@ def update_attributes_from_seabird_header(
 
     # Bin Averaged
     binavg = re.search(
-        "\# binavg_bintype \= (?P<bintype>.*)\n\# binavg_binsize \= (?P<binsize>\d+)\n",
+        r"\# binavg_bintype \= (?P<bintype>.*)\n\# binavg_binsize \= (?P<binsize>\d+)\n",
         seabird_header,
     )
     if binavg:
@@ -126,10 +126,10 @@ def update_attributes_from_seabird_header(
                 ds[var].attrs["cell_method"] = f"{binvar}: mean (interval: {bin_str})"
 
     # Manual inputs
-    manual_inputs = re.findall("\*\* (?P<key>.*): (?P<value>.*)\n", seabird_header)
+    manual_inputs = re.findall(r"\*\* (?P<key>.*): (?P<value>.*)\n", seabird_header)
     if parse_manual_inputs:
         for key, value in manual_inputs:
-            ds.attrs[key.replace(" ", "_").lower()] = value
+            ds.attrs[key.replace(r" ", r"_").lower()] = value
 
     return ds
 
@@ -138,9 +138,9 @@ def generate_instruments_variables_from_xml(ds, seabird_header):
 
     # Retrieve Sensors xml section within seabird header
     calibration_xml = re.sub(
-        "\n\#\s",
-        "\n",
-        re.search("\<Sensors .+\<\/Sensors\>", seabird_header, re.DOTALL)[0],
+        r"\n\#\s",
+        r"\n",
+        re.search(r"\<Sensors .+\<\/Sensors\>", seabird_header, re.DOTALL)[0],
     )
 
     # Read XML and commented lines, drop encoding line
@@ -151,7 +151,7 @@ def generate_instruments_variables_from_xml(ds, seabird_header):
         return ds, {}
 
     sensors_comments = re.findall(
-        "\s*\<!--\s*(Frequency \d+|A/D voltage \d+|.* voltage|Count){1}, (.*)-->\n",
+        r"\s*\<!--\s*(Frequency \d+|A/D voltage \d+|.* voltage|Count){1}, (.*)-->\n",
         calibration_xml,
     )
     # Consider only channels with sensor mounted
@@ -177,19 +177,19 @@ def generate_instruments_variables_from_xml(ds, seabird_header):
         # Define senor variable name
         if "UserPolynomial" in sensor_key and attrs.get("SensorName"):
             sensor_name = attrs.pop("SensorName").strip()
-            sensor_var_name = re.sub("[^\d\w]+", "_", sensor_name)
+            sensor_var_name = re.sub(r"[^\d\w]+", "_", sensor_name)
         else:
             sensor_var_name = sensor_key
             sensor_name = description.strip()
 
         if "Oxygen" in sensor_name:
-            subsensors = re.search("Current|Temp|Phase|Concentration", description)
+            subsensors = re.search(r"Current|Temp|Phase|Concentration", description)
             if subsensors:
                 sensor_var_name += "_" + subsensors[0]
 
         # Add trailing number if present
-        if re.search(", \d+", sensor_name):
-            sensor_number = int(re.search(", (\d+)", sensor_name)[1])
+        if re.search(r", \d+", sensor_name):
+            sensor_number = int(re.search(r", (\d+)", sensor_name)[1])
             sensor_var_name += f"_{sensor_number}"
         else:
             sensor_number = 1
@@ -220,7 +220,7 @@ def generate_instruments_variables_from_xml(ds, seabird_header):
 
 def generate_instruments_variables_from_sensor(ds, seabird_header):
     """Parse older Seabird Header sensor information and generate instrument variables"""
-    sensors = re.findall("\# sensor (?P<id>\d+) = (?P<text>.*)\n", seabird_header)
+    sensors = re.findall(r"\# sensor (?P<id>\d+) = (?P<text>.*)\n", seabird_header)
     for id, sensor in sensors:
         if "Voltage" in sensor:
             sensor_items = sensor.split(",", 1)
@@ -231,7 +231,7 @@ def generate_instruments_variables_from_sensor(ds, seabird_header):
             }
         else:
             attrs_dict = re.search(
-                "(?P<channel>Frequency\s+\d+|Stored Volt\s+\d+|Extrnl Volt  \d+)\s+(?P<sensor_description>.*)",
+                r"(?P<channel>Frequency\s+\d+|Stored Volt\s+\d+|Extrnl Volt  \d+)\s+(?P<sensor_description>.*)",
                 sensor,
             )
             if attrs_dict is None:
