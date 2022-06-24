@@ -102,7 +102,7 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
     nearest_station = get_nearest_station(reference_stations_position_list,(ds['latitude'],ds['longitude']),MAXIMUM_DISTANCE_NEAREST_STATION_MATCH)
     if nearest_station:
         ds.attrs["station"] = nearest_station
-    elif ds.attrs.get('station') and ds.attrs.get('station') not in reference_stations['station'].tolist():
+    elif ds.attrs.get('station') and ds.attrs.get('station') not in reference_stations['station'].tolist() and re.match("[^0-9]",ds.attrs['station']):
         logger.warning(f"Station {ds.attrs['station']} [{ds['latitude'].mean().values}N, {ds['longitude'].mean().values}E] is missing from the reference_station.")
 
     # Add Vocabulary attributes

@@ -234,7 +234,7 @@ def global_attributes_from_header(ds, odf_header):
         elif re.match("^[0-9]+$", station):
             # Ignore station that are actually the event_number
             if int(station)!=ds.attrs.get('event_number'):
-                logger.warning(f'Station is suspicious by been just a number: {station}')
+                logger.warning(f'Station name is suspicious since its just a number: {station}')
                 ds.attrs["station"] = f"{int(station):03g}"
         else:
             ds.attrs["station"] = station
