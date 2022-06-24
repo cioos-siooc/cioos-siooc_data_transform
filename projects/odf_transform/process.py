@@ -170,6 +170,9 @@ def convert_odf_file(input, polygons=polygons, output_path=None, config=config):
     """Method to convert odf file with a tuple input that expect the format (file, polygons, output_path, config)"""
     if type(input) == tuple:
         file, polygons, output_path, config = input
+    else:
+        file = input
+        
     logger.extra["odf_file"] = os.path.basename(file)
     try:
         write_ctd_ncfile(
