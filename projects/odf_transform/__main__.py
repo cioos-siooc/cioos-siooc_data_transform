@@ -1,18 +1,18 @@
-__version__ = "0.1.0"
-from odf_transform.process import *
-
-import os
-import glob
 import argparse
-
+import glob
+import os
 from multiprocessing import Pool
+
+import pandas as pd
 from tqdm import tqdm
+
+from odf_transform.process import (convert_odf_file, read_config,
+                                   read_geojson_file_list)
 
 tqdm.pandas()
 
-import re
-
 import logging
+import re
 
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_CONFIG_PATH = os.path.join(MODULE_PATH, "config.json")
@@ -54,17 +54,17 @@ if __name__ == "__main__":
 def input_from_program_logs(program_log_path, files, polygons, output_path, config):
     """Generate input based on the program logs available
 
-    input_from_program_logs compile all the different program logs available within the directory 
-    and match each files that neeeds a conversion to the appropriate mission. For each mission, 
+    input_from_program_logs compile all the different program logs available within the directory
+    and match each files that neeeds a conversion to the appropriate mission. For each mission,
     it updates the configuration global attributes to include any extra attributes available within the log.
 
     A list of inputs is then generated which can be run by the ODF conversion tool..
 
     Args:
-        program_log_path (string): 
+        program_log_path (string):
         files (list): List of files
         polygons (dict): dictionary of geojson regions
-        output_path (str): path to output files to 
+        output_path (str): path to output files to
         config (dict)): [description]
 
     Returns:
@@ -93,7 +93,9 @@ def input_from_program_logs(program_log_path, files, polygons, output_path, conf
         try:
             df_log = pd.read_csv(os.path.join(program_log_path, log))
         except:
-            logger.warning(f"Failed to parse program log {os.path.join(program_log_path,log)}")
+            logger.warning(
+                f"Failed to parse program log {os.path.join(program_log_path,log)}"
+            )
             continue
 
         # Extract the program name from the file name
@@ -190,7 +192,10 @@ if __name__ == "__main__":
         required=False,
     )
     parser.add_argument(
-        "--verbose", action="store_true", help="Output INFO to console", required=False,
+        "--verbose",
+        action="store_true",
+        help="Output INFO to console",
+        required=False,
     )
     args = parser.parse_args().__dict__
 
@@ -240,11 +245,20 @@ if __name__ == "__main__":
             search_output_path = fileDir
         else:
             # Start at head of a fstring path or just the output_path
-            search_output_path = output_path.split('{',1)[0]
-        
+            search_output_path = output_path.split("{", 1)[0]
+
         # Get files available in output_path
-        search_output_path_files = glob.glob(search_output_path + '/**/*.ODF.nc',recursive=True)
-        outputted_files = {os.path.basename(file): {"path":file, "last_modified": os.path.getmtime(file)} for file in search_output_path_files}
+        search_output_path_files = glob.glob(
+            f"{search_output_path}/**/*.ODF.nc", recursive=True
+        )
+
+        outputted_files = {
+            os.path.basename(file): {
+                "path": file,
+                "last_modified": os.path.getmtime(file),
+            }
+            for file in search_output_path_files
+        }
 
         # Output new file if not netcdf equivalent exist or netcdf is older than odf
         overwrite_list = []
@@ -271,7 +285,11 @@ if __name__ == "__main__":
     # Generate inputs
     if config["program_logs_path"]:
         inputs = input_from_program_logs(
-            config["program_logs_path"], odf_files_list, polygons, output_path, config,
+            config["program_logs_path"],
+            odf_files_list,
+            polygons,
+            output_path,
+            config,
         )
     else:
         inputs = [(file, polygons, output_path, config) for file in odf_files_list]
@@ -297,4 +315,3 @@ if __name__ == "__main__":
         print("Run ODF Conversion")
         for item in tqdm(inputs, **tqdm_dict):
             convert_odf_file(item)
-

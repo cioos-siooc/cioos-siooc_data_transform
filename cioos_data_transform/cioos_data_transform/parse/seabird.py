@@ -1,12 +1,12 @@
 """Module that regroups tools used to integrate data from seabird instruments."""
-import re
-import xmltodict
+import difflib
 import json
+import logging
+import re
+from xml.parsers.expat import ExpatError
 
 import pandas as pd
-import difflib
-from xml.parsers.expat import ExpatError
-import logging
+import xmltodict
 
 logger = logging.getLogger(__name__)
 
@@ -59,14 +59,12 @@ seabird_to_bodc = {
 
 
 def get_seabird_instrument_from_header(seabird_header):
-    """ Retrieve main instrument model from Sea-Bird CNV header"""
+    """Retrieve main instrument model from Sea-Bird CNV header"""
     instrument = re.findall(
         r"\* (?:Sea\-Bird ){0,1}SBE (?P<sampler>\d[^\s]*)", seabird_header
     )
     if instrument:
         return f"Sea-Bird SBE {''.join(instrument)}"
-    else:
-        None
 
 
 def get_sbe_instrument_type(instrument):
@@ -81,9 +79,7 @@ def get_seabird_processing_history(seabird_header):
         return "\n".join(
             [line for line in seabird_header.split("\n") if re.match(sbe_hist, line)]
         )
-    else:
-        logger.warning("Failed to retrieve Seabird Processing Modules history")
-        return None
+    logger.warning("Failed to retrieve Seabird Processing Modules history")
 
 
 def update_attributes_from_seabird_header(

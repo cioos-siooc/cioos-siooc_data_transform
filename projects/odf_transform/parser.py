@@ -3,19 +3,15 @@ odf_parser is a module that regroup a different set of tools used to parse the O
 and developped by the DFO offices BIO and MLI.
 """
 
+import logging
+import os
 import re
-
-import pandas as pd
-import numpy as np
-import xarray as xr
-
 from datetime import datetime, timezone
 
-import os
 import gsw
-
-
-import logging
+import numpy as np
+import pandas as pd
+import xarray as xr
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +33,7 @@ original_prefix_var_attribute = "original_"
 
 class GF3Code:
     """
-    ODF GF3 Class split terms in their different components and standardize the convention (CODE_XX).  
+    ODF GF3 Class split terms in their different components and standardize the convention (CODE_XX).
     """
 
     def __init__(self, code):
@@ -51,17 +47,17 @@ def convert_odf_time(time_string, timezone=timezone.utc):
     """Convert ODF timestamps to a datetime object"""
     if time_string == "17-NOV-1858 00:00:00.00":
         return pd.NaT
-    
+
     dt = pd.Timedelta("1min") if re.search(r":60.0+", time_string) else pd.Timedelta(0)
-    if dt.total_seconds()>0:
-        time_string = re.sub(r':60.0+',':00.00',time_string)
-    if re.match(r'\d+-\w\w\w-\d\d\d\d\s*\d+\:\d\d\:\d\d\.\d+',time_string):
-        t = datetime.strptime(time_string,r'%d-%b-%Y %H:%M:%S.%f') + dt
-    elif re.match(r'\d\d-\w\w\w-\d\d\d\d\s*\d\d\:\d\d\:\d\d',time_string):
-        t = datetime.strptime(time_string,r'%d-%b-%Y %H:%M:%S') + dt
+    if dt.total_seconds() > 0:
+        time_string = re.sub(r":60.0+", ":00.00", time_string)
+    if re.match(r"\d+-\w\w\w-\d\d\d\d\s*\d+\:\d\d\:\d\d\.\d+", time_string):
+        t = datetime.strptime(time_string, r"%d-%b-%Y %H:%M:%S.%f") + dt
+    elif re.match(r"\d\d-\w\w\w-\d\d\d\d\s*\d\d\:\d\d\:\d\d", time_string):
+        t = datetime.strptime(time_string, r"%d-%b-%Y %H:%M:%S") + dt
     else:
-        logger.warning(f'Unknown time format: {time_string}')
-        t = pd.to_datetime(time_string).to_pydatetime() + dt 
+        logger.warning(f"Unknown time format: {time_string}")
+        t = pd.to_datetime(time_string).to_pydatetime() + dt
     return t.replace(tzinfo=timezone)
 
 
@@ -631,4 +627,3 @@ def standardize_odf_units(unit_string):
         if re.match(r"\(none\)|none|dimensionless", unit_string):
             unit_string = "none"
     return unit_string
-

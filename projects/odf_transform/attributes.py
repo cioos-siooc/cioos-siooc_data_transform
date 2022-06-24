@@ -1,16 +1,16 @@
-from datetime import datetime
-import pandas as pd
-import re
 import json
+import logging
 import os
+import re
+from datetime import datetime
+from difflib import get_close_matches
 
-from cioos_data_transform.utils.xarray_methods import history_input
+import pandas as pd
 from cioos_data_transform.parse.seabird import (
     get_seabird_instrument_from_header,
     get_seabird_processing_history,
 )
-from difflib import get_close_matches
-import logging
+from cioos_data_transform.utils.xarray_methods import history_input
 
 logger = logging.getLogger(__name__)
 
@@ -26,9 +26,8 @@ reference_platforms = pd.read_csv(
 )
 platform_mapping = {key.lower(): key for key in reference_platforms["platform_name"]}
 
-stationless_programs = (
-    "Maritime Region Ecosystem Survey",
-)
+stationless_programs = ("Maritime Region Ecosystem Survey",)
+
 
 def titleize(text):
     do_not_change = ["AZMP", "(AZMP)", "ADCP", "(ADCP)", "CTD", "a", "the"]
@@ -39,12 +38,15 @@ def titleize(text):
 
 def match_platform(platform):
     """Review ODF CRUISE_HEADER:PLATFORM and match to closest"""
-    platform = re.sub(r"CCGS_*\s*|CGCB\s*|FRV\s*|NGCC\s*|^_|MV\s*", "", platform).strip()
+    platform = re.sub(
+        r"CCGS_*\s*|CGCB\s*|FRV\s*|NGCC\s*|^_|MV\s*", "", platform
+    ).strip()
     matched_platform = get_close_matches(platform.lower(), platform_mapping.keys())
     if matched_platform:
         return (
             reference_platforms[
-                reference_platforms["platform_name"] == platform_mapping[matched_platform[0]]
+                reference_platforms["platform_name"]
+                == platform_mapping[matched_platform[0]]
             ]
             .iloc[0]
             .dropna()
@@ -210,18 +212,30 @@ def global_attributes_from_header(ds, odf_header):
     ## FIX ODF ATTRIBUTES
     # # event_number should be number otherwise get rid of it
     if type(ds.attrs["event_number"]) is not int:
-        event_number = re.search(r'\*\* Event[\s\:\#]*(\d+)',"".join(odf_header["original_header"]), re.IGNORECASE)
+        event_number = re.search(
+            r"\*\* Event[\s\:\#]*(\d+)",
+            "".join(odf_header["original_header"]),
+            re.IGNORECASE,
+        )
         if event_number:
             ds.attrs["event_number"] = int(event_number[1])
         else:
-            logger.warning(f"Failed to retrieve an event_number in header. Original event_number {ds.attrs['event_number']} isn't just a number")
+            logger.warning(
+                f"Failed to retrieve an event_number in header. Original event_number {ds.attrs['event_number']} isn't just a number"
+            )
             ds.attrs.pop("event_number")
 
     # Search station anywhere within ODF Header
     station = re.search(
-        r"station[\w\s]*:\s*(\w*)", "".join(odf_header["original_header"]), re.IGNORECASE
+        r"station[\w\s]*:\s*(\w*)",
+        "".join(odf_header["original_header"]),
+        re.IGNORECASE,
     )
-    if station and not "station" in ds.attrs and ds.attrs.get("project","") not in stationless_programs:
+    if (
+        station
+        and not "station" in ds.attrs
+        and ds.attrs.get("project", "") not in stationless_programs
+    ):
         station = station[1].strip()
 
         # Standardize stations with convention AA02, AA2 and AA_02 to AA02
@@ -233,25 +247,37 @@ def global_attributes_from_header(ds, odf_header):
         # Station is just number convert to string with 001
         elif re.match(r"^[0-9]+$", station):
             # Ignore station that are actually the event_number
-            if int(station)!=ds.attrs.get('event_number'):
-                logger.warning(f'Station name is suspicious since its just a number: {station}')
+            if int(station) != ds.attrs.get("event_number"):
+                logger.warning(
+                    f"Station name is suspicious since its just a number: {station}"
+                )
                 ds.attrs["station"] = f"{int(station):03g}"
         else:
             ds.attrs["station"] = station
 
     # Standardize project and cruise_name (AZMP, AZOMP and MARES)
-    if ds.attrs.get('program') == "Atlantic Zone Monitoring Program":
-        if ds.attrs.get('project') is None:
-            ds.attrs['project'] = f"{ds.attrs.get('program')} {'Spring' if 1 <= ds.attrs['event_start_time'].month <= 7 else 'Fall'}"
-            ds.attrs['cruise_name'] = f"{ds.attrs['project']} {ds.attrs['event_start_time'].year}"
-        elif 'cruise_name' in ds.attrs:
+    if ds.attrs.get("program") == "Atlantic Zone Monitoring Program":
+        if ds.attrs.get("project") is None:
+            ds.attrs[
+                "project"
+            ] = f"{ds.attrs.get('program')} {'Spring' if 1 <= ds.attrs['event_start_time'].month <= 7 else 'Fall'}"
+            ds.attrs[
+                "cruise_name"
+            ] = f"{ds.attrs['project']} {ds.attrs['event_start_time'].year}"
+        elif "cruise_name" in ds.attrs:
             # Ignore cruise_name for station specific AZMP projects
-            ds.attrs.pop('cruise_name')
-    elif ds.attrs.get('program') == "Maritime Region Ecosystem Survey":
-        ds.attrs['project'] = f"{ds.attrs.get('program')} {'Summer' if 5 <= ds.attrs['event_start_time'].month <= 9 else 'Winter'}"
-        ds.attrs['cruise_name'] = f"{ds.attrs['project']} {ds.attrs['event_start_time'].year}"
-    elif ds.attrs.get('program') == "Atlantic Zone Off-Shelf Monitoring Program":
-        ds.attrs['cruise_name'] = f"{ds.attrs['program']} {ds.attrs['event_start_time'].year}"
+            ds.attrs.pop("cruise_name")
+    elif ds.attrs.get("program") == "Maritime Region Ecosystem Survey":
+        ds.attrs[
+            "project"
+        ] = f"{ds.attrs.get('program')} {'Summer' if 5 <= ds.attrs['event_start_time'].month <= 9 else 'Winter'}"
+        ds.attrs[
+            "cruise_name"
+        ] = f"{ds.attrs['project']} {ds.attrs['event_start_time'].year}"
+    elif ds.attrs.get("program") == "Atlantic Zone Off-Shelf Monitoring Program":
+        ds.attrs[
+            "cruise_name"
+        ] = f"{ds.attrs['program']} {ds.attrs['event_start_time'].year}"
 
     # Apply attributes corrections from attribute_correction json
     for att, items in attribute_corrections.items():
@@ -260,14 +286,21 @@ def global_attributes_from_header(ds, odf_header):
                 ds.attrs[att] = ds.attrs[att].replace(key, value)
 
     # Review attributes format
-    for attr in ['event_start_time','event_end_time']:
-        if ds.attrs.get(attr) not in  (None, pd.NaT) and  type(ds.attrs[attr]) is not datetime:
-            logging.warning(f"{attr} failed to be converted to timestamp: {ds.attrs[attr]}")
-        elif ds.attrs[attr] < pd.Timestamp(1900,1,1).tz_localize('UTC'):
+    for attr in ["event_start_time", "event_end_time"]:
+        if (
+            ds.attrs.get(attr) not in (None, pd.NaT)
+            and type(ds.attrs[attr]) is not datetime
+        ):
+            logging.warning(
+                f"{attr} failed to be converted to timestamp: {ds.attrs[attr]}"
+            )
+        elif ds.attrs[attr] < pd.Timestamp(1900, 1, 1).tz_localize("UTC"):
             logging.warning(f"{attr} is before 1900-01-01 which is very suspicious")
 
     # Drop empty attributes
-    ds.attrs = {key:value for key,value in ds.attrs.items() if value not in (None,pd.NaT)}
+    ds.attrs = {
+        key: value for key, value in ds.attrs.items() if value not in (None, pd.NaT)
+    }
     return ds
 
 
@@ -277,20 +310,22 @@ def retrieve_coordinates(ds):
     """
 
     if ds.attrs["cdm_data_type"] == "Profile":
-        ds['time'] = ds.attrs['event_start_time']
-        ds['latitude'] = ds.attrs['initial_latitude']
-        ds['longitude'] = ds.attrs['initial_longitude']
+        ds["time"] = ds.attrs["event_start_time"]
+        ds["latitude"] = ds.attrs["initial_latitude"]
+        ds["longitude"] = ds.attrs["initial_longitude"]
         # depth is generated by vocabulary
     else:
-        logger.error(f"odf_converter is not yet compatible with {ds.attrs['cdm_data_type']}")
+        logger.error(
+            f"odf_converter is not yet compatible with {ds.attrs['cdm_data_type']}"
+        )
     # Apply attributes to each coordinate variables
-    coordinate_attributes= {
+    coordinate_attributes = {
         "time": {
             "name": "time",
             "standard_name": "time",
             "ioos_category": "Time",
             "coverage_content_type": "coordinate",
-        },                
+        },
         "latitude": {
             "long_name": "Latitude",
             "units": "degrees_north",
@@ -305,9 +340,8 @@ def retrieve_coordinates(ds):
             "ioos_category": "Location",
             "coverage_content_type": "coordinate",
         },
-
     }
-    for var,attrs in coordinate_attributes.items():
+    for var, attrs in coordinate_attributes.items():
         if var in ds:
             ds[var].attrs = attrs
     return ds

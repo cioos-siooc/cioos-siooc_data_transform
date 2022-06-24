@@ -1,20 +1,23 @@
 import glob
 import json
+import logging
 import os
 import re
 
-import numpy as np
-
-from odf_transform import parser as odf_parser
-from odf_transform import attributes
-from odf_transform.__main__ import __version__
-
-from cioos_data_transform.utils.xarray_methods import standardize_dataset
 import cioos_data_transform.parse.seabird as seabird
-from cioos_data_transform.utils.utils import get_geo_code, read_geojson, get_nearest_station
+import numpy as np
 import pandas as pd
+from cioos_data_transform.utils.utils import (
+    get_geo_code,
+    get_nearest_station,
+    read_geojson,
+)
+from cioos_data_transform.utils.xarray_methods import standardize_dataset
 
-import logging
+from odf_transform import attributes
+from odf_transform import parser as odf_parser
+
+from ._version import __version__
 
 logger = logging.getLogger(__name__)
 
@@ -28,8 +31,10 @@ odf_parser.logger = logging.LoggerAdapter(odf_parser.logger, {"odf_file": None})
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_CONFIG_PATH = os.path.join(MODULE_PATH, "config.json")
 ODF_TRANSFORM_MODULE_PATH = MODULE_PATH
-reference_stations = pd.read_csv(os.path.join(MODULE_PATH,"reference_stations.csv"))
-reference_stations_position_list = reference_stations[['station','latitude','longitude']].to_records(index=False)
+reference_stations = pd.read_csv(os.path.join(MODULE_PATH, "reference_stations.csv"))
+reference_stations_position_list = reference_stations[
+    ["station", "latitude", "longitude"]
+].to_records(index=False)
 
 
 def read_config(config_file):
@@ -39,10 +44,14 @@ def read_config(config_file):
         config = json.load(fid)
 
     # Apply fstring to geojson paths
-    config["geojsonFileList"] = [eval(f"f'{fpath}'") for fpath in config["geojsonFileList"]]
+    config["geojsonFileList"] = [
+        eval(f"f'{fpath}'") for fpath in config["geojsonFileList"]
+    ]
 
     # Read Vocabulary file
-    vocab = pd.read_csv(eval(f"f'{config['vocabularyFile']}'"), index_col=["Vocabulary", "name"])
+    vocab = pd.read_csv(
+        eval(f"f'{config['vocabularyFile']}'"), index_col=["Vocabulary", "name"]
+    )
     config["vocabulary"] = vocab.fillna(np.nan).replace({np.nan: None})
     return config
 
@@ -55,12 +64,12 @@ def read_geojson_file_list(file_list):
     return polygons_dict
 
 
-def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
+def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons=None):
     """Method use to convert odf files to a CIOOS/ERDDAP compliant NetCDF format"""
     if polygons is None:
         polygons = {}
 
-    # Update submodule LoggerAdapter to include the odf_path 
+    # Update submodule LoggerAdapter to include the odf_path
     log = {"odf_path": odf_path}
     seabird.logger.extra.update(log)
     attributes.logger.extra.update(log)
@@ -98,12 +107,22 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
     ds.attrs["geographic_area"] = get_geo_code(
         [ds["longitude"].mean(), ds["latitude"].mean()], polygons
     )
-    MAXIMUM_DISTANCE_NEAREST_STATION_MATCH = 3 #km
-    nearest_station = get_nearest_station(reference_stations_position_list,(ds['latitude'],ds['longitude']),MAXIMUM_DISTANCE_NEAREST_STATION_MATCH)
+    MAXIMUM_DISTANCE_NEAREST_STATION_MATCH = 3  # km
+    nearest_station = get_nearest_station(
+        reference_stations_position_list,
+        (ds["latitude"], ds["longitude"]),
+        MAXIMUM_DISTANCE_NEAREST_STATION_MATCH,
+    )
     if nearest_station:
         ds.attrs["station"] = nearest_station
-    elif ds.attrs.get('station') and ds.attrs.get('station') not in reference_stations['station'].tolist() and re.match(r"[^0-9]",ds.attrs['station']):
-        logger.warning(f"Station {ds.attrs['station']} [{ds['latitude'].mean().values}N, {ds['longitude'].mean().values}E] is missing from the reference_station.")
+    elif (
+        ds.attrs.get("station")
+        and ds.attrs.get("station") not in reference_stations["station"].tolist()
+        and re.match(r"[^0-9]", ds.attrs["station"])
+    ):
+        logger.warning(
+            f"Station {ds.attrs['station']} [{ds['latitude'].mean().values}N, {ds['longitude'].mean().values}E] is missing from the reference_station."
+        )
 
     # Add Vocabulary attributes
     ds = odf_parser.get_vocabulary_attributes(
@@ -133,7 +152,9 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
         logger.info(f"Drop empty attributes: {dropped_attrs}")
 
     # Handle coordinates and dimensions
-    coords = [coord for coord in ['time','latitude','longitude','depth'] if coord in ds]
+    coords = [
+        coord for coord in ["time", "latitude", "longitude", "depth"] if coord in ds
+    ]
     ds = ds.set_coords(coords)
     if ds.attrs["cdm_data_type"] == "Profile" and "index" in ds and "depth" in ds:
         ds = ds.swap_dims({"index": "depth"}).drop_vars("index")
@@ -146,7 +167,9 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
         output_path = odf_path + ".nc"
     if re.search(r"\{|\}", output_path):
         # if output_path is f-string, evaluate the output_path
-        output_path = os.path.join(eval(f'f"{output_path}"'),os.path.basename(odf_path) + '.nc')
+        output_path = os.path.join(
+            eval(f'f"{output_path}"'), os.path.basename(odf_path) + ".nc"
+        )
 
     # Add file suffix if present within the config
     if config.get("addFileNameSuffix"):
@@ -155,28 +178,34 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons = None):
     # Review if output path folders exists if not create them
     dirname = os.path.dirname(output_path)
     if not os.path.isdir(dirname):
-        logger.info(f'Generate output directory: {output_path}')
+        logger.info(f"Generate output directory: {output_path}")
         os.makedirs(dirname)
 
     ds.to_netcdf(output_path)
 
 
-# Load Default
-polygons = read_geojson_file_list(glob.glob(MODULE_PATH + "/geojson_files/*.geojson"))
-config = read_config(DEFAULT_CONFIG_PATH)
-
-
-def convert_odf_file(input, polygons=polygons, output_path=None, config=config):
+def convert_odf_file(input, polygons=None, output_path=None, config=None):
     """Method to convert odf file with a tuple input that expect the format (file, polygons, output_path, config)"""
+    # Handle default inputs
+    if polygons is None:
+        polygons = read_geojson_file_list(
+            glob.glob(MODULE_PATH + "/geojson_files/*.geojson")
+        )
+    if config is None:
+        config = read_config(DEFAULT_CONFIG_PATH)
+
     if type(input) == tuple:
         file, polygons, output_path, config = input
     else:
         file = input
-        
+
     logger.extra["odf_file"] = os.path.basename(file)
     try:
         write_ctd_ncfile(
-            odf_path=file, polygons=polygons, output_path=output_path, config=config,
+            odf_path=file,
+            polygons=polygons,
+            output_path=output_path,
+            config=config,
         )
     except Exception as e:
         logger.error(f"Failed to convert: {file}", exc_info=True)
