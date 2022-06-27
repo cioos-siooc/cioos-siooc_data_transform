@@ -4,18 +4,19 @@ import logging
 import os
 import re
 
-import cioos_data_transform.parse.seabird as seabird
 import numpy as np
 import pandas as pd
+
+from odf_transform import attributes
+from odf_transform import parser as odf_parser
+
+import cioos_data_transform.parse.seabird as seabird
 from cioos_data_transform.utils.utils import (
     get_geo_code,
     get_nearest_station,
     read_geojson,
 )
 from cioos_data_transform.utils.xarray_methods import standardize_dataset
-
-from odf_transform import attributes
-from odf_transform import parser as odf_parser
 
 from ._version import __version__
 
@@ -36,21 +37,40 @@ reference_stations_position_list = reference_stations[
     ["station", "latitude", "longitude"]
 ].to_records(index=False)
 
+MAXIMUM_DISTANCE_NEAREST_STATION_MATCH = 3  # km
+
+
+def eval_config_input(text_to_eval):
+    """
+    Evaluate an fstring expression without using the eval
+    function and only relying on local and global variables.
+    """
+    output = text_to_eval
+    items = re.findall(r"(\{(.*)\})", text_to_eval)
+    for expression, variable in items:
+        if variable in locals():
+            output = output.replace(expression, locals()[variable])
+        elif variable in globals():
+            output = output.replace(expression, globals()[variable])
+        else:
+            raise RuntimeError(f"Failed to eval {expression}")
+    return output
+
 
 def read_config(config_file):
-    """Function to load configuration json file and vocabulary file."""
+    """Load configuration json file and vocabulary file."""
     # read json file with information on dataset etc.
     with open(config_file, encoding="UTF-8") as fid:
         config = json.load(fid)
 
     # Apply fstring to geojson paths
     config["geojsonFileList"] = [
-        eval(f"f'{fpath}'") for fpath in config["geojsonFileList"]
+        eval_config_input(fpath) for fpath in config["geojsonFileList"]
     ]
 
     # Read Vocabulary file
     vocab = pd.read_csv(
-        eval(f"f'{config['vocabularyFile']}'"), index_col=["Vocabulary", "name"]
+        eval_config_input(config["vocabularyFile"]), index_col=["Vocabulary", "name"]
     )
     config["vocabulary"] = vocab.fillna(np.nan).replace({np.nan: None})
     return config
@@ -65,7 +85,7 @@ def read_geojson_file_list(file_list):
 
 
 def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons=None):
-    """Method use to convert odf files to a CIOOS/ERDDAP compliant NetCDF format"""
+    """Convert odf files to a CIOOS/ERDDAP compliant NetCDF format"""
     if polygons is None:
         polygons = {}
 
@@ -82,85 +102,97 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons=None):
     # Review ODF data type compatible with odf_transform
     if metadata["EVENT_HEADER"]["DATA_TYPE"] not in ["CTD", "BT", "BOTL"]:
         logger.warning(
-            f'ODF_transform is not yet compatible with ODF Data Type: {metadata["EVENT_HEADER"]["DATA_TYPE"]}'
+            "ODF_transform is not yet compatible with ODF Data Type: %s",
+            metadata["EVENT_HEADER"]["DATA_TYPE"],
         )
         return
 
     # Convert to an xarray dataset
-    ds = raw_data.to_xarray()
+    dataset = raw_data.to_xarray()
 
     # Write global and variable attributes
-    ds.attrs = config["global_attributes"]
-    ds = attributes.global_attributes_from_header(ds, metadata)
-    ds.attrs[
+    dataset.attrs = config["global_attributes"]
+    dataset = attributes.global_attributes_from_header(dataset, metadata)
+    dataset.attrs[
         "history"
     ] += f"# Convert ODF to NetCDF with cioos_data_trasform.odf_transform V {__version__}"
     for var, attrs in metadata["variable_attributes"].items():
-        if var in ds:
-            ds[var].attrs = attrs
+        if var in dataset:
+            dataset[var].attrs = attrs
 
     # Handle ODF flag variables
-    ds = odf_parser.odf_flag_variables(ds, config.get("flag_convention"))
+    dataset = odf_parser.odf_flag_variables(dataset, config.get("flag_convention"))
 
     # Define coordinates variables from attributes, assign geographic_area and nearest stations
-    ds = attributes.retrieve_coordinates(ds)
-    ds.attrs["geographic_area"] = get_geo_code(
-        [ds["longitude"].mean(), ds["latitude"].mean()], polygons
+    dataset = attributes.retrieve_coordinates(dataset)
+    dataset.attrs["geographic_area"] = get_geo_code(
+        [dataset["longitude"].mean(), dataset["latitude"].mean()], polygons
     )
-    MAXIMUM_DISTANCE_NEAREST_STATION_MATCH = 3  # km
+
     nearest_station = get_nearest_station(
         reference_stations_position_list,
-        (ds["latitude"], ds["longitude"]),
+        (dataset["latitude"], dataset["longitude"]),
         MAXIMUM_DISTANCE_NEAREST_STATION_MATCH,
     )
     if nearest_station:
-        ds.attrs["station"] = nearest_station
+        dataset.attrs["station"] = nearest_station
     elif (
-        ds.attrs.get("station")
-        and ds.attrs.get("station") not in reference_stations["station"].tolist()
-        and re.match(r"[^0-9]", ds.attrs["station"])
+        dataset.attrs.get("station")
+        and dataset.attrs.get("station") not in reference_stations["station"].tolist()
+        and re.match(r"[^0-9]", dataset.attrs["station"])
     ):
         logger.warning(
-            f"Station {ds.attrs['station']} [{ds['latitude'].mean().values}N, {ds['longitude'].mean().values}E] is missing from the reference_station."
+            "Station %s [%sN, %sE] is missing from the reference_station.",
+            dataset.attrs["station"],
+            dataset["latitude"].mean().values,
+            dataset["longitude"].mean().values,
         )
 
     # Add Vocabulary attributes
-    ds = odf_parser.get_vocabulary_attributes(
-        ds,
+    dataset = odf_parser.get_vocabulary_attributes(
+        dataset,
         organizations=config["organisationVocabulary"],
         vocabulary=config["vocabulary"],
     )
 
     # Fix flag variables with some issues to map
-    ds = odf_parser.fix_flag_variables(ds)
+    dataset = odf_parser.fix_flag_variables(dataset)
 
     # Instrument specific variables and attributes
-    if ds.attrs["instrument_manufacturer_header"].startswith("* Sea-Bird"):
-        ds = seabird.add_seabird_instruments(
-            ds, ds.attrs["instrument_manufacturer_header"], match_by="sdn_parameter_urn"
+    if dataset.attrs["instrument_manufacturer_header"].startswith("* Sea-Bird"):
+        dataset = seabird.add_seabird_instruments(
+            dataset,
+            dataset.attrs["instrument_manufacturer_header"],
+            match_by="sdn_parameter_urn",
         )
-        ds = seabird.update_attributes_from_seabird_header(
-            ds, ds.attrs["instrument_manufacturer_header"]
+        dataset = seabird.update_attributes_from_seabird_header(
+            dataset, dataset.attrs["instrument_manufacturer_header"]
         )
 
     # Add geospatial and geometry related global attributes
     # Just add spatial/time range as attributes
-    initial_attrs = ds.attrs.keys()
-    ds = standardize_dataset(ds, utc=True)
-    dropped_attrs = [var for var in initial_attrs if var not in ds.attrs]
+    initial_attrs = dataset.attrs.keys()
+    dataset = standardize_dataset(dataset, utc=True)
+    dropped_attrs = [var for var in initial_attrs if var not in dataset.attrs]
     if dropped_attrs:
         logger.info(f"Drop empty attributes: {dropped_attrs}")
 
     # Handle coordinates and dimensions
     coords = [
-        coord for coord in ["time", "latitude", "longitude", "depth"] if coord in ds
+        coord
+        for coord in ["time", "latitude", "longitude", "depth"]
+        if coord in dataset
     ]
-    ds = ds.set_coords(coords)
-    if ds.attrs["cdm_data_type"] == "Profile" and "index" in ds and "depth" in ds:
-        ds = ds.swap_dims({"index": "depth"}).drop_vars("index")
+    dataset = dataset.set_coords(coords)
+    if (
+        dataset.attrs["cdm_data_type"] == "Profile"
+        and "index" in dataset
+        and "depth" in dataset
+    ):
+        dataset = dataset.swap_dims({"index": "depth"}).drop_vars("index")
 
     # Log variables available per file
-    logger.info(f"Variable List: {list(ds)}")
+    logger.info(f"Variable List: {list(dataset)}")
 
     # Save dataset to a NetCDF file
     if output_path is None:
@@ -168,7 +200,7 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons=None):
     if re.search(r"\{|\}", output_path):
         # if output_path is f-string, evaluate the output_path
         output_path = os.path.join(
-            eval(f'f"{output_path}"'), os.path.basename(odf_path) + ".nc"
+            eval_config_input(output_path), os.path.basename(odf_path) + ".nc"
         )
 
     # Add file suffix if present within the config
@@ -181,11 +213,12 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons=None):
         logger.info(f"Generate output directory: {output_path}")
         os.makedirs(dirname)
 
-    ds.to_netcdf(output_path)
+    dataset.to_netcdf(output_path)
 
 
-def convert_odf_file(input, polygons=None, output_path=None, config=None):
-    """Method to convert odf file with a tuple input that expect the format (file, polygons, output_path, config)"""
+def convert_odf_file(file, polygons=None, output_path=None, config=None):
+    """Method to convert odf file with a tuple input that expect the format
+    (file, polygons, output_path, config)"""
     # Handle default inputs
     if polygons is None:
         polygons = read_geojson_file_list(
@@ -194,10 +227,8 @@ def convert_odf_file(input, polygons=None, output_path=None, config=None):
     if config is None:
         config = read_config(DEFAULT_CONFIG_PATH)
 
-    if type(input) == tuple:
-        file, polygons, output_path, config = input
-    else:
-        file = input
+    if isinstance(file, tuple):
+        file, polygons, output_path, config = file
 
     logger.extra["odf_file"] = os.path.basename(file)
     try:
@@ -207,5 +238,5 @@ def convert_odf_file(input, polygons=None, output_path=None, config=None):
             output_path=output_path,
             config=config,
         )
-    except Exception as e:
+    except Exception:
         logger.error(f"Failed to convert: {file}", exc_info=True)

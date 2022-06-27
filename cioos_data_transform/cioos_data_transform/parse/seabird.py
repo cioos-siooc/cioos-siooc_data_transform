@@ -57,6 +57,22 @@ seabird_to_bodc = {
     "User Polynomial, 3": [],
 }
 
+sbe_data_processing_methods = [
+    "datcnv",
+    "filter",
+    "align",
+    "celltm",
+    "loopedit",
+    "derive",
+    "Derive",
+    "binavg",
+    "split",
+    "strip",
+    "section",
+    "wild",
+    "window",
+]
+
 
 def get_seabird_instrument_from_header(seabird_header):
     """Retrieve main instrument model from Sea-Bird CNV header"""
@@ -68,14 +84,19 @@ def get_seabird_instrument_from_header(seabird_header):
 
 
 def get_sbe_instrument_type(instrument):
-    if re.match(r"SBE\s*(9|16|19|25|37)"):
+    """Map SBE instrument number a type of instrument"""
+    if re.match(r"SBE\s*(9|16|19|25|37)", instrument):
         return "CTD"
-    logger.warning(f"Unknown instrument type for {instrument}")
+    logger.warning("Unknown instrument type for %s", instrument)
 
 
 def get_seabird_processing_history(seabird_header):
+    """
+    Retrieve the different rows within a Seabird header associated
+    with the sbe data processing tool
+    """
     if "# datcnv" in seabird_header:
-        sbe_hist = r"\# (datcnv|filter|align|celltm|loopedit|derive|Derive|binavg|split|strip|section|wild|window).*"
+        sbe_hist = r"\# (" + "|".join(sbe_data_processing_methods) + r").*"
         return "\n".join(
             [line for line in seabird_header.split("\n") if re.match(sbe_hist, line)]
         )
@@ -83,10 +104,12 @@ def get_seabird_processing_history(seabird_header):
 
 
 def update_attributes_from_seabird_header(
-    ds, seabird_header, parse_manual_inputs=False
-):  # sourcery skip: identity-comprehension, remove-redundant-if
+    dataset, seabird_header, parse_manual_inputs=False
+):
+    """Add Seabird specific attributes parsed from Seabird header into a xarray dataset"""
+    # sourcery skip: identity-comprehension, remove-redundant-if
     # Instrument
-    ds.attrs["instrument"] = get_seabird_instrument_from_header(seabird_header)
+    dataset.attrs["instrument"] = get_seabird_instrument_from_header(seabird_header)
 
     # Bin Averaged
     binavg = re.search(
@@ -95,43 +118,53 @@ def update_attributes_from_seabird_header(
     )
     if binavg:
         bin_str = f"{binavg['binsize']} {binavg['bintype']}"
-        ds.attrs["geospatial_vertical_resolution"] = bin_str
+        dataset.attrs["geospatial_vertical_resolution"] = bin_str
         if "decibar" in binavg["bintype"]:
-            vars = [
-                var for var in ds.filter_by_attrs(standard_name="sea_water_pressure")
-            ]
-            binvar = vars[0] if vars else "sea_water_pressure"
+            standard_name = "sea_water_pressure"
         elif "second" in bin_str or "hour" in bin_str:
-            vars = [var for var in ds.filter_by_attrs(standard_name="time")]
-            binvar = vars[0] if vars else "time"
+            standard_name = "time"
         elif "meter" in bin_str or "hour" in bin_str:
-            vars = [var for var in ds.filter_by_attrs(standard_name="depth")]
-            binvar = vars[0] if vars else "depth"
+            standard_name = "depth"
         elif "scan" in bin_str:
+            standard_name = None
             binvar = "Scan Count"
         else:
-            logger.error(f"Unknown binavg method: {bin_str}")
+            logger.error("Unknown binavg method: %s", bin_str)
+        if standard_name:
+            related_variables = [
+                var for var in dataset.filter_by_attrs(standard_name=standard_name)
+            ]
+            binvar = related_variables[0] if related_variables else standard_name
+        else:
+            binvar = standard_name
 
         # Add cell method attribute and geospatial_vertical_resolution global attribute
         if "decibar" in bin_str or "meter" in bin_str:
-            ds.attrs["geospatial_vertical_resolution"] = bin_str
+            dataset.attrs["geospatial_vertical_resolution"] = bin_str
         elif "second" in bin_str or "hour" in bin_str:
-            ds.attrs["time_coverage_resolution"] = pd.Timedelta(bin_str).isoformat()
-        for var in ds:
-            if (len(ds.dims) == 1 and len(ds[var].dims) == 1) or binvar in ds[var].dims:
-                ds[var].attrs["cell_method"] = f"{binvar}: mean (interval: {bin_str})"
+            dataset.attrs["time_coverage_resolution"] = pd.Timedelta(
+                bin_str
+            ).isoformat()
+        for var in dataset:
+            if (
+                len(dataset.dims) == 1 and len(dataset[var].dims) == 1
+            ) or binvar in dataset[var].dims:
+                dataset[var].attrs[
+                    "cell_method"
+                ] = f"{binvar}: mean (interval: {bin_str})"
 
     # Manual inputs
     manual_inputs = re.findall(r"\*\* (?P<key>.*): (?P<value>.*)\n", seabird_header)
     if parse_manual_inputs:
         for key, value in manual_inputs:
-            ds.attrs[key.replace(r" ", r"_").lower()] = value
+            dataset.attrs[key.replace(r" ", r"_").lower()] = value
 
-    return ds
+    return dataset
 
 
-def generate_instruments_variables_from_xml(ds, seabird_header):
-
+def generate_instruments_variables_from_xml(dataset, seabird_header):
+    """Generate IOOS 1.2 standard instrument variables and associated variables
+    instrument attribute based on Seabird XML header."""
     # Retrieve Sensors xml section within seabird header
     calibration_xml = re.sub(
         r"\n\#\s",
@@ -144,7 +177,7 @@ def generate_instruments_variables_from_xml(ds, seabird_header):
         sensors = xmltodict.parse(calibration_xml)["Sensors"]["sensor"]
     except ExpatError:
         logger.error("Failed to parsed Sea-Bird Instrument Calibration XML")
-        return ds, {}
+        return dataset, {}
 
     sensors_comments = re.findall(
         r"\s*\<!--\s*(Frequency \d+|A/D voltage \d+|.* voltage|Count){1}, (.*)-->\n",
@@ -161,7 +194,7 @@ def generate_instruments_variables_from_xml(ds, seabird_header):
     # Make sure that the sensor count match the sensor_comments count
     if len(sensors_comments) != len(sensors):
         logger.error("Failed to detect same count of sensors and sensors_comments")
-        return ds, {}
+        return dataset, {}
 
     # Split each sensor calibrations to a dictionary
     sensors_map = {}
@@ -190,14 +223,14 @@ def generate_instruments_variables_from_xml(ds, seabird_header):
         else:
             sensor_number = 1
 
-        if sensor_var_name in ds:
-            logger.warning(f"Duplicated instrument variable {sensor_var_name}")
+        if sensor_var_name in dataset:
+            logger.warning("Duplicated instrument variable %s", sensor_var_name)
 
         # Try fit IOOS 1.2 which request to add a instrument variable for each
         # instruments and link this variable to data variable by using the instrument attribute
         # https://ioos.github.io/ioos-metadata/ioos-metadata-profile-v1-2.html#instrument
-        ds[sensor_var_name] = json.dumps(attrs)
-        ds[sensor_var_name].attrs = {
+        dataset[sensor_var_name] = json.dumps(attrs)
+        dataset[sensor_var_name].attrs = {
             "calibration_date": pd.to_datetime(
                 attrs.pop("CalibrationDate"), errors="ignore"
             ),  # IOOS 1.2, NCEI 2.0
@@ -211,13 +244,13 @@ def generate_instruments_variables_from_xml(ds, seabird_header):
         }
         sensors_map[sensor_name] = sensor_name
 
-    return ds, sensors_map
+    return dataset, sensors_map
 
 
-def generate_instruments_variables_from_sensor(ds, seabird_header):
+def generate_instruments_variables_from_sensor(dataset, seabird_header):
     """Parse older Seabird Header sensor information and generate instrument variables"""
     sensors = re.findall(r"\# sensor (?P<id>\d+) = (?P<text>.*)\n", seabird_header)
-    for id, sensor in sensors:
+    for index, sensor in sensors:
         if "Voltage" in sensor:
             sensor_items = sensor.split(",", 1)
             attrs = {
@@ -227,40 +260,44 @@ def generate_instruments_variables_from_sensor(ds, seabird_header):
             }
         else:
             attrs_dict = re.search(
-                r"(?P<channel>Frequency\s+\d+|Stored Volt\s+\d+|Extrnl Volt  \d+)\s+(?P<sensor_description>.*)",
+                r"(?P<channel>Frequency\s+\d+|Stored Volt\s+\d+"
+                + r"|Extrnl Volt  \d+)\s+(?P<sensor_description>.*)",
                 sensor,
             )
             if attrs_dict is None:
-                logger.error(f"Failed to read sensor item: {sensor}")
+                logger.error("Failed to read sensor item: %s", sensor)
                 continue
             attrs = attrs_dict.groupdict()
-        sensor_code = f"sensor_{id}"
-        ds[sensor_code] = sensor
-        ds[sensor_code].attrs = attrs
-    return ds
+        sensor_code = f"sensor_{index}"
+        dataset[sensor_code] = sensor
+        dataset[sensor_code].attrs = attrs
+    return dataset
 
 
-def add_seabird_instruments(ds, seabird_header, match_by="long_name"):
+def add_seabird_instruments(dataset, seabird_header, match_by="long_name"):
     """
-    Extract seabird sensor information and generate instrument variables which follow the IOOS 1.2 convention
+    Extract seabird sensor information and generate instrument variables which
+    follow the IOOS 1.2 convention
     """
     # Retrieve sensors information
     if "# <Sensors count" in seabird_header:
-        ds, sensors_map = generate_instruments_variables_from_xml(ds, seabird_header)
+        dataset, sensors_map = generate_instruments_variables_from_xml(
+            dataset, seabird_header
+        )
     elif "# sensor" in seabird_header:
-        ds = generate_instruments_variables_from_sensor(ds, seabird_header)
+        dataset = generate_instruments_variables_from_sensor(dataset, seabird_header)
         logger.info("Unable to map old seabird sensor header to appropriate variables")
-        return ds
+        return dataset
     else:
         # If no calibration detected give a warning and return dataset
         logger.info("No Seabird sensors information was detected")
-        return ds
+        return dataset
 
     # Match instrument variables to their associated variables
     for name, sensor_variable in sensors_map.items():
         if match_by == "sdn_parameter_urn":
             if name not in seabird_to_bodc:
-                logger.warning(f"Missing Seabird to BODC mapping of: {name}")
+                logger.warning("Missing Seabird to BODC mapping of: %s", name)
                 continue
             values = [f"SDN:P01::{item}" for item in seabird_to_bodc[name]]
         else:
@@ -268,35 +305,45 @@ def add_seabird_instruments(ds, seabird_header, match_by="long_name"):
 
         has_matched = False
         for value in values:
-            vars = ds.filter_by_attrs(**{match_by: value})
+            matched_variables = dataset.filter_by_attrs(**{match_by: value})
 
-            # Some variables are not necessearily BODC specifc, we'll try to match them based on the long_name
+            # Some variables are not necessearily BODC specifc
+            # we'll try to match them based on the long_name
             if (
-                len(vars) > 1
+                len(matched_variables) > 1
                 and match_by == "sdn_parameter_urn"
                 and ("Fluorometer" in name or "Turbidity" in name)
             ):
                 # Find the closest match based on the file name
                 var_longname = difflib.get_close_matches(
-                    name, [vars[var].attrs["long_name"] for var in vars]
+                    name,
+                    [
+                        matched_variables[var].attrs["long_name"]
+                        for var in matched_variables
+                    ],
                 )
-                vars = vars[
-                    [var for var in vars if ds[var].attrs["long_name"] in var_longname]
+                matched_variables = matched_variables[
+                    [
+                        var
+                        for var in matched_variables
+                        if dataset[var].attrs["long_name"] in var_longname
+                    ]
                 ]
 
                 # If there's still multiple matches give a warning
-                if len(vars) > 1:
+                if len(matched_variables) > 1:
                     logger.warning(
-                        f"We can't link easily multiple {name} instruments via sdn_parameter_urn attribute. Any related data will be link to both instuments."
+                        "Unable to link multiple %s instruments via sdn_parameter_urn attribute.",
+                        name,
                     )
 
-            for var in vars:
-                if "instrument" in ds[var].attrs:
-                    ds[var].attrs["instrument"] += "," + sensor_variable
+            for var in matched_variables:
+                if "instrument" in dataset[var].attrs:
+                    dataset[var].attrs["instrument"] += "," + sensor_variable
                 else:
-                    ds[var].attrs["instrument"] = sensor_variable
+                    dataset[var].attrs["instrument"] = sensor_variable
                 has_matched = True
-        if has_matched == False:
-            logger.info(f"Failed to match instrument {name} to any variables.")
+        if not has_matched:
+            logger.info("Failed to match instrument %s to any variables.", name)
 
-    return ds
+    return dataset

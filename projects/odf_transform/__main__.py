@@ -1,18 +1,22 @@
 import argparse
 import glob
+import logging
 import os
+import re
 from multiprocessing import Pool
 
 import pandas as pd
 from tqdm import tqdm
 
-from odf_transform.process import (convert_odf_file, read_config,
-                                   read_geojson_file_list)
+from odf_transform.process import (
+    convert_odf_file,
+    eval_config_input,
+    read_config,
+    read_geojson_file_list,
+)
 
 tqdm.pandas()
 
-import logging
-import re
 
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_CONFIG_PATH = os.path.join(MODULE_PATH, "config.json")
@@ -56,7 +60,8 @@ def input_from_program_logs(program_log_path, files, polygons, output_path, conf
 
     input_from_program_logs compile all the different program logs available within the directory
     and match each files that neeeds a conversion to the appropriate mission. For each mission,
-    it updates the configuration global attributes to include any extra attributes available within the log.
+    it updates the configuration global attributes to include any extra attributes available
+    within the log.
 
     A list of inputs is then generated which can be run by the ODF conversion tool..
 
@@ -68,7 +73,8 @@ def input_from_program_logs(program_log_path, files, polygons, output_path, conf
         config (dict)): [description]
 
     Returns:
-        list: list of inputs to run the conversion for each files and and their specific mission attributes.
+        list: list of inputs to run the conversion for each files and and their
+        specific mission attributes.
     """
 
     def generate_mission_config(mission_attrs):
@@ -90,13 +96,8 @@ def input_from_program_logs(program_log_path, files, polygons, output_path, conf
     df_logs = pd.DataFrame()
     logger.info(f"Load Program Logs: {program_logs}")
     for log in program_logs:
-        try:
-            df_log = pd.read_csv(os.path.join(program_log_path, log))
-        except:
-            logger.warning(
-                f"Failed to parse program log {os.path.join(program_log_path,log)}"
-            )
-            continue
+        # Read program logs
+        df_log = pd.read_csv(os.path.join(program_log_path, log))
 
         # Extract the program name from the file name
         if "program" not in df_log:
@@ -127,20 +128,21 @@ def input_from_program_logs(program_log_path, files, polygons, output_path, conf
     df_logs = df_logs.dropna(subset=["mission_file_list"])
 
     logger.info(
-        f"Generate Mission Specific Configuration for {len(files)} files associated with {len(df_logs)} missions"
+        f"Generate Mission Specific Configuration for {len(files)} files associated "
+        + f"with {len(df_logs)} missions"
     )
     df_logs["mission_config"] = df_logs.progress_apply(generate_mission_config, axis=1)
 
     # Generate input for each files
-    inputs = []
-    logger.info(f"Retrieve mission matching files")
-    for mission, df_mission in df_logs.iterrows():
-        inputs += [
+    convert_odf_inputs = []
+    logger.info("Retrieve mission matching files")
+    for _, df_mission in df_logs.iterrows():
+        convert_odf_inputs += [
             (mission_file, polygons, output_path, df_mission["mission_config"])
             for mission_file in df_mission["mission_file_list"]
         ]
 
-    return inputs
+    return convert_odf_inputs
 
 
 if __name__ == "__main__":
@@ -167,7 +169,7 @@ if __name__ == "__main__":
         type=str,
         dest="output_path",
         default=None,
-        help="Enter the folder to write your NetCDF files to (Default: next to the original ODF file).",
+        help="Output directory (Default: next to the original ODF file).",
         required=False,
     )
     parser.add_argument(
@@ -209,7 +211,7 @@ if __name__ == "__main__":
 
     # Handle Input FIles
     logger.info("Retrieve files to process")
-    fileDir = eval(f"f'{config['fileDir']}'")
+    fileDir = eval_config_input(config["fileDir"])
     if os.path.isfile(fileDir):
         odf_files_list = [fileDir]
     elif os.path.isdir(fileDir):

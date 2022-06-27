@@ -1,3 +1,4 @@
+"""This module apply different tests to the ODF conversion package."""
 import os
 import re
 import unittest
@@ -8,8 +9,10 @@ import xarray as xr
 
 
 class TestBIOODFConversion(unittest.TestCase):
-    def test_bio_odf_sample_data_conversion(self):
+    """Test DFO ODF File conversion."""
 
+    def test_bio_odf_sample_data_conversion(self):
+        """Test DFO BIO ODF conversion to xarray dataset"""
         default_odf_config = odf_transform.process.read_config(
             "./projects/odf_transform/config.json"
         )
@@ -25,7 +28,7 @@ class TestBIOODFConversion(unittest.TestCase):
             odf_transform.process.convert_odf_file(file, config=default_odf_config)
 
     def test_mli_odf_sample_data_conversion(self):
-
+        """Test DFO MLI ODF conversion to xarray dataset"""
         default_odf_config = odf_transform.process.read_config(
             "./projects/odf_transform/config.json"
         )
@@ -41,6 +44,7 @@ class TestBIOODFConversion(unittest.TestCase):
             odf_transform.process.convert_odf_file(file, config=default_odf_config)
 
     def test_bio_odf_converted_netcdf_vs_references(self):
+        """Test DFO BIO ODF conversion to NetCDF vs reference files"""
         nc_files = glob(
             "./projects/odf_transform/sample_data/bio_samples/**/*.ODF_reference.nc",
             recursive=True,

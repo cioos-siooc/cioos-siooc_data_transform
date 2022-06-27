@@ -19,7 +19,7 @@ pip install -e cioos_data_transform
 pip install -e projects
 ```
 
-## Running
+## How to
 
 Specifying input (ODF) and ouput (NetCDF) folders in the default config file
 
@@ -27,7 +27,7 @@ Specifying input (ODF) and ouput (NetCDF) folders in the default config file
 python odf_transform
 ```
 
-Specifying a config file using `-c`
+Specifying a config file using `-c` (recommanded)
 ```shell
 python odf_transform -c /path/to/config/config.json
 ```
