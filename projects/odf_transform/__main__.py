@@ -12,7 +12,6 @@ from odf_transform.process import (
     convert_odf_file,
     eval_config_input,
     read_config,
-    read_geojson_file_list,
 )
 
 tqdm.pandas()
@@ -55,7 +54,7 @@ if __name__ == "__main__":
     logger = logging.LoggerAdapter(logger, {"odf_file": None})
 
 
-def input_from_program_logs(program_log_path, files, polygons, output_path, config):
+def input_from_program_logs(program_log_path, files, global_config):
     """Generate input based on the program logs available
 
     input_from_program_logs compile all the different program logs available within the directory
@@ -78,13 +77,13 @@ def input_from_program_logs(program_log_path, files, polygons, output_path, conf
     """
 
     def generate_mission_config(mission_attrs):
-
-        output = config.copy()
-        output["global_attributes"] = {
-            **output["global_attributes"],
+        """Generate mission specific configuration"""
+        mission_config = global_config.copy()
+        mission_config["global_attributes"] = {
+            **mission_config["global_attributes"],
             **mission_attrs.dropna().drop(["mission", "mission_file_list"]).to_dict(),
         }
-        return output
+        return mission_config
 
     # Load the different logs and map the list of files available to the programs
     program_logs = [
@@ -138,7 +137,7 @@ def input_from_program_logs(program_log_path, files, polygons, output_path, conf
     logger.info("Retrieve mission matching files")
     for _, df_mission in df_logs.iterrows():
         convert_odf_inputs += [
-            (mission_file, polygons, output_path, df_mission["mission_config"])
+            (mission_file, df_mission["mission_config"])
             for mission_file in df_mission["mission_file_list"]
         ]
 
@@ -281,20 +280,15 @@ if __name__ == "__main__":
         odf_files_list = overwrite_list
         odf_files_list += new_list
 
-    # Get Polygon regions
-    polygons = read_geojson_file_list(config["geojsonFileList"])
-
     # Generate inputs
     if config["program_logs_path"]:
         inputs = input_from_program_logs(
             config["program_logs_path"],
             odf_files_list,
-            polygons,
-            output_path,
             config,
         )
     else:
-        inputs = [(file, polygons, output_path, config) for file in odf_files_list]
+        inputs = [(file, config) for file in odf_files_list]
 
     if inputs:
         logger.info(f"{len(inputs)} files will be converted")

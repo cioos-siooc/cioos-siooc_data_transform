@@ -64,9 +64,9 @@ def read_config(config_file):
         config = json.load(fid)
 
     # Apply fstring to geojson paths
-    config["geojsonFileList"] = [
-        eval_config_input(fpath) for fpath in config["geojsonFileList"]
-    ]
+    config["geographic_areas"] = read_geojson_file_list(
+        [eval_config_input(fpath) for fpath in config["geojsonFileList"]]
+    )
 
     # Read Vocabulary file
     vocab = pd.read_csv(
@@ -84,11 +84,8 @@ def read_geojson_file_list(file_list):
     return polygons_dict
 
 
-def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons=None):
+def write_ctd_ncfile(odf_path, config=None):
     """Convert odf files to a CIOOS/ERDDAP compliant NetCDF format"""
-    if polygons is None:
-        polygons = {}
-
     # Update submodule LoggerAdapter to include the odf_path
     log = {"odf_path": odf_path}
     seabird.logger.extra.update(log)
@@ -126,7 +123,8 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons=None):
     # Define coordinates variables from attributes, assign geographic_area and nearest stations
     dataset = attributes.retrieve_coordinates(dataset)
     dataset.attrs["geographic_area"] = get_geo_code(
-        [dataset["longitude"].mean(), dataset["latitude"].mean()], polygons
+        [dataset["longitude"].mean(), dataset["latitude"].mean()],
+        config["geographic_areas"],
     )
 
     nearest_station = get_nearest_station(
@@ -195,10 +193,9 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons=None):
     logger.info(f"Variable List: {list(dataset)}")
 
     # Save dataset to a NetCDF file
-    if output_path is None:
+    if config["output_path"] is None:
         output_path = odf_path + ".nc"
-    if re.search(r"\{|\}", output_path):
-        # if output_path is f-string, evaluate the output_path
+    else:
         output_path = os.path.join(
             eval_config_input(output_path), os.path.basename(odf_path) + ".nc"
         )
@@ -216,26 +213,17 @@ def write_ctd_ncfile(odf_path, output_path=None, config=None, polygons=None):
     dataset.to_netcdf(output_path)
 
 
-def convert_odf_file(file, polygons=None, output_path=None, config=None):
+def convert_odf_file(file, config: dict = None):
     """Method to convert odf file with a tuple input that expect the format
-    (file, polygons, output_path, config)"""
+    (file, config)"""
     # Handle default inputs
-    if polygons is None:
-        polygons = read_geojson_file_list(
-            glob.glob(MODULE_PATH + "/geojson_files/*.geojson")
-        )
     if config is None:
         config = read_config(DEFAULT_CONFIG_PATH)
-
-    if isinstance(file, tuple):
-        file, polygons, output_path, config = file
 
     logger.extra["odf_file"] = os.path.basename(file)
     try:
         write_ctd_ncfile(
             odf_path=file,
-            polygons=polygons,
-            output_path=output_path,
             config=config,
         )
     except Exception:
