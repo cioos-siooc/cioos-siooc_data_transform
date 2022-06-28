@@ -176,7 +176,7 @@ def global_attributes_from_header(dataset, odf_header):
         dataset.attrs["instrument_serial_number"] = ""
 
     if re.search(
-        r"(SBE\s*(9|16|19|25|37))|CTD|Guildline|GUILDLN",
+        r"(SBE\s*(9|16|19|25|37))|CTD|Guildline|GUILDLN|STD",
         dataset.attrs["instrument"],
         re.IGNORECASE,
     ):
