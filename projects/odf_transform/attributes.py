@@ -225,7 +225,7 @@ def global_attributes_from_header(dataset, odf_header):
 
     ## FIX ODF ATTRIBUTES
     # # event_number should be number otherwise get rid of it
-    if isinstance(dataset.attrs["event_number"], int):
+    if not isinstance(dataset.attrs["event_number"], int):
         event_number = re.search(
             r"\*\* Event[\s\:\#]*(\d+)",
             "".join(odf_header["original_header"]),
