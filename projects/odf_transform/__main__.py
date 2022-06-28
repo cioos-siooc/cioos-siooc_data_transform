@@ -310,4 +310,4 @@ if __name__ == "__main__":
     elif 0 < len(inputs) < 100:
         print("Run ODF Conversion")
         for item in tqdm(inputs, **tqdm_dict):
-            convert_odf_file(item)
+            convert_odf_file(*item)
