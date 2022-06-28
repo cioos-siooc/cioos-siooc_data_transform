@@ -1,4 +1,4 @@
-import glob
+"""General module use to convert ODF files into a NetCDF CF, ACDD compliant format."""
 import json
 import logging
 import os
@@ -112,7 +112,7 @@ def write_ctd_ncfile(odf_path, config=None):
     dataset = attributes.global_attributes_from_header(dataset, metadata)
     dataset.attrs[
         "history"
-    ] += f"# Convert ODF to NetCDF with cioos_data_trasform.odf_transform V {__version__}"
+    ] += f"# Convert ODF to NetCDF with cioos_data_trasform.odf_transform V {__version__}\n"
     for var, attrs in metadata["variable_attributes"].items():
         if var in dataset:
             dataset[var].attrs = attrs

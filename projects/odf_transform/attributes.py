@@ -163,11 +163,9 @@ def global_attributes_from_header(dataset, odf_header):
             dataset.attrs["instrument_manufacturer_header"]
         )
     elif "INSTRUMENT_HEADER" in odf_header:
-        dataset.attrs["instrument"] = (
-            {odf_header["INSTRUMENT_HEADER"]["INST_TYPE"]}
-            + " "
-            + {odf_header["INSTRUMENT_HEADER"]["MODEL"]}
-        )
+        dataset.attrs[
+            "instrument"
+        ] = f"{odf_header['INSTRUMENT_HEADER']['INST_TYPE']} {odf_header['INSTRUMENT_HEADER']['MODEL']}"
         dataset.attrs["instrument_serial_number"] = odf_header["INSTRUMENT_HEADER"][
             "SERIAL_NUMBER"
         ]

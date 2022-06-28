@@ -41,7 +41,7 @@ class GF3Code:
         self.code = re.search(r"^[^_]*", code)[0]
         index = re.search(r"\d+$", code)
         self.index = int(index[0]) if index else 1
-        self.name = f"{self.code}{self.index:'_%02g' if self.index else ''}"
+        self.name = f"{self.code}_{self.index:02}" if index else self.code
 
 
 def convert_odf_time(time_string, time_zone=timezone.utc):
@@ -72,9 +72,9 @@ def history_input(comment, date=datetime.now()):
 def update_variable_index(varname, index):
     """Standardize variables trailing number to two digits"""
     if varname.endswith(("XX", "01")):
-        return f"{varname[:-2]}{index:%02g}"
+        return f"{varname[:-2]}{index:02}"
     elif varname.endswith(("X", "1")):
-        return f"{varname[:-1]}{index:%01g}"
+        return f"{varname[:-1]}{index:01}"
     else:
         return varname
 

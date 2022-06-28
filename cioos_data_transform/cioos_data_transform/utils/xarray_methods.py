@@ -38,19 +38,22 @@ def convert_variables_to_erddap_format(ds, utc=None):
             continue
         # Try to convert to datetime64 if possible and encde to seconds since 1970-01-01
         try:
-            ds[var] = ds[var].astype('datetime64')
+            ds[var] = ds[var].astype("datetime64")
             if "units " in ds[var].attrs:
                 ds[var].attrs.pop("units")
 
             # Timezone aware data
-            if utc :
+            if utc:
                 timezone = "Z"
                 ds[var].attrs["timezone"] = "UTC"
             else:
                 timezone = ""
 
             # Format encoding output
-            ds[var].encoding = {"units": f"seconds since 1970-01-01 00:00:00{timezone}", "dtype": "float64"}
+            ds[var].encoding = {
+                "units": f"seconds since 1970-01-01 00:00:00{timezone}",
+                "dtype": "float64",
+            }
         except Exception as e:
             # Should be a string
             ds[var] = ds[var].astype(str)
@@ -74,12 +77,11 @@ def standardize_attributes_values(attrs, order):
             # Convert to UTC if timezone aware
             if value.tzinfo:
                 value = value.astimezone(dt.timezone.utc)
-            value = value.isoformat(timespec='milliseconds').replace('+00:00','Z')
+            value = value.isoformat(timespec="milliseconds").replace("+00:00", "Z")
 
         new_attrs[attr] = value
 
     return new_attrs
-
 
 def standardize_global_attributes(attrs):
     attribute_order = [
@@ -109,12 +111,12 @@ def standardize_global_attributes(attrs):
         "mission_end_date",
         "platform",
         "platform_name",
-        "platform_owner", 
-        "platform_type", 
-        "country_of_origin", 
-        "ices_platform_codes", 
-        "wmo_platform_code", 
-        "call_sign", 
+        "platform_owner",
+        "platform_type",
+        "country_of_origin",
+        "ices_platform_codes",
+        "wmo_platform_code",
+        "call_sign",
         "id",
         "naming_authority",
         "original_filename",
@@ -221,7 +223,11 @@ def standardize_variable_attributes(ds):
 
 
 def get_spatial_coverage_attributes(
-    ds, time="time", lat="latitude", lon="longitude", depth="depth",
+    ds,
+    time="time",
+    lat="latitude",
+    lon="longitude",
+    depth="depth",
 ):
     """
     This method generates the geospatial and time coverage attributes associated to an xarray dataset.
