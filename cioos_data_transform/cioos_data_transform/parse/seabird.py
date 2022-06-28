@@ -41,14 +41,14 @@ seabird_to_bodc = {
     "Fluorometer, Chelsea Aqua 3": ["CPHLPR01", "CPHLPR02"],
     "Fluorometer, Chelsea Minitracka": ["CPHLPR01", "CPHLPR02"],
     "Fluorometer, Seatech/WET Labs FLF": ["CPHLPR01", "CPHLPR02"],
-    "Transmissometer, WET Labs C-Star": ["ATTNZS01"],
-    "Transmissometer, Chelsea/Seatech": ["ATTNZS01"],
+    "Transmissometer, WET Labs C-Star": ["ATTNZS01", "ATTNZR01", "ATTNXXZZ"],
+    "Transmissometer, Chelsea/Seatech": ["ATTNZR01", "ATTNXXZZ"],
     "Turbidity Meter, WET Labs, ECO-NTU": ["TURBXX01", "VSCTXX01"],
     "Turbidity Meter, Seapoint": ["TURBXX01", "VSCTXX01"],
     "OBS, Backscatterance (D & A)": ["TURBXX01", "VSCTXX01"],
     "pH": ["PHMASS01", "PHXXZZ01"],
-    "OBS, WET Labs, ECO-BB": ["VSCTXX01"],
-    "OBS, Seapoint Turbidity": ["VSCTXX01", "TURBXX01", "VSCTXX01"],
+    "OBS, WET Labs, ECO-BB": ["TURBXX01", "VSCTXX01"],
+    "OBS, Seapoint Turbidity": ["VSCTXX01", "TURBXX01"],
     "SPAR/Surface Irradiance": ["IRRDSV01"],
     "SPAR, Biospherical/Licor": ["IRRDSV01"],
     "Dr. Haardt BackScatter Fluorometer": [],
@@ -57,7 +57,7 @@ seabird_to_bodc = {
     "User Polynomial, 3": [],
 }
 
-sbe_data_processing_methods = [
+sbe_data_processing_modules = [
     "datcnv",
     "filter",
     "align",
@@ -96,7 +96,7 @@ def get_seabird_processing_history(seabird_header):
     with the sbe data processing tool
     """
     if "# datcnv" in seabird_header:
-        sbe_hist = r"\# (" + "|".join(sbe_data_processing_methods) + r").*"
+        sbe_hist = r"\# (" + "|".join(sbe_data_processing_modules) + r").*"
         return "\n".join(
             [line for line in seabird_header.split("\n") if re.match(sbe_hist, line)]
         )
