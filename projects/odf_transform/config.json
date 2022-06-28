@@ -1,10 +1,15 @@
 {
-    "fileDir": "{ODF_TRANSFORM_MODULE_PATH}/sample_data/test_files/",
+    "fileDir": "{ODF_TRANSFORM_MODULE_PATH}/sample_data",
     "fileNameRegex": ".*.ODF",
     "recursive": true,
     "pathRegex": null,
     "program_logs_path": null,
-    "output_path": "./output/{'/'.join([item for item in [ds.attrs.get('program','Others'),ds.attrs.get('project'),ds.attrs.get('cruise_name')] if item])}/{odf_file}.nc",
+    "output_path": "./output/",
+    "subfolder_attribute_output_path": {
+        "program": "Others",
+        "project": null,
+        "cruise_name": null
+    },
     "addFileNameSuffix": "_dev",
     "overwrite": false,
     "geojsonFileList": [

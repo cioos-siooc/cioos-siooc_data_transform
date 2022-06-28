@@ -196,8 +196,14 @@ def write_ctd_ncfile(odf_path, config=None):
     if config["output_path"] is None:
         output_path = odf_path + ".nc"
     else:
+        # Retrieve subfolder path
+        subfolders = [
+            dataset.attrs.get(key, default)
+            for key, default in config.get("subfolder_attribute_output_path",{}).items()
+            if dataset.attrs.get(key, default)
+        ]
         output_path = os.path.join(
-            eval_config_input(output_path), os.path.basename(odf_path) + ".nc"
+            config["output_path"], *subfolders, os.path.basename(odf_path) + ".nc"
         )
 
     # Add file suffix if present within the config
