@@ -1,4 +1,5 @@
 """This module apply different tests to the ODF conversion package."""
+import logging
 import os
 import re
 import unittest
@@ -6,6 +7,8 @@ from glob import glob
 
 import odf_transform.process
 import xarray as xr
+
+logger = logging.getLogger(__name__)
 
 
 class TestBIOODFConversion(unittest.TestCase):
@@ -23,6 +26,7 @@ class TestBIOODFConversion(unittest.TestCase):
         # Make sure to define test generated files
         default_odf_config["organisationVocabulary"] = ["BIO", "GF3"]
         default_odf_config["addFileNameSuffix"] = "_test"
+        default_odf_config["output_path"] = None
 
         for file in sample_files:
             odf_transform.process.convert_odf_file(file, config=default_odf_config)
@@ -39,6 +43,7 @@ class TestBIOODFConversion(unittest.TestCase):
         # Make sure to define test generated files
         default_odf_config["organisationVocabulary"] = ["GF3"]
         default_odf_config["addFileNameSuffix"] = "_test"
+        default_odf_config["output_path"] = None
 
         for file in sample_files:
             odf_transform.process.convert_odf_file(file, config=default_odf_config)
@@ -64,8 +69,21 @@ class TestBIOODFConversion(unittest.TestCase):
             test.attrs["history"] = re.sub(
                 timestamp_format, "TIMESTAMP", test.attrs["history"]
             )
+            ref.attrs["date_created"] = "TIMESTAMP"
+            test.attrs["date_created"] = "TIMESTAMP"
 
             if not ref.identical(test):
+                for key, value in ref.attrs.items():
+                    if test.attrs[key] != value:
+                        logger.error(
+                            "Global attribute ds.attrs[%s] is different from reference file",
+                            key,
+                        )
+                for var in ref:
+                    if not ref[var].identical(test[var]):
+                        logger.error(
+                            "Variable ds[%s] is different from reference file", var
+                        )
                 raise RuntimeError(
                     f"Converted file {nc_file_test} is different than the reference: {nc_file}"
                 )
