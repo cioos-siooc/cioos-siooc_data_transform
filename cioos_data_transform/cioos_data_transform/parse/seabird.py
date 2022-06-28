@@ -103,6 +103,51 @@ def get_seabird_processing_history(seabird_header):
     logger.warning("Failed to retrieve Seabird Processing Modules history")
 
 
+def generate_binned_attributes(dataset, seabird_header):
+    """Retrieve from the Seabird header binned information and
+    apply it to the different related attributes and variable attributes."""
+
+    binavg = re.search(
+        r"\# binavg_bintype \= (?P<bintype>.*)\n\# binavg_binsize \= (?P<binsize>\d+)\n",
+        seabird_header,
+    )
+    if binavg:
+        binsize, bintype = binavg.groups()
+    else:
+        return dataset
+
+    bin_str = f"{binsize} {bintype}"
+    dataset.attrs["geospatial_vertical_resolution"] = bin_str
+    if "decibar" in bintype:
+        standard_name = "sea_water_pressure"
+    elif "second" in bin_str or "hour" in bin_str:
+        standard_name = "time"
+    elif "meter" in bin_str:
+        standard_name = "depth"
+    elif "scan" in bin_str:
+        standard_name = None
+        binvar = "Scan Count"
+    else:
+        logger.error("Unknown binavg method: %s", bin_str)
+    if standard_name:
+        related_variables = list(dataset.filter_by_attrs(standard_name=standard_name))
+        binvar = related_variables[0] if related_variables else standard_name
+    else:
+        binvar = standard_name
+
+    # Add cell method attribute and geospatial_vertical_resolution global attribute
+    if "decibar" in bin_str or "meter" in bin_str:
+        dataset.attrs["geospatial_vertical_resolution"] = bin_str
+    elif "second" in bin_str or "hour" in bin_str:
+        dataset.attrs["time_coverage_resolution"] = pd.Timedelta(bin_str).isoformat()
+    for var in dataset:
+        if (
+            len(dataset.dims) == 1 and len(dataset[var].dims) == 1
+        ) or binvar in dataset[var].dims:
+            dataset[var].attrs["cell_method"] = f"{binvar}: mean (interval: {bin_str})"
+    return dataset
+
+
 def update_attributes_from_seabird_header(
     dataset, seabird_header, parse_manual_inputs=False
 ):
@@ -112,46 +157,7 @@ def update_attributes_from_seabird_header(
     dataset.attrs["instrument"] = get_seabird_instrument_from_header(seabird_header)
 
     # Bin Averaged
-    binavg = re.search(
-        r"\# binavg_bintype \= (?P<bintype>.*)\n\# binavg_binsize \= (?P<binsize>\d+)\n",
-        seabird_header,
-    )
-    if binavg:
-        bin_str = f"{binavg['binsize']} {binavg['bintype']}"
-        dataset.attrs["geospatial_vertical_resolution"] = bin_str
-        if "decibar" in binavg["bintype"]:
-            standard_name = "sea_water_pressure"
-        elif "second" in bin_str or "hour" in bin_str:
-            standard_name = "time"
-        elif "meter" in bin_str or "hour" in bin_str:
-            standard_name = "depth"
-        elif "scan" in bin_str:
-            standard_name = None
-            binvar = "Scan Count"
-        else:
-            logger.error("Unknown binavg method: %s", bin_str)
-        if standard_name:
-            related_variables = [
-                var for var in dataset.filter_by_attrs(standard_name=standard_name)
-            ]
-            binvar = related_variables[0] if related_variables else standard_name
-        else:
-            binvar = standard_name
-
-        # Add cell method attribute and geospatial_vertical_resolution global attribute
-        if "decibar" in bin_str or "meter" in bin_str:
-            dataset.attrs["geospatial_vertical_resolution"] = bin_str
-        elif "second" in bin_str or "hour" in bin_str:
-            dataset.attrs["time_coverage_resolution"] = pd.Timedelta(
-                bin_str
-            ).isoformat()
-        for var in dataset:
-            if (
-                len(dataset.dims) == 1 and len(dataset[var].dims) == 1
-            ) or binvar in dataset[var].dims:
-                dataset[var].attrs[
-                    "cell_method"
-                ] = f"{binvar}: mean (interval: {bin_str})"
+    dataset = generate_binned_attributes(dataset, seabird_header)
 
     # Manual inputs
     manual_inputs = re.findall(r"\*\* (?P<key>.*): (?P<value>.*)\n", seabird_header)

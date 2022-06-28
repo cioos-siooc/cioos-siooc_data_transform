@@ -1,3 +1,4 @@
+"""Main module that is when odf_convert is used via the command line interface"""
 import argparse
 import glob
 import logging

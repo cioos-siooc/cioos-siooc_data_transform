@@ -1,3 +1,7 @@
+"""
+Attribute module regroup all the different tools used to standardize the ODFs
+attribtutes to the different conventions (CF, ACDD).
+"""
 import json
 import logging
 import os
@@ -164,9 +168,12 @@ def global_attributes_from_header(dataset, odf_header):
             dataset.attrs["instrument_manufacturer_header"]
         )
     elif "INSTRUMENT_HEADER" in odf_header:
-        dataset.attrs[
-            "instrument"
-        ] = f"{odf_header['INSTRUMENT_HEADER']['INST_TYPE']} {odf_header['INSTRUMENT_HEADER']['MODEL']}"
+        dataset.attrs["instrument"] = " ".join(
+            [
+                odf_header["INSTRUMENT_HEADER"]["INST_TYPE"],
+                odf_header["INSTRUMENT_HEADER"]["MODEL"],
+            ]
+        )
         dataset.attrs["instrument_serial_number"] = odf_header["INSTRUMENT_HEADER"][
             "SERIAL_NUMBER"
         ]

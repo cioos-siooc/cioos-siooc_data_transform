@@ -113,8 +113,7 @@ def read(filename, encoding_format="Windows-1252"):
         line = ""
         original_header = []
         # Read header one line at the time
-        while "-- DATA --" not in line:
-            line = f.readline()
+        for line in f:
             line = line.replace("\n", "")
             original_header.append(line)
             if "-- DATA --" in line:
@@ -445,6 +444,26 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
             # term do not match expected terms
             return False
 
+    def _match_term(units, scale, variable_instrument, global_instrument):
+        # Among these matching terms find matching ones
+        match_units = matching_terms["accepted_units"].apply(
+            lambda x: _review_term(units, x)
+        )
+        match_scale = matching_terms["accepted_scale"].apply(
+            lambda x: _review_term(scale, x)
+        )
+        match_instrument = matching_terms["accepted_instruments"].apply(
+            lambda x: _review_term(
+                variable_instrument, x, regexp=True, search_flag=re.IGNORECASE
+            )
+        )
+        match_instrument_global = matching_terms["accepted_instruments"].apply(
+            lambda x: _review_term(
+                global_instrument, x, regexp=True, search_flag=re.IGNORECASE
+            )
+        )
+        return match_units & match_scale & (match_instrument | match_instrument_global)
+
     # Define vocabulary default list of variables to import as attributes
     vocabulary_attribute_list = [
         "long_name",
@@ -468,33 +487,27 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
 
     # Find matching vocabulary
     new_variable_order = []
-    instrument_name = None
-    attrs = None
-    var_units = None
     for var in ds:
-        attrs = ds[var].attrs
-
         # Ignore variables with no attributes and flag variables
         if (
-            attrs == {}
-            or "flag_values" in attrs
-            or "legacy_gf3_code" not in attrs
+            ds[var].attrs == {}
+            or "flag_values" in ds[var].attrs
+            or "legacy_gf3_code" not in ds[var].attrs
             or var.startswith(("QCFF", "FFFF"))
         ):
             new_variable_order.append(var)
             continue
 
         # Retrieve standardize units and scale
-        var_units = standardize_odf_units(attrs.get("units", "none"))
-        scale = detect_reference_scale(var, attrs)
+        scale = detect_reference_scale(var, ds[var].attrs)
         if scale:
             # Add scale to to scale attribute
-            attrs["scale"] = scale
+            ds[var].attrs["scale"] = scale
 
         # Find matching vocabulary for that GF3 Code
-        gf3 = GF3Code(attrs["legacy_gf3_code"])
+        gf3 = GF3Code(ds[var].attrs["legacy_gf3_code"])
         matching_terms = vocabulary.query(
-            f"Vocabulary in{tuple(organizations)} and name=='{gf3.code}'"
+            f"Vocabulary in {tuple(organizations)} and name == @gf3.code"
         )
 
         # If nothing matches, move to the next one
@@ -502,54 +515,34 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
             logger.warning(
                 "No matching vocabulary term is available for variable %s: %s",
                 gf3.name,
-                attrs,
+                ds[var].attrs,
             )
             new_variable_order.append(var)
             continue
 
         # Consider only the first organization that has this term
-        selected_organization = (
-            matching_terms.index.get_level_values(0).drop_duplicates().tolist()
-        )
-        if len(selected_organization) > 1:
-            present_organizations = [
-                org for org in organizations if org in selected_organization
-            ]
-            selected_organization = present_organizations[0]
-            matching_terms = matching_terms.loc[selected_organization]
+        selected_organization = matching_terms.index.values[0][0]
+        matching_terms = matching_terms.loc[matching_terms.index.values[0][0]]
 
         # Among these matching terms find matching ones
-        match_units = matching_terms["accepted_units"].apply(
-            lambda x: _review_term(var_units, x)
-        )
-        match_scale = matching_terms["accepted_scale"].apply(
-            lambda x: _review_term(attrs.get("scale"), x)
-        )
-        match_instrument = matching_terms["accepted_instruments"].apply(
-            lambda x: _review_term(
-                attrs["long_name"], x, regexp=True, search_flag=re.IGNORECASE
-            )
-        )
-        instrument_name = (
-            f"{ds.attrs.get('instrument_type')} {ds.attrs.get('instrument_model')}"
-        )
-        match_instrument_global = matching_terms["accepted_instruments"].apply(
-            lambda x: _review_term(
-                instrument_name, x, regexp=True, search_flag=re.IGNORECASE
-            )
+        match_result = _match_term(
+            ds[var].attrs.get("units", "none"),
+            ds[var].attrs.get("scale"),
+            ds[var].attrs["long_name"],
+            (
+                f"{ds.attrs.get('instrument_type','')} {ds.attrs.get('instrument_model',)}"
+            ).strip(),
         )
 
         # Select only the terms that matches all the units/scale/instrument conditions
-        matching_terms_and_units = matching_terms.loc[
-            match_units & match_scale & (match_instrument | match_instrument_global)
-        ]
+        matching_terms_and_units = matching_terms.loc[match_result]
 
         # No matching term, give a warning if not a flag and move on to the next iteration
         if len(matching_terms_and_units) == 0:
             logger.warning(
                 "No Matching unit found for code: %s: %s in vocabulary %s",
                 var,
-                ({att: attrs[att] for att in ["long_name", "units"]}),
+                ({att: ds[var].attrs[att] for att in ["long_name", "units"]}),
                 selected_organization,
             )
             new_variable_order.append(var)
