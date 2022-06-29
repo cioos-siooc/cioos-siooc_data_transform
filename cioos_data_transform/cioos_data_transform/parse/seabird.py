@@ -113,28 +113,22 @@ def generate_binned_attributes(dataset, seabird_header):
         seabird_header,
     )
     if binavg:
-        binsize, bintype = binavg.groups()
+        bintype, binsize = binavg.groups()
     else:
         return dataset
 
     bin_str = f"{binsize} {bintype}"
     dataset.attrs["geospatial_vertical_resolution"] = bin_str
     if "decibar" in bintype:
-        standard_name = "sea_water_pressure"
+        binvar = "prdM"
     elif "second" in bin_str or "hour" in bin_str:
-        standard_name = "time"
+        binvar = "time"
     elif "meter" in bin_str:
-        standard_name = "depth"
+        binvar = "depth"
     elif "scan" in bin_str:
-        standard_name = None
-        binvar = "Scan Count"
+        binvar = "scan"
     else:
         logger.error("Unknown binavg method: %s", bin_str)
-    if standard_name:
-        related_variables = list(dataset.filter_by_attrs(standard_name=standard_name))
-        binvar = related_variables[0] if related_variables else standard_name
-    else:
-        binvar = standard_name
 
     # Add cell method attribute and geospatial_vertical_resolution global attribute
     if "decibar" in bin_str or "meter" in bin_str:
@@ -145,6 +139,7 @@ def generate_binned_attributes(dataset, seabird_header):
         if (
             len(dataset.dims) == 1 and len(dataset[var].dims) == 1
         ) or binvar in dataset[var].dims:
+
             dataset[var].attrs["cell_method"] = f"{binvar}: mean (interval: {bin_str})"
     return dataset
 
