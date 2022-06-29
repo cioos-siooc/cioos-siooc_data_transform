@@ -230,8 +230,8 @@ def global_attributes_from_header(dataset, odf_header):
             odf_header["EVENT_HEADER"]["DATA_TYPE"],
         )
 
-    ## FIX ODF ATTRIBUTES
-    # # event_number should be number otherwise get rid of it
+    # FIX ODF ATTRIBUTES
+    # event_number should be number otherwise get rid of it
     if not isinstance(dataset.attrs["event_number"], int):
         event_number = re.search(
             r"\*\* Event[\s\:\#]*(\d+)",
@@ -255,7 +255,7 @@ def global_attributes_from_header(dataset, odf_header):
     )
     if (
         station
-        and not "station" in dataset.attrs
+        and "station" not in dataset.attrs
         and dataset.attrs.get("project", "") not in stationless_programs
     ):
         station = station[1].strip()

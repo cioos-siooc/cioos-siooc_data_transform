@@ -9,11 +9,7 @@ from multiprocessing import Pool
 import pandas as pd
 from tqdm import tqdm
 
-from odf_transform.process import (
-    convert_odf_file,
-    eval_config_input,
-    read_config,
-)
+from odf_transform.process import convert_odf_file, eval_config_input, read_config
 
 tqdm.pandas()
 
