@@ -16,7 +16,8 @@ from cioos_data_transform.parse.seabird import (
 )
 from cioos_data_transform.utils.xarray_methods import history_input
 
-logger = logging.getLogger(__name__)
+no_file_logger = logging.getLogger(__name__)
+logger = logging.LoggerAdapter(no_file_logger, {"file": None})
 
 module_path = os.path.dirname(__file__)
 profile_direction_map = {"DN": "downward", "FLAT": "stable", "UP": "upward"}

@@ -13,7 +13,8 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 
-logger = logging.getLogger(__name__)
+no_file_logger = logging.getLogger(__name__)
+logger = logging.LoggerAdapter(no_file_logger, {"file": None})
 
 # Dictionary with the mapping of the odf types to python types
 odf_dtypes = {

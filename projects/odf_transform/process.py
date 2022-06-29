@@ -20,13 +20,8 @@ from cioos_data_transform.utils.xarray_methods import standardize_dataset
 
 from ._version import __version__
 
-logger = logging.getLogger(__name__)
-
-# Adapt Logger to have incorporated the odf_file name
-logger = logging.LoggerAdapter(logger, {"odf_file": None})
-seabird.logger = logging.LoggerAdapter(seabird.logger, {"odf_file": None})
-attributes.logger = logging.LoggerAdapter(attributes.logger, {"odf_file": None})
-odf_parser.logger = logging.LoggerAdapter(odf_parser.logger, {"odf_file": None})
+no_file_logger = logging.getLogger(__name__)
+logger = logging.LoggerAdapter(no_file_logger, {"file": None})
 
 
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -86,13 +81,6 @@ def read_geojson_file_list(file_list):
 
 def write_ctd_ncfile(odf_path, config=None):
     """Convert odf files to a CIOOS/ERDDAP compliant NetCDF format"""
-    # Update submodule LoggerAdapter to include the odf_path
-    log = {"odf_path": odf_path}
-    seabird.logger.extra.update(log)
-    attributes.logger.extra.update(log)
-    odf_parser.logger.extra.update(log)
-    logger.extra.update(log)
-
     # Parse the ODF file with the CIOOS python parsing tool
     metadata, raw_data = odf_parser.read(odf_path)
 
@@ -199,7 +187,9 @@ def write_ctd_ncfile(odf_path, config=None):
         # Retrieve subfolder path
         subfolders = [
             dataset.attrs.get(key, default)
-            for key, default in config.get("subfolder_attribute_output_path",{}).items()
+            for key, default in config.get(
+                "subfolder_attribute_output_path", {}
+            ).items()
             if dataset.attrs.get(key, default)
         ]
         output_path = os.path.join(
@@ -225,9 +215,17 @@ def convert_odf_file(file, config: dict = None):
     # Handle default inputs
     if config is None:
         config = read_config(DEFAULT_CONFIG_PATH)
+    
+    # Update submodule LoggerAdapter to include the odf_path
+    log = {"file": file}
+    seabird.logger.extra.update(log)
+    attributes.logger.extra.update(log)
+    odf_parser.logger.extra.update(log)
+    logger.extra.update(log)
 
-    logger.extra["odf_file"] = os.path.basename(file)
+    logger.extra["file"] = os.path.basename(file)
     try:
+        
         write_ctd_ncfile(
             odf_path=file,
             config=config,

@@ -13,7 +13,6 @@ from odf_transform.process import convert_odf_file, eval_config_input, read_conf
 
 tqdm.pandas()
 
-
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_CONFIG_PATH = os.path.join(MODULE_PATH, "config.json")
 
@@ -28,7 +27,7 @@ if __name__ == "__main__":
     # Log issues with conversion
     log_file = logging.FileHandler("odf_transform.log", encoding="UTF-8")
     formatter = logging.Formatter(
-        "%(odf_file)s - %(asctime)s [%(levelname)s] %(processName)s %(name)s: %(message)s"
+        "%(file)s - %(asctime)s [%(levelname)s] %(processName)s %(name)s: %(message)s"
     )
     log_file.setFormatter(formatter)
     log_file.setLevel(logging.WARNING)
@@ -36,7 +35,7 @@ if __name__ == "__main__":
 
     # Set logger to log variable names
     var_log_file = logging.FileHandler("odf_transform_variables.log", encoding="UTF-8")
-    formatter = logging.Formatter("%(odf_file)s - %(asctime)s: %(message)s")
+    formatter = logging.Formatter("%(file)s - %(asctime)s: %(message)s")
     var_log_file.setFormatter(formatter)
     var_log_file.setLevel(logging.INFO)
     var_log_file.addFilter(logging.Filter(name="odf_transform.process"))
@@ -247,7 +246,8 @@ if __name__ == "__main__":
 
         # Get files available in output_path
         search_output_path_files = glob.glob(
-            f"{search_output_path}/**/*.ODF.nc", recursive=True
+            f"{search_output_path}**/*.ODF{config.get('addFileNameSuffix','')}.nc",
+            recursive=True,
         )
 
         outputted_files = {

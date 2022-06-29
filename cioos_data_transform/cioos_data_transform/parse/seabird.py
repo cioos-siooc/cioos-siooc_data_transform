@@ -8,7 +8,8 @@ from xml.parsers.expat import ExpatError
 import pandas as pd
 import xmltodict
 
-logger = logging.getLogger(__name__)
+no_file_logger = logging.getLogger(__name__)
+logger = logging.LoggerAdapter(no_file_logger, extra={"file": None})
 
 seabird_to_bodc = {
     "Temperature": ["TEMPP681", "TEMPP901", "TEMPS601", "TEMPS901", "TEMPPR01"],
