@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 from odf_transform.process import (
     read_config,
-    run_odf_conversion,
+    run_odf_conversion_from_config,
 )
 
 tqdm.pandas()
@@ -112,4 +112,4 @@ if __name__ == "__main__":
     config = read_config(args["config_path"])
     config.update({key: value for key, value in args.items() if value})
 
-    run_odf_conversion(config)
+    run_odf_conversion_from_config(config)

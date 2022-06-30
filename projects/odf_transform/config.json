@@ -3,7 +3,7 @@
     "fileNameRegex": "*.ODF",
     "recursive": true,
     "pathRegex": null,
-    "program_logs_path": null,
+    "program_log_path": null,
     "output_path": "./output",
     "subfolder_attribute_output_path": {
         "program": "Others",
