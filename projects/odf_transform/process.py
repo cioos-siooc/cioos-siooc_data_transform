@@ -34,7 +34,16 @@ DEFAULT_CONFIG_PATH = os.path.join(MODULE_PATH, "config.json")
 ODF_TRANSFORM_MODULE_PATH = MODULE_PATH
 
 
-def read_config(config_file: str = DEFAULT_CONFIG_PATH) -> dict: 
+def read_config(config_file: str = DEFAULT_CONFIG_PATH) -> dict:
+    """Parse json configuration file used to convert ODF files to netcdf.
+
+    Args:
+        config_file (str, optional): Path to json configuration file.
+            Defaults to DEFAULT_CONFIG_PATH.
+
+    Returns:
+        dict: parsed configuration
+    """
     # read json file with information on dataset etc.
     with open(config_file, encoding="UTF-8") as fid:
         json_text = fid.read()
@@ -66,23 +75,29 @@ def read_config(config_file: str = DEFAULT_CONFIG_PATH) -> dict:
     # Read Vocabulary file
     vocab = pd.read_csv(config["vocabularyFile"], index_col=["Vocabulary", "name"])
     config["vocabulary"] = vocab.fillna(np.nan).replace({np.nan: None})
-    
+
     # Read program logs
-    if config['program_log_path']:
+    if config["program_log_path"]:
         program_logs = []
-        for file in glob(config['program_log_path']+ '*.csv'):
+        for file in glob(config["program_log_path"] + "*.csv"):
             df_temp = pd.read_csv(file)
-            df_temp.insert(0,'program',os.path.basename(file))
+            df_temp.insert(0, "program", os.path.basename(file))
             program_logs += [df_temp]
-        config['program_log'] = pd.concat(program_logs)
+        config["program_log"] = pd.concat(program_logs)
     else:
-        config['program_log'] = None
+        config["program_log"] = None
     return config
 
 
 def odf_to_netcdf(odf_path, config=None):
-    """Convert odf files to a CIOOS/ERDDAP compliant NetCDF format"""
-    
+    """AI is creating summary for odf_to_netcdf
+
+    Args:
+        odf_path (str): path to ODF file to convert
+        config (dictionary, optional): Conversion configuration to apply.
+            Defaults to odf_transform/config.json.
+    """
+
     # Use default config if no config is given
     if config is None:
         config = read_config(DEFAULT_CONFIG_PATH)
@@ -171,12 +186,8 @@ def odf_to_netcdf(odf_path, config=None):
         logger.info(f"Drop empty attributes: {dropped_attrs}")
 
     # Handle coordinates and dimensions
-    coords = [
-        coord
-        for coord in ["time", "latitude", "longitude", "depth"]
-        if coord in dataset
-    ]
-    dataset = dataset.set_coords(coords)
+    coordinates = ["time", "latitude", "longitude", "depth"]
+    dataset = dataset.set_coords([var for var in coordinates if var in dataset])
     if (
         dataset.attrs["cdm_data_type"] == "Profile"
         and "index" in dataset
@@ -189,7 +200,7 @@ def odf_to_netcdf(odf_path, config=None):
 
     # Save dataset to a NetCDF file
     if config["output_path"] is None:
-        output_path = odf_path + ".nc"
+        output_path = odf_path + config["addFileNameSuffix"] + ".nc"
     else:
         # Retrieve subfolder path
         subfolders = [
@@ -200,12 +211,10 @@ def odf_to_netcdf(odf_path, config=None):
             if dataset.attrs.get(key, default)
         ]
         output_path = os.path.join(
-            config["output_path"], *subfolders, os.path.basename(odf_path) + ".nc"
+            config["output_path"],
+            *subfolders,
+            os.path.basename(odf_path) + config["addFileNameSuffix"] + ".nc",
         )
-
-    # Add file suffix if present within the config
-    if config.get("addFileNameSuffix"):
-        output_path = re.sub(r"\.nc$", config["addFileNameSuffix"] + ".nc", output_path)
 
     # Review if output path folders exists if not create them
     dirname = os.path.dirname(output_path)
@@ -229,10 +238,85 @@ def odf_to_netcdf_with_log(inputs):
     try:
         odf_to_netcdf(*inputs)
     except Exception:
-        logger.error(f"Conversion failed!!!", exc_info=True)
+        logger.error("Conversion failed!!!", exc_info=True)
 
-    
+
 def run_odf_conversion_from_config(config):
+    """Run ODF conversion from configuration file
+
+    Args:
+        config (dict, str): Configuration dictionary or path to json file
+        to apply conversion.
+    """
+
+    def _remove_already_converted_files(input_files, config):
+        """Review file list to convert and drop any files that already
+        exist in output directory and that last edit time exceed the original file.
+
+        Args:
+            input_files (list): List of files to convert to netcdf format.
+            config (dict): Configuration used to apply netcdf conversion
+
+        Returns:
+            list: Reduced list of files that needs conversion
+        """
+        # Get list or already outputted files available in output_path and their last edit time
+        search_output_path_files = glob(
+            os.path.join(
+                *[
+                    input_path if output_path is None else output_path,
+                    "**",
+                    f"{config['fileNameRegex']}{config['addFileNameSuffix']}.nc",
+                ]
+            ),
+            recursive=True,
+        )
+        outputted_files = {
+            os.path.basename(file.replace(config["addFileNameSuffix"] + ".nc", "")): {
+                "path": file,
+                "last_modified": os.path.getmtime(file),
+            }
+            for file in search_output_path_files
+        }
+        return [
+            file
+            for file in input_files
+            if os.path.basename(file) not in outputted_files
+            or outputted_files[os.path.basename(file)]["last_modified"]
+            < os.path.getmtime(file)
+        ]
+
+    def _generate_input_by_program(files, config):
+        """Generate mission specific input to apply for the conversion
+
+        Args:
+            files (list): List of files to apply the conversion to
+            config (dict): General configuration to be used for the conversion
+
+        Returns:
+            list: list of inputs used for each files [(file_path, file_specific_configuration),...]
+        """
+        logger.info(
+            "Generate Mission Specific Configuration for %s files associated with %s missions",
+            len(files),
+            len(config["program_log"]),
+        )
+        inputs = []
+        tqdm_dict = {
+            "desc": "Generate mission specific configuration",
+            "total": len(config["program_log"]),
+        }
+        for mission, row in tqdm(
+            config["program_log"].set_index("mission").iterrows(), **tqdm_dict
+        ):
+            related_files = [file for file in odf_files_list if mission in file]
+            if related_files:
+                mission_config = config.copy()
+                mission_config["global_attributes"].update(dict(row.dropna()))
+                inputs += [(file, mission_config) for file in related_files]
+            else:
+                logger.warning("No file available is related to mission: %s", mission)
+        return inputs
 
     # Parse config file if file is given
     if isinstance(config, str):
@@ -258,59 +342,25 @@ def run_odf_conversion_from_config(config):
     # Review keep files that needs an update only
     output_path = config["output_path"]
 
-    if config['program_log'] is not None:
+    if config["program_log"] is not None:
         # Consider only files related to missions available in the program_log
-        missions = config['program_log']['mission'].values
-        odf_files_list = [file for file in odf_files_list if re.search('|'.join(missions),file)]
+        missions = config["program_log"]["mission"].values
+        odf_files_list = [
+            file for file in odf_files_list if re.search("|".join(missions), file)
+        ]
 
+    # Sort files that needs to be converted
     if config["overwrite"]:
         # overwrite all files
         logger.info(f"Overwrite all {len(odf_files_list)}")
     elif os.path.isfile(output_path):
         logger.info(f"Overwrite file: {output_path}")
     else:
-        # Get list or already outputted files available in output_path and their last edit time
-        search_output_path_files = glob(
-            os.path.join(
-                *[
-                    input_path if output_path is None else output_path,
-                    "**",
-                    f"{config['fileNameRegex']}{config['addFileNameSuffix']}.nc"
-                ]
-            ),
-            recursive=True,
-        )
-        outputted_files = {
-            os.path.basename(file.replace(config['addFileNameSuffix']+'.nc','')): {
-                "path": file,
-                "last_modified": os.path.getmtime(file),
-            }
-            for file in search_output_path_files
-        }
-        # Drop from list to convert any files that are already available and that 
-        # the time assciated with original ODF do not exceed the netcdf equivalent.
-        odf_files_list = [file for file in odf_files_list if os.path.basename(file) not in outputted_files or outputted_files[os.path.basename(file)]["last_modified"] < os.path.getmtime(file)]
+        odf_files_list = _remove_already_converted_files(odf_files_list, config)
 
     # Generate inputs
-    if config["program_log"] is not None: 
-        logger.info(
-            "Generate Mission Specific Configuration for %s files associated with %s missions",
-            len(odf_files_list),
-            len(config['program_log'])
-        )   
-        inputs = []
-        tqdm_dict = {
-            'desc':'Generate mission specific configuration',
-            "total": len(config['program_log'])
-        }
-        for mission, row in tqdm(config['program_log'].set_index('mission').iterrows(), **tqdm_dict):
-            related_files = [file for file in odf_files_list if mission in file]
-            if related_files:
-                mission_config = config.copy()
-                mission_config['global_attributes'].update(dict(row.dropna()))
-                inputs += [ (file, mission_config) for file in related_files]
-            else:
-                logger.warning('No file available is related to mission: %s',mission)
+    if config["program_log"] is not None:
+        inputs = _generate_input_by_program(odf_files_list, config)
     else:
         inputs = [(file, config) for file in odf_files_list]
 
