@@ -342,8 +342,6 @@ def run_odf_conversion(config):
     # Review keep files that needs an update only
     output_path = config["output_path"]
 
-    
-
     if config["overwrite"]:
         # overwrite all files
         logger.info(f"Overwrite all {len(odf_files_list)}")
@@ -355,7 +353,7 @@ def run_odf_conversion(config):
 
         # Get files available in output_path and their last edit time
         search_output_path_files = glob(
-            f"{search_output_path}/**/{config['fileNameRegex']}{config.get('addFileNameSuffix','')}.nc",
+            f"{search_output_path}/**/{config['fileNameRegex']}{config['addFileNameSuffix']}.nc",
             recursive=True,
         )
 
