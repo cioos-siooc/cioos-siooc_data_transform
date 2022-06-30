@@ -1,10 +1,10 @@
 {
     "fileDir": "{ODF_TRANSFORM_MODULE_PATH}/sample_data",
-    "fileNameRegex": ".*.ODF",
+    "fileNameRegex": "*.ODF",
     "recursive": true,
     "pathRegex": null,
     "program_logs_path": null,
-    "output_path": "./output/",
+    "output_path": "./output",
     "subfolder_attribute_output_path": {
         "program": "Others",
         "project": null,
@@ -12,11 +12,15 @@
     },
     "addFileNameSuffix": "_dev",
     "overwrite": false,
-    "geojsonFileList": [
+    "geographic_area_reference_files": [
         "{ODF_TRANSFORM_MODULE_PATH}/geojson_files/ios_polygons.geojson",
         "{ODF_TRANSFORM_MODULE_PATH}/geojson_files/MLI_St-LawrenceBoxes.geojson",
         "{ODF_TRANSFORM_MODULE_PATH}/geojson_files/csasAtlPhys_climatePolygons.geojson"
     ],
+    "reference_stations_reference_files": [
+        "{ODF_TRANSFORM_MODULE_PATH}/reference_stations.geojson"
+    ],
+    "maximum_distance_from_station_km": 3,
     "vocabularyFile": "{ODF_TRANSFORM_MODULE_PATH}/reference_vocabulary.csv",
     "organisationVocabulary": [
         "BIO",
