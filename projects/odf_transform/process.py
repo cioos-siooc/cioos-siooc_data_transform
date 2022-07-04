@@ -72,6 +72,25 @@ def read_config(config_file: str = DEFAULT_CONFIG_PATH) -> dict:
         for col in config["reference_stations"]
     ]
 
+    # Reference Platforms
+    df_platforms = pd.concat(
+        pd.read_csv(
+            os.path.join(file),
+            dtype={"wmo_platform_code": "string"},
+        )
+        for file in config["reference_platforms_files"]
+    )
+    df_platforms["lowered_platform_name"] = df_platforms["platform_name"].str.lower()
+    config["reference_platforms"] = df_platforms.set_index(
+        "lowered_platform_name"
+    ).to_dict(orient="index")
+
+    # Attribute mapping corrections
+    config["attribute_mapping_corrections"] = {}
+    for file in config["attribute_mapping_corrections_files"]:
+        with open(file, encoding="utf-8") as f:
+            config["attribute_mapping_corrections"].update(json.load(f))
+
     # Read Vocabulary file
     vocab = pd.read_csv(config["vocabularyFile"], index_col=["Vocabulary", "name"])
     config["vocabulary"] = vocab.fillna(np.nan).replace({np.nan: None})
@@ -118,7 +137,7 @@ def odf_to_netcdf(odf_path, config=None):
 
     # Write global and variable attributes
     dataset.attrs = config["global_attributes"]
-    dataset = attributes.global_attributes_from_header(dataset, metadata)
+    dataset = attributes.global_attributes_from_header(dataset, metadata, config=config)
     dataset.attrs[
         "history"
     ] += f"# Convert ODF to NetCDF with cioos_data_trasform.odf_transform V {__version__}\n"
@@ -130,7 +149,7 @@ def odf_to_netcdf(odf_path, config=None):
     dataset = odf_parser.odf_flag_variables(dataset, config.get("flag_convention"))
 
     # Define coordinates variables from attributes, assign geographic_area and nearest stations
-    dataset = attributes.retrieve_coordinates(dataset)
+    dataset = attributes.generate_coordinates_variables(dataset)
     dataset.attrs["geographic_area"] = get_geo_code(
         [dataset["longitude"].mean(), dataset["latitude"].mean()],
         config["geographic_areas"],
@@ -384,7 +403,7 @@ def run_odf_conversion_from_config(config):
         )
         with Pool(config["n_workers"]) as pool:
             list(tqdm(pool.imap(odf_to_netcdf_with_log, inputs), **tqdm_dict))
-    elif 0 < len(inputs) < 100:
+    else:
         print("Run ODF Conversion")
-        for item in tqdm(inputs, **tqdm_dict):
-            odf_to_netcdf_with_log(*item)
+        for odf_convert_input in tqdm(inputs, **tqdm_dict):
+            odf_to_netcdf_with_log(odf_convert_input)

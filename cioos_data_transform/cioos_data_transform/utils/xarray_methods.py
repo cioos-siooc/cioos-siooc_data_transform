@@ -8,13 +8,6 @@ This Module regroup diverse methods used to handle xarray datasets and generate 
 """
 
 
-def history_input(comment, date=dt.datetime.now()):
-    if type(date) == dt.datetime:
-        return f"{date.strftime('%Y-%m-%dT%H:%M:%SZ')} {comment}\n"
-    else:
-        return f"{date} {comment}\n"
-
-
 def standardize_dataset(ds, utc=None):
     """Global method that applies the different standardizations tools."""
     ds = get_spatial_coverage_attributes(ds)
@@ -82,6 +75,7 @@ def standardize_attributes_values(attrs, order):
         new_attrs[attr] = value
 
     return new_attrs
+
 
 def standardize_global_attributes(attrs):
     attribute_order = [

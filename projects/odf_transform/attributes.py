@@ -2,11 +2,11 @@
 Attribute module regroup all the different tools used to standardize the ODFs
 attribtutes to the different conventions (CF, ACDD).
 """
+
 import json
 import logging
-import os
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from difflib import get_close_matches
 
 import pandas as pd
@@ -14,57 +14,304 @@ from cioos_data_transform.parse.seabird import (
     get_seabird_instrument_from_header,
     get_seabird_processing_history,
 )
-from cioos_data_transform.utils.xarray_methods import history_input
 
 no_file_logger = logging.getLogger(__name__)
 logger = logging.LoggerAdapter(no_file_logger, {"file": None})
 
-module_path = os.path.dirname(__file__)
-profile_direction_map = {"DN": "downward", "FLAT": "stable", "UP": "upward"}
-with open(
-    os.path.join(module_path, "attribute_corrections.json"), encoding="UTF-8"
-) as f:
-    attribute_corrections = json.load(f)
-
-# This could be potentially be replaced by using the NERC Server instead
-reference_platforms = pd.read_csv(
-    os.path.join(module_path, "reference_platforms.csv"),
-    dtype={"wmo_platform_code": "string"},
-)
-platform_mapping = {key.lower(): key for key in reference_platforms["platform_name"]}
-
 stationless_programs = ("Maritime Region Ecosystem Survey",)
 
 
-def titleize(text):
-    """Titlelize a string and ignore specific expressions"""
-    do_not_change = ["AZMP", "(AZMP)", "ADCP", "(ADCP)", "CTD", "a", "the"]
-    return " ".join(
-        item.title() if item not in do_not_change else item for item in text.split(" ")
-    )
-
-
-def match_platform(platform):
+def _generate_platform_attributes(platform, reference_platforms):
     """Review ODF CRUISE_HEADER:PLATFORM and match to closest"""
     platform = re.sub(
         r"CCGS_*\s*|CGCB\s*|FRV\s*|NGCC\s*|^_|MV\s*", "", platform
     ).strip()
-    matched_platform = get_close_matches(platform.lower(), platform_mapping.keys())
+    matched_platform = get_close_matches(platform.lower(), reference_platforms.keys())
     if matched_platform:
-        return (
-            reference_platforms[
-                reference_platforms["platform_name"]
-                == platform_mapping[matched_platform[0]]
-            ]
-            .iloc[0]
-            .dropna()
-            .to_dict()
-        )
+        return reference_platforms[matched_platform[0]]
     logger.warning("Unknown platform %s", platform)
     return {}
 
 
-def global_attributes_from_header(dataset, odf_header):
+def _generate_cf_history_from_odf(odf_header):
+    """
+    Generate from ODF HISTORY_HEADER, CF recommended format history attribute.
+    If a Seabird instrument csv header is provided, it will be converted to a CF standard and
+    made available within the instrument_manufacturer_header attribute.
+    Processing steps associated with the SBE Processing toolbox will also be
+    incorporated within the history attribute.
+    """
+
+    def _add_to_history(comment, date=datetime.now(timezone.utc)):
+        """Generate a CF standard history line."""
+        return f"{date.strftime('%Y-%m-%dT%H:%M:%SZ')} {comment}\n"
+
+    # Convert ODF history to CF history
+    is_manufacturer_header = False
+
+    history = {
+        "instrument_manufacturer_header": "",
+        "internal_processing_notes": "",
+        "history": "",
+    }
+    for history_group in odf_header["HISTORY_HEADER"]:
+        # Convert single processes to list
+        if isinstance(history_group["PROCESS"], str):
+            history_group["PROCESS"] = [history_group["PROCESS"]]
+
+        for row in history_group["PROCESS"]:
+            # Retrieve Instrument Manufacturer Header
+            if row.startswith("* Sea-Bird"):
+                history["history"] += "# SEA-BIRD INSTRUMENTS HEADER\n"
+                is_manufacturer_header = True
+            if is_manufacturer_header:
+                history["instrument_manufacturer_header"] += row + "\n"
+            else:
+                history["internal_processing_notes"] += _add_to_history(
+                    row, history_group["CREATION_DATE"]
+                )
+
+            # End of manufacturer header
+            if row.startswith("*END*"):
+                is_manufacturer_header = False
+                history["history"] += "# ODF Internal Processing Notes\n"
+
+            # Ignore some specific lines within the history (mostly seabird header ones)
+            if re.match(
+                r"^(\#\s*\<.*|\*\* .*"
+                + r"|\# (name|span|nquan|nvalues|unit|interval|start_time|bad_flag)"
+                + r"|\* |\*END\*)",
+                row,
+            ):
+                continue
+            # Add to cf history
+            history["history"] += _add_to_history(row, history_group["CREATION_DATE"])
+    return history
+
+
+def _define_cdm_data_type_from_odf(odf_header):
+    """Generate cdm_data_type attributes based on the odf data_type attribute."""
+    # Derive cdm_data_type from DATA_TYPE
+    odf_data_type = odf_header["EVENT_HEADER"]["DATA_TYPE"]
+    attributes = {"odf_data_type": odf_data_type}
+    if odf_data_type in ["CTD", "BOTL", "BT"]:
+        attributes.update(
+            {
+                "cdm_data_type": "Profile",
+                "cdm_profile_variables": "",
+            }
+        )
+
+        if odf_data_type == "CTD":
+            attributes["profile_direction"] = odf_header["EVENT_HEADER"][
+                "EVENT_QUALIFIER2"
+            ]
+
+    else:
+        logger.error(
+            "ODF_transform is not yet incompatible with ODF DATA_TYPE: %s",
+            odf_data_type,
+        )
+    return attributes
+
+
+def _review_event_number(global_attributes, odf_header):
+    """Review event_number which should be number otherwise get rid of it"""
+    # If interger already return that same value
+    if isinstance(global_attributes["event_number"], int):
+        return global_attributes["event_number"]
+
+    # Look for an event_number withih all the original header
+    event_number = re.search(
+        r"\*\* Event[\s\:\#]*(\d+)",
+        "".join(odf_header["original_header"]),
+        re.IGNORECASE,
+    )
+    if event_number:
+        return int(event_number[1])
+    logger.warning(
+        "event_number %s is not just a number",
+        global_attributes["event_number"],
+    )
+
+
+def _standardize_station_names(station):
+    """
+    Standardize stations with convention:
+        - ABC01: capital letters two digits
+        - 001: 3 digits numbers
+        - Otherwise unchanged
+    """
+    if re.match(r"[A-Za-z]+\_*\d+", station):
+        station_items = re.search(r"([A-Za-z]+)_*(\d+)", station).groups()
+        return f"{station_items[0].upper()}{int(station_items[1]):02g}"
+    # Station is just number convert to string with 001
+    elif re.match(r"^[0-9]+$", station):
+        return f"{int(station):03g}"
+    else:
+        return station
+
+
+def _review_station(global_attributes, odf_header):
+    """Review station attribute,
+    - If not available search in original odf header for "station... : STATION_NAME"
+    - Standardize station name
+    - Make sure station != event_number
+    """
+    # If station is already available return it back
+    if "station" in global_attributes:
+        return global_attributes["station"]
+    elif global_attributes.get("project", "") not in stationless_programs:
+        return None
+
+    # Search station anywhere within ODF Header
+    station = re.search(
+        r"station[\w\s]*:\s*(\w*)",
+        "".join(odf_header["original_header"]),
+        re.IGNORECASE,
+    )
+    if station is None:
+        return
+
+    # If station is found standardize it
+    station = station[1].strip()
+
+    # Ignore station that are actually the event_number
+    if re.match(r"^[0-9]+$", station) and int(station) != global_attributes.get(
+        "event_number"
+    ):
+        logger.warning(
+            "Station name is suspicious since its just a number: %s",
+            station,
+        )
+        return
+
+    return _standardize_station_names(station)
+
+
+def _review_time_attributes(global_attributes):
+    """Review time attributesw which should be:
+    - Parsed and converted to datetime
+    - > 1900-01-01
+    """
+    # Review attributes format
+    for attr in ["event_start_time", "event_end_time"]:
+        if global_attributes.get(attr) not in (None, pd.NaT) and not isinstance(
+            global_attributes[attr], datetime
+        ):
+            logging.warning(
+                "%s failed to be converted to timestamp: %s",
+                attr,
+                global_attributes[attr],
+            )
+        elif global_attributes[attr] < pd.Timestamp(1900, 1, 1).tz_localize("UTC"):
+            logging.warning("%s is before 1900-01-01 which is very suspicious", attr)
+
+
+def _generate_instrument_attributes(odf_header, instrument_manufacturer_header=None):
+    """
+    Generate instrument attributes based on:
+    - ODF instrument attribute
+    - manufacturer header
+    """
+    # Instrument Specific Information
+    attributes = {}
+    if instrument_manufacturer_header:
+        attributes["instrument"] = get_seabird_instrument_from_header(
+            instrument_manufacturer_header
+        )
+        attributes["seabird_processing_modules"] = get_seabird_processing_history(
+            instrument_manufacturer_header
+        )
+    elif "INSTRUMENT_HEADER" in odf_header:
+        attributes["instrument"] = " ".join(
+            [
+                odf_header["INSTRUMENT_HEADER"]["INST_TYPE"],
+                odf_header["INSTRUMENT_HEADER"]["MODEL"],
+            ]
+        )
+        attributes["instrument_serial_number"] = odf_header["INSTRUMENT_HEADER"][
+            "SERIAL_NUMBER"
+        ]
+    else:
+        logger.warning("No Instrument field available")
+        attributes["instrument"] = ""
+        attributes["instrument_serial_number"] = ""
+
+    if re.search(
+        r"(SBE\s*(9|16|19|25|37))|CTD|Guildline|GUILDLN|STD",
+        attributes["instrument"],
+        re.IGNORECASE,
+    ):
+        attributes["instrument_type"] = "CTD"
+    elif re.search(r"Bathythermograph Manual", attributes["instrument"]):
+        attributes["instrument_type"] = "BT"
+    else:
+        logger.warning(
+            "Unknown instrument type for instrument: %s; odf['INSTRUMENT_HEADER']: %s",
+            attributes["instrument"],
+            odf_header.get("INSTRUMENT_HEADER"),
+        )
+    return attributes
+
+
+def _generate_title_from_global_attributes(attributes):
+    title = (
+        f"{attributes['odf_data_type']} profile data collected "
+        + f"from the {attributes['platform']} {attributes['platform_name']} by "
+        + f"{attributes['organization']}  {attributes['institution']} "
+        + f"on the {attributes['cruise_name'].title()} "
+    )
+    if (
+        attributes["mission_start_date"]
+        and attributes["mission_end_date"]
+        and isinstance(attributes["mission_start_date"], datetime)
+        and isinstance(attributes["mission_end_date"], datetime)
+    ):
+        title += (
+            f"from {attributes['mission_start_date'].strftime('%d-%b-%Y')} "
+            + f"to {attributes['mission_end_date'].strftime('%d-%b-%Y')}."
+        )
+    return title
+
+
+def _generate_program_specific_attritutes(global_attributes):
+    """Generate program specific attributes
+    Bedford Institute of Oceanography
+    - AZMP
+        + Program specific -> cruise_name = None
+    - MARES
+    - AZOMP
+    """
+    # Standardize project and cruise_name (AZMP, AZOMP and MARES)
+    if "program" not in global_attributes:
+        return {}
+
+    program = global_attributes["program"]
+    project = global_attributes.get("project")
+    year = global_attributes["event_start_time"].year
+    month = global_attributes["event_start_time"].month
+
+    if program == "Atlantic Zone Monitoring Program":
+        season = "Spring" if 1 <= month <= 7 else "Fall"
+        return {
+            "project": project or f"{program} {season}",
+            "cruise_name": None if project else f"{program} {season} {year}",
+        }
+
+    elif program == "Maritime Region Ecosystem Survey":
+        season = "Summer" if 5 <= month <= 9 else "Winter"
+        return {
+            "project": f"{program} {season}",
+            "cruise_name": f"{program} {season} {year}",
+        }
+    elif program == "Atlantic Zone Off-Shelf Monitoring Program":
+        return {"cruise_name": f"{program} {year}"}
+    else:
+        return {}
+
+
+def global_attributes_from_header(dataset, odf_header, config=None):
     """
     Method use to define the standard global attributes from an ODF Header
     parsed by the read function.
@@ -78,12 +325,20 @@ def global_attributes_from_header(dataset, odf_header):
 
     odf_original_header = odf_header.copy()
     odf_original_header.pop("variable_attributes")
+    platform_attributes = _generate_platform_attributes(
+        odf_header["CRUISE_HEADER"]["PLATFORM"], config["reference_platforms"]
+    )
+    history = _generate_cf_history_from_odf(odf_header)
+    instrument_attributes = _generate_instrument_attributes(
+        odf_header, history.get("instrument_manufacturer_header")
+    )
+    cdm_data_type_attributes = _define_cdm_data_type_from_odf(odf_header)
     dataset.attrs.update(
         {
             "cruise_name": odf_header["CRUISE_HEADER"]["CRUISE_NAME"],
             "cruise_number": str(odf_header["CRUISE_HEADER"]["CRUISE_NUMBER"]),
             "cruise_description": odf_header["CRUISE_HEADER"]["CRUISE_DESCRIPTION"],
-            "chief_scientist": standardize_chief_scientist(
+            "chief_scientist": _standardize_chief_scientist(
                 odf_header["CRUISE_HEADER"]["CHIEF_SCIENTIST"]
             ),
             "mission_start_date": odf_header["CRUISE_HEADER"].get("START_DATE"),
@@ -115,218 +370,31 @@ def global_attributes_from_header(dataset, odf_header):
             "original_odf_header_json": json.dumps(
                 odf_original_header, ensure_ascii=False, indent=False, default=str
             ),
+            **platform_attributes,
+            **instrument_attributes,
+            **history,
+            **cdm_data_type_attributes,
+        }
+    )
+    # Generate attributes from other attributes
+    dataset.attrs["title"] = _generate_title_from_global_attributes(dataset.attrs)
+    dataset.attrs.update(**_generate_program_specific_attritutes(dataset.attrs))
+
+    # Review ATTRIBUTES
+    dataset.attrs["event_number"] = _review_event_number(dataset.attrs, odf_header)
+    dataset.attrs["station"] = _review_station(dataset.attrs, odf_header)
+    _review_time_attributes(dataset.attrs)
+
+    # Apply attributes corrections from attribute_correction json
+    dataset.attrs.update(
+        {
+            attr: attr_mapping[dataset.attrs[attr]]
+            for attr, attr_mapping in config["attribute_mapping_corrections"].items()
+            if attr in dataset.attrs and dataset.attrs[attr] in attr_mapping
         }
     )
 
-    # Map PLATFORM to NERC C17
-    dataset.attrs.update(match_platform(odf_header["CRUISE_HEADER"]["PLATFORM"]))
-
-    # Convert ODF history to CF history
-    is_manufacturer_header = False
-    dataset.attrs["instrument_manufacturer_header"] = ""
-    dataset.attrs["internal_processing_notes"] = ""
-    for history_group in odf_header["HISTORY_HEADER"]:
-        # Convert single processes to list
-        if isinstance(history_group["PROCESS"], str):
-            history_group["PROCESS"] = [history_group["PROCESS"]]
-
-        for row in history_group["PROCESS"]:
-            # Retrieve Instrument Manufacturer Header
-            if row.startswith("* Sea-Bird"):
-                dataset.attrs["history"] += "# SEA-BIRD INSTRUMENTS HEADER\n"
-                is_manufacturer_header = True
-            if is_manufacturer_header:
-                dataset.attrs["instrument_manufacturer_header"] += row + "\n"
-            else:
-                dataset.attrs["internal_processing_notes"] += history_input(
-                    row, history_group["CREATION_DATE"]
-                )
-
-            # End of manufacturer header
-            if row.startswith("*END*"):
-                is_manufacturer_header = False
-                dataset.attrs["history"] += "# ODF Internal Processing Notes\n"
-
-            # Ignore some specific lines within the history (mostly seabird header ones)
-            if re.match(
-                r"^(\#\s*\<.*|\*\* .*"
-                + r"|\# (name|span|nquan|nvalues|unit|interval|start_time|bad_flag)"
-                + r"|\* |\*END\*)",
-                row,
-            ):
-                continue
-            # Add to cf history
-            dataset.attrs["history"] += history_input(
-                row, history_group["CREATION_DATE"]
-            )
-
-    # Instrument Specific Information
-    if dataset.attrs["instrument_manufacturer_header"]:
-        dataset.attrs["instrument"] = get_seabird_instrument_from_header(
-            dataset.attrs["instrument_manufacturer_header"]
-        )
-        dataset.attrs["seabird_processing_modules"] = get_seabird_processing_history(
-            dataset.attrs["instrument_manufacturer_header"]
-        )
-    elif "INSTRUMENT_HEADER" in odf_header:
-        dataset.attrs["instrument"] = " ".join(
-            [
-                odf_header["INSTRUMENT_HEADER"]["INST_TYPE"],
-                odf_header["INSTRUMENT_HEADER"]["MODEL"],
-            ]
-        )
-        dataset.attrs["instrument_serial_number"] = odf_header["INSTRUMENT_HEADER"][
-            "SERIAL_NUMBER"
-        ]
-    else:
-        logger.warning("No Instrument field available")
-        dataset.attrs["instrument"] = ""
-        dataset.attrs["instrument_serial_number"] = ""
-
-    if re.search(
-        r"(SBE\s*(9|16|19|25|37))|CTD|Guildline|GUILDLN|STD",
-        dataset.attrs["instrument"],
-        re.IGNORECASE,
-    ):
-        dataset.attrs["instrument_type"] = "CTD"
-    elif re.search(r"Bathythermograph Manual", dataset.attrs["instrument"]):
-        dataset.attrs["instrument_type"] = "BT"
-    else:
-        logger.warning(
-            "Unknown instrument type for instrument: %s; odf['INSTRUMENT_HEADER']: %s",
-            dataset.attrs["instrument"],
-            odf_header.get("INSTRUMENT_HEADER"),
-        )
-
-    # Derive cdm_data_type from DATA_TYPE
-    type_profile = {"CTD": "CTD", "BOTL": "Bottle", "BT": "Bottle"}
-    data_type = odf_header["EVENT_HEADER"]["DATA_TYPE"]
-    if data_type in ["CTD", "BOTL", "BT"]:
-        dataset.attrs["cdm_data_type"] = "Profile"
-        dataset.attrs["cdm_profile_variables"] = ""
-        if data_type == "CTD":
-            dataset.attrs["profile_direction"] = odf_header["EVENT_HEADER"][
-                "EVENT_QUALIFIER2"
-            ]
-        dataset.attrs["title"] = (
-            f"{type_profile[data_type]} profile data collected "
-            + f"from the {dataset.attrs['platform']} {dataset.attrs['platform_name']} by "
-            + f"{dataset.attrs['organization']}  {dataset.attrs['institution']} "
-            + f"on the {dataset.attrs['cruise_name'].title()} "
-        )
-        if (
-            dataset.attrs["mission_start_date"]
-            and dataset.attrs["mission_end_date"]
-            and isinstance(dataset.attrs["mission_start_date"], datetime)
-            and isinstance(dataset.attrs["mission_end_date"], datetime)
-        ):
-            dataset.attrs["title"] += (
-                f"from {dataset.attrs['mission_start_date'].strftime('%d-%b-%Y')} "
-                + f"to {dataset.attrs['mission_end_date'].strftime('%d-%b-%Y')}."
-            )
-
-    else:
-        logger.error(
-            "ODF_transform is not yet incompatible with ODF DATA_TYPE: %s",
-            odf_header["EVENT_HEADER"]["DATA_TYPE"],
-        )
-
-    # FIX ODF ATTRIBUTES
-    # event_number should be number otherwise get rid of it
-    if not isinstance(dataset.attrs["event_number"], int):
-        event_number = re.search(
-            r"\*\* Event[\s\:\#]*(\d+)",
-            "".join(odf_header["original_header"]),
-            re.IGNORECASE,
-        )
-        if event_number:
-            dataset.attrs["event_number"] = int(event_number[1])
-        else:
-            logger.warning(
-                "event_number %s is not just a number",
-                dataset.attrs["event_number"],
-            )
-            dataset.attrs.pop("event_number")
-
-    # Search station anywhere within ODF Header
-    station = re.search(
-        r"station[\w\s]*:\s*(\w*)",
-        "".join(odf_header["original_header"]),
-        re.IGNORECASE,
-    )
-    if (
-        station
-        and "station" not in dataset.attrs
-        and dataset.attrs.get("project", "") not in stationless_programs
-    ):
-        station = station[1].strip()
-
-        # Standardize stations with convention AA02, AA2 and AA_02 to AA02
-        if re.match(r"[A-Za-z]+\_*\d+", station):
-            station_items = re.search(r"([A-Za-z]+)_*(\d+)", station).groups()
-            dataset.attrs[
-                "station"
-            ] = f"{station_items[0].upper()}{int(station_items[1]):02g}"
-        # Station is just number convert to string with 001
-        elif re.match(r"^[0-9]+$", station):
-            # Ignore station that are actually the event_number
-            if int(station) != dataset.attrs.get("event_number"):
-                logger.warning(
-                    "Station name is suspicious since its just a number: %s",
-                    station,
-                )
-                dataset.attrs["station"] = f"{int(station):03g}"
-        else:
-            dataset.attrs["station"] = station
-
-    # Standardize project and cruise_name (AZMP, AZOMP and MARES)
-    if dataset.attrs.get("program") == "Atlantic Zone Monitoring Program":
-        if dataset.attrs.get("project") is None:
-            season = (
-                "Spring"
-                if 1 <= dataset.attrs["event_start_time"].month <= 7
-                else "Fall"
-            )
-            dataset.attrs["project"] = f"{dataset.attrs.get('program')} {season}"
-            dataset.attrs[
-                "cruise_name"
-            ] = f"{dataset.attrs['project']} {dataset.attrs['event_start_time'].year}"
-        elif "cruise_name" in dataset.attrs:
-            # Ignore cruise_name for station specific AZMP projects
-            dataset.attrs.pop("cruise_name")
-    elif dataset.attrs.get("program") == "Maritime Region Ecosystem Survey":
-        season = (
-            "Summer" if 5 <= dataset.attrs["event_start_time"].month <= 9 else "Winter"
-        )
-        dataset.attrs["project"] = f"{dataset.attrs.get('program')} {season}"
-        dataset.attrs[
-            "cruise_name"
-        ] = f"{dataset.attrs['project']} {dataset.attrs['event_start_time'].year}"
-    elif dataset.attrs.get("program") == "Atlantic Zone Off-Shelf Monitoring Program":
-        dataset.attrs[
-            "cruise_name"
-        ] = f"{dataset.attrs['program']} {dataset.attrs['event_start_time'].year}"
-
-    # Apply attributes corrections from attribute_correction json
-    for att, items in attribute_corrections.items():
-        if att in dataset.attrs:
-            for key, value in items.items():
-                dataset.attrs[att] = dataset.attrs[att].replace(key, value)
-
-    # Review attributes format
-    for attr in ["event_start_time", "event_end_time"]:
-        if dataset.attrs.get(attr) not in (None, pd.NaT) and not isinstance(
-            dataset.attrs[attr], datetime
-        ):
-            logging.warning(
-                "%s failed to be converted to timestamp: %s",
-                attr,
-                dataset.attrs[attr],
-            )
-        elif dataset.attrs[attr] < pd.Timestamp(1900, 1, 1).tz_localize("UTC"):
-            logging.warning("%s is before 1900-01-01 which is very suspicious", attr)
-
-    # Drop empty attributes
+    # Drop empty global attributes
     dataset.attrs = {
         key: value
         for key, value in dataset.attrs.items()
@@ -335,7 +403,7 @@ def global_attributes_from_header(dataset, odf_header):
     return dataset
 
 
-def retrieve_coordinates(dataset):
+def generate_coordinates_variables(dataset):
     """
     Method use to generate metadata variables from the ODF Header to a xarray Dataset.
     """
@@ -379,7 +447,10 @@ def retrieve_coordinates(dataset):
     return dataset
 
 
-def standardize_chief_scientist(name):
-    """Apply minor corrections to chief_scientist"""
+def _standardize_chief_scientist(name):
+    """Apply minor corrections to chief_scientist
+    - replace separator ~, / by ,
+    - Ignore Dr.
+    """
     name = re.sub(r"\s+(\~|\/)", ",", name)
     return re.sub(r"(^|\s)(d|D)r\.{0,1}", "", name).strip().title()
