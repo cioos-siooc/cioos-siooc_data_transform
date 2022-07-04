@@ -45,7 +45,7 @@ class GF3Code:
         self.name = f"{self.code}_{self.index:02}" if index else self.code
 
 
-def convert_odf_time(time_string, time_zone=timezone.utc):
+def _convert_odf_time(time_string, time_zone=timezone.utc):
     """Convert ODF timestamps to a datetime object"""
     if time_string == "17-NOV-1858 00:00:00.00":
         return pd.NaT
@@ -65,7 +65,7 @@ def convert_odf_time(time_string, time_zone=timezone.utc):
     return time.replace(tzinfo=time_zone)
 
 
-def history_input(comment, date=datetime.now()):
+def history_input(comment, date=datetime.now(timezone.utc)):
     """Genereate a CF standard history line: Timstamp comment"""
     return f"{date.strftime('%Y-%m-%dT%H:%M:%SZ')} {comment}\n"
 
@@ -109,6 +109,35 @@ def read(filename, encoding_format="Windows-1252"):
     :return:
     """
 
+    def _cast_value(value:str):
+        """Attemp to cast value in line "key=value" of ODF header:
+        - integer
+        - float
+        - date
+        - else string
+        """
+        # Drop quotes and comma
+        value = re.sub(r"^'|,$|',$|'$", "", value)
+
+        # Convert numerical values to float and integers
+        if re.match(r"[-+]{0,1}\d+\.\d+$", value):
+            return float(value)
+        elif re.match(r"[-+]{0,1}\d+$", value):
+            return int(value)
+        elif re.match(r"^\d{1,2}-\w\w\w\-\d\d\d\d\s*\d\d:\d\d:\d\d\.*\d*$", value):
+            try:
+                return _convert_odf_time(value)
+            except pd.errors.ParserError:
+                logger.warning(
+                    "Failed to read date '%s' in line: %s",
+                    value,
+                    line,
+                    exc_info=True,
+                )
+                return value
+        # if do not match any conditions return unchanged
+        return value
+
     metadata = {}  # Start with an empty dictionary
     with open(filename, encoding=encoding_format) as f:
         line = ""
@@ -117,6 +146,7 @@ def read(filename, encoding_format="Windows-1252"):
         for line in f:
             line = line.replace("\n", "")
             original_header.append(line)
+            # Read header only
             if "-- DATA --" in line:
                 break
 
@@ -127,41 +157,25 @@ def read(filename, encoding_format="Windows-1252"):
                     metadata[section] = [{}]
                 else:
                     metadata[section].append({})
+                continue
 
             elif "=" in line:  # Something=This
                 key, value = [item.strip() for item in line.split("=", 1)]
-
-                # Drop quotes and comma
-                value = re.sub(r"^'|,$|',$|'$", "", value)
-
-                # Convert numerical values to float and integers
-                if re.match(r"[-+]{0,1}\d+\.\d+$", value):
-                    value = float(value)
-                elif re.match(r"[-+]{0,1}\d+$", value):
-                    value = int(value)
-                elif re.match(
-                    r"^\d{1,2}-\w\w\w\-\d\d\d\d\s*\d\d:\d\d:\d\d\.*\d*$", value
-                ):
-                    try:
-                        value = convert_odf_time(value)
-                    except pd.errors.ParserError:
-                        logger.warning(
-                            "Failed to read date '%s' in line: %s",
-                            value,
-                            line,
-                            exc_info=True,
-                        )
-
-                # Add to the metadata as a dictionary
-                key = key.strip().replace(" ", "_")
-                if key in metadata[section][-1]:
-                    if not isinstance(metadata[section][-1][key], list):
-                        metadata[section][-1][key] = [metadata[section][-1][key]]
-                    metadata[section][-1][key].append(value)
-                else:
-                    metadata[section][-1][key] = value
             else:
                 logger.error("Unrecognizable line format: %s", line)
+                continue
+
+            # Parse Key = Value lines
+            value = _cast_value(value)
+
+            # Add to the metadata as a dictionary
+            key = key.strip().replace(" ", "_")
+            if key in metadata[section][-1]:
+                if not isinstance(metadata[section][-1][key], list):
+                    metadata[section][-1][key] = [metadata[section][-1][key]]
+                metadata[section][-1][key].append(value)
+            else:
+                metadata[section][-1][key] = value
 
         # Simplify the single sections to a dictionary
         temp_metadata = metadata.copy()
@@ -221,7 +235,7 @@ def read(filename, encoding_format="Windows-1252"):
                 key: att.pop("null_value")
                 for key, att in metadata["variable_attributes"].items()
             },
-            date_parser=convert_odf_time,
+            date_parser=_convert_odf_time,
             parse_dates=time_columns,
             encoding=encoding_format,
         )
