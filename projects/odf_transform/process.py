@@ -85,12 +85,6 @@ def read_config(config_file: str = DEFAULT_CONFIG_PATH) -> dict:
         "lowered_platform_name"
     ).to_dict(orient="index")
 
-    # Attribute mapping corrections
-    config["attribute_mapping_corrections"] = {}
-    for file in config["attribute_mapping_corrections_files"]:
-        with open(file, encoding="utf-8") as f:
-            config["attribute_mapping_corrections"].update(json.load(f))
-
     # Read Vocabulary file
     vocab = pd.read_csv(config["vocabularyFile"], index_col=["Vocabulary", "name"])
     config["vocabulary"] = vocab.fillna(np.nan).replace({np.nan: None})
@@ -105,6 +99,20 @@ def read_config(config_file: str = DEFAULT_CONFIG_PATH) -> dict:
         config["program_log"] = pd.concat(program_logs)
     else:
         config["program_log"] = None
+
+    # Attribute mapping corrections
+    config["attribute_mapping_corrections"] = {}
+    for file in config["attribute_mapping_corrections_files"]:
+        with open(file, encoding="utf-8") as f:
+            config["attribute_mapping_corrections"].update(json.load(f))
+
+    # File specific corrections
+    if config["file_specific_attributes_path"]:
+        with open(config["file_specific_attributes_path"], encoding="UTF-8") as f:
+            config["file_specific_attributes"] = json.load(f)
+    else:
+        config["file_specific_attributes"] = None
+
     return config
 
 
@@ -305,6 +313,26 @@ def run_odf_conversion_from_config(config):
             < os.path.getmtime(file)
         ]
 
+    def _generate_input_by_file(file: str, config: dict):
+        """Generate file specific configuration which includes file_specific_attributes
+        Args:
+            file: path to file to convert
+            config: configuration used
+        Returns:
+            dict: configuration specific
+        """
+        if (
+            config.get("file_specific_attributes") is None
+            or file not in config["file_specific_attributes"]
+        ):
+            return file, config
+
+        file_config = config.copy()
+        file_config["global_attirbutes"].update(
+            config["file_specific_attributes"][file]
+        )
+        return file, file_config
+
     def _generate_input_by_program(files, config):
         """Generate mission specific input to apply for the conversion
 
@@ -332,7 +360,10 @@ def run_odf_conversion_from_config(config):
             if related_files:
                 mission_config = config.copy()
                 mission_config["global_attributes"].update(dict(row.dropna()))
-                inputs += [(file, mission_config) for file in related_files]
+                inputs += [
+                    _generate_input_by_file(file, mission_config)
+                    for file in related_files
+                ]
             else:
                 logger.warning("No file available is related to mission: %s", mission)
         return inputs
@@ -381,7 +412,7 @@ def run_odf_conversion_from_config(config):
     if config["program_log"] is not None:
         inputs = _generate_input_by_program(odf_files_list, config)
     else:
-        inputs = [(file, config) for file in odf_files_list]
+        inputs = [_generate_input_by_file(file, config) for file in odf_files_list]
 
     # Review input list
     if inputs:
