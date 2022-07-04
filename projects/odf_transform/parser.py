@@ -165,11 +165,11 @@ def read(filename, encoding_format="Windows-1252"):
                 logger.error("Unrecognizable line format: %s", line)
                 continue
 
-            # Parse Key = Value lines
+            # Parse metadata row
+            key = key.strip().replace(" ", "_")
             value = _cast_value(value)
 
             # Add to the metadata as a dictionary
-            key = key.strip().replace(" ", "_")
             if key in metadata[section][-1]:
                 if not isinstance(metadata[section][-1][key], list):
                     metadata[section][-1][key] = [metadata[section][-1][key]]
