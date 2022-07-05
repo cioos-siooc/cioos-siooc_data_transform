@@ -206,7 +206,7 @@ def read(filename, encoding_format="Windows-1252"):
             else:
                 raise RuntimeError("Unrecognizable ODF variable attributes")
 
-            attribute = {
+            attributes = {
                 "long_name": att.get("NAME"),
                 "units": att.get("UNITS"),
                 "legacy_gf3_code": var_name,
@@ -214,8 +214,12 @@ def read(filename, encoding_format="Windows-1252"):
                 "resolution": 10 ** -att["PRINT_DECIMAL_PLACES"],
             }
 
+            if attributes['units']:
+                # Standardize units
+                attributes['units'] = attributes['units'].replace('**','^')
+
             # Add those variable attributes to the metadata output
-            metadata["variable_attributes"].update({var_name: attribute})
+            metadata["variable_attributes"].update({var_name: attributes})
             # Time type column add to time variables to parse by pd.read_csv()
             if var_name.startswith("SYTM") or att["TYPE"] == "SYTM":
                 time_columns.append(var_name)
