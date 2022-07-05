@@ -73,6 +73,7 @@ def read_config(config_file: str = DEFAULT_CONFIG_PATH) -> dict:
     ]
 
     # Reference Platforms
+    # convert a dictionary with lowered platform names
     df_platforms = pd.concat(
         pd.read_csv(
             os.path.join(file),
@@ -80,10 +81,9 @@ def read_config(config_file: str = DEFAULT_CONFIG_PATH) -> dict:
         )
         for file in config["reference_platforms_files"]
     )
-    df_platforms["lowered_platform_name"] = df_platforms["platform_name"].str.lower()
-    config["reference_platforms"] = df_platforms.set_index(
-        "lowered_platform_name"
-    ).to_dict(orient="index")
+    config["reference_platforms"] = {index.lower(): row.dropna().to_dict() for index, row in df_platforms.set_index(
+        "platform_name", drop=False
+    ).iterrows()}
 
     # Read Vocabulary file
     vocab = pd.read_csv(config["vocabularyFile"], index_col=["Vocabulary", "name"])
@@ -94,7 +94,7 @@ def read_config(config_file: str = DEFAULT_CONFIG_PATH) -> dict:
         program_logs = []
         for file in glob(config["program_log_path"] + "*.csv"):
             df_temp = pd.read_csv(file)
-            df_temp.insert(0, "program", os.path.basename(file))
+            df_temp.insert(0, "program", os.path.basename(file)[:-4])
             program_logs += [df_temp]
         config["program_log"] = pd.concat(program_logs)
     else:
@@ -349,9 +349,9 @@ def run_odf_conversion_from_config(config):
             "total": len(config["program_log"]),
         }
         for mission, row in tqdm(
-            config["program_log"].set_index("mission").iterrows(), **tqdm_dict
+            config["program_log"].set_index("mission",drop=False).iterrows(), **tqdm_dict
         ):
-            related_files = [file for file in odf_files_list if mission in file]
+            related_files = [file for file in odf_files_list if re.search(mission, file)]
             if related_files:
                 mission_config = config.copy()
                 mission_config["global_attributes"].update(dict(row.dropna()))
@@ -360,7 +360,7 @@ def run_odf_conversion_from_config(config):
                     for file in related_files
                 ]
             else:
-                logger.warning("No file available is related to mission: %s", mission)
+                logger.warning("No file available is related to program_log input %s", row.dropna().to_dict())
         return inputs
 
     # Parse config file if file is given
@@ -369,10 +369,10 @@ def run_odf_conversion_from_config(config):
 
     # Handle Input FIles
     logger.info("Retrieve files to process")
-        odf_files_list = glob(
+    odf_files_list = glob(
         config['fileDir'],
-            recursive=config["recursive"],
-        )
+        recursive=config["recursive"],
+    )
     # Consider only files with specific expressions
     if config["pathRegex"]:
         odf_files_list = [
