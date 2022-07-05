@@ -288,14 +288,9 @@ def run_odf_conversion_from_config(config):
             list: Reduced list of files that needs conversion
         """
         # Get list or already outputted files available in output_path and their last edit time
+        output_search_path = config['fileDir'] if output_path is None else os.path.join(output_path,"**","*")
         search_output_path_files = glob(
-            os.path.join(
-                *[
-                    input_path if output_path is None else output_path,
-                    "**",
-                    f"{config['fileNameRegex']}{config['addFileNameSuffix']}.nc",
-                ]
-            ),
+            f"{output_search_path}.ODF{config['addFileNameSuffix']}.nc",
             recursive=True,
         )
         outputted_files = {
@@ -374,12 +369,8 @@ def run_odf_conversion_from_config(config):
 
     # Handle Input FIles
     logger.info("Retrieve files to process")
-    input_path = config["fileDir"]
-    if os.path.isfile(input_path):
-        odf_files_list = [input_path]
-    else:
         odf_files_list = glob(
-            f"{input_path}{'/**' if config['recursive'] else ''}/{config['fileNameRegex']}",
+        config['fileDir'],
             recursive=config["recursive"],
         )
     # Consider only files with specific expressions

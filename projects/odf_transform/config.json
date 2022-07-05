@@ -1,6 +1,5 @@
 {
-    "fileDir": "{ODF_TRANSFORM_MODULE_PATH}/sample_data",
-    "fileNameRegex": "*.ODF",
+    "fileDir": "{ODF_TRANSFORM_MODULE_PATH}/sample_data/**/*.ODF",
     "recursive": true,
     "pathRegex": null,
     "program_log_path": null,
