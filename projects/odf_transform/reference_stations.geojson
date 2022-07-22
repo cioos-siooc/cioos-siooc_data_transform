@@ -3748,25 +3748,6 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
-                "station": "NL02",
-                "longitude": -61.6928,
-                "latitude": 44.3383,
-                "depth_m": -155.0,
-                "description": null,
-                "other names": null
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -61.6928,
-                    44.3383
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "institution": "BIO",
                 "station": "NL03",
                 "longitude": -63.1667,
                 "latitude": 43.975,
