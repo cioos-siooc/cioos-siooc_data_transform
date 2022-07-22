@@ -11,6 +11,8 @@
         "UP": "upward"
     },
     "station": {
-        "Prince 5": "Prince5"
+        "Prince 5": "Prince5",
+        "GWA02": "GUL00",
+        "NL02": "GWA00"
     }
 }
