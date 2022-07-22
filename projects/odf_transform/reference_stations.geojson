@@ -9,7 +9,8 @@
                 "longitude": -55.55,
                 "latitude": 53.68,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -27,7 +28,8 @@
                 "longitude": -55.43667,
                 "latitude": 53.79667,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -45,7 +47,8 @@
                 "longitude": -55.25,
                 "latitude": 53.98833,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -63,7 +66,8 @@
                 "longitude": -55.02333,
                 "latitude": 54.22,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -81,7 +85,8 @@
                 "longitude": -54.75667,
                 "latitude": 54.49167,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -99,7 +104,8 @@
                 "longitude": -54.48667,
                 "latitude": 54.76167,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -117,7 +123,8 @@
                 "longitude": -54.295,
                 "latitude": 54.955,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -135,7 +142,8 @@
                 "longitude": -54.21667,
                 "latitude": 55.03333,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -153,7 +161,8 @@
                 "longitude": -54.13833,
                 "latitude": 55.11167,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -171,7 +180,8 @@
                 "longitude": -53.99333,
                 "latitude": 55.26333,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -189,7 +199,8 @@
                 "longitude": -53.82667,
                 "latitude": 55.42,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -207,7 +218,8 @@
                 "longitude": -53.72917,
                 "latitude": 55.51583,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -225,7 +237,8 @@
                 "longitude": -53.63167,
                 "latitude": 55.61167,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -243,7 +256,8 @@
                 "longitude": -53.51333,
                 "latitude": 55.72833,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -261,7 +275,8 @@
                 "longitude": -53.39333,
                 "latitude": 55.845,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -279,7 +294,8 @@
                 "longitude": -53.11667,
                 "latitude": 56.11333,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -297,7 +313,8 @@
                 "longitude": -52.8975,
                 "latitude": 56.325,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -315,7 +332,8 @@
                 "longitude": -52.67833,
                 "latitude": 56.53667,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -333,7 +351,8 @@
                 "longitude": -52.4575,
                 "latitude": 56.74667,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -351,7 +370,8 @@
                 "longitude": -52.23667,
                 "latitude": 56.95667,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -369,7 +389,8 @@
                 "longitude": -52.01417,
                 "latitude": 57.16667,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -387,7 +408,8 @@
                 "longitude": -51.79167,
                 "latitude": 57.37667,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -405,7 +427,8 @@
                 "longitude": -51.56583,
                 "latitude": 57.58833,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -423,7 +446,8 @@
                 "longitude": -51.34,
                 "latitude": 57.8,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -441,7 +465,8 @@
                 "longitude": -51.11167,
                 "latitude": 58.00833,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -459,7 +484,8 @@
                 "longitude": -50.88333,
                 "latitude": 58.21667,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -477,7 +503,8 @@
                 "longitude": -50.65,
                 "latitude": 58.42833,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -495,7 +522,8 @@
                 "longitude": -50.41667,
                 "latitude": 58.64,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -513,7 +541,8 @@
                 "longitude": -50.18333,
                 "latitude": 58.85333,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -531,7 +560,8 @@
                 "longitude": -49.95,
                 "latitude": 59.06667,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -549,7 +579,8 @@
                 "longitude": -49.71923,
                 "latitude": 59.26263,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -567,7 +598,8 @@
                 "longitude": -49.475,
                 "latitude": 59.48333,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -585,7 +617,8 @@
                 "longitude": -49.31316,
                 "latitude": 59.61922,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -603,7 +636,8 @@
                 "longitude": -49.16667,
                 "latitude": 59.75,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -621,7 +655,8 @@
                 "longitude": -49.03333,
                 "latitude": 59.86667,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -639,7 +674,8 @@
                 "longitude": -48.9,
                 "latitude": 59.98333,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -657,7 +693,8 @@
                 "longitude": -48.7875,
                 "latitude": 60.07917,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -675,7 +712,8 @@
                 "longitude": -48.675,
                 "latitude": 60.175,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -693,7 +731,8 @@
                 "longitude": -48.60833,
                 "latitude": 60.23333,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -711,7 +750,8 @@
                 "longitude": -48.54167,
                 "latitude": 60.29167,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -729,7 +769,8 @@
                 "longitude": -48.4975,
                 "latitude": 60.32917,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -747,7 +788,8 @@
                 "longitude": -48.45333,
                 "latitude": 60.36667,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -765,7 +807,8 @@
                 "longitude": -48.4075,
                 "latitude": 60.40667,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -783,7 +826,8 @@
                 "longitude": -48.36167,
                 "latitude": 60.44667,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -801,7 +845,8 @@
                 "longitude": -48.295,
                 "latitude": 60.50667,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -819,7 +864,8 @@
                 "longitude": -48.22833,
                 "latitude": 60.56667,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -837,7 +883,8 @@
                 "longitude": -48.20064,
                 "latitude": 60.61724,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -855,7 +902,8 @@
                 "longitude": -65.48,
                 "latitude": 43.25,
                 "depth_m": -55.08,
-                "comments": null
+                "description": "Brown's Bank Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -873,7 +921,8 @@
                 "longitude": -65.48,
                 "latitude": 43.0,
                 "depth_m": -114.79,
-                "comments": null
+                "description": "Brown's Bank Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -891,7 +940,8 @@
                 "longitude": -65.483,
                 "latitude": 42.76,
                 "depth_m": -101.83,
-                "comments": null
+                "description": "Brown's Bank Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -909,7 +959,8 @@
                 "longitude": -65.483,
                 "latitude": 42.45,
                 "depth_m": -96.55,
-                "comments": null
+                "description": "Brown's Bank Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -927,7 +978,8 @@
                 "longitude": -65.5,
                 "latitude": 42.133,
                 "depth_m": -187.11,
-                "comments": null
+                "description": "Brown's Bank Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -945,7 +997,8 @@
                 "longitude": -65.51,
                 "latitude": 42.0,
                 "depth_m": -934.51,
-                "comments": null
+                "description": "Brown's Bank Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -963,7 +1016,8 @@
                 "longitude": -65.35,
                 "latitude": 41.867,
                 "depth_m": -1817.99,
-                "comments": null
+                "description": "Brown's Bank Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -981,7 +1035,8 @@
                 "longitude": -56.1435,
                 "latitude": 51.7028,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -995,11 +1050,126 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "BP01",
+                "longitude": -56.1333,
+                "latitude": 44.9833,
+                "depth_m": -200.0,
+                "description": "Brian Petrie Laurentian Channel Mouth",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.1333,
+                    44.9833
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "BP02",
+                "longitude": -56.1833,
+                "latitude": 44.9667,
+                "depth_m": -280.0,
+                "description": "Brian Petrie Laurentian Channel Mouth",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.1833,
+                    44.9667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "BP03",
+                "longitude": -56.25,
+                "latitude": 44.95,
+                "depth_m": -270.0,
+                "description": "Brian Petrie Laurentian Channel Mouth",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.25,
+                    44.95
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "BP04",
+                "longitude": -56.4333,
+                "latitude": 44.9167,
+                "depth_m": -390.0,
+                "description": "Brian Petrie Laurentian Channel Mouth",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.4333,
+                    44.9167
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "BP05",
+                "longitude": -56.6,
+                "latitude": 44.8667,
+                "depth_m": -400.0,
+                "description": "Brian Petrie Laurentian Channel Mouth",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.6,
+                    44.8667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "BP06",
+                "longitude": -56.9167,
+                "latitude": 44.8167,
+                "depth_m": -423.0,
+                "description": "Brian Petrie Laurentian Channel Mouth",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.9167,
+                    44.8167
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "CANSO",
                 "longitude": -60.4802,
                 "latitude": 45.446,
                 "depth_m": -195.0,
-                "comments": "Canso bank"
+                "description": "Canso bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1017,7 +1187,8 @@
                 "longitude": -60.217,
                 "latitude": 46.958,
                 "depth_m": -76.22,
-                "comments": null
+                "description": "Cabot Strait Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1035,7 +1206,8 @@
                 "longitude": -60.117,
                 "latitude": 47.023,
                 "depth_m": -182.53,
-                "comments": null
+                "description": "Cabot Strait Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1053,7 +1225,8 @@
                 "longitude": -59.992,
                 "latitude": 47.1,
                 "depth_m": -322.35,
-                "comments": null
+                "description": "Cabot Strait Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1071,7 +1244,8 @@
                 "longitude": -59.783,
                 "latitude": 47.272,
                 "depth_m": -463.78,
-                "comments": null
+                "description": "Cabot Strait Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1089,7 +1263,8 @@
                 "longitude": -59.558,
                 "latitude": 47.433,
                 "depth_m": -470.54,
-                "comments": null
+                "description": "Cabot Strait Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1107,7 +1282,8 @@
                 "longitude": -59.342,
                 "latitude": 47.583,
                 "depth_m": -235.12,
-                "comments": null
+                "description": "Cabot Strait Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1125,7 +1301,8 @@
                 "longitude": -62.8135,
                 "latitude": 43.8935,
                 "depth_m": -252.0,
-                "comments": "Emerald Basin"
+                "description": "Emerald Basin",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1143,7 +1320,8 @@
                 "longitude": -61.4743,
                 "latitude": 44.8228,
                 "depth_m": -82.0,
-                "comments": null
+                "description": "French Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1157,11 +1335,316 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "EVC01",
+                "longitude": -62.6052,
+                "latitude": 44.2345,
+                "depth_m": -160.0,
+                "description": "Between HL02 and SIB02",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -62.6052,
+                    44.2345
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "GBL1-2",
+                "longitude": -53.162,
+                "latitude": 44.5603,
+                "depth_m": -107.0,
+                "description": "Grand Banks",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -53.162,
+                    44.5603
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "GBL1-2.5",
+                "longitude": -53.2423,
+                "latitude": 44.4688,
+                "depth_m": -130.0,
+                "description": "Grand Banks",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -53.2423,
+                    44.4688
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "GBL1-3",
+                "longitude": -53.3178,
+                "latitude": 44.3915,
+                "depth_m": -452.0,
+                "description": "Grand Banks",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -53.3178,
+                    44.3915
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "GBL1-3.5",
+                "longitude": -53.491,
+                "latitude": 44.2207,
+                "depth_m": -1400.0,
+                "description": "Grand Banks",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -53.491,
+                    44.2207
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "GBL1-4",
+                "longitude": -53.6412,
+                "latitude": 44.0497,
+                "depth_m": -3000.0,
+                "description": "Grand Banks",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -53.6412,
+                    44.0497
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "GBL1-4.5",
+                "longitude": -53.8,
+                "latitude": 43.8667,
+                "depth_m": null,
+                "description": "Grand Banks",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -53.8,
+                    43.8667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "GBL1-5",
+                "longitude": -53.9592,
+                "latitude": 43.7103,
+                "depth_m": -4000.0,
+                "description": "Grand Banks",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -53.9592,
+                    43.7103
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "GBL1-6",
+                "longitude": -54.2878,
+                "latitude": 43.3687,
+                "depth_m": -1000.0,
+                "description": "Grand Banks",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -54.2878,
+                    43.3687
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "GBL1-7",
+                "longitude": -54.6022,
+                "latitude": 43.0305,
+                "depth_m": -4353.0,
+                "description": "Grand Banks",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -54.6022,
+                    43.0305
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "GBL2-1",
+                "longitude": -51.204,
+                "latitude": 43.5003,
+                "depth_m": -76.0,
+                "description": "Grand Banks",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -51.204,
+                    43.5003
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "GBL2-2",
+                "longitude": -51.3405,
+                "latitude": 43.3187,
+                "depth_m": -135.0,
+                "description": "Grand Banks",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -51.3405,
+                    43.3187
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "GBL2-3",
+                "longitude": -51.4787,
+                "latitude": 43.141,
+                "depth_m": -1000.0,
+                "description": "Grand Banks",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -51.4787,
+                    43.141
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "GBL2-4",
+                "longitude": -51.7547,
+                "latitude": 42.7692,
+                "depth_m": -2238.0,
+                "description": "Grand Banks",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -51.7547,
+                    42.7692
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "GBL2-5",
+                "longitude": -52.0215,
+                "latitude": 42.4042,
+                "depth_m": -3400.0,
+                "description": "Grand Banks",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -52.0215,
+                    42.4042
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "GBL2-6",
+                "longitude": -52.2882,
+                "latitude": 42.0302,
+                "depth_m": -4000.0,
+                "description": "Grand Banks",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -52.2882,
+                    42.0302
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "GUL00",
                 "longitude": -59.5502,
                 "latitude": 44.2325,
                 "depth_m": -215.0,
-                "comments": null
+                "description": "Gully ",
+                "other names": "GWA02"
             },
             "geometry": {
                 "type": "Point",
@@ -1179,7 +1662,8 @@
                 "longitude": -59.107,
                 "latitude": 44.099,
                 "depth_m": -531.28,
-                "comments": null
+                "description": "Gully ",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1197,7 +1681,8 @@
                 "longitude": -59.0,
                 "latitude": 44.01,
                 "depth_m": -1133.56,
-                "comments": null
+                "description": "Gully ",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1215,7 +1700,8 @@
                 "longitude": -58.954,
                 "latitude": 43.889,
                 "depth_m": -1394.12,
-                "comments": null
+                "description": "Gully ",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1233,7 +1719,8 @@
                 "longitude": -58.9,
                 "latitude": 43.79,
                 "depth_m": -1913.89,
-                "comments": null
+                "description": "Gully ",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1251,7 +1738,8 @@
                 "longitude": -59.02,
                 "latitude": 44.0,
                 "depth_m": -445.19,
-                "comments": null
+                "description": "Gully ",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1269,7 +1757,8 @@
                 "longitude": -61.697,
                 "latitude": 44.337,
                 "depth_m": -158.0,
-                "comments": "Gully"
+                "description": "Gully west",
+                "other names": "NL02"
             },
             "geometry": {
                 "type": "Point",
@@ -1287,7 +1776,8 @@
                 "longitude": -60.466,
                 "latitude": 44.316,
                 "depth_m": -148.0,
-                "comments": "Gully"
+                "description": "Gully west",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1301,11 +1791,50 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "HA02",
+                "longitude": -63.1648,
+                "latitude": 44.3198,
+                "depth_m": -210.0,
+                "description": "near HL02",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -63.1648,
+                    44.3198
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "HA03",
+                "longitude": -63.1568,
+                "latitude": 44.3223,
+                "depth_m": -115.0,
+                "description": "near HL02",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -63.1568,
+                    44.3223
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "HL00",
                 "longitude": -63.641,
                 "latitude": 44.6927,
                 "depth_m": -70.0,
-                "comments": null
+                "description": "Bedford Basin",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1323,7 +1852,8 @@
                 "longitude": -63.45,
                 "latitude": 44.4,
                 "depth_m": -83.09,
-                "comments": null
+                "description": "Halifax Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1341,7 +1871,8 @@
                 "longitude": -63.317,
                 "latitude": 44.267,
                 "depth_m": -146.53,
-                "comments": null
+                "description": "Halifax Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1359,7 +1890,8 @@
                 "longitude": -63.1595,
                 "latitude": 44.1083,
                 "depth_m": -139.0,
-                "comments": null
+                "description": "Halifax Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1377,7 +1909,8 @@
                 "longitude": -62.883,
                 "latitude": 43.883,
                 "depth_m": -261.76,
-                "comments": null
+                "description": "Halifax Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1395,7 +1928,8 @@
                 "longitude": -62.753,
                 "latitude": 43.764,
                 "depth_m": -203.6,
-                "comments": null
+                "description": "Halifax Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1413,7 +1947,8 @@
                 "longitude": -62.451,
                 "latitude": 43.479,
                 "depth_m": -82.21,
-                "comments": null
+                "description": "Halifax Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1431,7 +1966,8 @@
                 "longitude": -62.098,
                 "latitude": 43.183,
                 "depth_m": -99.14,
-                "comments": null
+                "description": "Halifax Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1449,7 +1985,8 @@
                 "longitude": -61.91756,
                 "latitude": 43.00121,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1467,7 +2004,8 @@
                 "longitude": -61.833,
                 "latitude": 42.94,
                 "depth_m": -431.31,
-                "comments": null
+                "description": "Halifax Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1481,11 +2019,31 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "HL05A",
+                "longitude": -61.9078,
+                "latitude": 42.906,
+                "depth_m": -668.0,
+                "description": "Halifax Line",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -61.9078,
+                    42.906
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "HL06",
                 "longitude": -61.733,
                 "latitude": 42.832,
                 "depth_m": -1082.8,
-                "comments": null
+                "description": "Halifax Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1503,7 +2061,8 @@
                 "longitude": -61.617,
                 "latitude": 42.733,
                 "depth_m": -1630.05,
-                "comments": null
+                "description": "Halifax Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1518,28 +2077,11 @@
             "properties": {
                 "institution": "BIO",
                 "station": "HL06.5",
-                "longitude": -61.58361,
-                "latitude": 42.65341,
-                "depth_m": null,
-                "comments": null
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -61.58361,
-                    42.65341
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "institution": "BIO",
-                "station": "HL06.5",
                 "longitude": -61.553,
                 "latitude": 42.6948,
                 "depth_m": -1937.0,
-                "comments": "Halifax Line"
+                "description": "Halifax Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1557,7 +2099,8 @@
                 "longitude": -61.517,
                 "latitude": 42.618,
                 "depth_m": -2325.82,
-                "comments": null
+                "description": "Halifax Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1575,7 +2118,8 @@
                 "longitude": -61.3977,
                 "latitude": 42.5325,
                 "depth_m": -2440.0,
-                "comments": "Halifax Line"
+                "description": "Halifax Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1590,10 +2134,30 @@
             "properties": {
                 "institution": "BIO",
                 "station": "HL07",
+                "longitude": -61.393945,
+                "latitude": 42.531138,
+                "depth_m": null,
+                "description": "Halifax Line",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -61.393945,
+                    42.531138
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "HL07",
                 "longitude": -61.433,
                 "latitude": 42.475,
                 "depth_m": -2801.17,
-                "comments": null
+                "description": "Halifax Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1611,7 +2175,8 @@
                 "longitude": -60.9188,
                 "latitude": 41.9505,
                 "depth_m": -4206.0,
-                "comments": null
+                "description": "Halifax Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1629,7 +2194,8 @@
                 "longitude": -61.33924,
                 "latitude": 42.36311,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1647,7 +2213,8 @@
                 "longitude": -61.25063,
                 "latitude": 42.25361,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1665,7 +2232,8 @@
                 "longitude": -61.06814,
                 "latitude": 42.02608,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1683,7 +2251,8 @@
                 "longitude": -60.90696,
                 "latitude": 41.77687,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1701,7 +2270,8 @@
                 "longitude": -60.66463,
                 "latitude": 41.41417,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1715,11 +2285,31 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "HL3.3B",
+                "longitude": -62.8103,
+                "latitude": 43.6558,
+                "depth_m": -200.0,
+                "description": "Halifax Line",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -62.8103,
+                    43.6558
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "LAHAVE01",
                 "longitude": -63.8625,
                 "latitude": 43.7173,
                 "depth_m": -247.0,
-                "comments": "LaHave Bank"
+                "description": "LaHave Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1736,8 +2326,9 @@
                 "station": "LC01",
                 "longitude": -58.2162,
                 "latitude": 45.7987,
-                "depth_m": null,
-                "comments": null
+                "depth_m": -155.0,
+                "description": "Laurentian Channel",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1754,8 +2345,9 @@
                 "station": "LC02",
                 "longitude": -58.067,
                 "latitude": 45.8503,
-                "depth_m": null,
-                "comments": null
+                "depth_m": -366.0,
+                "description": "Laurentian Channel",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1773,7 +2365,27 @@
                 "longitude": -57.9175,
                 "latitude": 45.8967,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -57.9175,
+                    45.8967
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "LC04",
+                "longitude": -57.9175,
+                "latitude": 45.8967,
+                "depth_m": -474.0,
+                "description": "Laurentian Channel",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1790,8 +2402,9 @@
                 "station": "LC04",
                 "longitude": -57.6198,
                 "latitude": 45.9797,
-                "depth_m": null,
-                "comments": null
+                "depth_m": -476.0,
+                "description": "Laurentian Channel",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1808,8 +2421,9 @@
                 "station": "LC05",
                 "longitude": -57.3267,
                 "latitude": 46.0707,
-                "depth_m": null,
-                "comments": null
+                "depth_m": -373.0,
+                "description": "Laurentian Channel",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1826,8 +2440,9 @@
                 "station": "LC06",
                 "longitude": -57.1742,
                 "latitude": 46.106,
-                "depth_m": null,
-                "comments": null
+                "depth_m": -271.0,
+                "description": "Laurentian Channel",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1844,8 +2459,9 @@
                 "station": "LC07",
                 "longitude": -57.0382,
                 "latitude": 46.1687,
-                "depth_m": null,
-                "comments": null
+                "depth_m": -64.0,
+                "description": "Laurentian Channel",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1859,11 +2475,145 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "LC09",
+                "longitude": -58.6354,
+                "latitude": 46.8713,
+                "depth_m": null,
+                "description": "Laurentian Channel",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -58.6354,
+                    46.8713
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "LC14",
+                "longitude": -56.8519,
+                "latitude": 45.7321,
+                "depth_m": null,
+                "description": "Laurentian Channel",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.8519,
+                    45.7321
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "LC15",
+                "longitude": -56.9531,
+                "latitude": 45.3467,
+                "depth_m": null,
+                "description": "Laurentian Channel",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.9531,
+                    45.3467
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "LC20",
+                "longitude": -56.6737,
+                "latitude": 45.3605,
+                "depth_m": null,
+                "description": "Laurentian Channel",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.6737,
+                    45.3605
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "LC23",
+                "longitude": -57.647,
+                "latitude": 45.9754,
+                "depth_m": null,
+                "description": "Laurentian Channel",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -57.647,
+                    45.9754
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "LC24",
+                "longitude": -57.9221,
+                "latitude": 46.6359,
+                "depth_m": null,
+                "description": "Laurentian Channel",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -57.9221,
+                    46.6359
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "LC25",
+                "longitude": -57.6328,
+                "latitude": 46.6302,
+                "depth_m": null,
+                "description": "Laurentian Channel",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -57.6328,
+                    46.6302
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "LCM01",
                 "longitude": -57.655,
                 "latitude": 44.72,
                 "depth_m": -33.56,
-                "comments": null
+                "description": "Laurentian Channel Mouth",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1881,7 +2631,8 @@
                 "longitude": -57.475,
                 "latitude": 44.745,
                 "depth_m": -55.28,
-                "comments": null
+                "description": "Laurentian Channel Mouth",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1899,7 +2650,8 @@
                 "longitude": -57.349,
                 "latitude": 44.762,
                 "depth_m": -74.17,
-                "comments": null
+                "description": "Laurentian Channel Mouth",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1917,7 +2669,8 @@
                 "longitude": -57.25,
                 "latitude": 44.78,
                 "depth_m": -392.07,
-                "comments": null
+                "description": "Laurentian Channel Mouth",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1935,7 +2688,8 @@
                 "longitude": -57.027,
                 "latitude": 44.809,
                 "depth_m": -422.46,
-                "comments": null
+                "description": "Laurentian Channel Mouth",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1953,7 +2707,8 @@
                 "longitude": -56.808,
                 "latitude": 44.848,
                 "depth_m": -417.46,
-                "comments": null
+                "description": "Laurentian Channel Mouth",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1971,7 +2726,8 @@
                 "longitude": -56.63,
                 "latitude": 44.89,
                 "depth_m": -404.84,
-                "comments": null
+                "description": "Laurentian Channel Mouth",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -1989,7 +2745,8 @@
                 "longitude": -56.44,
                 "latitude": 44.92,
                 "depth_m": -384.66,
-                "comments": null
+                "description": "Laurentian Channel Mouth",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2007,7 +2764,8 @@
                 "longitude": -56.14,
                 "latitude": 44.98,
                 "depth_m": -224.28,
-                "comments": null
+                "description": "Laurentian Channel Mouth",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2025,7 +2783,8 @@
                 "longitude": -56.03,
                 "latitude": 45.0,
                 "depth_m": -101.11,
-                "comments": null
+                "description": "Laurentian Channel Mouth",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2043,7 +2802,8 @@
                 "longitude": -59.0072,
                 "latitude": 47.0032,
                 "depth_m": -435.0,
-                "comments": null
+                "description": "Laurentian Channel Neck",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2061,7 +2821,8 @@
                 "longitude": -62.1807,
                 "latitude": 44.4028,
                 "depth_m": -230.0,
-                "comments": "Little Emerald Basin"
+                "description": "Little Emerald Basin",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2075,11 +2836,31 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "LF35",
+                "longitude": -55.6007,
+                "latitude": 43.8843,
+                "depth_m": -3550.0,
+                "description": "St Pierre Bank (10A)",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -55.6007,
+                    43.8843
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "LH01",
                 "longitude": -59.8398,
                 "latitude": 47.6198,
                 "depth_m": -519.0,
-                "comments": "Les Harris Line"
+                "description": "Les Harris Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2097,7 +2878,8 @@
                 "longitude": -60.1002,
                 "latitude": 47.7975,
                 "depth_m": -505.0,
-                "comments": "Les Harris Line"
+                "description": "Les Harris Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2115,7 +2897,8 @@
                 "longitude": -60.4022,
                 "latitude": 48.0002,
                 "depth_m": -487.0,
-                "comments": "Les Harris Line"
+                "description": "Les Harris Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2129,11 +2912,221 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "LHB_01",
+                "longitude": -64.0109,
+                "latitude": 44.3894,
+                "depth_m": null,
+                "description": "LaHave Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -64.0109,
+                    44.3894
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "LHB_02",
+                "longitude": -63.9021,
+                "latitude": 44.0866,
+                "depth_m": null,
+                "description": "LaHave Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -63.9021,
+                    44.0866
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "LHB_03",
+                "longitude": -63.7592,
+                "latitude": 43.6954,
+                "depth_m": null,
+                "description": "LaHave Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -63.7592,
+                    43.6954
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "LHB_04",
+                "longitude": -63.6673,
+                "latitude": 43.379,
+                "depth_m": null,
+                "description": "LaHave Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -63.6673,
+                    43.379
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "LHB_05",
+                "longitude": -63.5,
+                "latitude": 42.9163,
+                "depth_m": null,
+                "description": "LaHave Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -63.5,
+                    42.9163
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "LHB_05.5",
+                "longitude": -63.4522,
+                "latitude": 42.774,
+                "depth_m": null,
+                "description": "LaHave Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -63.4522,
+                    42.774
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "LHB_06",
+                "longitude": -63.4156,
+                "latitude": 42.6646,
+                "depth_m": null,
+                "description": "LaHave Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -63.4156,
+                    42.6646
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "LHB_06.3",
+                "longitude": -63.3536,
+                "latitude": 42.4849,
+                "depth_m": null,
+                "description": "LaHave Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -63.3536,
+                    42.4849
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "LHB_06.7",
+                "longitude": -63.2517,
+                "latitude": 42.19,
+                "depth_m": null,
+                "description": "LaHave Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -63.2517,
+                    42.19
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "LHB_07",
+                "longitude": -63.1945,
+                "latitude": 42.025,
+                "depth_m": null,
+                "description": "LaHave Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -63.1945,
+                    42.025
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "LHB_08",
+                "longitude": -63.1259,
+                "latitude": 41.8293,
+                "depth_m": null,
+                "description": "LaHave Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -63.1259,
+                    41.8293
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "LL01",
                 "longitude": -59.85,
                 "latitude": 45.825,
                 "depth_m": -86.19,
-                "comments": null
+                "description": "Louisbourg Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2151,7 +3144,8 @@
                 "longitude": -59.702,
                 "latitude": 45.658,
                 "depth_m": -126.65,
-                "comments": null
+                "description": "Louisbourg Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2169,7 +3163,8 @@
                 "longitude": -59.517,
                 "latitude": 45.492,
                 "depth_m": -136.46,
-                "comments": null
+                "description": "Louisbourg Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2187,7 +3182,8 @@
                 "longitude": -59.175,
                 "latitude": 45.158,
                 "depth_m": -102.67,
-                "comments": null
+                "description": "Louisbourg Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2205,7 +3201,8 @@
                 "longitude": -58.85,
                 "latitude": 44.817,
                 "depth_m": -231.16,
-                "comments": null
+                "description": "Louisbourg Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2223,7 +3220,8 @@
                 "longitude": -58.508,
                 "latitude": 44.475,
                 "depth_m": -65.57,
-                "comments": null
+                "description": "Louisbourg Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2241,7 +3239,8 @@
                 "longitude": -58.175,
                 "latitude": 44.133,
                 "depth_m": -656.22,
-                "comments": null
+                "description": "Louisbourg Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2255,11 +3254,31 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "LL07.1",
+                "longitude": -58.1205,
+                "latitude": 44.077,
+                "depth_m": -1047.0,
+                "description": "Louisbourg Line",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -58.1205,
+                    44.077
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "LL08",
                 "longitude": -57.833,
                 "latitude": 43.783,
                 "depth_m": -2903.81,
-                "comments": null
+                "description": "Louisbourg Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2277,7 +3296,8 @@
                 "longitude": -57.527,
                 "latitude": 43.473,
                 "depth_m": -3677.95,
-                "comments": null
+                "description": "Louisbourg Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2291,11 +3311,31 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "LP01",
+                "longitude": -62.2743,
+                "latitude": 44.3913,
+                "depth_m": -230.0,
+                "description": "Little Emerald Basin",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -62.2743,
+                    44.3913
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "LSC01",
                 "longitude": -50.5,
                 "latitude": 60.0,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2313,7 +3353,8 @@
                 "longitude": -51.1,
                 "latitude": 60.0,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2331,7 +3372,8 @@
                 "longitude": -51.75,
                 "latitude": 60.0,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2349,7 +3391,8 @@
                 "longitude": -52.4,
                 "latitude": 60.0,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2367,7 +3410,8 @@
                 "longitude": -53.1,
                 "latitude": 59.5,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2385,7 +3429,8 @@
                 "longitude": -53.16,
                 "latitude": 59.0,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2403,7 +3448,8 @@
                 "longitude": -53.25,
                 "latitude": 58.5,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2421,7 +3467,8 @@
                 "longitude": -53.3,
                 "latitude": 58.0,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2439,7 +3486,8 @@
                 "longitude": -53.4,
                 "latitude": 57.5,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2457,7 +3505,8 @@
                 "longitude": -53.5,
                 "latitude": 57.0,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2475,7 +3524,8 @@
                 "longitude": -53.6,
                 "latitude": 56.5,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2493,7 +3543,8 @@
                 "longitude": -65.743,
                 "latitude": 42.418,
                 "depth_m": -96.08,
-                "comments": null
+                "description": "Northeast Channel",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2511,7 +3562,8 @@
                 "longitude": -65.808,
                 "latitude": 42.337,
                 "depth_m": -210.9,
-                "comments": null
+                "description": "Northeast Channel",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2529,7 +3581,8 @@
                 "longitude": -65.84,
                 "latitude": 42.3,
                 "depth_m": -206.82,
-                "comments": null
+                "description": "Northeast Channel",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2547,7 +3600,8 @@
                 "longitude": -65.87,
                 "latitude": 42.272,
                 "depth_m": -227.03,
-                "comments": null
+                "description": "Northeast Channel",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2565,7 +3619,8 @@
                 "longitude": -65.903,
                 "latitude": 42.233,
                 "depth_m": -233.17,
-                "comments": null
+                "description": "Northeast Channel",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2583,7 +3638,8 @@
                 "longitude": -65.938,
                 "latitude": 42.2,
                 "depth_m": -236.55,
-                "comments": null
+                "description": "Northeast Channel",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2601,7 +3657,8 @@
                 "longitude": -65.968,
                 "latitude": 42.163,
                 "depth_m": -250.0,
-                "comments": null
+                "description": "Northeast Channel",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2619,7 +3676,8 @@
                 "longitude": -66.037,
                 "latitude": 42.118,
                 "depth_m": -198.34,
-                "comments": null
+                "description": "Northeast Channel",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2637,7 +3695,8 @@
                 "longitude": -66.083,
                 "latitude": 42.062,
                 "depth_m": -117.68,
-                "comments": null
+                "description": "Northeast Channel",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2655,7 +3714,8 @@
                 "longitude": -66.142,
                 "latitude": 41.99,
                 "depth_m": -87.25,
-                "comments": null
+                "description": "Northeast Channel",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2673,7 +3733,8 @@
                 "longitude": -59.6745,
                 "latitude": 46.1555,
                 "depth_m": -42.0,
-                "comments": null
+                "description": "station off Glace Bay",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2691,7 +3752,8 @@
                 "longitude": -61.6928,
                 "latitude": 44.3383,
                 "depth_m": -155.0,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2709,7 +3771,8 @@
                 "longitude": -63.1667,
                 "latitude": 43.975,
                 "depth_m": -180.0,
-                "comments": null
+                "description": "between HL02 and HL3, Sambro Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2723,11 +3786,31 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "OLC01",
+                "longitude": -59.2645,
+                "latitude": 42.8938,
+                "depth_m": -3550.0,
+                "description": "Slope south of Sable",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -59.2645,
+                    42.8938
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "OS00",
                 "longitude": -52.325,
                 "latitude": 52.58583,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2745,7 +3828,8 @@
                 "longitude": -51.958,
                 "latitude": 52.69333,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2763,7 +3847,8 @@
                 "longitude": -51.70633,
                 "latitude": 52.74833,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2781,7 +3866,8 @@
                 "longitude": -51.56118,
                 "latitude": 52.80347,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2799,7 +3885,8 @@
                 "longitude": -51.50383,
                 "latitude": 52.87083,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2813,11 +3900,69 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "OTN01",
+                "longitude": -63.3003,
+                "latitude": 44.3507,
+                "depth_m": -146.0,
+                "description": "near HL02",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -63.3003,
+                    44.3507
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "OTN02",
+                "longitude": -63.1648,
+                "latitude": 44.2522,
+                "depth_m": -170.0,
+                "description": "near HL02",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -63.1648,
+                    44.2522
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "OTN03",
+                "longitude": -63.0383,
+                "latitude": 44.136,
+                "depth_m": -170.0,
+                "description": "near HL02A",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -63.0383,
+                    44.136
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "PL01",
                 "longitude": -70.008,
                 "latitude": 43.034,
                 "depth_m": -132.67,
-                "comments": null
+                "description": "Portsmouth Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2835,7 +3980,8 @@
                 "longitude": -69.557,
                 "latitude": 42.955,
                 "depth_m": -167.42,
-                "comments": null
+                "description": "Portsmouth Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2853,7 +3999,8 @@
                 "longitude": -69.106,
                 "latitude": 42.876,
                 "depth_m": -176.01,
-                "comments": null
+                "description": "Portsmouth Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2871,7 +4018,8 @@
                 "longitude": -68.655,
                 "latitude": 42.789,
                 "depth_m": -193.25,
-                "comments": null
+                "description": "Portsmouth Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2889,7 +4037,8 @@
                 "longitude": -68.204,
                 "latitude": 42.702,
                 "depth_m": -183.28,
-                "comments": null
+                "description": "Portsmouth Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2907,7 +4056,8 @@
                 "longitude": -67.753,
                 "latitude": 42.626,
                 "depth_m": -197.28,
-                "comments": null
+                "description": "Portsmouth Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2925,7 +4075,8 @@
                 "longitude": -67.302,
                 "latitude": 42.553,
                 "depth_m": -288.87,
-                "comments": null
+                "description": "Portsmouth Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2943,7 +4094,8 @@
                 "longitude": -66.851,
                 "latitude": 42.462,
                 "depth_m": -310.7,
-                "comments": null
+                "description": "Portsmouth Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2961,7 +4113,8 @@
                 "longitude": -66.4,
                 "latitude": 42.378,
                 "depth_m": -264.78,
-                "comments": null
+                "description": "Portsmouth Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2979,7 +4132,8 @@
                 "longitude": -66.85,
                 "latitude": 44.952,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -2993,17 +4147,56 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
-                "station": "RL00",
-                "longitude": -64.8803,
-                "latitude": 43.561,
-                "depth_m": -86.0,
-                "comments": null
+                "station": "RATBA01",
+                "longitude": -65.1812,
+                "latitude": 42.8913,
+                "depth_m": -160.0,
+                "description": "Baccaro Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -64.8803,
-                    43.561
+                    -65.1812,
+                    42.8913
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "RATBA02",
+                "longitude": -65.1522,
+                "latitude": 42.8682,
+                "depth_m": -145.0,
+                "description": "Baccaro Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -65.1522,
+                    42.8682
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "RL00",
+                "longitude": -64.8808,
+                "latitude": 43.5598,
+                "depth_m": -86.0,
+                "description": "Roseway Bank Line",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -64.8808,
+                    43.5598
                 ]
             }
         },
@@ -3015,7 +4208,8 @@
                 "longitude": -65.0532,
                 "latitude": 43.252,
                 "depth_m": -160.0,
-                "comments": null
+                "description": "Roseway Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3033,7 +4227,8 @@
                 "longitude": -64.7513,
                 "latitude": 43.3975,
                 "depth_m": -60.0,
-                "comments": null
+                "description": "Roseway Bank Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3048,16 +4243,17 @@
             "properties": {
                 "institution": "BIO",
                 "station": "RL02",
-                "longitude": -64.6175,
-                "latitude": 43.2503,
+                "longitude": -64.6203,
+                "latitude": 43.2497,
                 "depth_m": -113.0,
-                "comments": null
+                "description": "Roseway Bank Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -64.6175,
-                    43.2503
+                    -64.6203,
+                    43.2497
                 ]
             }
         },
@@ -3066,16 +4262,17 @@
             "properties": {
                 "institution": "BIO",
                 "station": "RL03",
-                "longitude": -64.399,
-                "latitude": 43.0003,
+                "longitude": -64.3992,
+                "latitude": 42.9982,
                 "depth_m": -110.0,
-                "comments": null
+                "description": "Roseway Bank Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -64.399,
-                    43.0003
+                    -64.3992,
+                    42.9982
                 ]
             }
         },
@@ -3084,16 +4281,17 @@
             "properties": {
                 "institution": "BIO",
                 "station": "RL04",
-                "longitude": -64.1693,
-                "latitude": 42.7453,
+                "longitude": -64.1802,
+                "latitude": 42.75,
                 "depth_m": -207.0,
-                "comments": null
+                "description": "Roseway Bank Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -64.1693,
-                    42.7453
+                    -64.1802,
+                    42.75
                 ]
             }
         },
@@ -3102,16 +4300,17 @@
             "properties": {
                 "institution": "BIO",
                 "station": "RL05",
-                "longitude": -64.0832,
-                "latitude": 42.6208,
-                "depth_m": -931.0,
-                "comments": null
+                "longitude": -64.0795,
+                "latitude": 42.6183,
+                "depth_m": -982.0,
+                "description": "Roseway Bank Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -64.0832,
-                    42.6208
+                    -64.0795,
+                    42.6183
                 ]
             }
         },
@@ -3120,34 +4319,17 @@
             "properties": {
                 "institution": "BIO",
                 "station": "RL06",
-                "longitude": -63.8748,
-                "latitude": 42.3123,
+                "longitude": -63.8702,
+                "latitude": 42.3198,
                 "depth_m": -1800.0,
-                "comments": null
+                "description": "Roseway Bank Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -63.8748,
-                    42.3123
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "institution": "BIO",
-                "station": "RL06",
-                "longitude": -63.8748,
-                "latitude": 42.3123,
-                "depth_m": -1800.0,
-                "comments": "Rossway Bank Line"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -63.8748,
-                    42.3123
+                    -63.8702,
+                    42.3198
                 ]
             }
         },
@@ -3156,16 +4338,17 @@
             "properties": {
                 "institution": "BIO",
                 "station": "RL07",
-                "longitude": -63.516,
-                "latitude": 41.8175,
+                "longitude": -63.5095,
+                "latitude": 41.8192,
                 "depth_m": -3691.0,
-                "comments": "Rossway Bank Line"
+                "description": "Roseway Bank Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -63.516,
-                    41.8175
+                    -63.5095,
+                    41.8192
                 ]
             }
         },
@@ -3174,16 +4357,17 @@
             "properties": {
                 "institution": "BIO",
                 "station": "RL08",
-                "longitude": -63.1142,
-                "latitude": 41.3075,
+                "longitude": -63.1193,
+                "latitude": 41.2998,
                 "depth_m": -3994.0,
-                "comments": "Rossway Bank Line"
+                "description": "Roseway Bank Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -63.1142,
-                    41.3075
+                    -63.1193,
+                    41.2998
                 ]
             }
         },
@@ -3191,17 +4375,379 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
-                "station": "sarniff",
-                "longitude": -63.25,
-                "latitude": 44.3,
-                "depth_m": -145.0,
-                "comments": null
+                "station": "RS05",
+                "longitude": -61.2747,
+                "latitude": 42.3922,
+                "depth_m": -3400.0,
+                "description": "near HL07",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -63.25,
-                    44.3
+                    -61.2747,
+                    42.3922
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SAM03",
+                "longitude": -63.073,
+                "latitude": 43.8935,
+                "depth_m": -173.0,
+                "description": "between HL02 and HL3, Sambro Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -63.073,
+                    43.8935
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SF01",
+                "longitude": -57.3285,
+                "latitude": 43.8897,
+                "depth_m": -3170.0,
+                "description": "Slope near LL08",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -57.3285,
+                    43.8897
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SG01",
+                "longitude": -59.033,
+                "latitude": 44.0862,
+                "depth_m": -340.0,
+                "description": "Gully",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -59.033,
+                    44.0862
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SG02",
+                "longitude": -59.0662,
+                "latitude": 44.0698,
+                "depth_m": -900.0,
+                "description": "Gully",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -59.0662,
+                    44.0698
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SG03",
+                "longitude": -59.101,
+                "latitude": 44.059,
+                "depth_m": -336.0,
+                "description": "Gully",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -59.101,
+                    44.059
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SG08",
+                "longitude": -58.9598,
+                "latitude": 44.028,
+                "depth_m": -300.0,
+                "description": "Gully",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -58.9598,
+                    44.028
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SG09",
+                "longitude": -58.918,
+                "latitude": 43.9403,
+                "depth_m": -171.0,
+                "description": "Gully",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -58.918,
+                    43.9403
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SG10",
+                "longitude": -58.9422,
+                "latitude": 43.9283,
+                "depth_m": -439.0,
+                "description": "Gully",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -58.9422,
+                    43.9283
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SG11",
+                "longitude": -58.9885,
+                "latitude": 43.914,
+                "depth_m": -1635.0,
+                "description": "Gully",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -58.9885,
+                    43.914
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SG12",
+                "longitude": -59.0293,
+                "latitude": 43.9027,
+                "depth_m": -588.0,
+                "description": "Gully",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -59.0293,
+                    43.9027
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SG13",
+                "longitude": -59.0673,
+                "latitude": 43.892,
+                "depth_m": -120.0,
+                "description": "Gully",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -59.0673,
+                    43.892
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SG14",
+                "longitude": -59.0675,
+                "latitude": 43.7607,
+                "depth_m": -263.0,
+                "description": "Gully",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -59.0675,
+                    43.7607
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SG15",
+                "longitude": -59.034,
+                "latitude": 43.7837,
+                "depth_m": -336.0,
+                "description": "Gully",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -59.034,
+                    43.7837
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SG16",
+                "longitude": -58.9907,
+                "latitude": 43.8062,
+                "depth_m": -1000.0,
+                "description": "Gully",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -58.9907,
+                    43.8062
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SG17",
+                "longitude": -58.9417,
+                "latitude": 43.8278,
+                "depth_m": -1500.0,
+                "description": "Gully",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -58.9417,
+                    43.8278
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SG18",
+                "longitude": -58.902,
+                "latitude": 43.8435,
+                "depth_m": -2012.0,
+                "description": "Gully",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -58.902,
+                    43.8435
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SG19",
+                "longitude": -58.875,
+                "latitude": 43.8637,
+                "depth_m": -679.0,
+                "description": "Gully",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -58.875,
+                    43.8637
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SG20",
+                "longitude": -58.8417,
+                "latitude": 43.8922,
+                "depth_m": -260.0,
+                "description": "Gully",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -58.8417,
+                    43.8922
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SG21",
+                "longitude": -58.7898,
+                "latitude": 43.9118,
+                "depth_m": -260.0,
+                "description": "Gully",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -58.7898,
+                    43.9118
                 ]
             }
         },
@@ -3213,7 +4759,8 @@
                 "longitude": -58.7357,
                 "latitude": 43.8695,
                 "depth_m": -1091.0,
-                "comments": null
+                "description": "Gully",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3231,7 +4778,8 @@
                 "longitude": -59.0002,
                 "latitude": 43.7,
                 "depth_m": -820.0,
-                "comments": null
+                "description": "Gully",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3245,29 +4793,12 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
-                "station": "Shediac",
-                "longitude": -64.0333,
-                "latitude": 47.78333,
-                "depth_m": null,
-                "comments": null
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -64.0333,
-                    47.78333
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "institution": "BIO",
                 "station": "SIB",
                 "longitude": -59.5823,
                 "latitude": 43.5678,
                 "depth_m": -1000.0,
-                "comments": "Sable Island Bank"
+                "description": "Sable Island Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3285,7 +4816,8 @@
                 "longitude": -61.9025,
                 "latitude": 44.8577,
                 "depth_m": -66.0,
-                "comments": "Sable Island Bank"
+                "description": "Sable Island Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3299,11 +4831,31 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "SIB010",
+                "longitude": -59.7387,
+                "latitude": 42.714,
+                "depth_m": -4000.0,
+                "description": "Sable Island Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -59.7387,
+                    42.714
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "SIB02",
                 "longitude": -61.5388,
                 "latitude": 44.5103,
                 "depth_m": -148.0,
-                "comments": "Sable Island Bank"
+                "description": "Sable Island Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3321,7 +4873,8 @@
                 "longitude": -61.2655,
                 "latitude": 44.2522,
                 "depth_m": -120.0,
-                "comments": "Sable Island Bank"
+                "description": "Sable Island Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3339,7 +4892,8 @@
                 "longitude": -61.0592,
                 "latitude": 44.049,
                 "depth_m": -58.0,
-                "comments": "Sable Island Bank"
+                "description": "Sable Island Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3357,7 +4911,8 @@
                 "longitude": -60.6402,
                 "latitude": 43.6598,
                 "depth_m": -60.0,
-                "comments": "Sable Island Bank"
+                "description": "Sable Island Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3375,7 +4930,8 @@
                 "longitude": -60.3432,
                 "latitude": 43.3122,
                 "depth_m": -1589.0,
-                "comments": "Sable Island Bank"
+                "description": "Sable Island Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3389,11 +4945,50 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "SIB06.5",
+                "longitude": -60.4532,
+                "latitude": 43.4445,
+                "depth_m": -142.0,
+                "description": "Sable Island Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -60.4532,
+                    43.4445
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SIB06.7",
+                "longitude": -60.4098,
+                "latitude": 43.397,
+                "depth_m": -505.0,
+                "description": "Sable Island Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -60.4098,
+                    43.397
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "SIB07",
                 "longitude": -60.1443,
                 "latitude": 43.1198,
                 "depth_m": -1852.0,
-                "comments": "Sable Island Bank"
+                "description": "Sable Island Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3408,10 +5003,30 @@
             "properties": {
                 "institution": "BIO",
                 "station": "SIB08",
+                "longitude": -60.08,
+                "latitude": 43.07,
+                "depth_m": -2640.0,
+                "description": "Sable Island Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -60.08,
+                    43.07
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SIB09",
                 "longitude": -59.7792,
                 "latitude": 42.6967,
                 "depth_m": -2560.0,
-                "comments": "Sable Island Bank"
+                "description": "Sable Island Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3425,11 +5040,107 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "SPB01",
+                "longitude": -55.8387,
+                "latitude": 46.6778,
+                "depth_m": -152.0,
+                "description": "St Pierre Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -55.8387,
+                    46.6778
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SPB02",
+                "longitude": -55.8387,
+                "latitude": 46.45,
+                "depth_m": -143.0,
+                "description": "St Pierre Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -55.8387,
+                    46.45
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SPB03",
+                "longitude": -55.8365,
+                "latitude": 46.0023,
+                "depth_m": -74.0,
+                "description": "St Pierre Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -55.8365,
+                    46.0023
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SPB04",
+                "longitude": -55.831,
+                "latitude": 45.6495,
+                "depth_m": -42.0,
+                "description": "St Pierre Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -55.831,
+                    45.6495
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SPB05",
+                "longitude": -55.8352,
+                "latitude": 45.2538,
+                "depth_m": -73.0,
+                "description": "St Pierre Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -55.8352,
+                    45.2538
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "SPB05.5",
                 "longitude": -55.84,
                 "latitude": 45.06,
                 "depth_m": -82.01,
-                "comments": null
+                "description": "St Pierre Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3447,7 +5158,8 @@
                 "longitude": -55.84,
                 "latitude": 44.902,
                 "depth_m": -248.42,
-                "comments": null
+                "description": "St Pierre Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3465,7 +5177,8 @@
                 "longitude": -55.84,
                 "latitude": 44.866,
                 "depth_m": -509.71,
-                "comments": null
+                "description": "St Pierre Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3483,7 +5196,8 @@
                 "longitude": -55.84,
                 "latitude": 44.82,
                 "depth_m": -779.08,
-                "comments": null
+                "description": "St Pierre Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3501,7 +5215,8 @@
                 "longitude": -55.84,
                 "latitude": 44.76,
                 "depth_m": -1089.09,
-                "comments": null
+                "description": "St Pierre Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3519,7 +5234,8 @@
                 "longitude": -55.84,
                 "latitude": 44.53,
                 "depth_m": -2244.22,
-                "comments": null
+                "description": "St Pierre Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3537,7 +5253,8 @@
                 "longitude": -55.84,
                 "latitude": 44.24,
                 "depth_m": -2911.26,
-                "comments": null
+                "description": "St Pierre Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3551,11 +5268,31 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "SPB10A",
+                "longitude": -55.7,
+                "latitude": 43.8833,
+                "depth_m": -4300.0,
+                "description": "St Pierre Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -55.7,
+                    43.8833
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "SPB11",
                 "longitude": -55.8333,
                 "latitude": 43.7313,
                 "depth_m": -3400.0,
-                "comments": null
+                "description": "St Pierre Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3569,11 +5306,88 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
-                "station": "SSB00",
+                "station": "SPB12",
+                "longitude": -55.836,
+                "latitude": 43.4317,
+                "depth_m": -3500.0,
+                "description": "St Pierre Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -55.836,
+                    43.4317
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SPB13",
+                "longitude": -55.8392,
+                "latitude": 43.028,
+                "depth_m": -4000.0,
+                "description": "St Pierre Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -55.8392,
+                    43.028
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SPB13.5",
+                "longitude": -55.4052,
+                "latitude": 43.201,
+                "depth_m": -4500.0,
+                "description": "St Pierre Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -55.4052,
+                    43.201
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SPB14",
+                "longitude": -55.217,
+                "latitude": 42.5598,
+                "depth_m": -4500.0,
+                "description": "St Pierre Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -55.217,
+                    42.5598
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SSB0",
                 "longitude": -60.8905,
                 "latitude": 42.9848,
                 "depth_m": -2000.0,
-                "comments": null
+                "description": "Shelf Slope between HL and SIB",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3587,11 +5401,69 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "SSB0.5",
+                "longitude": -60.8167,
+                "latitude": 42.8667,
+                "depth_m": -2489.0,
+                "description": "Shelf Slope between HL and SIB",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -60.8167,
+                    42.8667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SSB00",
+                "longitude": -60.8905,
+                "latitude": 42.9848,
+                "depth_m": -2000.0,
+                "description": null,
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -60.8905,
+                    42.9848
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SSB00.5",
+                "longitude": -60.8167,
+                "latitude": 42.8667,
+                "depth_m": -2489.0,
+                "description": null,
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -60.8167,
+                    42.8667
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "SSB02",
                 "longitude": -60.7497,
                 "latitude": 42.8057,
                 "depth_m": -2822.0,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3609,7 +5481,8 @@
                 "longitude": -60.4495,
                 "latitude": 42.4248,
                 "depth_m": -4000.0,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3623,47 +5496,12 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
-                "station": "SSE",
-                "longitude": -60.6365,
-                "latitude": 42.5877,
-                "depth_m": -3192.0,
-                "comments": null
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -60.6365,
-                    42.5877
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "institution": "BIO",
-                "station": "SSB00.5",
-                "longitude": -60.8167,
-                "latitude": 42.8667,
-                "depth_m": -2489.0,
-                "comments": null
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -60.8167,
-                    42.8667
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "institution": "BIO",
                 "station": "SSB1",
                 "longitude": -60.8167,
                 "latitude": 42.9167,
                 "depth_m": -2500.0,
-                "comments": null
+                "description": "Shelf Slope between HL and SIB",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3677,11 +5515,31 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "SSB2",
+                "longitude": -60.7497,
+                "latitude": 42.8057,
+                "depth_m": -2822.0,
+                "description": "Shelf Slope between HL and SIB",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -60.7497,
+                    42.8057
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "SSB3",
                 "longitude": -60.6167,
                 "latitude": 42.5833,
                 "depth_m": -3188.0,
-                "comments": null
+                "description": "Shelf Slope between HL and SIB",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3695,11 +5553,31 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "SSB4",
+                "longitude": -60.4495,
+                "latitude": 42.4248,
+                "depth_m": -4000.0,
+                "description": "Shelf Slope between HL and SIB",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -60.4495,
+                    42.4248
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "SSB5",
                 "longitude": -60.3167,
                 "latitude": 42.2,
                 "depth_m": -4200.0,
-                "comments": null
+                "description": "Shelf Slope between HL and SIB",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3717,7 +5595,8 @@
                 "longitude": -60.65,
                 "latitude": 42.6,
                 "depth_m": -3407.0,
-                "comments": null
+                "description": "Shelf Slope between HL and SIB close to SSB3",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3731,11 +5610,50 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "SSE",
+                "longitude": -60.6365,
+                "latitude": 42.5877,
+                "depth_m": -3192.0,
+                "description": "Shelf Slope between HL and SIB close to SSB3",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -60.6365,
+                    42.5877
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SSE0.5",
+                "longitude": -60.6,
+                "latitude": 42.5167,
+                "depth_m": -3480.0,
+                "description": "Shelf Slope between HL and SIB close to SSB3",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -60.6,
+                    42.5167
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "SSE00.5",
                 "longitude": -60.6,
                 "latitude": 42.5167,
                 "depth_m": -3480.0,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3753,7 +5671,8 @@
                 "longitude": -59.533,
                 "latitude": 46.0,
                 "depth_m": -58.62,
-                "comments": null
+                "description": "St Ann's Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3771,7 +5690,8 @@
                 "longitude": -59.365,
                 "latitude": 46.108,
                 "depth_m": -63.94,
-                "comments": null
+                "description": "St Ann's Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3789,7 +5709,8 @@
                 "longitude": -59.195,
                 "latitude": 46.217,
                 "depth_m": -85.57,
-                "comments": null
+                "description": "St Ann's Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3807,7 +5728,8 @@
                 "longitude": -59.065,
                 "latitude": 46.3,
                 "depth_m": -151.37,
-                "comments": null
+                "description": "St Ann's Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3825,7 +5747,8 @@
                 "longitude": -58.883,
                 "latitude": 46.417,
                 "depth_m": -364.76,
-                "comments": null
+                "description": "St Ann's Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3843,7 +5766,8 @@
                 "longitude": -58.546,
                 "latitude": 46.645,
                 "depth_m": -407.4,
-                "comments": null
+                "description": "St Ann's Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3861,7 +5785,8 @@
                 "longitude": -52.58494,
                 "latitude": 47.54899,
                 "depth_m": null,
-                "comments": null
+                "description": null,
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3875,11 +5800,164 @@
             "type": "Feature",
             "properties": {
                 "institution": "BIO",
+                "station": "SWL1",
+                "longitude": -53.4173,
+                "latitude": 42.1905,
+                "depth_m": -4000.0,
+                "description": "Off Slope between GBL2 and SIB",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -53.4173,
+                    42.1905
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SWL2",
+                "longitude": -54.5277,
+                "latitude": 42.343,
+                "depth_m": -4000.0,
+                "description": "Off Slope between GBL2 and SIB",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -54.5277,
+                    42.343
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SWL3",
+                "longitude": -55.646,
+                "latitude": 42.5103,
+                "depth_m": -3610.0,
+                "description": "Off Slope between GBL2 and SIB",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -55.646,
+                    42.5103
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SWL4",
+                "longitude": -56.7695,
+                "latitude": 42.6662,
+                "depth_m": -3000.0,
+                "description": "Off Slope between GBL2 and SIB",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.7695,
+                    42.6662
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SWL5",
+                "longitude": -57.878,
+                "latitude": 42.8297,
+                "depth_m": -4100.0,
+                "description": "Off Slope between GBL2 and SIB",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -57.878,
+                    42.8297
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "SWL6",
+                "longitude": -59.0113,
+                "latitude": 42.9837,
+                "depth_m": -4100.0,
+                "description": "Off Slope between GBL2 and SIB",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -59.0113,
+                    42.9837
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "Shediac",
+                "longitude": -64.0333,
+                "latitude": 47.78333,
+                "depth_m": null,
+                "description": null,
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -64.0333,
+                    47.78333
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "TB01",
+                "longitude": -60.2552,
+                "latitude": 43.8155,
+                "depth_m": -48.0,
+                "description": "Sable Island Bank",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -60.2552,
+                    43.8155
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
                 "station": "WB01",
                 "longitude": -61.7878,
                 "latitude": 43.3887,
                 "depth_m": -90.0,
-                "comments": "Western Bank"
+                "description": "Western Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3897,7 +5975,8 @@
                 "longitude": -61.5218,
                 "latitude": 43.5748,
                 "depth_m": -67.0,
-                "comments": "Western Bank"
+                "description": "Western Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3915,7 +5994,8 @@
                 "longitude": -61.2105,
                 "latitude": 43.7852,
                 "depth_m": -56.0,
-                "comments": "Western Bank"
+                "description": "Western Bank",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3933,7 +6013,8 @@
                 "longitude": -66.4,
                 "latitude": 43.75,
                 "depth_m": -71.38,
-                "comments": null
+                "description": "Yarmouth Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3951,7 +6032,8 @@
                 "longitude": -66.851,
                 "latitude": 43.68,
                 "depth_m": -127.26,
-                "comments": null
+                "description": "Yarmouth Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3969,7 +6051,8 @@
                 "longitude": -67.302,
                 "latitude": 43.61,
                 "depth_m": -201.81,
-                "comments": null
+                "description": "Yarmouth Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -3987,7 +6070,8 @@
                 "longitude": -67.753,
                 "latitude": 43.539,
                 "depth_m": -243.64,
-                "comments": null
+                "description": "Yarmouth Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -4005,7 +6089,8 @@
                 "longitude": -68.212,
                 "latitude": 43.469,
                 "depth_m": -169.35,
-                "comments": null
+                "description": "Yarmouth Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -4023,7 +6108,8 @@
                 "longitude": -68.664,
                 "latitude": 43.399,
                 "depth_m": -131.85,
-                "comments": null
+                "description": "Yarmouth Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -4041,7 +6127,8 @@
                 "longitude": -69.106,
                 "latitude": 43.328,
                 "depth_m": -146.41,
-                "comments": null
+                "description": "Yarmouth Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -4059,7 +6146,8 @@
                 "longitude": -69.557,
                 "latitude": 43.258,
                 "depth_m": -167.67,
-                "comments": null
+                "description": "Yarmouth Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -4077,7 +6165,8 @@
                 "longitude": -70.01,
                 "latitude": 43.186,
                 "depth_m": -86.28,
-                "comments": null
+                "description": "Yarmouth Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
@@ -4095,13 +6184,33 @@
                 "longitude": -70.272,
                 "latitude": 43.157,
                 "depth_m": -123.55,
-                "comments": null
+                "description": "Yarmouth Line",
+                "other names": null
             },
             "geometry": {
                 "type": "Point",
                 "coordinates": [
                     -70.272,
                     43.157
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "institution": "BIO",
+                "station": "sarniff",
+                "longitude": -63.25,
+                "latitude": 44.3,
+                "depth_m": -145.0,
+                "description": "near HL02",
+                "other names": null
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -63.25,
+                    44.3
                 ]
             }
         }
