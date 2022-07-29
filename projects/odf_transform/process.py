@@ -367,11 +367,6 @@ def run_odf_conversion_from_config(config):
                     _generate_input_by_file(file, mission_config)
                     for file in related_files
                 ]
-            else:
-                logger.warning(
-                    "No file available is related to program_log input %s",
-                    row.dropna().to_dict(),
-                )
         return inputs
 
     # Parse config file if file is given
@@ -397,6 +392,14 @@ def run_odf_conversion_from_config(config):
     if config["program_log"] is not None:
         # Consider only files related to missions available in the program_log
         missions = config["program_log"]["mission"].values
+        # Review first if any files are matching a specific mission
+        files_list = ", ".join(odf_files_list)
+        for _, row in config["program_log"].iterrows():
+            if re.search(row["mission"], files_list) is None:
+                logger.warning(
+                    "No file available is related to program_log input %s",
+                    row.dropna().to_dict(),
+                )
         odf_files_list = [
             file for file in odf_files_list if re.search("|".join(missions), file)
         ]
