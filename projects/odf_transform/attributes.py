@@ -315,7 +315,7 @@ def _generate_program_specific_attritutes(global_attributes):
         }
     elif program in [
         "Atlantic Zone Off-Shelf Monitoring Program",
-        "Baffin Bay Monitoring Program",
+        "Barrow Strait Monitoring Program",
     ]:
         return {"cruise_name": f"{program} {year}"}
     else:
