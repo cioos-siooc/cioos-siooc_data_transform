@@ -5,6 +5,7 @@ import os
 import re
 from glob import glob
 from multiprocessing import Pool
+import copy
 
 import numpy as np
 import pandas as pd
@@ -327,7 +328,7 @@ def run_odf_conversion_from_config(config):
         ):
             return file, config
 
-        file_config = config.deepcopy()
+        file_config = copy.deepcopy(config)
         file_config["global_attirbutes"].update(
             config["file_specific_attributes"][file]
         )
@@ -361,7 +362,7 @@ def run_odf_conversion_from_config(config):
                 file for file in odf_files_list if re.search(mission, file)
             ]
             if related_files:
-                mission_config = config.deepcopy()
+                mission_config = copy.deepcopy(config)
                 mission_config["global_attributes"].update(dict(row.dropna()))
                 inputs += [
                     _generate_input_by_file(file, mission_config)
