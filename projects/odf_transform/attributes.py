@@ -375,7 +375,7 @@ def global_attributes_from_header(dataset, odf_header, config=None):
             "date_modified": odf_header["EVENT_HEADER"]["CREATION_DATE"],
             "date_issued": odf_header["EVENT_HEADER"]["ORIG_CREATION_DATE"],
             "history": "",
-            "comments": odf_header["EVENT_HEADER"].get("EVENT_COMMENTS", ""),
+            "comments": odf_header["EVENT_HEADER"].get("EVENT_COMMENTS"),
             "original_odf_header": "\n".join(odf_header["original_header"]),
             "original_odf_header_json": json.dumps(
                 odf_original_header, ensure_ascii=False, indent=False, default=str
