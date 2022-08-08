@@ -393,6 +393,8 @@ def global_attributes_from_header(dataset, odf_header, config=None):
     # Review ATTRIBUTES
     dataset.attrs["event_number"] = _review_event_number(dataset.attrs, odf_header)
     dataset.attrs["station"] = _review_station(dataset.attrs, odf_header)
+    if isinstance(dataset.attrs['comments'],list):
+        dataset.attrs['comments'] = '\n'.join([line for line in dataset.attrs['comments'] if line])
 
     # Apply attributes corrections from attribute_correction json
     dataset.attrs.update(
