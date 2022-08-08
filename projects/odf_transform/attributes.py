@@ -203,13 +203,13 @@ def _review_time_attributes(global_attributes):
         if global_attributes.get(attr) not in (None, pd.NaT) and not isinstance(
             global_attributes[attr], datetime
         ):
-            logging.warning(
+            logger.warning(
                 "%s failed to be converted to timestamp: %s",
                 attr,
                 global_attributes[attr],
             )
         elif global_attributes[attr] < pd.Timestamp(1900, 1, 1).tz_localize("UTC"):
-            logging.warning("%s is before 1900-01-01 which is very suspicious", attr)
+            logger.warning("%s is before 1900-01-01 which is very suspicious", attr)
 
 
 def _generate_instrument_attributes(odf_header, instrument_manufacturer_header=None):
