@@ -120,6 +120,10 @@ def _review_event_number(global_attributes, odf_header):
     # If interger already return that same value
     if isinstance(global_attributes["event_number"], int):
         return global_attributes["event_number"]
+    elif isinstance(global_attributes["event_number"], str) and re.match(
+        r"\d+P", global_attributes["event_number"]
+    ):
+        return int(global_attributes["event_number"].replace("P", ""))
 
     # Look for an event_number withih all the original header
     event_number = re.search(
