@@ -109,7 +109,7 @@ def read(filename, encoding_format="Windows-1252"):
     :return:
     """
 
-    def _cast_value(value:str):
+    def _cast_value(value: str):
         """Attemp to cast value in line "key=value" of ODF header:
         - integer
         - float
@@ -135,6 +135,9 @@ def read(filename, encoding_format="Windows-1252"):
                     exc_info=True,
                 )
                 return value
+        # Empty lines
+        elif re.match(r"^\s*$", value):
+            return None
         # if do not match any conditions return unchanged
         return value
 
@@ -214,9 +217,9 @@ def read(filename, encoding_format="Windows-1252"):
                 "resolution": 10 ** -att["PRINT_DECIMAL_PLACES"],
             }
 
-            if attributes['units']:
+            if attributes["units"]:
                 # Standardize units
-                attributes['units'] = attributes['units'].replace('**','^')
+                attributes["units"] = attributes["units"].replace("**", "^")
 
             # Add those variable attributes to the metadata output
             metadata["variable_attributes"].update({var_name: attributes})
