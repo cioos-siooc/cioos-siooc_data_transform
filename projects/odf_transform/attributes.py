@@ -193,23 +193,24 @@ def _review_station(global_attributes, odf_header):
     return _standardize_station_names(station)
 
 
-def _review_time_attributes(global_attributes):
+def _review_time_attributes(value,attr):
     """Review time attributesw which should be:
     - Parsed and converted to datetime
     - > 1900-01-01
     """
     # Review attributes format
-    for attr in ["event_start_time", "event_end_time"]:
-        if global_attributes.get(attr) not in (None, pd.NaT) and not isinstance(
-            global_attributes[attr], datetime
-        ):
-            logging.warning(
-                "%s failed to be converted to timestamp: %s",
-                attr,
-                global_attributes[attr],
-            )
-        elif global_attributes[attr] < pd.Timestamp(1900, 1, 1).tz_localize("UTC"):
-            logging.warning("%s is before 1900-01-01 which is very suspicious", attr)
+    if value not in (None, pd.NaT) and not isinstance(
+        value, datetime
+    ):
+        logger.warning(
+            "Failed to convert timestamp %s: %s",
+            attr,
+            value,
+        )
+        return pd.NaT
+    elif value < pd.Timestamp(1900, 1, 1).tz_localize("UTC"):
+        logger.warning("%s = %s is before 1900-01-01 which is very suspicious", attr, value)
+    return value
 
 
 def _generate_instrument_attributes(odf_header, instrument_manufacturer_header=None):
@@ -315,7 +316,7 @@ def _generate_program_specific_attritutes(global_attributes):
         }
     elif program in [
         "Atlantic Zone Off-Shelf Monitoring Program",
-        "Baffin Bay Monitoring Program",
+        "Barrow Strait Monitoring Program",
     ]:
         return {"cruise_name": f"{program} {year}"}
     else:
@@ -352,11 +353,11 @@ def global_attributes_from_header(dataset, odf_header, config=None):
             "chief_scientist": _standardize_chief_scientist(
                 odf_header["CRUISE_HEADER"]["CHIEF_SCIENTIST"]
             ),
-            "mission_start_date": odf_header["CRUISE_HEADER"].get("START_DATE"),
-            "mission_end_date": odf_header["CRUISE_HEADER"].get("END_DATE"),
+            "mission_start_date": _review_time_attributes(odf_header["CRUISE_HEADER"].get("START_DATE"),'START_DATE'),
+            "mission_end_date": _review_time_attributes(odf_header["CRUISE_HEADER"].get("END_DATE"),'END_DATE'),
             "event_number": odf_header["EVENT_HEADER"]["EVENT_NUMBER"],
-            "event_start_time": odf_header["EVENT_HEADER"]["START_DATE_TIME"],
-            "event_end_time": odf_header["EVENT_HEADER"]["END_DATE_TIME"],
+            "event_start_time": _review_time_attributes(odf_header["EVENT_HEADER"]["START_DATE_TIME"],'START_DATE_TIME'),
+            "event_end_time": _review_time_attributes(odf_header["EVENT_HEADER"]["END_DATE_TIME"],'END_DATE_TIME'),
             "initial_latitude": _review_latitude(
                 odf_header["EVENT_HEADER"]["INITIAL_LATITUDE"]
             ),
@@ -394,7 +395,6 @@ def global_attributes_from_header(dataset, odf_header, config=None):
     # Review ATTRIBUTES
     dataset.attrs["event_number"] = _review_event_number(dataset.attrs, odf_header)
     dataset.attrs["station"] = _review_station(dataset.attrs, odf_header)
-    _review_time_attributes(dataset.attrs)
 
     # Apply attributes corrections from attribute_correction json
     dataset.attrs.update(
