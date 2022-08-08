@@ -258,8 +258,12 @@ def _generate_instrument_attributes(odf_header, instrument_manufacturer_header=N
 def _generate_title_from_global_attributes(attributes):
     title = (
         f"{attributes['odf_data_type']} profile data collected "
-        + f"from the {attributes['platform']} {attributes['platform_name']} by "
-        + f"{attributes['organization']}  {attributes['institution']} "
+        + (
+            f"from the {attributes['platform']} {attributes['platform_name']}"
+            if "platform" in attributes
+            else ""
+        )
+        + f"by {attributes['organization']}  {attributes['institution']} "
         + f"on the {attributes['cruise_name'].title()} "
     )
     if (
