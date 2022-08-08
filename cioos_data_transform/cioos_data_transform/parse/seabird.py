@@ -78,8 +78,10 @@ sbe_data_processing_modules = [
 def get_seabird_instrument_from_header(seabird_header):
     """Retrieve main instrument model from Sea-Bird CNV header"""
     instrument = re.findall(
-        r"\* (?:Sea\-Bird ){0,1}SBE (?P<sampler>\d[^\s]*)", seabird_header
+        r"\* (?:Sea\-Bird ){0,1}SBE\s*(?P<sensor>\d+[^\s]*)(?P<extra>.*)",
+        seabird_header, 
     )
+    instrument = [inst for inst,extra in instrument if ' = ' not in extra]
     if instrument:
         return f"Sea-Bird SBE {''.join(instrument)}"
 
