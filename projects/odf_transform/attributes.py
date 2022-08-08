@@ -199,9 +199,9 @@ def _review_time_attributes(value,attr):
     - > 1900-01-01
     """
     # Review attributes format
-    if value not in (None, pd.NaT) and not isinstance(
-        value, datetime
-    ):
+    if value in (None, pd.NaT, ""):
+        return pd.NaT
+    if not isinstance(value, datetime):
         logger.warning(
             "Failed to convert timestamp %s: %s",
             attr,
