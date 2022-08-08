@@ -60,6 +60,8 @@ def _generate_cf_history_from_odf(odf_header):
             history_group["PROCESS"] = [history_group["PROCESS"]]
 
         for row in history_group["PROCESS"]:
+            if row is None:
+                continue
             # Retrieve Instrument Manufacturer Header
             if row.startswith("* Sea-Bird"):
                 history["history"] += "# SEA-BIRD INSTRUMENTS HEADER\n"
