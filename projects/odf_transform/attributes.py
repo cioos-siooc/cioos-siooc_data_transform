@@ -309,7 +309,10 @@ def _generate_program_specific_attritutes(global_attributes):
             "project": f"{program} {season}",
             "cruise_name": f"{program} {season} {year}",
         }
-    elif program == "Atlantic Zone Off-Shelf Monitoring Program":
+    elif program in [
+        "Atlantic Zone Off-Shelf Monitoring Program",
+        "Baffin Bay Monitoring Program",
+    ]:
         return {"cruise_name": f"{program} {year}"}
     else:
         return {}
