@@ -272,8 +272,8 @@ def _generate_title_from_global_attributes(attributes):
         + f"on the {attributes['cruise_name'].title()} "
     )
     if (
-        attributes["mission_start_date"]
-        and attributes["mission_end_date"]
+        pd.notna(attributes["mission_start_date"])
+        and pd.notna(attributes["mission_end_date"])
         and isinstance(attributes["mission_start_date"], datetime)
         and isinstance(attributes["mission_end_date"], datetime)
     ):
