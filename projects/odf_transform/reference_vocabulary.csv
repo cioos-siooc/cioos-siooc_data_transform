@@ -1,5 +1,5 @@
 Vocabulary,name,Users,accepted_units,accepted_scale,accepted_instruments,calibration_review,apply_function,variable_name,long_name,units,instrument,scale,standard_name,sdn_parameter_urn,sdn_parameter_name,sdn_uom_urn,sdn_uom_name,definition,convention,legacy_gf3_code,SDN:P01::Alternative Name,comments,coverage_content_type,ioos_category,seabird_term
-BIO,COND,"BIO","mmHo",,,,,CNDCST01,Electrical Conductivity ,S/m,,,sea_water_electrical_conductivity,SDN:P01::CNDCST01,Electrical conductivity of the water body by CTD,SDN:P06::UECA,Siemens per metre,,,CNDC,CTDCond,,,,Conductivity
+BIO,COND,"BIO","mmHo",,,,,COND,Conductance ,mS,,,,,Electrical Conductance,,,,,COND,,,,,Conductivity
 BIO,CNTR,"BIO,IML,MEDS",none,,^CNTR_|^Counter|^scan number,,,ScanNumber,Scan Number,1,,,,,,SDN:P06::UUUU,Dimensionless,,,CNTR,,,auxiliaryInformation,Other,
 BIO,CNTR,"BIO,IML,MEDS",none,,^SNCNTR_|Scans per Bin,,,RecPerBin,Number of scans per bin,1,,,,,,SDN:P06::UUUU,Dimensionless,,,CNTR,,,auxiliaryInformation,Other,
 BIO,SNCN,"BIO,IML,MEDS",none,,^Scan Counter,,,RecPerBin,Number of scans per bin,1,,,,,,SDN:P06::UUUU,Dimensionless,,,CNTR,,,auxiliaryInformation,Other,
