@@ -1,0 +1,364 @@
+ODF_HEADER,
+  FILE_SPECIFICATION='CTD_PRD2002001_024_1_DN'
+CRUISE_HEADER,
+  COUNTRY_INSTITUTE_CODE=1810,
+  CRUISE_NUMBER='PRD2002001',
+  ORGANIZATION='DFO BIO',
+  CHIEF_SCIENTIST='SIMON PRINSENBERG ~ JIM HAMILTON',
+  START_DATE='15-AUG-2002 00:00:00.00',
+  END_DATE='24-AUG-2002 00:00:00.00',
+  PLATFORM='PIERRE RADISSON',
+  CRUISE_NAME='RESOLUTE LINE',
+  CRUISE_DESCRIPTION='ARCTIC OCEAN THROUGH FLOW 2002'
+EVENT_HEADER,
+  DATA_TYPE='CTD',
+  EVENT_NUMBER='024',
+  EVENT_QUALIFIER1='1',
+  EVENT_QUALIFIER2='DN',
+  CREATION_DATE='02-AUG-2018 16:10:35.57',
+  ORIG_CREATION_DATE='12-MAY-2004 14:36:29.00',
+  START_DATE_TIME='22-AUG-2002 14:21:00.00',
+  END_DATE_TIME='22-AUG-2002 14:35:00.00',
+  INITIAL_LATITUDE=74.186767,
+  INITIAL_LONGITUDE=-93.599467,
+  END_LATITUDE=74.186767,
+  END_LONGITUDE=-93.599467,
+  MIN_DEPTH=0.989650,
+  MAX_DEPTH=55.412900,
+  SAMPLING_INTERVAL=-99.000000,
+  SOUNDING=61.800000,
+  DEPTH_OFF_BOTTOM=6.387100,
+  EVENT_COMMENTS='',
+  EVENT_COMMENTS='12-May-2004: Original Input File Name "dresolute_008.cnv".',
+  EVENT_COMMENTS='14-May-2004: Less than one-tenth ice cover".'
+INSTRUMENT_HEADER,
+  INST_TYPE='SeaBird',
+  MODEL='SBE 19 Plus',
+  SERIAL_NUMBER='4222',
+  DESCRIPTION=''
+HISTORY_HEADER,
+  CREATION_DATE='12-MAY-2004 14:36:29.00',
+  PROCESS='Conversion',
+  PROCESS='* Sea-Bird SBE19plus Data File:',
+  PROCESS='* FileName = C:\Program Files\Sea-Bird\Seaterm\resolute_008.hex',
+  PROCESS='* Software Version 1.30',
+  PROCESS='* Temperature SN =  4222',
+  PROCESS='* Conductivity SN =  4222',
+  PROCESS='* System UpLoad Time = Aug 22 2002 11:43:10',
+  PROCESS='** Ship: NGCC PIERRE RADISSON',
+  PROCESS='** Cruise: PRD2002-001',
+  PROCESS='** Station: CTD STN24',
+  PROCESS='** Latitude: 74 11.206',
+  PROCESS='** Longitude: 93 35.968',
+  PROCESS='** Comments: SOUNDING 62 METERS',
+  PROCESS='* ds',
+  PROCESS='* SeacatPlus V 1.3  SERIAL NO. 4222    22 Aug 2002  14:40:22',
+  PROCESS='* vbatt = 12.9, vlith =  8.2, ioper =  61.1 ma, ipump =  66.4 ma,',
+  PROCESS='* iext01 =  37.3 ma,',
+  PROCESS='* status = not logging',
+  PROCESS='* number of scans to average = 1',
+  PROCESS='* samples = 25968, free = 618679, casts = 8',
+  PROCESS='* mode = profile, minimum cond freq = 0, pump delay = 40 sec',
+  PROCESS='* ignore magnetic switch = no',
+  PROCESS='* battery type = ALKALINE, battery cutoff =  7.5 volts',
+  PROCESS='* pressure sensor = strain gauge, range = 508.0',
+  PROCESS='* SBE 38 = no, Gas Tension Device = no',
+  PROCESS='* Ext Volt 0 = yes, Ext Volt 1 = no, Ext Volt 2 = no, Ext Volt 3 = no',
+  PROCESS='* echo commands = yes',
+  PROCESS='* output format = raw HEX',
+  PROCESS='* S>',
+  PROCESS='* x',
+  PROCESS='* SeacatPlus V 1.3  SERIAL NO. 4222    22 Aug 2002  14:40:33',
+  PROCESS='* temperature:  01-mar-02',
+  PROCESS='*     TA0 = 1.220618e-03',
+  PROCESS='*     TA1 = 2.735998e-04',
+  PROCESS='*     TA2 = -2.180165e-06',
+  PROCESS='*     TA3 = 2.478395e-07',
+  PROCESS='*     TOFFSET = 0.000000e+00',
+  PROCESS='* conductivity:  01-mar-02',
+  PROCESS='*     G = -9.819307e-01',
+  PROCESS='*     H = 1.613724e-01',
+  PROCESS='*     I = -5.849145e-04',
+  PROCESS='*     J = 7.226132e-05',
+  PROCESS='*     CF0 = 2.474646e+03',
+  PROCESS='*     CPCOR = -9.570000e-08',
+  PROCESS='*     CTCOR = 3.250000e-06',
+  PROCESS='*     CSLOPE = 1.000000e+00',
+  PROCESS='* pressure S/N = 1346, range = 508 psia:  05-mar-02',
+  PROCESS='*     PA0 = -1.532596e+00',
+  PROCESS='*     PA1 = 1.544059e-03',
+  PROCESS='*     PA2 = 7.169037e-12',
+  PROCESS='*     PTCA0 = 5.237841e+05',
+  PROCESS='*     PTCA1 = -4.446145e+01',
+  PROCESS='*     PTCA2 = -8.391051e-02',
+  PROCESS='*     PTCB0 = 2.514488e+01',
+  PROCESS='*     PTCB1 = -1.625000e-03',
+  PROCESS='*     PTCB2 = 0.000000e+00',
+  PROCESS='*     PTEMPA0 = -6.297350e+01',
+  PROCESS='*     PTEMPA1 = 5.224006e+01',
+  PROCESS='*     PTEMPA2 = -3.230993e-01',
+  PROCESS='*     POFFSET = 0.000000e+00',
+  PROCESS='* volt 0: offset = -4.618667e-02, slope = 1.247938e+00',
+  PROCESS='* volt 1: offset = -4.664667e-02, slope = 1.247916e+00',
+  PROCESS='* volt 2: offset = -4.623667e-02, slope = 1.247077e+00',
+  PROCESS='* volt 3: offset = -4.655000e-02, slope = 1.248792e+00',
+  PROCESS='*     EXTFREQSF = 1.000005e+00',
+  PROCESS='* dh',
+  PROCESS='* cast   8 22 Aug 2002 14:22:11 samples 24038 to 25968, avg = 1, stop = mag switch',
+  PROCESS='* S>',
+  PROCESS='# nquan = 7',
+  PROCESS='# nvalues = 56',
+  PROCESS='# units = specified',
+  PROCESS='# name 0 = scan: Scan Count',
+  PROCESS='# name 1 = tv290C: Temperature [ITS-90, deg C]',
+  PROCESS='# name 2 = c0S/m: Conductivity [S/m]',
+  PROCESS='# name 3 = prdM: Pressure, Strain Gauge [db]',
+  PROCESS='# name 4 = sal00: Salinity [PSU]',
+  PROCESS='# name 5 = sigma-t00: Density [sigma-t, Kg/m^3 ]',
+  PROCESS='# name 6 = flag: flag',
+  PROCESS='# span 0 =        147,       1075',
+  PROCESS='# span 1 =    -1.2058,     0.0213',
+  PROCESS='# span 2 =   2.073480,   2.544217',
+  PROCESS='# span 3 =      1.000,     56.000',
+  PROCESS='# span 4 =    24.5899,    31.4587',
+  PROCESS='# span 5 =    19.7192,    25.2893',
+  PROCESS='# span 6 = 0.0000e+00, 0.0000e+00',
+  PROCESS='# interval = decibars: 1',
+  PROCESS='# start_time = Aug 22 2002 14:22:11',
+  PROCESS='# bad_flag = -9.990e-29',
+  PROCESS='# sensor 0 = Frequency 0  temperature, 4222, 01-Mar-02',
+  PROCESS='# sensor 1 = Frequency 1  conductivity, 4222, 01-Mar-02, cpcor = -9.5700e-08',
+  PROCESS='# sensor 2 = Pressure Number, 138368',
+  PROCESS='# sensor 3 = Extrnl Volt  0  WET Labs, WETStar fluorometer, WS1S-823PS, 2/25/02',
+  PROCESS='# datcnv_date = May 10 2004 14:32:23, 5.30a',
+  PROCESS='# datcnv_in = D:\Barrow_Strait_200102\CTD\resolute_008.hex D:\Barrow_Strait_200102\CTD\4222.CON',
+  PROCESS='# datcnv_skipover = 0',
+  PROCESS='# split_date = May 10 2004 14:34:31, 5.30a',
+  PROCESS='# split_in = D:\Barrow_Strait_200102\CTD\Convert\resolute_008.cnv',
+  PROCESS='# split_excl_bad_scans = yes',
+  PROCESS='# wildedit_date = May 10 2004 14:54:39, 5.30a',
+  PROCESS='# wildedit_in = D:\Barrow_Strait_200102\CTD\Convert\dresolute_008.cnv',
+  PROCESS='# wildedit_pass1_nstd = 2.0',
+  PROCESS='# wildedit_pass2_nstd = 20.0',
+  PROCESS='# wildedit_pass2_mindelta = 0.000e+000',
+  PROCESS='# wildedit_npoint = 10',
+  PROCESS='# wildedit_vars = tv290C c0S/m prdM',
+  PROCESS='# wildedit_excl_bad_scans = yes',
+  PROCESS='# filter_date = May 10 2004 15:02:48, 5.30a',
+  PROCESS='# filter_in = D:\Barrow_Strait_200102\CTD\Wildedit\dresolute_008.cnv',
+  PROCESS='# filter_low_pass_tc_A = 0.045',
+  PROCESS='# filter_low_pass_tc_B = 0.150',
+  PROCESS='# filter_low_pass_A_vars = tv290C c0S/m',
+  PROCESS='# filter_low_pass_B_vars = prdM',
+  PROCESS='# loopedit_date = May 10 2004 15:07:08, 5.30a',
+  PROCESS='# loopedit_in = D:\Barrow_Strait_200102\CTD\Filter\dresolute_008.cnv',
+  PROCESS='# loopedit_minVelocity = 0.000',
+  PROCESS='# loopedit_excl_bad_scans = yes',
+  PROCESS='# alignctd_date = May 10 2004 15:39:26, 5.30a',
+  PROCESS='# alignctd_in = D:\Barrow_Strait_200102\CTD\LoopEdit\dresolute_008.cnv',
+  PROCESS='# alignctd_adv = c0S/m 0.010',
+  PROCESS='# celltm_date = May 10 2004 15:44:57, 5.30a',
+  PROCESS='# celltm_in = D:\Barrow_Strait_200102\CTD\Align_CTD\dresolute_008.cnv',
+  PROCESS='# celltm_alpha = 0.0300, 0.0000',
+  PROCESS='# celltm_tau = 9.0000, 0.0000',
+  PROCESS='# celltm_temp_sensor_use_for_cond = primary,',
+  PROCESS='# Derive_date = May 10 2004 16:13:52, 5.30a',
+  PROCESS='# Derive_in = D:\Barrow_Strait_200102\CTD\CellTM\dresolute_008.cnv D:\Barrow_Strait_200102\CTD\4222.CON',
+  PROCESS='# binavg_date = May 10 2004 16:15:07, 5.30a',
+  PROCESS='# binavg_in = D:\Barrow_Strait_200102\CTD\Derive\dresolute_008.cnv',
+  PROCESS='# binavg_bintype = decibars',
+  PROCESS='# binavg_binsize = 1',
+  PROCESS='# binavg_excl_bad_scans = yes',
+  PROCESS='# binavg_skipover = 0',
+  PROCESS='# binavg_surface_bin = no, min = 0.000, max = 0.000, value = 0.000',
+  PROCESS='# file_type = ascii',
+  PROCESS='*END*',
+  PROCESS='Edit Cruise: Cruise_Number=PRD2002-001 Chief_Scientist=S. Prinsenberg/J. Hamilton Platform=CGCS Pierre Radisson Organization=BIO/Coastal Ocean Sciences Cruise_Name=Barrow Strait - Arctic Ocean Through Flow.',
+  PROCESS='The code of Parameter `Sea Temperature´ will be changed to: `TEMP_01´.',
+  PROCESS='Add_Parameter: A.Data.TEMP_01 = evalin('caller','A.Data.UNKN_01');',
+  PROCESS='The code of Parameter `Electrical Conductivity´ will be changed to: `CNDC_01´.',
+  PROCESS='Add_Parameter: A.Data.CNDC_01 = evalin('caller','A.Data.UNKN_02');',
+  PROCESS='The code of Parameter `Sea Pressure (sea surface - 0)´ will be changed to: `PRES_01´.',
+  PROCESS='Add_Parameter: A.Data.PRES_01 = evalin('caller','A.Data.UNKN_03');',
+  PROCESS='The code of Parameter `Practical Salinity´ will be changed to: `PSAL_01´.',
+  PROCESS='Add_Parameter: A.Data.PSAL_01 = evalin('caller','A.Data.UNKN_04');',
+  PROCESS='The code of Parameter `Sigma-T´ will be changed to: `SIGT_01´.',
+  PROCESS='Add_Parameter: A.Data.SIGT_01 = evalin('caller','A.Data.UNKN_05');',
+  PROCESS='The code of Parameter `Sensor Depth below Sea Surface´ will be changed to: `DEPH_01´.',
+  PROCESS='Add_Parameter: A.Data.DEPH_01 = evalin('caller','sw_dpth(A.Data.UNKN_03,A.Event_Header.Initial_Latitude)');',
+  PROCESS='Edit Event: Event_Number=24 Sounding=62 Event_Qualifier1=1 Event_Qualifier2=DN Data_Type=CTD Min_Depth=0.98965 Max_Depth=55.4129 Depth_Off_Bottom=6.5871',
+  PROCESS='Edit Instrument: Inst_Type=SeaBird Model=SBE 19 Plus Serial_Number=4222'
+HISTORY_HEADER,
+  CREATION_DATE='12-MAY-2004 14:52:47.00',
+  PROCESS='GF3 Name Checking and Code Formatting',
+  PROCESS='Name check performed'
+HISTORY_HEADER,
+  CREATION_DATE='16-JUL-2014 08:49:50.41',
+  PROCESS='The following edits were completed by JAY BUGDEN.',
+  PROCESS='Edit Event: Field "Event_Number" has been changed from "24" to "024".',
+  PROCESS='Edit Cruise: Field "Country_Institute_Code" has been changed from "" to "1810".',
+  PROCESS='Edit Cruise: Field "Cruise_Number" has been changed from "PRD2002-001" to "PRD2002001".',
+  PROCESS='Edit Cruise: Field "Organization" has been changed from "BIO/Coastal Ocean Sciences" to "DFO BIO".',
+  PROCESS='Edit Cruise: Field "Chief_Scientist" has been changed from "S. Prinsenberg/J. Hamilton" to "SIMON PRINSENBERG JIM HAMILTON".',
+  PROCESS='Edit Cruise: Field "Start_Date" has been changed from "" to "15-AUG-2002 00:00:00.00".',
+  PROCESS='Edit Cruise: Field "End_Date" has been changed from "" to "24-AUG-2002 00:00:00.00".',
+  PROCESS='Edit Cruise: Field "Platform" has been changed from "CGCS Pierre Radisson" to "PIERRE RADISSON".',
+  PROCESS='Edit Cruise: Field "Cruise_Name" has been changed from "Barrow Strait - Arctic Ocean Through Flow." to "RESOLUTE LINE".',
+  PROCESS='Edit Cruise: Field "Cruise_Description" has been changed from "Resolute line" to "ARTIC OCEAN THROUGH FLOW 2002".'
+HISTORY_HEADER,
+  CREATION_DATE='02-AUG-2018 16:10:35.56',
+  PROCESS='The following edits were completed by Jeff Jackson.',
+  PROCESS='Edit Cruise: Field "Chief_Scientist" has been changed from "SIMON PRINSENBERG JIM HAMILTON" to "SIMON PRINSENBERG ~ JIM HAMILTON".',
+  PROCESS='Edit Cruise: Field "Cruise_Description" has been changed from "ARTIC OCEAN THROUGH FLOW 2002" to "ARCTIC OCEAN THROUGH FLOW 2002".',
+  PROCESS='Edit Record: Field "Num_History" has been changed from 2 to 4.'
+PARAMETER_HEADER,
+  TYPE='SING',
+  NAME='Sea Pressure (sea surface - 0)',
+  UNITS='decibars',
+  CODE='PRES_01',
+  NULL_VALUE='-99.0',
+  PRINT_FIELD_WIDTH=10,
+  PRINT_DECIMAL_PLACES=2,
+  ANGLE_OF_SECTION=0.000000,
+  MAGNETIC_VARIATION=0.000000,
+  DEPTH=55.412900,
+  MINIMUM_VALUE=      1.00,
+  MAXIMUM_VALUE=     56.00,
+  NUMBER_VALID=56,
+  NUMBER_NULL=0
+PARAMETER_HEADER,
+  TYPE='SING',
+  NAME='Sensor Depth below Sea Surface',
+  UNITS='metres',
+  CODE='DEPH_01',
+  NULL_VALUE='-99.0',
+  PRINT_FIELD_WIDTH=10,
+  PRINT_DECIMAL_PLACES=2,
+  ANGLE_OF_SECTION=0.000000,
+  MAGNETIC_VARIATION=0.000000,
+  DEPTH=55.412900,
+  MINIMUM_VALUE=      0.99,
+  MAXIMUM_VALUE=     55.41,
+  NUMBER_VALID=56,
+  NUMBER_NULL=0
+PARAMETER_HEADER,
+  TYPE='SING',
+  NAME='Sea Temperature',
+  UNITS='degrees C',
+  CODE='TEMP_01',
+  NULL_VALUE='-99.0',
+  PRINT_FIELD_WIDTH=10,
+  PRINT_DECIMAL_PLACES=4,
+  ANGLE_OF_SECTION=0.000000,
+  MAGNETIC_VARIATION=0.000000,
+  DEPTH=55.412900,
+  MINIMUM_VALUE=   -1.2058,
+  MAXIMUM_VALUE=    0.0213,
+  NUMBER_VALID=56,
+  NUMBER_NULL=0
+PARAMETER_HEADER,
+  TYPE='SING',
+  NAME='Electrical Conductivity',
+  UNITS='mhos/m',
+  CODE='CNDC_01',
+  NULL_VALUE='-99.0',
+  PRINT_FIELD_WIDTH=10,
+  PRINT_DECIMAL_PLACES=5,
+  ANGLE_OF_SECTION=0.000000,
+  MAGNETIC_VARIATION=0.000000,
+  DEPTH=55.412900,
+  MINIMUM_VALUE=   2.07350,
+  MAXIMUM_VALUE=   2.54420,
+  NUMBER_VALID=56,
+  NUMBER_NULL=0
+PARAMETER_HEADER,
+  TYPE='SING',
+  NAME='Practical Salinity',
+  UNITS='psu',
+  CODE='PSAL_01',
+  NULL_VALUE='-99.0',
+  PRINT_FIELD_WIDTH=10,
+  PRINT_DECIMAL_PLACES=4,
+  ANGLE_OF_SECTION=0.000000,
+  MAGNETIC_VARIATION=0.000000,
+  DEPTH=55.412900,
+  MINIMUM_VALUE=   24.8459,
+  MAXIMUM_VALUE=   31.4587,
+  NUMBER_VALID=55,
+  NUMBER_NULL=1
+PARAMETER_HEADER,
+  TYPE='SING',
+  NAME='Sigma-T',
+  UNITS='kg/m**3',
+  CODE='SIGT_01',
+  NULL_VALUE='-99.0',
+  PRINT_FIELD_WIDTH=10,
+  PRINT_DECIMAL_PLACES=4,
+  ANGLE_OF_SECTION=0.000000,
+  MAGNETIC_VARIATION=0.000000,
+  DEPTH=55.412900,
+  MINIMUM_VALUE=   19.9256,
+  MAXIMUM_VALUE=   25.2893,
+  NUMBER_VALID=55,
+  NUMBER_NULL=1
+RECORD_HEADER,
+  NUM_HISTORY=4,
+  NUM_CYCLE=56,
+  NUM_PARAM=6
+-- DATA --
+      1.00       0.99    -0.5018    2.07350   -99.0000   -99.0000 
+      2.00       1.98    -0.4954    2.09690    24.8878    19.9595 
+      3.00       2.97    -0.4907    2.09750    24.8906    19.9617 
+      4.00       3.96    -0.4903    2.09410    24.8459    19.9256 
+      5.00       4.95    -0.4551    2.13300    25.3206    20.3083 
+      6.00       5.94    -0.3990    2.14920    25.4835    20.4389 
+      7.00       6.93    -0.3691    2.16900    25.7139    20.6243 
+      8.00       7.92    -0.3291    2.20610    26.1601    20.9837 
+      9.00       8.91    -0.1861    2.31630    27.4631    22.0315 
+     10.00       9.90    -0.0849    2.36390    27.9886    22.4525 
+     11.00      10.89    -0.0388    2.41420    28.5975    22.9420 
+     12.00      11.88     0.0213    2.44670    28.9626    23.2343 
+     13.00      12.87    -0.0489    2.46480    29.2653    23.4808 
+     14.00      13.85    -0.0743    2.46660    29.3121    23.5194 
+     15.00      14.84    -0.0920    2.47380    29.4226    23.6092 
+     16.00      15.83    -0.2020    2.49200    29.7667    23.8907 
+     17.00      16.82    -0.3606    2.49710    29.9885    24.0751 
+     18.00      17.81    -0.3998    2.50160    30.0873    24.1561 
+     19.00      18.80    -0.5211    2.50380    30.2358    24.2800 
+     20.00      19.79    -0.5895    2.50530    30.3240    24.3534 
+     21.00      20.78    -0.6262    2.50850    30.4027    24.4181 
+     22.00      21.77    -0.6765    2.51290    30.5117    24.5078 
+     23.00      22.76    -0.8343    2.51400    30.6857    24.6531 
+     24.00      23.75    -0.9498    2.51490    30.8158    24.7617 
+     25.00      24.74    -0.9581    2.51570    30.8333    24.7761 
+     26.00      25.73    -0.9606    2.51820    30.8701    24.8059 
+     27.00      26.72    -0.9657    2.51890    30.8831    24.8166 
+     28.00      27.71    -0.9729    2.52000    30.9049    24.8345 
+     29.00      28.70    -0.9889    2.52140    30.9398    24.8631 
+     30.00      29.69    -0.9929    2.52160    30.9463    24.8685 
+     31.00      30.68    -0.9980    2.52200    30.9557    24.8763 
+     32.00      31.67    -1.0102    2.52340    30.9873    24.9022 
+     33.00      32.66    -1.0352    2.52480    31.0315    24.9386 
+     34.00      33.65    -1.0501    2.52600    31.0620    24.9638 
+     35.00      34.63    -1.0586    2.52650    31.0768    24.9760 
+     36.00      35.62    -1.0609    2.52680    31.0826    24.9808 
+     37.00      36.61    -1.0652    2.52740    31.0945    24.9905 
+     38.00      37.60    -1.0698    2.52850    31.1143    25.0066 
+     39.00      38.59    -1.0825    2.53010    31.1488    25.0350 
+     40.00      39.58    -1.1003    2.53260    31.1997    25.0766 
+     41.00      40.57    -1.1404    2.53640    31.2930    25.1534 
+     42.00      41.56    -1.1645    2.53890    31.3516    25.2014 
+     43.00      42.55    -1.1789    2.54020    31.3833    25.2275 
+     44.00      43.54    -1.1830    2.54080    31.3957    25.2376 
+     45.00      44.53    -1.1853    2.54110    31.4012    25.2421 
+     46.00      45.52    -1.1846    2.54110    31.3998    25.2410 
+     47.00      46.51    -1.1842    2.54110    31.3993    25.2406 
+     48.00      47.50    -1.1857    2.54130    31.4033    25.2439 
+     49.00      48.49    -1.1871    2.54190    31.4114    25.2505 
+     50.00      49.48    -1.1932    2.54250    31.4254    25.2619 
+     51.00      50.47    -1.1956    2.54300    31.4346    25.2695 
+     52.00      51.46    -1.2030    2.54380    31.4527    25.2844 
+     53.00      52.44    -1.2051    2.54410    31.4577    25.2885 
+     54.00      53.43    -1.2051    2.54410    31.4570    25.2879 
+     55.00      54.42    -1.2058    2.54420    31.4587    25.2893 
+     56.00      55.41    -1.2054    2.54420    31.4583    25.2890 
