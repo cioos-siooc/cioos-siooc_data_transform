@@ -119,8 +119,7 @@ def read_config(config_file: str = DEFAULT_CONFIG_PATH) -> dict:
 
 
 def odf_to_netcdf(odf_path, config=None):
-    """AI is creating summary for odf_to_netcdf
-
+    """Convert an ODF file to a netcdf.
     Args:
         odf_path (str): path to ODF file to convert
         config (dictionary, optional): Conversion configuration to apply.

@@ -11,7 +11,7 @@ import xarray as xr
 logger = logging.getLogger(__name__)
 
 
-class TestBIOODFConversion(unittest.TestCase):
+class TestODFConversion(unittest.TestCase):
     """Test DFO ODF File conversion."""
 
     def test_bio_odf_sample_data_conversion(self):
@@ -29,7 +29,7 @@ class TestBIOODFConversion(unittest.TestCase):
         default_odf_config["output_path"] = None
 
         for file in sample_files:
-            odf_transform.process.convert_odf_file(file, config=default_odf_config)
+            odf_transform.process.odf_to_netcdf(file, config=default_odf_config)
 
     def test_mli_odf_sample_data_conversion(self):
         """Test DFO MLI ODF conversion to xarray dataset"""
@@ -46,7 +46,7 @@ class TestBIOODFConversion(unittest.TestCase):
         default_odf_config["output_path"] = None
 
         for file in sample_files:
-            odf_transform.process.convert_odf_file(file, config=default_odf_config)
+            odf_transform.process.odf_to_netcdf(file, config=default_odf_config)
 
     def test_bio_odf_converted_netcdf_vs_references(self):
         """Test DFO BIO ODF conversion to NetCDF vs reference files"""
