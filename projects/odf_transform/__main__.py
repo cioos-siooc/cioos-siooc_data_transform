@@ -3,9 +3,8 @@ import argparse
 import logging
 import os
 
-from tqdm import tqdm
-
 from odf_transform.process import read_config, run_odf_conversion_from_config
+from tqdm import tqdm
 
 tqdm.pandas()
 
