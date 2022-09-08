@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from difflib import get_close_matches
 
 import pandas as pd
-from cioos_data_transform.parse.seabird import (
+from odf_transform.seabird import (
     get_seabird_instrument_from_header,
     get_seabird_processing_history,
 )

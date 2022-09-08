@@ -52,6 +52,7 @@ seabird_to_bodc = {
     "OBS, Seapoint Turbidity": ["VSCTXX01", "TURBXX01"],
     "SPAR/Surface Irradiance": ["IRRDSV01"],
     "SPAR, Biospherical/Licor": ["IRRDSV01"],
+    "SUNA": [],
     "Dr. Haardt BackScatter Fluorometer": [],
     "User Polynomial": [],
     "User Polynomial, 2": [],
