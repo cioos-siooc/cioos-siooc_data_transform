@@ -5,10 +5,7 @@ import os
 
 from tqdm import tqdm
 
-from odf_transform.process import (
-    read_config,
-    run_odf_conversion_from_config,
-)
+from odf_transform.process import read_config, run_odf_conversion_from_config
 
 tqdm.pandas()
 
@@ -46,8 +43,7 @@ if __name__ == "__main__":
     console.setFormatter(formatter)
     logger.addHandler(console)
 
-    logger = logging.LoggerAdapter(logger, {"odf_file": None})
-
+    adapted_logger = logging.LoggerAdapter(logger, {"odf_file": None})
 
     parser = argparse.ArgumentParser(
         prog="odf_transform", description="Convert ODF files to NetCDF"
