@@ -49,7 +49,6 @@ if __name__ == "__main__":
     logger = logging.LoggerAdapter(logger, {"odf_file": None})
 
 
-if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog="odf_transform", description="Convert ODF files to NetCDF"
     )

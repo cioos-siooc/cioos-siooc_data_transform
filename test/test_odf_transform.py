@@ -50,6 +50,11 @@ class TestODFConversion(unittest.TestCase):
 
     def test_bio_odf_converted_netcdf_vs_references(self):
         """Test DFO BIO ODF conversion to NetCDF vs reference files"""
+
+        # Run bio odf conversion
+        self.test_bio_odf_sample_data_conversion()
+
+        # Compare to reference files
         nc_files = glob(
             "./projects/odf_transform/sample_data/bio_samples/**/*.ODF_reference.nc",
             recursive=True,
