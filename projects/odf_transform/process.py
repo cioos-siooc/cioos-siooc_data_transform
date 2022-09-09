@@ -14,13 +14,13 @@ from tqdm import tqdm
 from odf_transform import attributes
 from odf_transform import parser as odf_parser
 
-import odf_transform.seabird as seabird
+import odf_transform.utils.seabird as seabird
 from cioos_data_transform.utils.utils import (
     get_geo_code,
     get_nearest_station,
     read_geojson,
 )
-from odf_transform.standarize_attributes import standardize_dataset
+from odf_transform.utils.standarize_attributes import standardize_dataset
 from odf_transform._version import __version__
 
 tqdm.pandas()
