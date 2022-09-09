@@ -20,4 +20,4 @@ jobs:
 
       - name: Run Unittests
         run: |
-          pytest -W "ignore::DeprecationWarning"
+          pytest -W "ignore::DeprecationWarning" -k "test_bio_odf_sample_data_conversion"
