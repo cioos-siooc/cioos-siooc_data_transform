@@ -1,7 +1,7 @@
-import pandas as pd
-import numpy as np
 import datetime as dt
 
+import numpy as np
+import pandas as pd
 
 """
 This Module regroup diverse methods used to handle xarray datasets and generate CIOOS/ERDDAP compliant datasets.

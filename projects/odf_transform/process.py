@@ -1,27 +1,26 @@
 """General module use to convert ODF files into a NetCDF CF, ACDD compliant format."""
+import copy
 import json
 import logging
 import os
 import re
 from glob import glob
 from multiprocessing import Pool
-import copy
 
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
-
-from odf_transform import attributes
-from odf_transform import parser as odf_parser
-
-import odf_transform.utils.seabird as seabird
 from cioos_data_transform.utils.utils import (
     get_geo_code,
     get_nearest_station,
     read_geojson,
 )
-from odf_transform.utils.standarize_attributes import standardize_dataset
+
+from odf_transform import attributes
+from odf_transform import parser as odf_parser
 from odf_transform._version import __version__
+from odf_transform.utils import seabird
+from odf_transform.utils.standarize_attributes import standardize_dataset
+from tqdm import tqdm
 
 tqdm.pandas()
 
