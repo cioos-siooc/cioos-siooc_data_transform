@@ -21,8 +21,7 @@ from cioos_data_transform.utils.utils import (
     read_geojson,
 )
 from odf_transform.standarize_attributes import standardize_dataset
-
-from ._version import __version__
+from odf_transform._version import __version__
 
 tqdm.pandas()
 
