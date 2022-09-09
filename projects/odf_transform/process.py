@@ -14,7 +14,6 @@ from cioos_data_transform.utils.utils import (
     get_nearest_station,
     read_geojson,
 )
-
 from odf_transform import attributes
 from odf_transform import parser as odf_parser
 from odf_transform._version import __version__

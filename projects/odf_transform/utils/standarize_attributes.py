@@ -47,7 +47,7 @@ def convert_variables_to_erddap_format(ds, utc=None):
                 "units": f"seconds since 1970-01-01 00:00:00{timezone}",
                 "dtype": "float64",
             }
-        except Exception as e:
+        except Exception:
             # Should be a string
             ds[var] = ds[var].astype(str)
 
