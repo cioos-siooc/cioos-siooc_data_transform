@@ -51,6 +51,11 @@ class TestODFConversion(unittest.TestCase):
     def test_bio_odf_converted_netcdf_vs_references(self):
         """Test DFO BIO ODF conversion to NetCDF vs reference files"""
 
+        def ignore_from_attr(attr, expression, placeholder):
+            """Replace expression in both reference and test files which are expected to be different."""
+            ref.attrs[attr] = re.sub(expression, placeholder, ref.attrs[attr])
+            test.attrs[attr] = re.sub(expression, placeholder, test.attrs[attr])
+
         # Run bio odf conversion
         self.test_bio_odf_sample_data_conversion()
 
@@ -66,13 +71,14 @@ class TestODFConversion(unittest.TestCase):
                 raise RuntimeError(f"{nc_file_test} was not generated.")
             test = xr.open_dataset(nc_file_test)
 
-            # Replace history timestamps by a placeholder
-            timestamp_format = r"\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ"
-            ref.attrs["history"] = re.sub(
-                timestamp_format, "TIMESTAMP", ref.attrs["history"]
+            # Add placeholders to specific fields in attributes
+            ignore_from_attr(
+                "history",
+                r"cioos_data_trasform.odf_transform V \d+\.\d+.\d+",
+                "cioos_data_trasform.odf_transform V VERSION",
             )
-            test.attrs["history"] = re.sub(
-                timestamp_format, "TIMESTAMP", test.attrs["history"]
+            ignore_from_attr(
+                "history", r"\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ", "TIMESTAMP"
             )
             ref.attrs["date_created"] = "TIMESTAMP"
             test.attrs["date_created"] = "TIMESTAMP"
