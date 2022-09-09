@@ -80,9 +80,9 @@ def get_seabird_instrument_from_header(seabird_header):
     """Retrieve main instrument model from Sea-Bird CNV header"""
     instrument = re.findall(
         r"\* (?:Sea\-Bird ){0,1}SBE\s*(?P<sensor>\d+[^\s]*)(?P<extra>.*)",
-        seabird_header, 
+        seabird_header,
     )
-    instrument = [inst for inst,extra in instrument if ' = ' not in extra]
+    instrument = [inst for inst, extra in instrument if " = " not in extra]
     if instrument:
         return f"Sea-Bird SBE {''.join(instrument)}"
 
@@ -237,7 +237,9 @@ def generate_instruments_variables_from_xml(dataset, seabird_header):
         dataset[sensor_var_name] = json.dumps(attrs)
         dataset[sensor_var_name].attrs = {
             "calibration_date": pd.to_datetime(
-                attrs.pop("CalibrationDate"), errors="ignore"
+                attrs.pop("CalibrationDate"),
+                errors="ignore",
+                infer_datetime_format=True,
             ),  # IOOS 1.2, NCEI 2.0
             "component": f"{sensor_var_name}_sn{attrs['SerialNumber']}",  # IOOS 1.2
             "discriminant": str(sensor_number),  # IOOS 1.2
