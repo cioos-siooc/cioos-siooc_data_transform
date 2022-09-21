@@ -92,7 +92,7 @@ def read_config(config_file: str = DEFAULT_CONFIG_PATH) -> dict:
     if config["program_log_path"]:
         program_logs = []
         for file in glob(config["program_log_path"] + "*.csv"):
-            df_temp = pd.read_csv(file)
+            df_temp = pd.read_csv(file, dtype={"mission": str})
             df_temp.insert(0, "program", os.path.basename(file)[:-4])
             program_logs += [df_temp]
         config["program_log"] = pd.concat(program_logs)
