@@ -361,11 +361,19 @@ def global_attributes_from_header(dataset, odf_header, config=None):
             "chief_scientist": _standardize_chief_scientist(
                 odf_header["CRUISE_HEADER"]["CHIEF_SCIENTIST"]
             ),
-            "mission_start_date": _review_time_attributes(odf_header["CRUISE_HEADER"].get("START_DATE"),'START_DATE'),
-            "mission_end_date": _review_time_attributes(odf_header["CRUISE_HEADER"].get("END_DATE"),'END_DATE'),
+            "mission_start_date": _review_time_attributes(
+                odf_header["CRUISE_HEADER"].get("START_DATE"), "START_DATE"
+            ),
+            "mission_end_date": _review_time_attributes(
+                odf_header["CRUISE_HEADER"].get("END_DATE"), "END_DATE"
+            ),
             "event_number": odf_header["EVENT_HEADER"]["EVENT_NUMBER"],
-            "event_start_time": _review_time_attributes(odf_header["EVENT_HEADER"]["START_DATE_TIME"],'START_DATE_TIME'),
-            "event_end_time": _review_time_attributes(odf_header["EVENT_HEADER"]["END_DATE_TIME"],'END_DATE_TIME'),
+            "event_start_time": _review_time_attributes(
+                odf_header["EVENT_HEADER"]["START_DATE_TIME"], "START_DATE_TIME"
+            ),
+            "event_end_time": _review_time_attributes(
+                odf_header["EVENT_HEADER"]["END_DATE_TIME"], "END_DATE_TIME"
+            ),
             "initial_latitude": _review_latitude(
                 odf_header["EVENT_HEADER"]["INITIAL_LATITUDE"]
             ),
