@@ -283,7 +283,9 @@ def _generate_title_from_global_attributes(attributes):
             else ""
         )
         + f"by {attributes['organization']}  {attributes['institution']} "
-        + f"on the {attributes['cruise_name'].title()} "
+        + (
+            f"on the {attributes['cruise_name'].title()} " if "cruise_name" in attributes else ""
+        )
     )
     if (
         pd.notna(attributes["mission_start_date"])
