@@ -195,7 +195,7 @@ def _review_station(global_attributes, odf_header):
     return _standardize_station_names(station)
 
 
-def _review_time_attributes(value,attr):
+def _review_time_attributes(value, attr):
     """Review time attributesw which should be:
     - Parsed and converted to datetime
     - > 1900-01-01
@@ -211,7 +211,9 @@ def _review_time_attributes(value,attr):
         )
         return pd.NaT
     elif value < pd.Timestamp(1900, 1, 1).tz_localize("UTC"):
-        logger.warning("%s = %s is before 1900-01-01 which is very suspicious", attr, value)
+        logger.warning(
+            "%s = %s is before 1900-01-01 which is very suspicious", attr, value
+        )
     return value
 
 
@@ -395,8 +397,10 @@ def global_attributes_from_header(dataset, odf_header, config=None):
     # Review ATTRIBUTES
     dataset.attrs["event_number"] = _review_event_number(dataset.attrs, odf_header)
     dataset.attrs["station"] = _review_station(dataset.attrs, odf_header)
-    if isinstance(dataset.attrs['comments'],list):
-        dataset.attrs['comments'] = '\n'.join([line for line in dataset.attrs['comments'] if line])
+    if isinstance(dataset.attrs["comments"], list):
+        dataset.attrs["comments"] = "\n".join(
+            [line for line in dataset.attrs["comments"] if line]
+        )
 
     # Apply attributes corrections from attribute_correction json
     dataset.attrs.update(
