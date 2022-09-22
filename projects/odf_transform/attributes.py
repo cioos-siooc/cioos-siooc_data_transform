@@ -230,9 +230,9 @@ def _generate_instrument_attributes(odf_header, instrument_manufacturer_header=N
     """
     # Instrument Specific Information
     if "INSTRUMENT_HEADER" not in odf_header or (
-        odf_header["INSTRUMENT_HEADER"].get("INST_TYPE")
-        and odf_header["INSTRUMENT_HEADER"].get("MODEL")
-        and odf_header["INSTRUMENT_HEADER"].get("SERIAL_NUMBER")
+        odf_header["INSTRUMENT_HEADER"].get("INST_TYPE") in (None,0)
+        and odf_header["INSTRUMENT_HEADER"].get("MODEL") in (None,0)
+        and odf_header["INSTRUMENT_HEADER"].get("SERIAL_NUMBER") in (None,0)
     ):
         logger.info("No instrument information available")
         return {}
@@ -247,12 +247,12 @@ def _generate_instrument_attributes(odf_header, instrument_manufacturer_header=N
     elif "INSTRUMENT_HEADER" in odf_header:
         attributes["instrument"] = " ".join(
             [
-                odf_header["INSTRUMENT_HEADER"].get("INST_TYPE") or "",
-                odf_header["INSTRUMENT_HEADER"].get("MODEL") or "",
+                str(odf_header["INSTRUMENT_HEADER"].get("INST_TYPE")) or "",
+                str(odf_header["INSTRUMENT_HEADER"].get("MODEL")) or "",
             ]
         ).strip()
         attributes["instrument_serial_number"] = (
-            odf_header["INSTRUMENT_HEADER"].get("SERIAL_NUMBER") or ""
+            str(odf_header["INSTRUMENT_HEADER"].get("SERIAL_NUMBER")) or ""
         )
 
     # Attempt to generate an instrument_type attribute
