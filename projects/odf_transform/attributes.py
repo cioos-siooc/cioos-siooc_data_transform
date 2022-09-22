@@ -284,7 +284,7 @@ def _generate_title_from_global_attributes(attributes):
         )
         + f"by {attributes['organization']}  {attributes['institution']} "
         + (
-            f"on the {attributes['cruise_name'].title()} " if "cruise_name" in attributes else ""
+            f"on the {attributes['cruise_name'].title()} " if attributes.get("cruise_name") else ""
         )
     )
     if (
