@@ -59,6 +59,11 @@ def _generate_cf_history_from_odf(odf_header):
         if isinstance(history_group["PROCESS"], str):
             history_group["PROCESS"] = [history_group["PROCESS"]]
 
+        # Empty history group (just write the date)
+        if history_group["PROCESS"] is None:
+            history["history"] += _add_to_history("", history_group["CREATION_DATE"])
+            continue
+
         for row in history_group["PROCESS"]:
             if row is None:
                 continue
@@ -273,7 +278,7 @@ def _generate_title_from_global_attributes(attributes):
         f"{attributes['odf_data_type']} profile data collected "
         + (
             f"from the {attributes['platform']} {attributes['platform_name']}"
-            if "platform" in attributes
+            if "platform" in attributes and "platform_name" in attributes
             else ""
         )
         + f"by {attributes['organization']}  {attributes['institution']} "
