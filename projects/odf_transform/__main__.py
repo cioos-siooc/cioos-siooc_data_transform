@@ -11,6 +11,19 @@ tqdm.pandas()
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_CONFIG_PATH = os.path.join(MODULE_PATH, "config.json")
 
+
+class OneLineExceptionFormatter(logging.Formatter):
+    def formatException(self, exc_info):
+        result = super(OneLineExceptionFormatter, self).formatException(exc_info)
+        return repr(result)  # or format into one line however you want to
+
+    def format(self, record):
+        s = super(OneLineExceptionFormatter, self).format(record)
+        if record.exc_text:
+            s = s.replace("\n", "") + "|"
+        return s
+
+
 if __name__ == "__main__":
     # Log to log file
     logging.captureWarnings(True)
@@ -35,6 +48,15 @@ if __name__ == "__main__":
     var_log_file.setLevel(logging.INFO)
     var_log_file.addFilter(logging.Filter(name="odf_transform.process"))
     logger.addHandler(var_log_file)
+
+    # Set logger to log variable names
+    file_log_file = logging.FileHandler("odf-transform-bad-files.log", encoding="UTF-8")
+    file_log_file_formatter = OneLineExceptionFormatter(
+        "[%(levelname)s] %(message)s | File Path: %(file)s", "%m/%d/%Y %I:%M:%S %p"
+    )
+    file_log_file.setFormatter(file_log_file_formatter)
+    file_log_file.setLevel(logging.WARNING)
+    logger.addHandler(file_log_file)
 
     # Set up logging to console (errors only)
     console = logging.StreamHandler()
