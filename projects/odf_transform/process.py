@@ -156,30 +156,31 @@ def odf_to_netcdf(odf_path, config=None):
 
     # Define coordinates variables from attributes, assign geographic_area and nearest stations
     dataset = attributes.generate_coordinates_variables(dataset)
-    dataset.attrs["geographic_area"] = get_geo_code(
-        [dataset["longitude"].mean(), dataset["latitude"].mean()],
-        config["geographic_areas"],
-    )
-
-    nearest_station = get_nearest_station(
-        config["reference_stations"][["station", "latitude", "longitude"]].values,
-        (dataset["latitude"], dataset["longitude"]),
-        config["maximum_distance_from_station_km"],
-    )
-    if nearest_station:
-        dataset.attrs["station"] = nearest_station
-    elif (
-        dataset.attrs.get("station")
-        and dataset.attrs.get("station")
-        not in config["reference_stations"]["station"].tolist()
-        and re.match(r"[^0-9]", dataset.attrs["station"])
-    ):
-        logger.warning(
-            "Station %s [%sN, %sE] is missing from the reference_station.",
-            dataset.attrs["station"],
-            dataset["latitude"].mean().values,
-            dataset["longitude"].mean().values,
+    if "latitude" in dataset and "longitude" in dataset:
+        dataset.attrs["geographic_area"] = get_geo_code(
+            [dataset["longitude"].mean(), dataset["latitude"].mean()],
+            config["geographic_areas"],
         )
+
+        nearest_station = get_nearest_station(
+            config["reference_stations"][["station", "latitude", "longitude"]].values,
+            (dataset["latitude"], dataset["longitude"]),
+            config["maximum_distance_from_station_km"],
+        )
+        if nearest_station:
+            dataset.attrs["station"] = nearest_station
+        elif (
+            dataset.attrs.get("station")
+            and dataset.attrs.get("station")
+            not in config["reference_stations"]["station"].tolist()
+            and re.match(r"[^0-9]", dataset.attrs["station"])
+        ):
+            logger.warning(
+                "Station %s [%sN, %sE] is missing from the reference_station.",
+                dataset.attrs["station"],
+                dataset["latitude"].mean().values,
+                dataset["longitude"].mean().values,
+            )
 
     # Add Vocabulary attributes
     dataset = odf_parser.get_vocabulary_attributes(
