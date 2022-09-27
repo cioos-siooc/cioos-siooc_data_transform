@@ -1,0 +1,18 @@
+{
+    "chief_scientist": {
+        "Bill Maceachern": "William Maceachern",
+        "Don Clark": "Donald Clark",
+        "Don Gordon": "Donald Gordon",
+        "Ed Horne": "Edward Horne"
+    },
+    "profile_direction": {
+        "DN": "downward",
+        "FLAT": "stable",
+        "UP": "upward"
+    },
+    "station": {
+        "Prince 5": "Prince5",
+        "GWA02": "GUL00",
+        "NL02": "GWA00"
+    }
+}

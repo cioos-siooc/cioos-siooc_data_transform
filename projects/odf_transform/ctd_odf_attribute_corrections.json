@@ -1,0 +1,2456 @@
+{
+  "CTD_HUD2001009_CSL3_1_DN.ODF": {
+    "event_number": 199,
+    "station": "CSL05"
+  },
+  "CTD_HUD2001009_HL1_1_DN.ODF": {
+    "event_number": 96,
+    "station": "HL01"
+  },
+  "CTD_HUD2001009_HL2_1_DN.ODF": {
+    "event_number": 290,
+    "station": "HL02"
+  },
+  "CTD_HUD2001009_HL6_1_DN.ODF": {
+    "event_number": 110,
+    "station": "HL06"
+  },
+  "CTD_HUD2001009_LC1_1_DN.ODF": {
+    "event_number": 232,
+    "station": "LC01"
+  },
+  "CTD_HUD2001009_LL4_1_DN.ODF": {
+    "event_number": 159,
+    "station": "LL04"
+  },
+  "CTD_HUD2001009_LL6_1_DN.ODF": {
+    "event_number": 158,
+    "station": "LL06"
+  },
+  "CTD_HUD2001009_LL9_1_DN.ODF": {
+    "event_number": 138,
+    "station": "LL09"
+  },
+  "CTD_HUD2001009_SIB7_1_DN.ODF": {
+    "event_number": 239,
+    "station": "SIB07"
+  },
+  "CTD_HUD2001009_WB1_1_DN.ODF": {
+    "event_number": 125,
+    "station": "WB01"
+  },
+  "CTD_HUD2001009_WB3_1_DN.ODF": {
+    "event_number": 130,
+    "station": "WB03"
+  },
+  "CTD_97073_HFX_1_DN.ODF": {
+    "cruise_number": "97073",
+    "station": "HL02",
+    "event_number": "NA"
+  },
+  "CTD_NED2000026_HalifaxStation_215601_DN.ODF": {
+    "cruise_number": "NED2000026",
+    "station": "HL02",
+    "event_number": "1"
+  },
+  "CTD_NED2001003_HalifaxHydro_235401_DN.ODF": {
+    "cruise_number": "NED2001003",
+    "station": "HL02",
+    "event_number": "1"
+  },
+  "CTD_TEL2008805_52P_57587_DN.ODF": {
+    "cruise_number": "TEL2008805",
+    "station": null,
+    "event_number": "52"
+  },
+  "CTD_TEL2008805_52P_57587_UP.ODF": {
+    "cruise_number": "TEL2008805",
+    "station": null,
+    "event_number": "52"
+  },
+  "CTD_95016_18c_3_DN.ODF": {
+    "cruise_number": "95016",
+    "station": "AR7W22",
+    "event_number": "18"
+  },
+  "CTD_97003_049a_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "Mooring I6",
+    "event_number": 48
+  },
+  "CTD_98050_BedfordBasinSt_1_DN.ODF": {
+    "cruise_number": "98050",
+    "station": "HL00",
+    "event_number": "1"
+  },
+  "CTD_HUD2005055_CSL1006_1_DN.ODF": {
+    "cruise_number": "HUD2005055",
+    "station": "CSL01",
+    "event_number": "6"
+  },
+  "CTD_97003_003_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "HL03",
+    "event_number": 3
+  },
+  "CTD_97003_008_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "RL04",
+    "event_number": 8
+  },
+  "CTD_97003_020_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "HL06",
+    "event_number": 20
+  },
+  "CTD_97003_021_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "HL07",
+    "event_number": 21
+  },
+  "CTD_97003_022_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "GUL03",
+    "event_number": 22
+  },
+  "CTD_97003_023_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "GUL01",
+    "event_number": 23
+  },
+  "CTD_97003_024_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "GUL02",
+    "event_number": 24
+  },
+  "CTD_97003_028_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "LL05",
+    "event_number": 28
+  },
+  "CTD_97003_031_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "LL02",
+    "event_number": 31
+  },
+  "CTD_97003_033_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "LL01",
+    "event_number": 33
+  },
+  "CTD_97003_034_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "LC01",
+    "event_number": 34
+  },
+  "CTD_97003_035_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "LC02",
+    "event_number": 35
+  },
+  "CTD_97003_036_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "LC04",
+    "event_number": 36
+  },
+  "CTD_97003_037_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "LC04",
+    "event_number": 37
+  },
+  "CTD_97003_038_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "LC04",
+    "event_number": 38
+  },
+  "CTD_97003_039_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "LC06",
+    "event_number": 39
+  },
+  "CTD_97003_040_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "LC07",
+    "event_number": 40
+  },
+  "CTD_97003_044_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "CS03",
+    "event_number": 44
+  },
+  "CTD_97003_047_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "Mooring I6",
+    "event_number": 47
+  },
+  "CTD_97003_049_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "Mooring B1",
+    "event_number": 49
+  },
+  "CTD_97003_051_1_DN.ODF": {
+    "cruise_number": 97003,
+    "station": "Mooring B2",
+    "event_number": 51
+  },
+  "CTD_98002_011_1_DN.ODF": {
+    "cruise_number": 98002,
+    "station": null,
+    "event_number": 11
+  },
+  "CTD_98002_012_1_DN.ODF": {
+    "cruise_number": 98002,
+    "station": "RL07",
+    "event_number": 12
+  },
+  "CTD_98002_013_1_DN.ODF": {
+    "cruise_number": 98002,
+    "station": "RL08",
+    "event_number": 13
+  },
+  "CTD_98002_015_1_DN.ODF": {
+    "cruise_number": 98002,
+    "station": "RL05",
+    "event_number": 15
+  },
+  "CTD_98002_019_1_DN.ODF": {
+    "cruise_number": 98002,
+    "station": "LAHAVE01",
+    "event_number": 19
+  },
+  "CTD_98002_023_1_DN.ODF": {
+    "cruise_number": 98002,
+    "station": "HL03",
+    "event_number": 23
+  },
+  "CTD_98002_029_1_DN.ODF": {
+    "cruise_number": 98002,
+    "station": "HL07",
+    "event_number": 29
+  },
+  "CTD_98002_030_1_DN.ODF": {
+    "cruise_number": 98002,
+    "station": "HL08",
+    "event_number": 30
+  },
+  "CTD_98002_032_1_DN.ODF": {
+    "cruise_number": 98002,
+    "station": "LEB",
+    "event_number": 32
+  },
+  "CTD_98002_033_1_DN.ODF": {
+    "cruise_number": 98002,
+    "station": "GWA00",
+    "event_number": 33
+  },
+  "CTD_98002_034_1_DN.ODF": {
+    "cruise_number": 98002,
+    "station": "GWA01",
+    "event_number": 34
+  },
+  "CTD_98002_036_1_DN.ODF": {
+    "cruise_number": 98002,
+    "station": "GUL_01",
+    "event_number": 36
+  },
+  "CTD_98002_046_1_DN.ODF": {
+    "cruise_number": 98002,
+    "station": "NL01",
+    "event_number": 46
+  },
+  "CTD_98002_054_1_DN.ODF": {
+    "cruise_number": 98002,
+    "station": "SIB",
+    "event_number": 54
+  },
+  "CTD_98002_055_1_DN.ODF": {
+    "cruise_number": 98002,
+    "station": "EB",
+    "event_number": 55
+  },
+  "CTD_98050_002_1_DN.ODF": {
+    "cruise_number": 98050,
+    "station": "LEB",
+    "event_number": 2
+  },
+  "CTD_98050_003_1_DN.ODF": {
+    "cruise_number": 98050,
+    "station": "NL02",
+    "event_number": 3
+  },
+  "CTD_98050_004_1_DN.ODF": {
+    "cruise_number": 98050,
+    "station": "GWA01",
+    "event_number": 4
+  },
+  "CTD_98050_006_1_DN.ODF": {
+    "cruise_number": 98050,
+    "station": "GUL_01",
+    "event_number": 6
+  },
+  "CTD_98050_016_1_DN.ODF": {
+    "cruise_number": 98050,
+    "station": "CSL05",
+    "event_number": 16
+  },
+  "CTD_98050_017_1_DN.ODF": {
+    "cruise_number": 98050,
+    "station": "CSL04",
+    "event_number": 17
+  },
+  "CTD_98050_023_1_DN.ODF": {
+    "cruise_number": 98050,
+    "station": "HL08",
+    "event_number": 23
+  },
+  "CTD_98050_024_1_DN.ODF": {
+    "cruise_number": 98050,
+    "station": "RL07",
+    "event_number": 24
+  },
+  "CTD_98050_025_1_DN.ODF": {
+    "cruise_number": 98050,
+    "station": "HL06",
+    "event_number": 25
+  },
+  "CTD_98050_029_1_DN.ODF": {
+    "cruise_number": 98050,
+    "station": "HL02A",
+    "event_number": 29
+  },
+  "CTD_98050_031_1_DN.ODF": {
+    "cruise_number": 98050,
+    "station": "HL03",
+    "event_number": 31
+  },
+  "CTD_98050_036_1_DN.ODF": {
+    "cruise_number": 98050,
+    "station": "BBL04",
+    "event_number": 36
+  },
+  "CTD_98050_041_1_DN.ODF": {
+    "cruise_number": 98050,
+    "station": "RL02",
+    "event_number": 41
+  },
+  "CTD_98050_043_1_DN.ODF": {
+    "cruise_number": 98050,
+    "station": "RL04",
+    "event_number": 43
+  },
+  "CTD_98050_046_1_DN.ODF": {
+    "cruise_number": 98050,
+    "station": "NL03",
+    "event_number": 46
+  },
+  "CTD_99003_048_1_DN.ODF": {
+    "cruise_number": 99003,
+    "station": "BBL05",
+    "event_number": 48
+  },
+  "CTD_99003_053_1_DN.ODF": {
+    "cruise_number": 99003,
+    "station": "BBL06",
+    "event_number": 53
+  },
+  "CTD_99003_079_1_DN.ODF": {
+    "cruise_number": 99003,
+    "station": "HL07",
+    "event_number": 79
+  },
+  "CTD_99003_087_1_DN.ODF": {
+    "cruise_number": 99003,
+    "station": "HL06",
+    "event_number": 87
+  },
+  "CTD_99003_100_1_DN.ODF": {
+    "cruise_number": 99003,
+    "station": "GUL01",
+    "event_number": 100
+  },
+  "CTD_99003_188_1_DN.ODF": {
+    "cruise_number": 99003,
+    "station": "CANSO",
+    "event_number": 188
+  },
+  "CTD_99003_197_1_DN.ODF": {
+    "cruise_number": 99003,
+    "station": "ED",
+    "event_number": 197
+  },
+  "CTD_99003_198_1_DN.ODF": {
+    "cruise_number": 99003,
+    "station": "LEB",
+    "event_number": 198
+  },
+  "CTD_99054_036_1_DN.ODF": {
+    "cruise_number": 99054,
+    "station": "BBL06",
+    "event_number": 36
+  },
+  "CTD_99054_050_1_DN.ODF": {
+    "cruise_number": 99054,
+    "station": "RL06",
+    "event_number": 50
+  },
+  "CTD_99054_057_1_DN.ODF": {
+    "cruise_number": 99054,
+    "station": "RL04",
+    "event_number": 57
+  },
+  "CTD_99054_072_1_DN.ODF": {
+    "cruise_number": 99054,
+    "station": "LL09",
+    "event_number": 72
+  },
+  "CTD_99054_118_1_DN.ODF": {
+    "cruise_number": 99054,
+    "station": "CSL02",
+    "event_number": 118
+  },
+  "CTD_99054_138_1_DN.ODF": {
+    "cruise_number": 99054,
+    "station": "SPB01",
+    "event_number": 138
+  },
+  "CTD_99054_139_1_DN.ODF": {
+    "cruise_number": 99054,
+    "station": "SPB02",
+    "event_number": 139
+  },
+  "CTD_99054_145_1_DN.ODF": {
+    "cruise_number": 99054,
+    "station": "SPB03",
+    "event_number": 145
+  },
+  "CTD_99054_146_1_DN.ODF": {
+    "cruise_number": 99054,
+    "station": "SPB04",
+    "event_number": 146
+  },
+  "CTD_99054_151_1_DN.ODF": {
+    "cruise_number": 99054,
+    "station": "SPB05",
+    "event_number": 151
+  },
+  "CTD_99054_152_1_DN.ODF": {
+    "cruise_number": 99054,
+    "station": "SPB05.5",
+    "event_number": 152
+  },
+  "CTD_99054_172_1_DN.ODF": {
+    "cruise_number": 99054,
+    "station": "SPB10",
+    "event_number": 172
+  },
+  "CTD_99054_173_1_DN.ODF": {
+    "cruise_number": 99054,
+    "station": "GUL04",
+    "event_number": 173
+  },
+  "CTD_99054_178_1_DN.ODF": {
+    "cruise_number": 99054,
+    "station": "GULD03",
+    "event_number": 178
+  },
+  "CTD_99054_181_1_DN.ODF": {
+    "cruise_number": 99054,
+    "station": "GUL01",
+    "event_number": 181
+  },
+  "CTD_99054_183_1_DN.ODF": {
+    "cruise_number": 99054,
+    "station": null,
+    "event_number": 183
+  },
+  "CTD_99054_187_1_DN.ODF": {
+    "cruise_number": 99054,
+    "station": "HL07",
+    "event_number": 187
+  },
+  "CTD_99054_211_1_DN.ODF": {
+    "cruise_number": 99054,
+    "station": "HL03",
+    "event_number": 211
+  },
+  "CTD_99054_226_1_DN.ODF": {
+    "cruise_number": 99054,
+    "station": "HL02",
+    "event_number": 226
+  },
+  "CTD_HUD2001061_148_01_DN": {
+    "cruise_number": "HUD2001061",
+    "station": "HL05",
+    "event_number": 148
+  },
+  "CTD_HUD2001061_156_01_DN": {
+    "cruise_number": "HUD2001061",
+    "station": "HL07",
+    "event_number": 156
+  },
+  "CTD_HUD2001061_165_01_DN": {
+    "cruise_number": "HUD2001061",
+    "station": "WB01",
+    "event_number": 165
+  },
+  "CTD_HUD2001061_171_01_DN": {
+    "cruise_number": "HUD2001061",
+    "station": "WB02",
+    "event_number": 171
+  },
+  "CTD_HUD2001061_173_01_DN": {
+    "cruise_number": "HUD2001061",
+    "station": "WB03",
+    "event_number": 173
+  },
+  "CTD_HUD2001061_179_01_DN": {
+    "cruise_number": "HUD2001061",
+    "station": "GULD03",
+    "event_number": 179
+  },
+  "CTD_HUD2001061_249_01_DN": {
+    "cruise_number": "HUD2001061",
+    "station": "LH01",
+    "event_number": 249
+  },
+  "CTD_HUD2001061_253_01_DN": {
+    "cruise_number": "HUD2001061",
+    "station": "LH02",
+    "event_number": 253
+  },
+  "CTD_HUD2001061_259_01_DN": {
+    "cruise_number": "HUD2001061",
+    "station": "LH03",
+    "event_number": 259
+  },
+  "CTD_HUD2001061_278_01_DN": {
+    "cruise_number": "HUD2001061",
+    "station": "SIB08",
+    "event_number": 278
+  },
+  "CTD_HUD2001061_284_01_DN": {
+    "cruise_number": "HUD2001061",
+    "station": "SIB07",
+    "event_number": 284
+  },
+  "CTD_HUD2001061_287_01_DN": {
+    "cruise_number": "HUD2001061",
+    "station": "SIB06",
+    "event_number": 287
+  },
+  "CTD_HUD2001061_292_01_DN": {
+    "cruise_number": "HUD2001061",
+    "station": "SIB05",
+    "event_number": 292
+  },
+  "CTD_HUD2001061_293_01_DN": {
+    "cruise_number": "HUD2001061",
+    "station": "SIB04",
+    "event_number": 293
+  },
+  "CTD_HUD2001061_298_01_DN": {
+    "cruise_number": "HUD2001061",
+    "station": "SIB03",
+    "event_number": 298
+  },
+  "CTD_HUD2001061_299_01_DN": {
+    "cruise_number": "HUD2001061",
+    "station": "SIB02",
+    "event_number": 299
+  },
+  "CTD_HUD2001061_304_01_DN": {
+    "cruise_number": "HUD2001061",
+    "station": "SIB01",
+    "event_number": 304
+  },
+  "CTD_HUD2002064_085_1_DN": {
+    "cruise_number": "HUD2002064",
+    "station": "HL06.8",
+    "event_number": 85
+  },
+  "CTD_HUD2002064_088_1_DN": {
+    "cruise_number": "HUD2002064",
+    "station": "HL06.5",
+    "event_number": 88
+  },
+  "CTD_HUD2002064_110_1_DN": {
+    "cruise_number": "HUD2002064",
+    "station": "HL04",
+    "event_number": 110
+  },
+  "CTD_HUD2002064_162_1_DN": {
+    "cruise_number": "HUD2002064",
+    "station": "SIB07",
+    "event_number": 162
+  },
+  "CTD_HUD2002064_165_1_DN": {
+    "cruise_number": "HUD2002064",
+    "station": "SIB06",
+    "event_number": 165
+  },
+  "CTD_HUD2002064_167_1_DN": {
+    "cruise_number": "HUD2002064",
+    "station": "GULD03",
+    "event_number": 167
+  },
+  "CTD_HUD2002064_181_1_DN": {
+    "cruise_number": "HUD2002064",
+    "station": "SPB11",
+    "event_number": 181
+  },
+  "CTD_HUD2002064_193_1_DN": {
+    "cruise_number": "HUD2002064",
+    "station": "SIB01",
+    "event_number": 193
+  },
+  "CTD_HUD2002064_194_1_DN": {
+    "cruise_number": "HUD2002064",
+    "station": "SIB02",
+    "event_number": 194
+  },
+  "CTD_HUD2002064_197_1_DN": {
+    "cruise_number": "HUD2002064",
+    "station": "SIB03",
+    "event_number": 197
+  },
+  "CTD_HUD2002064_198_1_DN": {
+    "cruise_number": "HUD2002064",
+    "station": "SIB04",
+    "event_number": 198
+  },
+  "CTD_HUD2002064_203_1_DN": {
+    "cruise_number": "HUD2002064",
+    "station": "WB03",
+    "event_number": 203
+  },
+  "CTD_HUD2002064_206_1_DN": {
+    "cruise_number": "HUD2002064",
+    "station": "WB02",
+    "event_number": 206
+  },
+  "CTD_HUD2002064_207_1_DN": {
+    "cruise_number": "HUD2002064",
+    "station": "WB01",
+    "event_number": 207
+  },
+  "CTD_HUD2003067_039_1_DN": {
+    "cruise_number": "HUD2003067",
+    "station": "RL07",
+    "event_number": 39
+  },
+  "CTD_HUD2003067_041_1_DN": {
+    "cruise_number": "HUD2003067",
+    "station": "HL07",
+    "event_number": 41
+  },
+  "CTD_HUD2003067_047_1_DN": {
+    "cruise_number": "HUD2003067",
+    "station": "HL06",
+    "event_number": 47
+  },
+  "CTD_HUD2003067_052_1_DN": {
+    "cruise_number": "HUD2003067",
+    "station": "HL05",
+    "event_number": 52
+  },
+  "CTD_HUD2003067_078_1_DN": {
+    "cruise_number": "HUD2003067",
+    "station": "SIB06",
+    "event_number": 78
+  },
+  "CTD_HUD2003067_080_1_DN": {
+    "cruise_number": "HUD2003067",
+    "station": "SIB06",
+    "event_number": 80
+  },
+  "CTD_HUD2003067_081_1_DN": {
+    "cruise_number": "HUD2003067",
+    "station": "SIB06",
+    "event_number": 81
+  },
+  "CTD_HUD2003067_083_1_DN": {
+    "cruise_number": "HUD2003067",
+    "station": "SIB07",
+    "event_number": 83
+  },
+  "CTD_HUD2003067_084_1_DN": {
+    "cruise_number": "HUD2003067",
+    "station": "GULD03",
+    "event_number": 84
+  },
+  "CTD_HUD2003067_147_1_DN": {
+    "cruise_number": "HUD2003067",
+    "station": "LH01",
+    "event_number": 147
+  },
+  "CTD_HUD2003067_149_1_DN": {
+    "cruise_number": "HUD2003067",
+    "station": "LH02",
+    "event_number": 149
+  },
+  "CTD_HUD2003067_150_1_DN": {
+    "cruise_number": "HUD2003067",
+    "station": "LH03",
+    "event_number": 150
+  },
+  "CTD_HUD2003067_152_1_DN": {
+    "cruise_number": "HUD2003067",
+    "station": "LH01",
+    "event_number": 152
+  },
+  "CTD_HUD2003067_154_1_DN": {
+    "cruise_number": "HUD2003067",
+    "station": "LCN",
+    "event_number": 154
+  },
+  "CTD_HUD2003067_157_1_DN": {
+    "cruise_number": "HUD2003067",
+    "station": "LC04",
+    "event_number": 157
+  },
+  "CTD_HUD2004055_032_1_DN": {
+    "cruise_number": "HUD2004055",
+    "station": "BBL06",
+    "event_number": 32
+  },
+  "CTD_HUD2004055_040_1_DN": {
+    "cruise_number": "HUD2004055",
+    "station": "SSB4",
+    "event_number": 40
+  },
+  "CTD_HUD2004055_045_1_DN": {
+    "cruise_number": "HUD2004055",
+    "station": "SSB0",
+    "event_number": 45
+  },
+  "CTD_HUD2004055_046_1_DN": {
+    "cruise_number": "HUD2004055",
+    "station": "SSB2",
+    "event_number": 46
+  },
+  "CTD_HUD2004055_055_1_DN": {
+    "cruise_number": "HUD2004055",
+    "station": "LL07",
+    "event_number": 55
+  },
+  "CTD_HUD2004055_106_1_DN": {
+    "cruise_number": "HUD2004055",
+    "station": "GULD03",
+    "event_number": 106
+  },
+  "CTD_HUD2004055_110_1_DN": {
+    "cruise_number": "HUD2004055",
+    "station": "HL07",
+    "event_number": 110
+  },
+  "CTD_HUD2005055_069_1_DN": {
+    "cruise_number": "HUD2005055",
+    "station": "GUL01",
+    "event_number": 69
+  },
+  "CTD_HUD2005055_071_1_DN": {
+    "cruise_number": "HUD2005055",
+    "station": "SSB4",
+    "event_number": 71
+  },
+  "CTD_HUD2005055_072_1_DN": {
+    "cruise_number": "HUD2005055",
+    "station": "SSE",
+    "event_number": 72
+  },
+  "CTD_HUD2005055_076_1_DN": {
+    "cruise_number": "HUD2005055",
+    "station": "SSB2",
+    "event_number": 76
+  },
+  "CTD_HUD2005055_077_1_DN": {
+    "cruise_number": "HUD2005055",
+    "station": "HL07",
+    "event_number": 77
+  },
+  "CTD_HUD2005055_109_1_DN": {
+    "cruise_number": "HUD2005055",
+    "station": "RL01",
+    "event_number": 109
+  },
+  "CTD_HUD2005055_149_1_DN": {
+    "cruise_number": "HUD2005055",
+    "station": "SSB0",
+    "event_number": 149
+  },
+  "CTD_97003_020_1_DN": {
+    "cruise_number": "97003",
+    "station": "HL06",
+    "event_number": 20
+  },
+  "CTD_97003_022_1_DN": {
+    "cruise_number": "97003",
+    "station": "GUL03",
+    "event_number": 22
+  },
+  "CTD_97003_023_1_DN": {
+    "cruise_number": "97003",
+    "station": "GUL01",
+    "event_number": 23
+  },
+  "CTD_97003_024_1_DN": {
+    "cruise_number": "97003",
+    "station": "GUL02",
+    "event_number": 24
+  },
+  "CTD_97003_031_1_DN": {
+    "cruise_number": "97003",
+    "station": "LL02",
+    "event_number": 31
+  },
+  "CTD_97003_033_1_DN": {
+    "cruise_number": "97003",
+    "station": "LL01",
+    "event_number": 33
+  },
+  "CTD_97003_044_1_DN": {
+    "cruise_number": "97003",
+    "station": "CS03",
+    "event_number": 44
+  },
+  "CTD_97003_047_1_DN": {
+    "cruise_number": "97003",
+    "station": "CS_02",
+    "event_number": 47
+  },
+  "CTD_98002_030_1_DN": {
+    "cruise_number": "98002",
+    "station": "HL08",
+    "event_number": 30
+  },
+  "CTD_98002_036_1_DN": {
+    "cruise_number": "98002",
+    "station": "GUL01",
+    "event_number": 36
+  },
+  "CTD_98050_006_1_DN": {
+    "cruise_number": "98050",
+    "station": "GUL01",
+    "event_number": 6
+  },
+  "CTD_98050_016_1_DN": {
+    "cruise_number": "98050",
+    "station": "CSL05",
+    "event_number": 16
+  },
+  "CTD_98050_023_1_DN": {
+    "cruise_number": "98050",
+    "station": "HL08",
+    "event_number": 23
+  },
+  "CTD_98050_024_1_DN": {
+    "cruise_number": "98050",
+    "station": "HL07",
+    "event_number": 24
+  },
+  "CTD_98050_031_1_DN": {
+    "cruise_number": "98050",
+    "station": "HL03",
+    "event_number": 31
+  },
+  "CTD_98050_041_1_DN": {
+    "cruise_number": "98050",
+    "station": "RL02",
+    "event_number": 41
+  },
+  "CTD_99054_036_1_DN": {
+    "cruise_number": "99054",
+    "station": "BBL06",
+    "event_number": 36
+  },
+  "CTD_99054_072_1_DN": {
+    "cruise_number": "99054",
+    "station": "LL09",
+    "event_number": 72
+  },
+  "CTD_99054_138_1_DN": {
+    "cruise_number": "99054",
+    "station": "SPB01",
+    "event_number": 138
+  },
+  "CTD_99054_139_1_DN": {
+    "cruise_number": "99054",
+    "station": "SPB02",
+    "event_number": 139
+  },
+  "CTD_99054_145_1_DN": {
+    "cruise_number": "99054",
+    "station": "SPB03",
+    "event_number": 145
+  },
+  "CTD_99054_146_1_DN": {
+    "cruise_number": "99054",
+    "station": "SPB04",
+    "event_number": 146
+  },
+  "CTD_99054_151_1_DN": {
+    "cruise_number": "99054",
+    "station": "SPB05",
+    "event_number": 151
+  },
+  "CTD_99054_152_1_DN": {
+    "cruise_number": "99054",
+    "station": "SPB05.5",
+    "event_number": 152
+  },
+  "CTD_99054_172_1_DN": {
+    "cruise_number": "99054",
+    "station": "SPB10",
+    "event_number": 172
+  },
+  "CTD_99054_178_1_DN": {
+    "cruise_number": "99054",
+    "station": "GULD03",
+    "event_number": 178
+  },
+  "CTD_99054_181_1_DN": {
+    "cruise_number": "99054",
+    "station": "GUL01",
+    "event_number": 181
+  },
+  "CTD_99054_211_1_DN": {
+    "cruise_number": "99054",
+    "station": "HL04",
+    "event_number": 211
+  },
+  "CTD_COR2017001_102_01_DN": {
+    "cruise_number": "COR2017001",
+    "station": "LL07.1",
+    "event_number": 102
+  },
+  "CTD_COR2017001_102_01_UP": {
+    "cruise_number": "COR2017001",
+    "station": "LL07.1",
+    "event_number": 102
+  },
+  "CTD_COR2017001_130_01_DN": {
+    "cruise_number": "COR2017001",
+    "station": "STAB06",
+    "event_number": 130
+  },
+  "CTD_COR2017001_130_01_UP": {
+    "cruise_number": "COR2017001",
+    "station": "STAB06",
+    "event_number": 130
+  },
+  "CTD_COR2017001_131_01_DN": {
+    "cruise_number": "COR2017001",
+    "station": "STAB06",
+    "event_number": 131
+  },
+  "CTD_COR2017001_131_01_UP": {
+    "cruise_number": "COR2017001",
+    "station": "STAB06",
+    "event_number": 131
+  },
+  "CTD_HUD2001009_004_1_DN": {
+    "cruise_number": "HUD2001009",
+    "station": "BBL01",
+    "event_number": 4
+  },
+  "CTD_HUD2001009_026_1_DN": {
+    "cruise_number": "HUD2001009",
+    "station": "HL07",
+    "event_number": 26
+  },
+  "CTD_HUD2001061_119_01_DN": {
+    "cruise_number": "HUD2001061",
+    "station": "RL06",
+    "event_number": 119
+  },
+  "CTD_HUD2002064_202_1_DN": {
+    "cruise_number": "HUD2002064",
+    "station": "SIB05",
+    "event_number": 202
+  },
+  "CTD_HUD2003005_026_1_DN": {
+    "cruise_number": "HUD2003005",
+    "station": "BBL06",
+    "event_number": 26
+  },
+  "CTD_HUD2003005_071_1_DN": {
+    "cruise_number": "HUD2003005",
+    "station": "LL09",
+    "event_number": 71
+  },
+  "CTD_HUD2004009_043_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "SPB12",
+    "event_number": 43
+  },
+  "CTD_HUD2004009_044_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "SPB13",
+    "event_number": 44
+  },
+  "CTD_HUD2004009_047_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "GBL01-7",
+    "event_number": 47
+  },
+  "CTD_HUD2004009_048_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "GBL01-6",
+    "event_number": 48
+  },
+  "CTD_HUD2004009_049_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "GBL01-5",
+    "event_number": 49
+  },
+  "CTD_HUD2004009_050_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "GBL01-4",
+    "event_number": 50
+  },
+  "CTD_HUD2004009_051_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "GBL01-3.5",
+    "event_number": 51
+  },
+  "CTD_HUD2004009_052_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "GBL1_3",
+    "event_number": 52
+  },
+  "CTD_HUD2004009_053_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "GBL01-2.5",
+    "event_number": 53
+  },
+  "CTD_HUD2004009_054_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "GBL01-2",
+    "event_number": 54
+  },
+  "CTD_HUD2004009_055_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "GBL2-1",
+    "event_number": 55
+  },
+  "CTD_HUD2004009_056_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "GBL2_2",
+    "event_number": 56
+  },
+  "CTD_HUD2004009_057_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "GBL2_3",
+    "event_number": 57
+  },
+  "CTD_HUD2004009_058_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "GBL2_4",
+    "event_number": 58
+  },
+  "CTD_HUD2004009_059_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "GBL2_5",
+    "event_number": 59
+  },
+  "CTD_HUD2004009_060_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "GBL2_6",
+    "event_number": 60
+  },
+  "CTD_HUD2004009_061_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "SWL1",
+    "event_number": 61
+  },
+  "CTD_HUD2004009_062_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "SWL2",
+    "event_number": 62
+  },
+  "CTD_HUD2004009_063_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "SWL3",
+    "event_number": 63
+  },
+  "CTD_HUD2004009_064_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "SWL4",
+    "event_number": 64
+  },
+  "CTD_HUD2004009_065_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "SWL5",
+    "event_number": 65
+  },
+  "CTD_HUD2004009_066_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "SWL6",
+    "event_number": 66
+  },
+  "CTD_HUD2004009_067_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "SIB07",
+    "event_number": 67
+  },
+  "CTD_HUD2004009_074_1_DN": {
+    "cruise_number": "HUD2004009",
+    "station": "LP01",
+    "event_number": 74
+  },
+  "CTD_HUD2004055_022_1_DN": {
+    "cruise_number": "HUD2004055",
+    "station": "BBL04",
+    "event_number": 22
+  },
+  "CTD_HUD2005055_134_1_DN": {
+    "cruise_number": "HUD2005055",
+    "station": "BBL06",
+    "event_number": 134
+  },
+  "CTD_HUD2005055_144_1_DN": {
+    "cruise_number": "HUD2005055",
+    "station": "RL07",
+    "event_number": 144
+  },
+  "CTD_HUD2005055_146_1_DN": {
+    "cruise_number": "HUD2005055",
+    "station": "RL07",
+    "event_number": 146
+  },
+  "CTD_HUD2006008_013_1_DN": {
+    "cruise_number": "HUD2006008",
+    "station": "SG09",
+    "event_number": 13
+  },
+  "CTD_HUD2006008_014_1_DN": {
+    "cruise_number": "HUD2006008",
+    "station": "SG10",
+    "event_number": 14
+  },
+  "CTD_HUD2006008_015_1_DN": {
+    "cruise_number": "HUD2006008",
+    "station": "SG11",
+    "event_number": 15
+  },
+  "CTD_HUD2006008_018_1_DN": {
+    "cruise_number": "HUD2006008",
+    "station": "SG12",
+    "event_number": 18
+  },
+  "CTD_HUD2006008_019_1_DN": {
+    "cruise_number": "HUD2006008",
+    "station": "SG13",
+    "event_number": 19
+  },
+  "CTD_HUD2006008_032_1_DN": {
+    "cruise_number": "HUD2006008",
+    "station": "SG08",
+    "event_number": 32
+  },
+  "CTD_HUD2006008_038_1_DN": {
+    "cruise_number": "HUD2006008",
+    "station": "SG01",
+    "event_number": 38
+  },
+  "CTD_HUD2006008_039_1_DN": {
+    "cruise_number": "HUD2006008",
+    "station": "SG02",
+    "event_number": 39
+  },
+  "CTD_HUD2006008_041_1_DN": {
+    "cruise_number": "HUD2006008",
+    "station": "SG03",
+    "event_number": 41
+  },
+  "CTD_HUD2006008_050_1_DN": {
+    "cruise_number": "HUD2006008",
+    "station": "SG14",
+    "event_number": 50
+  },
+  "CTD_HUD2006008_052_1_DN": {
+    "cruise_number": "HUD2006008",
+    "station": "SG14",
+    "event_number": 52
+  },
+  "CTD_HUD2006008_054_1_DN": {
+    "cruise_number": "HUD2006008",
+    "station": "SG15",
+    "event_number": 54
+  },
+  "CTD_HUD2006008_055_1_DN": {
+    "cruise_number": "HUD2006008",
+    "station": "SG16",
+    "event_number": 55
+  },
+  "CTD_HUD2006008_057_1_DN": {
+    "cruise_number": "HUD2006008",
+    "station": "SG17",
+    "event_number": 57
+  },
+  "CTD_HUD2006008_058_1_DN": {
+    "cruise_number": "HUD2006008",
+    "station": "SG18",
+    "event_number": 58
+  },
+  "CTD_HUD2006008_060_1_DN": {
+    "cruise_number": "HUD2006008",
+    "station": "SG19",
+    "event_number": 60
+  },
+  "CTD_HUD2006008_061_1_DN": {
+    "cruise_number": "HUD2006008",
+    "station": "SG20",
+    "event_number": 61
+  },
+  "CTD_HUD2006008_122_1_DN": {
+    "cruise_number": "HUD2006008",
+    "station": "SG21",
+    "event_number": 122
+  },
+  "CTD_HUD2006008_130_1_DN": {
+    "cruise_number": "HUD2006008",
+    "station": "BBL07",
+    "event_number": 130
+  },
+  "CTD_HUD2006052_061_1_DN": {
+    "cruise_number": "HUD2006052",
+    "station": "HL07",
+    "event_number": 61
+  },
+  "CTD_HUD2007001_001_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "BBL05",
+    "event_number": 1
+  },
+  "CTD_HUD2007001_024_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "BBL05",
+    "event_number": 24
+  },
+  "CTD_HUD2007001_051_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "HL07",
+    "event_number": 51
+  },
+  "CTD_HUD2007001_053_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "HL06",
+    "event_number": 53
+  },
+  "CTD_HUD2007001_054_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "HL06",
+    "event_number": 54
+  },
+  "CTD_HUD2007001_083_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "LL06",
+    "event_number": 83
+  },
+  "CTD_HUD2007001_098_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "CSL05",
+    "event_number": 98
+  },
+  "CTD_HUD2007001_112_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "BP06",
+    "event_number": 112
+  },
+  "CTD_HUD2007001_114_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "BP05",
+    "event_number": 114
+  },
+  "CTD_HUD2007001_115_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "BP04",
+    "event_number": 115
+  },
+  "CTD_HUD2007001_117_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "BP03",
+    "event_number": 117
+  },
+  "CTD_HUD2007001_118_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "BP02",
+    "event_number": 118
+  },
+  "CTD_HUD2007001_121_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "BP01",
+    "event_number": 121
+  },
+  "CTD_HUD2007001_132_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "SPB09",
+    "event_number": 132
+  },
+  "CTD_HUD2007001_136_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "SPB10A",
+    "event_number": 136
+  },
+  "CTD_HUD2007001_138_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "GBL01-2",
+    "event_number": 138
+  },
+  "CTD_HUD2007001_140_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "GBL01-2.5",
+    "event_number": 140
+  },
+  "CTD_HUD2007001_142_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "GBL01-3",
+    "event_number": 142
+  },
+  "CTD_HUD2007001_144_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "GBL01-3.5",
+    "event_number": 144
+  },
+  "CTD_HUD2007001_146_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "GBL01-4",
+    "event_number": 146
+  },
+  "CTD_HUD2007001_148_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "GBL01-4.5",
+    "event_number": 148
+  },
+  "CTD_HUD2007001_150_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "GBL01-5",
+    "event_number": 150
+  },
+  "CTD_HUD2007001_160_1_DN": {
+    "cruise_number": "HUD2007001",
+    "station": "SIB08",
+    "event_number": 160
+  },
+  "CTD_HUD2007045_073_1_DN": {
+    "cruise_number": "HUD2007045",
+    "station": "sarniff",
+    "event_number": 73
+  },
+  "CTD_HUD2007045_080_1_DN": {
+    "cruise_number": "HUD2007045",
+    "station": "sarniff",
+    "event_number": 80
+  },
+  "CTD_HUD2007045_082_1_DN": {
+    "cruise_number": "HUD2007045",
+    "station": "sarniff",
+    "event_number": 82
+  },
+  "CTD_HUD2007045_087_1_DN": {
+    "cruise_number": "HUD2007045",
+    "station": "HL03",
+    "event_number": 87
+  },
+  "CTD_HUD2008037_018_1_DN": {
+    "cruise_number": "HUD2008037",
+    "station": "HL11",
+    "event_number": 18
+  },
+  "CTD_HUD2008037_018_1_UP": {
+    "cruise_number": "HUD2008037",
+    "station": "HL11",
+    "event_number": 18
+  },
+  "CTD_HUD2008037_023_1_DN": {
+    "cruise_number": "HUD2008037",
+    "station": "HL09",
+    "event_number": 23
+  },
+  "CTD_HUD2008037_023_1_UP": {
+    "cruise_number": "HUD2008037",
+    "station": "HL09",
+    "event_number": 23
+  },
+  "CTD_HUD2009005_038_1_DN": {
+    "cruise_number": "HUD2009005",
+    "station": "HL06",
+    "event_number": 38
+  },
+  "CTD_HUD2009005_038_1_UP": {
+    "cruise_number": "HUD2009005",
+    "station": "HL06",
+    "event_number": 38
+  },
+  "CTD_HUD2009005_039_1_DN": {
+    "cruise_number": "HUD2009005",
+    "station": "HL06",
+    "event_number": 39
+  },
+  "CTD_HUD2009005_039_1_UP": {
+    "cruise_number": "HUD2009005",
+    "station": "HL06",
+    "event_number": 39
+  },
+  "CTD_HUD2009005_052_1_DN": {
+    "cruise_number": "HUD2009005",
+    "station": "HL09",
+    "event_number": 52
+  },
+  "CTD_HUD2009005_052_1_UP": {
+    "cruise_number": "HUD2009005",
+    "station": "HL09",
+    "event_number": 52
+  },
+  "CTD_HUD2009005_156_1_DN": {
+    "cruise_number": "HUD2009005",
+    "station": "GULD03",
+    "event_number": 156
+  },
+  "CTD_HUD2009005_156_1_UP": {
+    "cruise_number": "HUD2009005",
+    "station": "GULD03",
+    "event_number": 156
+  },
+  "CTD_HUD2009005_172_1_DN": {
+    "cruise_number": "HUD2009005",
+    "station": "LEB",
+    "event_number": 172
+  },
+  "CTD_HUD2009005_172_1_UP": {
+    "cruise_number": "HUD2009005",
+    "station": "LEB",
+    "event_number": 172
+  },
+  "CTD_HUD2009048_031_1_DN": {
+    "cruise_number": "HUD2009048",
+    "station": "HL07",
+    "event_number": 31
+  },
+  "CTD_HUD2009048_031_1_UP": {
+    "cruise_number": "HUD2009048",
+    "station": "HL07",
+    "event_number": 31
+  },
+  "CTD_HUD2009048_047_1_DN": {
+    "cruise_number": "HUD2009048",
+    "station": "HL09",
+    "event_number": 47
+  },
+  "CTD_HUD2009048_047_1_UP": {
+    "cruise_number": "HUD2009048",
+    "station": "HL09",
+    "event_number": 47
+  },
+  "CTD_HUD2009048_048_1_DN": {
+    "cruise_number": "HUD2009048",
+    "station": "RS05",
+    "event_number": 48
+  },
+  "CTD_HUD2009048_048_1_UP": {
+    "cruise_number": "HUD2009048",
+    "station": "RS05",
+    "event_number": 48
+  },
+  "CTD_HUD2009048_055_1_DN": {
+    "cruise_number": "HUD2009048",
+    "station": "HL05A",
+    "event_number": 55
+  },
+  "CTD_HUD2009048_055_1_UP": {
+    "cruise_number": "HUD2009048",
+    "station": "HL05A",
+    "event_number": 55
+  },
+  "CTD_HUD2009048_084_1_DN": {
+    "cruise_number": "HUD2009048",
+    "station": "HL05.5",
+    "event_number": 84
+  },
+  "CTD_HUD2009048_084_1_UP": {
+    "cruise_number": "HUD2009048",
+    "station": "HL05.5",
+    "event_number": 84
+  },
+  "CTD_HUD2009048_158_1_DN": {
+    "cruise_number": "HUD2009048",
+    "station": "CSL02",
+    "event_number": 158
+  },
+  "CTD_HUD2009048_158_1_UP": {
+    "cruise_number": "HUD2009048",
+    "station": "CSL02",
+    "event_number": 158
+  },
+  "CTD_HUD2009048_206_1_DN": {
+    "cruise_number": "HUD2009048",
+    "station": "SIB10",
+    "event_number": 206
+  },
+  "CTD_HUD2009048_206_1_UP": {
+    "cruise_number": "HUD2009048",
+    "station": "SIB10",
+    "event_number": 206
+  },
+  "CTD_HUD2009048_212_1_DN": {
+    "cruise_number": "HUD2009048",
+    "station": "SIB06.7",
+    "event_number": 212
+  },
+  "CTD_HUD2009048_212_1_UP": {
+    "cruise_number": "HUD2009048",
+    "station": "SIB06.7",
+    "event_number": 212
+  },
+  "CTD_HUD2009048_214_1_DN": {
+    "cruise_number": "HUD2009048",
+    "station": "SIB06.5",
+    "event_number": 214
+  },
+  "CTD_HUD2009048_214_1_UP": {
+    "cruise_number": "HUD2009048",
+    "station": "SIB06.5",
+    "event_number": 214
+  },
+  "CTD_HUD2011004_035_01_DN": {
+    "cruise_number": "HUD2011004",
+    "station": "HL05",
+    "event_number": 35
+  },
+  "CTD_HUD2011004_035_01_UP": {
+    "cruise_number": "HUD2011004",
+    "station": "HL05",
+    "event_number": 35
+  },
+  "CTD_HUD2011004_039_01_DN": {
+    "cruise_number": "HUD2011004",
+    "station": "HL06",
+    "event_number": 39
+  },
+  "CTD_HUD2011004_039_01_UP": {
+    "cruise_number": "HUD2011004",
+    "station": "HL06",
+    "event_number": 39
+  },
+  "CTD_HUD2011004_050_01_DN": {
+    "cruise_number": "HUD2011004",
+    "station": "HL09",
+    "event_number": 50
+  },
+  "CTD_HUD2011004_050_01_UP": {
+    "cruise_number": "HUD2011004",
+    "station": "HL09",
+    "event_number": 50
+  },
+  "CTD_HUD2011004_095_01_DN": {
+    "cruise_number": "HUD2011004",
+    "station": "HL02",
+    "event_number": 95
+  },
+  "CTD_HUD2011004_095_01_UP": {
+    "cruise_number": "HUD2011004",
+    "station": "HL02",
+    "event_number": 95
+  },
+  "CTD_HUD2011004_137_01_DN": {
+    "cruise_number": "HUD2011004",
+    "station": "SPB14",
+    "event_number": 137
+  },
+  "CTD_HUD2011004_138_01_DN": {
+    "cruise_number": "HUD2011004",
+    "station": "SPB14",
+    "event_number": 138
+  },
+  "CTD_HUD2011004_138_01_UP": {
+    "cruise_number": "HUD2011004",
+    "station": "SPB14",
+    "event_number": 138
+  },
+  "CTD_HUD2011004_140_01_DN": {
+    "cruise_number": "HUD2011004",
+    "station": "SPB13.5",
+    "event_number": 140
+  },
+  "CTD_HUD2011004_140_01_UP": {
+    "cruise_number": "HUD2011004",
+    "station": "SPB13.5",
+    "event_number": 140
+  },
+  "CTD_HUD2011004_142_01_DN": {
+    "cruise_number": "HUD2011004",
+    "station": "SPB10A",
+    "event_number": 142
+  },
+  "CTD_HUD2011004_142_01_UP": {
+    "cruise_number": "HUD2011004",
+    "station": "SPB10A",
+    "event_number": 142
+  },
+  "CTD_HUD2011004_158_01_DN": {
+    "cruise_number": "HUD2011004",
+    "station": "SPB05.5",
+    "event_number": 158
+  },
+  "CTD_HUD2011004_158_01_UP": {
+    "cruise_number": "HUD2011004",
+    "station": "SPB05.5",
+    "event_number": 158
+  },
+  "CTD_HUD2011043_017_01_DN": {
+    "cruise_number": "HUD2011043",
+    "station": "HL09",
+    "event_number": 17
+  },
+  "CTD_HUD2011043_017_01_UP": {
+    "cruise_number": "HUD2011043",
+    "station": "HL09",
+    "event_number": 17
+  },
+  "CTD_HUD2011043_178_01_DN": {
+    "cruise_number": "HUD2011043",
+    "station": "HL13",
+    "event_number": 178
+  },
+  "CTD_HUD2011043_178_01_UP": {
+    "cruise_number": "HUD2011043",
+    "station": "HL13",
+    "event_number": 178
+  },
+  "CTD_HUD2011043_181_01_DN": {
+    "cruise_number": "HUD2011043",
+    "station": "HL14",
+    "event_number": 181
+  },
+  "CTD_HUD2011043_181_01_UP": {
+    "cruise_number": "HUD2011043",
+    "station": "HL14",
+    "event_number": 181
+  },
+  "CTD_HUD2012042_024_01_DN": {
+    "cruise_number": "HUD2012042",
+    "station": "HL06",
+    "event_number": 24
+  },
+  "CTD_HUD2012042_024_01_UP": {
+    "cruise_number": "HUD2012042",
+    "station": "HL06",
+    "event_number": 24
+  },
+  "CTD_HUD2012042_031_01_DN": {
+    "cruise_number": "HUD2012042",
+    "station": "HL07",
+    "event_number": 31
+  },
+  "CTD_HUD2012042_031_01_UP": {
+    "cruise_number": "HUD2012042",
+    "station": "HL07",
+    "event_number": 31
+  },
+  "CTD_HUD2012042_035_01_DN": {
+    "cruise_number": "HUD2012042",
+    "station": "HL09",
+    "event_number": 35
+  },
+  "CTD_HUD2012042_035_01_UP": {
+    "cruise_number": "HUD2012042",
+    "station": "HL09",
+    "event_number": 35
+  },
+  "CTD_HUD2012042_047_01_DN": {
+    "cruise_number": "HUD2012042",
+    "station": "HL13",
+    "event_number": 47
+  },
+  "CTD_HUD2012042_047_01_UP": {
+    "cruise_number": "HUD2012042",
+    "station": "HL13",
+    "event_number": 47
+  },
+  "CTD_HUD2012042_051_01_DN": {
+    "cruise_number": "HUD2012042",
+    "station": "HL14",
+    "event_number": 51
+  },
+  "CTD_HUD2012042_051_01_UP": {
+    "cruise_number": "HUD2012042",
+    "station": "HL14",
+    "event_number": 51
+  },
+  "CTD_HUD2012042_080_01_DN": {
+    "cruise_number": "HUD2012042",
+    "station": "NEC_10",
+    "event_number": 80
+  },
+  "CTD_HUD2012042_080_01_UP": {
+    "cruise_number": "HUD2012042",
+    "station": "NEC_10",
+    "event_number": 80
+  },
+  "CTD_HUD2012042_152_01_DN": {
+    "cruise_number": "HUD2012042",
+    "station": "SPB05.5",
+    "event_number": 152
+  },
+  "CTD_HUD2012042_152_01_UP": {
+    "cruise_number": "HUD2012042",
+    "station": "SPB05.5",
+    "event_number": 152
+  },
+  "CTD_HUD2012042_171_01_DN": {
+    "cruise_number": "HUD2012042",
+    "station": "SPB10A",
+    "event_number": 171
+  },
+  "CTD_HUD2012042_171_01_UP": {
+    "cruise_number": "HUD2012042",
+    "station": "SPB10A",
+    "event_number": 171
+  },
+  "CTD_HUD2012042_173_01_DN": {
+    "cruise_number": "HUD2012042",
+    "station": "GBL01-5",
+    "event_number": 173
+  },
+  "CTD_HUD2012042_173_01_UP": {
+    "cruise_number": "HUD2012042",
+    "station": "GBL01-5",
+    "event_number": 173
+  },
+  "CTD_HUD2012042_176_01_DN": {
+    "cruise_number": "HUD2012042",
+    "station": "GBL01-4",
+    "event_number": 176
+  },
+  "CTD_HUD2012042_176_01_UP": {
+    "cruise_number": "HUD2012042",
+    "station": "GBL01-4",
+    "event_number": 176
+  },
+  "CTD_HUD2012042_184_02_DN": {
+    "cruise_number": "HUD2012042",
+    "station": "LL_08",
+    "event_number": 184
+  },
+  "CTD_HUD2012042_222_01_DN": {
+    "cruise_number": "HUD2012042",
+    "station": "HL02",
+    "event_number": 222
+  },
+  "CTD_HUD2012042_222_01_UP": {
+    "cruise_number": "HUD2012042",
+    "station": "HL02",
+    "event_number": 222
+  },
+  "CTD_HUD2012042_225_01_DN": {
+    "cruise_number": "HUD2012042",
+    "station": "OTN02",
+    "event_number": 225
+  },
+  "CTD_HUD2012042_225_01_UP": {
+    "cruise_number": "HUD2012042",
+    "station": "OTN02",
+    "event_number": 225
+  },
+  "CTD_HUD2012042_228_01_DN": {
+    "cruise_number": "HUD2012042",
+    "station": "OTN01",
+    "event_number": 228
+  },
+  "CTD_HUD2012042_228_01_UP": {
+    "cruise_number": "HUD2012042",
+    "station": "OTN01",
+    "event_number": 228
+  },
+  "CTD_HUD2014004_012_01_DN": {
+    "cruise_number": "HUD2014004",
+    "station": "OTN03",
+    "event_number": 12
+  },
+  "CTD_HUD2014004_012_01_UP": {
+    "cruise_number": "HUD2014004",
+    "station": "OTN03",
+    "event_number": 12
+  },
+  "CTD_HUD2014004_013_01_DN": {
+    "cruise_number": "HUD2014004",
+    "station": "OTN02",
+    "event_number": 13
+  },
+  "CTD_HUD2014004_013_01_UP": {
+    "cruise_number": "HUD2014004",
+    "station": "OTN02",
+    "event_number": 13
+  },
+  "CTD_HUD2014004_014_01_DN": {
+    "cruise_number": "HUD2014004",
+    "station": "OTN01",
+    "event_number": 14
+  },
+  "CTD_HUD2014004_014_01_UP": {
+    "cruise_number": "HUD2014004",
+    "station": "OTN01",
+    "event_number": 14
+  },
+  "CTD_HUD2014004_047_01_DN": {
+    "cruise_number": "HUD2014004",
+    "station": "RATBA01",
+    "event_number": 47
+  },
+  "CTD_HUD2014004_047_01_UP": {
+    "cruise_number": "HUD2014004",
+    "station": "RATBA01",
+    "event_number": 47
+  },
+  "CTD_HUD2014004_079_01_DN": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB07",
+    "event_number": 79
+  },
+  "CTD_HUD2014004_079_01_UP": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB07",
+    "event_number": 79
+  },
+  "CTD_HUD2014004_081_01_DN": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB06.7",
+    "event_number": 81
+  },
+  "CTD_HUD2014004_081_01_UP": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB06.7",
+    "event_number": 81
+  },
+  "CTD_HUD2014004_083_01_DN": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB06.3",
+    "event_number": 83
+  },
+  "CTD_HUD2014004_083_01_UP": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB06.3",
+    "event_number": 83
+  },
+  "CTD_HUD2014004_085_01_DN": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB06",
+    "event_number": 85
+  },
+  "CTD_HUD2014004_085_01_UP": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB06",
+    "event_number": 85
+  },
+  "CTD_HUD2014004_088_01_DN": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB05.5",
+    "event_number": 88
+  },
+  "CTD_HUD2014004_088_01_UP": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB05.5",
+    "event_number": 88
+  },
+  "CTD_HUD2014004_091_01_DN": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB05",
+    "event_number": 91
+  },
+  "CTD_HUD2014004_091_01_UP": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB05",
+    "event_number": 91
+  },
+  "CTD_HUD2014004_093_01_DN": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB04",
+    "event_number": 93
+  },
+  "CTD_HUD2014004_093_01_UP": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB04",
+    "event_number": 93
+  },
+  "CTD_HUD2014004_095_01_DN": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB03",
+    "event_number": 95
+  },
+  "CTD_HUD2014004_095_01_UP": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB03",
+    "event_number": 95
+  },
+  "CTD_HUD2014004_098_01_DN": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB02",
+    "event_number": 98
+  },
+  "CTD_HUD2014004_098_01_UP": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB02",
+    "event_number": 98
+  },
+  "CTD_HUD2014004_100_01_DN": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB01",
+    "event_number": 100
+  },
+  "CTD_HUD2014004_100_01_UP": {
+    "cruise_number": "HUD2014004",
+    "station": "LHB01",
+    "event_number": 100
+  },
+  "CTD_HUD2014004_137_01_DN": {
+    "cruise_number": "HUD2014004",
+    "station": "HL09",
+    "event_number": 137
+  },
+  "CTD_HUD2014004_137_01_UP": {
+    "cruise_number": "HUD2014004",
+    "station": "HL09",
+    "event_number": 137
+  },
+  "CTD_HUD2014004_219_01_DN": {
+    "cruise_number": "HUD2014004",
+    "station": "LEB",
+    "event_number": 219
+  },
+  "CTD_HUD2014004_219_01_UP": {
+    "cruise_number": "HUD2014004",
+    "station": "LEB",
+    "event_number": 219
+  },
+  "CTD_HUD2014004_222_01_DN": {
+    "cruise_number": "HUD2014004",
+    "station": "EVC01",
+    "event_number": 222
+  },
+  "CTD_HUD2014004_222_01_UP": {
+    "cruise_number": "HUD2014004",
+    "station": "EVC01",
+    "event_number": 222
+  },
+  "CTD_HUD2014030_045_01_DN": {
+    "cruise_number": "HUD2014030",
+    "station": "HL09",
+    "event_number": 45
+  },
+  "CTD_HUD2014030_045_01_UP": {
+    "cruise_number": "HUD2014030",
+    "station": "HL09",
+    "event_number": 45
+  },
+  "CTD_HUD2014030_068_01_DN": {
+    "cruise_number": "HUD2014030",
+    "station": "OLC01",
+    "event_number": 68
+  },
+  "CTD_HUD2014030_068_01_UP": {
+    "cruise_number": "HUD2014030",
+    "station": "OLC01",
+    "event_number": 68
+  },
+  "CTD_HUD2014030_081_01_DN": {
+    "cruise_number": "HUD2014030",
+    "station": "LC01",
+    "event_number": 81
+  },
+  "CTD_HUD2014030_081_01_UP": {
+    "cruise_number": "HUD2014030",
+    "station": "LC01",
+    "event_number": 81
+  },
+  "CTD_HUD2014030_102_01_DN": {
+    "cruise_number": "HUD2014030",
+    "station": "STAB06",
+    "event_number": 102
+  },
+  "CTD_HUD2014030_102_01_UP": {
+    "cruise_number": "HUD2014030",
+    "station": "STAB06",
+    "event_number": 102
+  },
+  "CTD_HUD2014030_139_01_DN": {
+    "cruise_number": "HUD2014030",
+    "station": "HL10",
+    "event_number": 139
+  },
+  "CTD_HUD2014030_139_01_UP": {
+    "cruise_number": "HUD2014030",
+    "station": "HL10",
+    "event_number": 139
+  },
+  "CTD_HUD2014030_142_01_DN": {
+    "cruise_number": "HUD2014030",
+    "station": "LHB07",
+    "event_number": 142
+  },
+  "CTD_HUD2014030_142_01_UP": {
+    "cruise_number": "HUD2014030",
+    "station": "LHB07",
+    "event_number": 142
+  },
+  "CTD_HUD2014030_175_01_DN": {
+    "cruise_number": "HUD2014030",
+    "station": "CSL03",
+    "event_number": 175
+  },
+  "CTD_HUD2014030_175_01_UP": {
+    "cruise_number": "HUD2014030",
+    "station": "CSL03",
+    "event_number": 175
+  },
+  "CTD_HUD2015004_111_01_DN": {
+    "cruise_number": "HUD2015004",
+    "station": "STAB06",
+    "event_number": 111
+  },
+  "CTD_HUD2015004_111_01_UP": {
+    "cruise_number": "HUD2015004",
+    "station": "STAB06",
+    "event_number": 111
+  },
+  "CTD_HUD2015004_111_1_DN": {
+    "cruise_number": "HUD2015004",
+    "station": "STAB06",
+    "event_number": 111
+  },
+  "CTD_HUD2015004_111_1_UP": {
+    "cruise_number": "HUD2015004",
+    "station": "STAB06",
+    "event_number": 111
+  },
+  "CTD_HUD2015004_124_01_DN": {
+    "cruise_number": "HUD2015004",
+    "station": "EVC01",
+    "event_number": 124
+  },
+  "CTD_HUD2015004_124_01_UP": {
+    "cruise_number": "HUD2015004",
+    "station": "EVC01",
+    "event_number": 124
+  },
+  "CTD_HUD2015004_124_1_DN": {
+    "cruise_number": "HUD2015004",
+    "station": "EVC01",
+    "event_number": 124
+  },
+  "CTD_HUD2015004_124_1_UP": {
+    "cruise_number": "HUD2015004",
+    "station": "EVC01",
+    "event_number": 124
+  },
+  "CTD_HUD2015004_132_01_DN": {
+    "cruise_number": "HUD2015004",
+    "station": "SAM03",
+    "event_number": 132
+  },
+  "CTD_HUD2015004_132_01_UP": {
+    "cruise_number": "HUD2015004",
+    "station": "SAM03",
+    "event_number": 132
+  },
+  "CTD_HUD2015004_132_1_DN": {
+    "cruise_number": "HUD2015004",
+    "station": "SAM03",
+    "event_number": 132
+  },
+  "CTD_HUD2015004_132_1_UP": {
+    "cruise_number": "HUD2015004",
+    "station": "SAM03",
+    "event_number": 132
+  },
+  "CTD_HUD2015004_135_01_DN": {
+    "cruise_number": "HUD2015004",
+    "station": "HA03",
+    "event_number": 135
+  },
+  "CTD_HUD2015004_135_01_UP": {
+    "cruise_number": "HUD2015004",
+    "station": "HA03",
+    "event_number": 135
+  },
+  "CTD_HUD2015004_135_1_DN": {
+    "cruise_number": "HUD2015004",
+    "station": "HA03",
+    "event_number": 135
+  },
+  "CTD_HUD2015004_135_1_UP": {
+    "cruise_number": "HUD2015004",
+    "station": "HA03",
+    "event_number": 135
+  },
+  "CTD_HUD2015004_137_01_DN": {
+    "cruise_number": "HUD2015004",
+    "station": "HA02",
+    "event_number": 137
+  },
+  "CTD_HUD2015004_137_01_UP": {
+    "cruise_number": "HUD2015004",
+    "station": "HA02",
+    "event_number": 137
+  },
+  "CTD_HUD2015004_137_1_DN": {
+    "cruise_number": "HUD2015004",
+    "station": "HA02",
+    "event_number": 137
+  },
+  "CTD_HUD2015004_137_1_UP": {
+    "cruise_number": "HUD2015004",
+    "station": "HA02",
+    "event_number": 137
+  },
+  "CTD_HUD2015030_028_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "STAB06",
+    "event_number": 28
+  },
+  "CTD_HUD2015030_028_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "STAB06",
+    "event_number": 28
+  },
+  "CTD_HUD2015030_086_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "SF01",
+    "event_number": 86
+  },
+  "CTD_HUD2015030_086_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "SF01",
+    "event_number": 86
+  },
+  "CTD_HUD2015030_104_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "SPB06",
+    "event_number": 104
+  },
+  "CTD_HUD2015030_104_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "SPB06",
+    "event_number": 104
+  },
+  "CTD_HUD2015030_106_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "SPB05.5",
+    "event_number": 106
+  },
+  "CTD_HUD2015030_106_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "SPB05.5",
+    "event_number": 106
+  },
+  "CTD_HUD2015030_127_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "HL14",
+    "event_number": 127
+  },
+  "CTD_HUD2015030_127_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "HL14",
+    "event_number": 127
+  },
+  "CTD_HUD2015030_129_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "HL13",
+    "event_number": 129
+  },
+  "CTD_HUD2015030_129_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "HL13",
+    "event_number": 129
+  },
+  "CTD_HUD2015030_138_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "HL09",
+    "event_number": 138
+  },
+  "CTD_HUD2015030_138_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "HL09",
+    "event_number": 138
+  },
+  "CTD_HUD2015030_194_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "YL10",
+    "event_number": 194
+  },
+  "CTD_HUD2015030_194_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "YL10",
+    "event_number": 194
+  },
+  "CTD_HUD2015030_252_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "RATBA01",
+    "event_number": 252
+  },
+  "CTD_HUD2015030_252_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "RATBA01",
+    "event_number": 252
+  },
+  "CTD_HUD2015030_255_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "RATBA02",
+    "event_number": 255
+  },
+  "CTD_HUD2015030_255_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "RATBA02",
+    "event_number": 255
+  },
+  "CTD_HUD2015030_258_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB08",
+    "event_number": 258
+  },
+  "CTD_HUD2015030_258_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB08",
+    "event_number": 258
+  },
+  "CTD_HUD2015030_260_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB07",
+    "event_number": 260
+  },
+  "CTD_HUD2015030_260_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB07",
+    "event_number": 260
+  },
+  "CTD_HUD2015030_262_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB06.7",
+    "event_number": 262
+  },
+  "CTD_HUD2015030_262_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB06.7",
+    "event_number": 262
+  },
+  "CTD_HUD2015030_264_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB06.3",
+    "event_number": 264
+  },
+  "CTD_HUD2015030_264_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB06.3",
+    "event_number": 264
+  },
+  "CTD_HUD2015030_266_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB06",
+    "event_number": 266
+  },
+  "CTD_HUD2015030_266_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB06",
+    "event_number": 266
+  },
+  "CTD_HUD2015030_268_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB05.5",
+    "event_number": 268
+  },
+  "CTD_HUD2015030_268_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB05.5",
+    "event_number": 268
+  },
+  "CTD_HUD2015030_270_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB05",
+    "event_number": 270
+  },
+  "CTD_HUD2015030_270_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB05",
+    "event_number": 270
+  },
+  "CTD_HUD2015030_272_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB04",
+    "event_number": 272
+  },
+  "CTD_HUD2015030_272_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB04",
+    "event_number": 272
+  },
+  "CTD_HUD2015030_274_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB03",
+    "event_number": 274
+  },
+  "CTD_HUD2015030_274_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB03",
+    "event_number": 274
+  },
+  "CTD_HUD2015030_276_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB02",
+    "event_number": 276
+  },
+  "CTD_HUD2015030_276_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB02",
+    "event_number": 276
+  },
+  "CTD_HUD2015030_278_1_DN": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB01",
+    "event_number": 278
+  },
+  "CTD_HUD2015030_278_1_UP": {
+    "cruise_number": "HUD2015030",
+    "station": "LHB01",
+    "event_number": 278
+  },
+  "CTD_HUD2016027_022_01_DN": {
+    "cruise_number": "HUD2016027",
+    "station": "HL3.3B",
+    "event_number": 22
+  },
+  "CTD_HUD2016027_022_01_UP": {
+    "cruise_number": "HUD2016027",
+    "station": "HL3.3B",
+    "event_number": 22
+  },
+  "CTD_HUD2016027_052_01_DN": {
+    "cruise_number": "HUD2016027",
+    "station": "HL09",
+    "event_number": 52
+  },
+  "CTD_HUD2016027_052_01_UP": {
+    "cruise_number": "HUD2016027",
+    "station": "HL09",
+    "event_number": 52
+  },
+  "CTD_HUD2016027_180_01_DN": {
+    "cruise_number": "HUD2016027",
+    "station": "RATBA01",
+    "event_number": 180
+  },
+  "CTD_HUD2016027_180_01_UP": {
+    "cruise_number": "HUD2016027",
+    "station": "RATBA01",
+    "event_number": 180
+  },
+  "CTD_HUD2016027_185_01_DN": {
+    "cruise_number": "HUD2016027",
+    "station": "RATBA02",
+    "event_number": 185
+  },
+  "CTD_HUD2016027_185_01_UP": {
+    "cruise_number": "HUD2016027",
+    "station": "RATBA02",
+    "event_number": 185
+  },
+  "CTD_HUD2016027_243_01_DN": {
+    "cruise_number": "HUD2016027",
+    "station": "YL10",
+    "event_number": 243
+  },
+  "CTD_HUD2016027_243_01_UP": {
+    "cruise_number": "HUD2016027",
+    "station": "YL10",
+    "event_number": 243
+  },
+  "CTD_HUD2016027_263_01_DN": {
+    "cruise_number": "HUD2016027",
+    "station": "LHB06",
+    "event_number": 263
+  },
+  "CTD_HUD2016027_263_01_UP": {
+    "cruise_number": "HUD2016027",
+    "station": "LHB06",
+    "event_number": 263
+  },
+  "CTD_HUD2016027_265_01_DN": {
+    "cruise_number": "HUD2016027",
+    "station": "LHB05.5",
+    "event_number": 265
+  },
+  "CTD_HUD2016027_265_01_UP": {
+    "cruise_number": "HUD2016027",
+    "station": "LHB05.5",
+    "event_number": 265
+  },
+  "CTD_HUD2016027_267_01_DN": {
+    "cruise_number": "HUD2016027",
+    "station": "LHB05",
+    "event_number": 267
+  },
+  "CTD_HUD2016027_267_01_UP": {
+    "cruise_number": "HUD2016027",
+    "station": "LHB05",
+    "event_number": 267
+  },
+  "CTD_HUD2016027_269_01_DN": {
+    "cruise_number": "HUD2016027",
+    "station": "LHB04",
+    "event_number": 269
+  },
+  "CTD_HUD2016027_269_01_UP": {
+    "cruise_number": "HUD2016027",
+    "station": "LHB04",
+    "event_number": 269
+  },
+  "CTD_HUD2016027_271_01_DN": {
+    "cruise_number": "HUD2016027",
+    "station": "LHB03",
+    "event_number": 271
+  },
+  "CTD_HUD2016027_271_01_UP": {
+    "cruise_number": "HUD2016027",
+    "station": "LHB03",
+    "event_number": 271
+  },
+  "CTD_HUD2016027_274_01_DN": {
+    "cruise_number": "HUD2016027",
+    "station": "LHB02",
+    "event_number": 274
+  },
+  "CTD_HUD2016027_274_01_UP": {
+    "cruise_number": "HUD2016027",
+    "station": "LHB02",
+    "event_number": 274
+  },
+  "CTD_HUD2016027_276_01_DN": {
+    "cruise_number": "HUD2016027",
+    "station": "LHB01",
+    "event_number": 276
+  },
+  "CTD_HUD2016027_276_01_UP": {
+    "cruise_number": "HUD2016027",
+    "station": "LHB01",
+    "event_number": 276
+  },
+  "CTD_HUD2020063_092_01_DN": {
+    "cruise_number": "HUD2020063",
+    "station": "STAB06",
+    "event_number": 92
+  },
+  "CTD_HUD2020063_092_01_UP": {
+    "cruise_number": "HUD2020063",
+    "station": "STAB06",
+    "event_number": 92
+  },
+  "CTD_HUD2020063_094_01_DN": {
+    "cruise_number": "HUD2020063",
+    "station": "STAB05.3",
+    "event_number": 94
+  },
+  "CTD_HUD2020063_094_01_UP": {
+    "cruise_number": "HUD2020063",
+    "station": "STAB05.3",
+    "event_number": 94
+  }
+}

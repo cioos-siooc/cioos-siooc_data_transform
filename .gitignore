@@ -106,7 +106,7 @@ venv.bak/
 cioos_data_transform/ios_data_transform/\.idea/
 cioos_data_transform/\.idea/
 \.idea
-*.nc
+*_test.nc
 
 .vscode/
 
@@ -114,3 +114,8 @@ cioos_data_transform/\.idea/
 .DS_Store
 
 cioos_data_transform/cioos_data_transform/utils/.dir_stats
+projects/odf_transform/odf_transform/p06_reference.csv
+projects/odf_transform/odf_transform/p07_reference.csv
+
+
+**/output

@@ -1,0 +1,111 @@
+{
+    "fileDir": "{ODF_TRANSFORM_MODULE_PATH}/sample_data/**/*.ODF",
+    "recursive": true,
+    "pathRegex": null,
+    "program_log_path": null,
+    "output_path": "./output",
+    "subfolder_attribute_output_path": {
+        "program": "Others",
+        "project": null,
+        "cruise_name": null
+    },
+    "addFileNameSuffix": "_dev",
+    "overwrite": false,
+    "geographic_area_reference_files": [
+        "{ODF_TRANSFORM_MODULE_PATH}/geojson_files/ios_polygons.geojson",
+        "{ODF_TRANSFORM_MODULE_PATH}/geojson_files/MLI_St-LawrenceBoxes.geojson",
+        "{ODF_TRANSFORM_MODULE_PATH}/geojson_files/csasAtlPhys_climatePolygons.geojson"
+    ],
+    "reference_stations_reference_files": [
+        "{ODF_TRANSFORM_MODULE_PATH}/reference_stations.geojson"
+    ],
+    "maximum_distance_from_station_km": 3,
+    "vocabularyFile": "{ODF_TRANSFORM_MODULE_PATH}/reference_vocabulary.csv",
+    "reference_platforms_files": [
+        "{ODF_TRANSFORM_MODULE_PATH}/reference_platforms.csv"
+    ],
+    "attribute_mapping_corrections_files": [
+        "{ODF_TRANSFORM_MODULE_PATH}/attribute_corrections.json"
+    ],
+    "file_specific_attributes_path": null,
+    "organisationVocabulary": [
+        "BIO",
+        "GF3"
+    ],
+    "global_attributes": {
+        "organization": "Fisheries and Ocean Canada - Pêche et Océan Canada",
+        "institution": "DFO BIO",
+        "country": "Canada",
+        "ioc_country_code": 18,
+        "iso_3166_country_code": "CA",
+        "ices_edmo_code": 1811,
+        "sdn_institution_urn": "SDN:EDMO::1811",
+        "processing_level": "processing description",
+        "infoUrl": "https://www.bio.gc.ca/",
+        "platform": "ship",
+        "acknowledgement": "thanks etc ...",
+        "naming_authority": "ca.gc.bio",
+        "creator_name": "Bedford Institute of Oceanography (BIO)",
+        "creator_institution": "Bedford Institute of Oceanography (BIO)",
+        "creator_email": " bio.datashop@dfo-mpo.gc.ca",
+        "creator_country": "Canada",
+        "creator_sector": "gov_federal",
+        "creator_url": "https://www.bio.gc.ca/",
+        "creator_type": "institution",
+        "publisher_name": "Canadian Integrated Ocean Observatory Systems Atlantic (CIOOS Atlantic)",
+        "publisher_email": "info@cioos.ca",
+        "publisher_country": "Canada",
+        "publisher_url": "https://www.cioos.ca",
+        "publisher_type": "institution",
+        "publisher_institution": "Canadian Integrated Ocean Observatory Systems (CIOOS)",
+        "platform_vocabulary": "https://vocab.nerc.ac.uk/search_nvs/C17/",
+        "instrument_vocabulary": "https://vocab.nerc.ac.uk/search_nvs/L22/",
+        "license": "standard license information here",
+        "keywords": "Ocean Temperature &gt; Water Temperature, Oceans &gt; Salinity/Density &gt; Salinity &gt; CTD &gt; ocean turbidity &gt; Ocean Oxygen &gt; Ocean pH &gt; Ocean fluorescence",
+        "keywords_vocabulary": "GCMD Science Keywords",
+        "Conventions": "CF-1.6,CF-1.7,CF-1.8,ACDD1.1,ACDD-1.3,IOOS-1.2",
+        "standard_name_vocabulary": "CF Standard Name Table v78",
+        "comment": "",
+        "cdm_data_type": "Profile"
+    },
+    "flag_convention": {
+        "default": {
+            "dtype": "int32",
+            "standard_name": "status_flag",
+            "coverage_content_type": "qualityInformation",
+            "ioos_category": "Quality",
+            "flag_values": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                9
+            ],
+            "flag_meanings": "not_evaluated correct inconsistent_with_other_values doubtful erroneous modified missing"
+        },
+        "QCFF_01": {
+            "dtype": "int32",
+            "standard_name": "status_flag",
+            "coverage_content_type": "qualityInformation",
+            "ioos_category": "Quality",
+            "flag_values": [
+                0,
+                1
+            ],
+            "flag_meanings": "undefined undefined"
+        },
+        "FFFF_01": {
+            "dtype": "int32",
+            "standard_name": "status_flag",
+            "coverage_content_type": "qualityInformation",
+            "ioos_category": "Quality",
+            "flag_values": [
+                0,
+                1
+            ],
+            "flag_meanings": "undefined undefined"
+        }
+    }
+}

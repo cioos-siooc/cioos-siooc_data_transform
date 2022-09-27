@@ -13,6 +13,6 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/cioos-siooc/cioos-siooc_data_transform",
     packages=setuptools.find_packages(),
-    install_requires=["numpy", "fortranformat", "netCDF4", "pytz", "shapely", "gsw==3.3.1", "pandas"],
+    install_requires=["numpy", "fortranformat", "netCDF4", "pytz", "shapely", "gsw==3.4.0", "pandas","geopy"],
     classifiers=["Programming Language :: Python :: 3", "Operating System :: OS Independent"],
 )

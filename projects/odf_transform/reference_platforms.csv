@@ -1,0 +1,80 @@
+platform_name,platform_owner,platform_type,country_of_origin,ices_platform_codes,wmo_platform_code,call_sign,sdn_platform_urn
+RRS James Cook,National Environment Research Council,Research Vessel,United Kingdom,740H,9338242,MLRM6,SDN:C17::740H
+Neil Armstrong,Woods Hole Oceanographic Institution,Research Vessel,United States,33VB,9688946,WRNU,SDN:C17::33VB
+Atlantis,U.S. Navy,Research Vessel,United States,33AT,9105798,KAQP,SDN:C17::33AT
+Endeavor,National Science Foundation,Research Vessel,United States,32EV,7604300,WCE5063,SDN:C17::32EV
+Dana,Technical University of Denmark,Research Vessel,Denmark,26D4,7912680,OXBH,SDN:C17::26D4
+Vector,Canadian Coast Guard,Mid Shore Science Vessel,Canada,18VT,6717760,CGBW,SDN:C17::18VT
+Vladykov,Canadian Coast Guard,Nearshore Fishery Research Vessel,Canada,18VD,9656149,CFN5960,SDN:C17::18VD
+Teleost,Canadian Coast Guard,Ice-Reinforced Factory Freeze Trawler,Canada,18TL,8714346,CGCB,SDN:C17::18TL
+Sir John Franklin,Canadian Coast Guard,Offshore Fishery Science Vessel,Canada,18SZ,9781839,VFAM,SDN:C17::18SZ
+Louis S. St-Laurent,Canadian Coast Guard,Heavy Icebreaker,Canada,18SN,6705937,CGBN,SDN:C17::18SN
+Sigma T,Canadian Coast Guard,Coastal Research Vessel,Canada,18SG,,,SDN:C17::18SG
+Neocaligus,Canadian Coast Guard,Nearshore Fishery Research Vessel,Canada,18QX,,CFG7677,SDN:C17::18QX
+Coriolis II,"institutions: ISMER, UQAM, McGill University, INRS-ETE, MLI-DFO  ",Research Vessel,Canada,18OL,8818570,CGDN,SDN:C17::18OL
+Alfred Needler,Canadian Coast Guard,Offshore Fishery Science Vessel,Canada,18NE,7907104,CG2683,SDN:C17::18NE
+A. Needler,Canadian Coast Guard,Offshore Fishery Science Vessel,Canada,18NE,7907104,CG2683,SDN:C17::18NE
+M. Perley,Canadian Coast Guard,Nearshore Fishery Research,Canada,18MU,9656151,CGMP,SDN:C17::18MU
+Leim,Canadian Coast Guard,Nearshore Fishery Research Vessel,Canada,18LO,9656163,CFN6223,SDN:C17::18LO
+Limnos,Canadian Coast Guard,Mid Shore Science Vessel,Canada,18LN,6804903,CG2350,SDN:C17::18LN
+John Cabot,Canadian Coast Guard,Offshore Fishery Science Vessel,Canada,18JC,9781853,CGDJ,SDN:C17::18JC
+Hudson,Canadian Coast Guard,Offshore Research Vessel,Canada,18HU,5405279,CGDG,SDN:C17::18HU
+Amundsen,Canadian Coast Guard,Research Vessel,Canada,18DL,7510846,CGDT,SDN:C17::18DL
+John P. Tully,Canadian Coast Guard,Offshore Oceanographic Science Vessel,Canada,18DD,8320420,CG2958,SDN:C17::18DD
+Otter Bay,Canadian Coast Guard,Mid Shore Science Vessel,Canada,18D3,,CG3262,SDN:C17::18D3
+Capt Jacques Cartier,Canadian Coast Guard,Offshore Fishery Science Vessel,Canada,18CR,9781841,CFA3098,SDN:C17::18CR
+Viola M. Davidson,Canadian Coast Guard,Research vessel,Canada,18AU,,CGEC,SDN:C17::18AU
+Sir Wilfrid Laurier,Canadian Coast Guard,Arctic Class 2,Canada,	18LU,8320456,CGJK,SDN:C17::18LU
+Fugro Discovery,Fugro,Hydrographic Survey Vessel,Panama,PADS,9152882,,SDN:C17::PADS
+Dawson,Unknown,Research Vessel,Canada,18DA,6726802,CGBV,SDN:C17::18DA
+Lady Hammond,Bedford Institute of Oceanography,Research Vessel,Canada,18LH,7214844,,SDN:C17::18LH
+Beluga II,Canadian Coast Guard,self-propelled boad,Canada,18BP,,,SDN:C17::18BP
+Parizeau,Canadian Coast Guard,Research Vessel,Canada,18PZ,6711728,CGBS,SDN:C17::18PZ
+Des Groseilliers,Canadian Coast Guard,Research Vessel,Canada,18GO,8006385,CGDX,SDN:C17::18GO
+Martha L. Black,Canadian Coast Guard,Research Vessel,Canada,18MF,8320432,CCGC,SDN:C17::18MF
+Sambro,Canadian Coast Guard,self-propelled small boat,Canada,18S9,,CG2613,SDN:C17::18S9
+Penguin,USS,naval vessel,United States,319P,,NUKM,SDN:C17::319P
+Opilio,,,Canada,18OP,,CFD2576,SDN:C17::18OP
+Earl Grey,Canadian Coast Guard,naval vessel,Canada,18EG,8412340,CG3029,SDN:C17::18EG
+Spray,Canadian Coast Guard,self-propelled small boat,Canada,18PY,,CG2248,SDN:C17::18PY
+Cap Breton,Canadian Coast Guard,ship,Canada,18BO,,,SDN:C17::18BO
+Fundy Spray,HMSC,research vessel,Canada,18FQ,,,SDN:C17::18FQ
+Sir William Alexander,Canadian Coast Guard,vessel of opportunity,Canada,18WA,8320482,CGUM,SDN:C17:18WA
+Cutter 141,,,,,,,
+Shippigan,,,,,,,
+WB Scott,,,,,,,
+Cap Nord,,,,,,,
+Pandaslus,,,,,,,
+E.E.Prince,,,,,,,
+C6-4828,,,,,,,
+JL HART,,,,,,,
+VESSEL OF OPPORTUNITY,,,,,,,
+Pack_Kat,,,,,,,
+Pack_Kat Launch,,,,,,,
+Dalhousie University Zodiac,,,,,,,
+C1196NS ROSBOROUGH,,,,,,,
+ABCO (Aluminum Boat Company),,,,,,,
+MESD LAUNCH,,,,,,,
+WILFRED TEMPLEMAN,Canadian Coast Guard,research vessel,Canada,181C,7907099,CGDV,SDN:C17:181C
+Henry Larsen,Canadian Coast Guard,vessel of opportunity,Canada,18HS,8409329,CGHL,SDN:C17::18HS
+Pierre Radisson,Canadian Coast Guard,research vessel,Canada,18RD,7510834,CGSB,SDN:C17:18RD
+Sackville,Fisheries Research Board,research vessel,Canada,18SV,,CNAV,SDN:C17::18SV
+Unknown,
+Navicula,Canadian Coast Guard,research vessel,Canada,18NA,,CG2364,SDN:C17::18NA
+Pandora II,,,Canada,18P2,,CZ3946,SDN:C17::18P2
+Ibis,,,,,,,
+Helicopter,,,,,,,
+Edward Cornwallis
+Quest
+Cygnus
+Quadra,Canadian Coast Guard,research vessel,Canada,18QA,,VE0MP,SDN:C17::18QA
+Adolf Jensen
+Narwhal
+Tudlik
+Petrel,,naval vessel,France,35PE,,FCPL,SDN:C17::35PE
+Maxwell,Canadian Coast Guard,research vessel,Canada,18MX,5230040,,SDN:C17::18MX
+Theron,,research vessel,Canada,18TE,5358737,,SDN:C17::18TE
+Baffin,,research vessel,Canada,18BA,,CGCL,SDN:C17::18BA
+Tulugaq
+Fort Francis,
+Provo Wallis,,,,,,CGDP,SDN:C17::18PW
