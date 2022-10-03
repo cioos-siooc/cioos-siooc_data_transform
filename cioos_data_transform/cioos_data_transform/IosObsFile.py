@@ -738,3 +738,33 @@ class BotFile(ObsFile):
                 return 0
 
         return 1
+
+
+class GenFile(ObsFile):
+    def import_data(self):
+        self.type = None
+        self.start_dateobj, self.start_date = self.get_date(opt="start")
+        self.location = self.get_location()
+        self.channels = self.get_channels()
+        self.comments = self.get_comments_like("COMMENTS")
+        self.remarks = self.get_comments_like("REMARKS")
+        self.administration = self.get_section("ADMINISTRATION")
+        self.instrument = self.get_section("INSTRUMENT")
+        self.channel_details = self.get_channel_detail()
+        if self.channel_details is None:
+            print("Unable to get channel details from header...")
+        # try reading file using format specified in 'FORMAT'
+        try:
+            self.data = self.get_data(formatline=self.file["FORMAT"])
+        except Exception as e:
+            print("Could not read file using 'FORMAT' description...")
+            self.data = None
+
+        if self.data is None:
+            try:
+                # self.channel_details = self.get_channel_detail()
+                self.data = self.get_data(formatline=None)
+            except Exception as e:
+                return 0
+
+        return 1
