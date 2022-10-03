@@ -454,6 +454,72 @@ class ObsFile(object):
             return 0
 
 
+    def to_xarray(self):
+        """Convert ios class to xarray dataset
+
+        Returns:
+            xarray dataset
+        """
+
+        import pandas as pd
+
+        ios_dtypes_to_python = {"F": float, "f": float}
+
+        def _format_attributes(attrs, prefix=""):
+            return {
+                f"{prefix}{name}".replace(" ", "_").lower(): value.strip()
+                if isinstance(value, str)
+                else value
+                for name, value in attrs.items()
+            }
+
+        def _get_dtypes():
+            return [
+                ios_dtypes_to_python.get(chan_form.strip(), object)
+                for chan_form in self.channel_details["Format"]
+            ]
+
+        print("Convert ios Class to xarray dataset")
+        df = pd.DataFrame.from_records(
+            self.data, columns=[chan.strip() for chan in self.channels["Name"]]
+        )
+        # Format data type
+        df = df.astype(
+            {
+                chan.strip(): python_format
+                for chan, python_format in zip(self.channels["Name"], _get_dtypes())
+            }
+        )
+        ds = df.to_xarray()
+
+        # Generate global attributes
+        ds.attrs.update(_format_attributes(self.administration))
+        ds.attrs.update(_format_attributes(self.file))
+        ds.attrs.update(_format_attributes(self.instrument, "instrument_"))
+        ds.attrs.update(_format_attributes(self.location))
+        ds.attrs["comments"] = str(self.comments)
+        ds.attrs["remarks"] = str(self.remarks)
+
+        if self.deployment:
+            ds.attrs.update(_format_attributes(self.recovery, "deployment_"))
+        if self.recovery:
+            ds.attrs.update(_format_attributes(self.recovery, "recovery_"))
+
+        # Generate Variable attributes
+        ios_variables_attributes = (
+            pd.DataFrame({**self.channels, **self.channel_details})
+            .apply(lambda x: x.strip() if isinstance(x, str) else x)
+            .astype({"Minimum": float, "Maximum": float})
+            .set_index(["Name"])
+            .drop(columns=["fmt_struct"], errors="ignore")
+            .to_dict(orient="index")
+        )
+        for var, attrs in ios_variables_attributes.items():
+            ds[var.strip()].attrs.update(attrs)
+
+        return ds
+
+
 #
 # ********************              END DEFINITION FOR OBSFILE CLASS          **************************
 #
