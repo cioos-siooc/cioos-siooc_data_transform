@@ -2,6 +2,8 @@ from shapely.geometry import Polygon, Point
 import json
 import os
 import geopy.distance
+import pandas as pd
+
 
 # general utility functions common to multiple classes
 def fix_path(path):
