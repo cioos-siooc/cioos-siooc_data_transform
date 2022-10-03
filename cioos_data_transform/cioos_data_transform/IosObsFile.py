@@ -5,10 +5,11 @@
 """
 import struct
 from datetime import datetime, timedelta
+import re
 import fortranformat as ff
 import numpy as np
 from pytz import timezone
-from .utils.utils import find_geographic_area, read_geojson
+from .utils.utils import find_geographic_area, read_geojson, read_ios_vocabulary
 from shapely.geometry import Point
 from io import StringIO
 
@@ -42,6 +43,8 @@ class ObsFile(object):
         self.deployment = None
         self.recovery = None
         self.obs_time = None
+        self.extra_var_attrs = None
+
         # try opening and reading the file. if error. soft-exit.
         try:
             with open(self.filename, "r", encoding="ASCII", errors="ignore") as fid:
@@ -452,6 +455,33 @@ class ObsFile(object):
             print(self.obs_time[0], self.start_dateobj)
             print("Error: First record in data does not match start date in header", self.filename)
             return 0
+
+    def add_ios_vocabulary(self, vocabulary_path=None):
+        def match_term(reference, value):
+            return True if reference in (None, np.nan) else re.search(reference, value)
+
+        def _generate_vocabulary_attr():
+            return [
+                {attr: value for (attr, value) in row.to_dict().items() if value}
+                for id, row in matched_vocab.iterrows()
+            ]
+
+        # Load vocabulary
+        vocab = read_ios_vocabulary(vocabulary_path)
+
+        # iterate over variables and find matching vocabulary
+        self.extra_var_attrs = {}
+        for name, units in zip(self.channels["Name"], self.channels["Units"]):
+
+            name_match_type = vocab["variable_type"].str.contains(name.lower().strip())
+            match_name = vocab["accepted_varname"].apply(lambda x: match_term(x, name))
+            match_units = vocab["accepted_units"].apply(lambda x: match_term(x, units))
+
+            matched_vocab = vocab.loc[name_match_type & match_units & match_name]
+            if not matched_vocab.empty:
+                self.extra_var_attrs[name] = _generate_vocabulary_attr()
+            else:
+                print(f"Missing vocabulary for name: {name} Units: {units}")
 
 
     def to_xarray(self):

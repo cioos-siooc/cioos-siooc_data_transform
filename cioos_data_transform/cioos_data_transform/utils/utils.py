@@ -139,3 +139,8 @@ def get_nearest_station(stations,point,max_distance=None):
     else:
         return None
 
+
+def read_ios_vocabulary(path=None):
+    if path is None:
+        path = f"{os.path.dirname(os.path.abspath(__file__))}/ios_vocabulary.csv"
+    return pd.read_csv(path)
