@@ -515,10 +515,25 @@ class ObsFile(object):
             ]
 
         print("Convert ios Class to xarray dataset")
-        df = pd.DataFrame.from_records(
-            self.data, columns=[chan.strip() for chan in self.channels["Name"]]
-        )
+
+        # Format column names
+        column_names = [chan.strip() for chan in self.channels["Name"]]
+        for id, var in enumerate(column_names):
+            preceding_vars = [
+                before_var
+                for before_var in column_names[:id]
+                if re.match(rf"{var}\d\d", before_var) or var == before_var
+            ]
+            if preceding_vars:
+                var_index = len(preceding_vars) + 1
+                new_name = f"{var}{var_index:02g}"
+                print(f"Avoid duplicated variable names {var} to {new_name}")
+                column_names[id] = new_name
+                self.channels["Name"][id] = new_name
+
+        df = pd.DataFrame.from_records(self.data, columns=column_names)
         # Format data type
+        if self.channel_details:
         df = df.astype(
             {
                 chan.strip(): python_format
@@ -534,7 +549,6 @@ class ObsFile(object):
         ds.attrs.update(_format_attributes(self.location))
         ds.attrs["comments"] = str(self.comments)
         ds.attrs["remarks"] = str(self.remarks)
-
         if self.deployment:
             ds.attrs.update(_format_attributes(self.recovery, "deployment_"))
         if self.recovery:
@@ -542,7 +556,12 @@ class ObsFile(object):
 
         # Generate Variable attributes
         ios_variables_attributes = (
-            pd.DataFrame({**self.channels, **self.channel_details})
+            pd.DataFrame(
+                {
+                    **self.channels,
+                    **(self.channel_details if self.channel_details else {}),
+                }
+            )
             .apply(lambda x: x.strip() if isinstance(x, str) else x)
             .astype({"Minimum": float, "Maximum": float})
             .set_index(["Name"])
