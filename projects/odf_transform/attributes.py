@@ -428,7 +428,7 @@ def global_attributes_from_header(dataset, odf_header, config=None):
     )
     # Apply global attributes corrections
     dataset.attrs.update(config['global_attributes'])
-    dataset.attrs.update(config['file_specific_attributes'].get(os.path.basename(dataset.attrs['source'])))
+    dataset.attrs.update(config['file_specific_attributes'].get(os.path.basename(dataset.attrs['source']),{}))
     dataset.attrs.update(_get_attribute_mapping_corrections())
 
     # Generate attributes from other attributes
