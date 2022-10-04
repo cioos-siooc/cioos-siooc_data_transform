@@ -27,7 +27,7 @@
     "attribute_mapping_corrections_files": [
         "{ODF_TRANSFORM_MODULE_PATH}/attribute_corrections.json"
     ],
-    "file_specific_attributes_path": null,
+    "file_specific_attributes_path": "{ODF_TRANSFORM_MODULE_PATH}/ctd_odf_attribute_corrections.json",
     "organisationVocabulary": [
         "BIO",
         "GF3"
