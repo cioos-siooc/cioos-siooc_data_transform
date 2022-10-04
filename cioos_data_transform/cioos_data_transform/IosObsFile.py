@@ -467,13 +467,19 @@ class ObsFile(object):
             ]
 
         # Load vocabulary
-        vocab = read_ios_vocabulary(vocabulary_path)
+        if vocab is None or isinstance(vocab, str):
+            vocab = read_ios_vocabulary(vocab)
 
         # iterate over variables and find matching vocabulary
         self.extra_var_attrs = {}
         for name, units in zip(self.channels["Name"], self.channels["Units"]):
-
-            name_match_type = vocab["variable_type"].str.contains(name.lower().strip())
+            units = re.sub("^'|'$", "", units)
+            # name_match_type = vocab["variable_type"].str.startswith(
+            #     name.lower().strip()
+            # )
+            name_match_type = vocab["variable_type"].apply(
+                lambda x: match_term(x, name.lower())
+            )
             match_name = vocab["accepted_varname"].apply(lambda x: match_term(x, name))
             match_units = vocab["accepted_units"].apply(lambda x: match_term(x, units))
 
@@ -482,7 +488,6 @@ class ObsFile(object):
                 self.extra_var_attrs[name] = _generate_vocabulary_attr()
             else:
                 print(f"Missing vocabulary for name: {name} Units: {units}")
-
 
     def to_xarray(self):
         """Convert ios class to xarray dataset
