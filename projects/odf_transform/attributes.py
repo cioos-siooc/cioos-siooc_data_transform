@@ -15,6 +15,10 @@ from odf_transform.utils.seabird import (
     get_seabird_instrument_from_header,
     get_seabird_processing_history,
 )
+from cioos_data_transform.utils.utils import (
+    get_geo_code,
+    get_nearest_station
+)
 
 no_file_logger = logging.getLogger(__name__)
 logger = logging.LoggerAdapter(no_file_logger, {"file": None})
@@ -496,6 +500,42 @@ def generate_coordinates_variables(dataset):
     for var, attrs in coordinate_attributes.items():
         if var in dataset:
             dataset[var].attrs = attrs
+    return dataset
+
+
+def generate_spatial_attributes(dataset,config):
+    if "latitude" not in dataset or "longitude" not in dataset:
+        logger.warning("Missing latitude and/or longitude, we can't generate spatial attributes")
+        return dataset
+
+    dataset.attrs["geographic_area"] = get_geo_code(
+            [dataset["longitude"].mean(), dataset["latitude"].mean()],
+            config["geographic_areas"],
+        )
+
+    nearest_station = get_nearest_station(
+        config["reference_stations"][["station", "latitude", "longitude"]].values,
+        (dataset["latitude"], dataset["longitude"]),
+        config["maximum_distance_from_station_km"],
+    )
+
+    if nearest_station:
+        dataset.attrs["station"] = nearest_station
+    
+    # If no nearest station exist and the file suggest one, log it.
+    if (
+        dataset.attrs.get("station")
+        and dataset.attrs.get("station")
+        not in config["reference_stations"]["station"].tolist()
+        and re.match(r"[^0-9]", dataset.attrs["station"])
+    ):
+        logger.warning(
+            "Station %s [%sN, %sE] is missing from the reference_station.",
+            dataset.attrs["station"],
+            dataset["latitude"].mean().values,
+            dataset["longitude"].mean().values,
+        )
+
     return dataset
 
 
