@@ -43,9 +43,7 @@ def convert_files(config={}, opt="all", ftype=None):
     # loop through files in list, read the data and write netcdf file if data read is successful
     for i, fname in enumerate(flist[:]):
         # print('\nProcessing -> {} {}'.format(i, fname))
-        p = Process(
-            target=(convert_files_threads), args=(ftype, fname, config)
-        )
+        p = Process(target=(convert_files_threads), args=(ftype, fname, config))
         p.start()
         p.join()
     return flist

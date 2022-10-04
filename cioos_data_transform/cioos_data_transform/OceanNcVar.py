@@ -483,12 +483,14 @@ class OceanNcVar(object):
             # self.standard_name = ''
             self.long_name = "Sigma-theta"
             self.units = bodc_units
-        elif self.type in ['DOUB', 'SING', 'SYTM', 'INTE']:
-            type_mapping = {'DOUB': 'float64',
-                            'SING': 'float32',
-                            'SYTM': 'float64',
-                            'INTE': 'int32'}
-            self.datatype= type_mapping[self.type]
+        elif self.type in ["DOUB", "SING", "SYTM", "INTE"]:
+            type_mapping = {
+                "DOUB": "float64",
+                "SING": "float32",
+                "SYTM": "float64",
+                "INTE": "int32",
+            }
+            self.datatype = type_mapping[self.type]
         else:
             print("Do not know how to define this variable..")
             raise Exception("Fatal Error")
@@ -523,9 +525,7 @@ class OceanNcVar(object):
         bodc_code = ""
         bodc_units = ""
         if vartype == "temperature":
-            if is_in(["reversing"], ios_varname) and is_in(
-                ["deg c"], varunits
-            ):
+            if is_in(["reversing"], ios_varname) and is_in(["deg c"], varunits):
                 bodc_code = "TEMPRTN"
                 bodc_units = "deg_C"
                 bodc_code = "{}{:01d}".format(bodc_code, iter + 1)
@@ -595,21 +595,15 @@ class OceanNcVar(object):
                 )
 
         elif vartype == "salinity":
-            if not is_in(["bottle"], ios_varname) and is_in(
-                ["PSS-78"], varunits
-            ):
+            if not is_in(["bottle"], ios_varname) and is_in(["PSS-78"], varunits):
                 bodc_code = "PSALST"
                 bodc_units = "PSS-78"
                 bodc_code = "{}{:02d}".format(bodc_code, iter + 1)
-            elif not is_in(["bottle"], ios_varname) and is_in(
-                ["ppt"], varunits
-            ):
+            elif not is_in(["bottle"], ios_varname) and is_in(["ppt"], varunits):
                 bodc_code = "SSALST"
                 bodc_units = "PPT"
                 bodc_code = "{}{:02d}".format(bodc_code, iter + 1)
-            elif is_in(["bottle"], ios_varname) and is_in(
-                ["PSS-78"], varunits
-            ):
+            elif is_in(["bottle"], ios_varname) and is_in(["PSS-78"], varunits):
                 bodc_code = "PSALBST"
                 bodc_units = "PSS-78"
                 bodc_code = "{}{:01d}".format(bodc_code, iter + 1)
@@ -685,23 +679,15 @@ class OceanNcVar(object):
                 self.long_name = (
                     "Mole Concentration of Nitrate and Nitrite in Sea Water"
                 )
-            elif is_in(["phosphate"], ios_varname) and is_in(
-                ["umol/l"], varunits
-            ):
+            elif is_in(["phosphate"], ios_varname) and is_in(["umol/l"], varunits):
                 bodc_code = "PHOSAAZ"
                 bodc_units = "umol/L"
-                self.standard_name = (
-                    "mole_concentration_of_phosphate_in_sea_water"
-                )
+                self.standard_name = "mole_concentration_of_phosphate_in_sea_water"
                 self.long_name = "Mole Concentration of Phosphate in Sea Water"
-            elif is_in(["silicate"], ios_varname) and is_in(
-                ["umol/l"], varunits
-            ):
+            elif is_in(["silicate"], ios_varname) and is_in(["umol/l"], varunits):
                 bodc_code = "SLCAAAZ"
                 bodc_units = "umol/L"
-                self.standard_name = (
-                    "mole_concentration_of_silicate_in_sea_water"
-                )
+                self.standard_name = "mole_concentration_of_silicate_in_sea_water"
                 self.long_name = "Mole Concentration of Silicate in Sea Water"
             else:
                 raise Exception(
@@ -712,14 +698,10 @@ class OceanNcVar(object):
                 )
             bodc_code = "{}{:01d}".format(bodc_code, iter + 1)
         elif vartype == "other":
-            if is_in(["chlorophyll"], ios_varname) and is_in(
-                ["mg/m^3"], varunits
-            ):
+            if is_in(["chlorophyll"], ios_varname) and is_in(["mg/m^3"], varunits):
                 bodc_code = "CPHLFLP"
                 bodc_units = "mg/m^3"
-                self.standard_name = (
-                    "concentration_of_chlorophyll-a_in_water_body"
-                )
+                self.standard_name = "concentration_of_chlorophyll-a_in_water_body"
                 self.long_name = "Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >GF/F phase] by filtration, acetone extraction and fluorometry"
             else:
                 raise Exception(

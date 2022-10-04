@@ -1,7 +1,7 @@
-#from .ObsFile import CtdFile as IosCtdFile
-#from .ObsFile import MCtdFile as IosMctdFile
-#from .ObsFile import BotFile as IosBotFile
-#from .ObsFile import CurFile as IosCurFile
+# from .ObsFile import CtdFile as IosCtdFile
+# from .ObsFile import MCtdFile as IosMctdFile
+# from .ObsFile import BotFile as IosBotFile
+# from .ObsFile import CurFile as IosCurFile
 
 from .OdfCls import CtdNcFile as OdfCtdNcFile
 from .OdfCls import NcVar as OdfNcVar
