@@ -760,7 +760,7 @@ class GenFile(ObsFile):
             print("Unable to get channel details from header...")
         # try reading file using format specified in 'FORMAT'
         try:
-            self.data = self.get_data(formatline=self.file["FORMAT"])
+            self.data = self.get_data(formatline=self.file.get("FORMAT"))
         except Exception as e:
             print("Could not read file using 'FORMAT' description...")
             self.data = None
