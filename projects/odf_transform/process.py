@@ -143,6 +143,7 @@ def odf_to_netcdf(odf_path, config=None):
 
     # Write global and variable attributes
     dataset.attrs = config["global_attributes"]
+    dataset.attrs['source'] =  odf_path
     dataset = attributes.global_attributes_from_header(dataset, metadata, config=config)
     dataset.attrs[
         "history"
@@ -311,25 +312,6 @@ def run_odf_conversion_from_config(config):
             < os.path.getmtime(file)
         ]
 
-    def _generate_input_by_file(file: str, config: dict):
-        """Generate file specific configuration which includes file_specific_attributes
-        Args:
-            file: path to file to convert
-            config: configuration used
-        Returns:
-            dict: configuration specific
-        """
-        if (
-            config.get("file_specific_attributes") is None
-            or file not in config["file_specific_attributes"]
-        ):
-            return file, config
-
-        file_config = copy.deepcopy(config)
-        file_config["global_attirbutes"].update(
-            config["file_specific_attributes"][file]
-        )
-        return file, file_config
 
     def _generate_input_by_program(files, config):
         """Generate mission specific input to apply for the conversion
@@ -361,10 +343,7 @@ def run_odf_conversion_from_config(config):
             if related_files:
                 mission_config = copy.deepcopy(config)
                 mission_config["global_attributes"].update(dict(row.dropna()))
-                inputs += [
-                    _generate_input_by_file(file, mission_config)
-                    for file in related_files
-                ]
+                inputs += [(file, mission_config) for file in related_files]
         return inputs
 
     # Parse config file if file is given
@@ -415,7 +394,7 @@ def run_odf_conversion_from_config(config):
     if config["program_log"] is not None:
         inputs = _generate_input_by_program(odf_files_list, config)
     else:
-        inputs = [_generate_input_by_file(file, config) for file in odf_files_list]
+        inputs = [(file, config) for file in odf_files_list]
 
     # Review input list
     if inputs:

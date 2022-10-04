@@ -8,6 +8,7 @@ import logging
 import re
 from datetime import datetime, timezone
 from difflib import get_close_matches
+import os
 
 import pandas as pd
 from odf_transform.utils.seabird import (
@@ -350,6 +351,13 @@ def global_attributes_from_header(dataset, odf_header, config=None):
 
     def _review_longitude(value):
         return value if value != -999.9 else None
+    
+    def _get_attribute_mapping_corrections():
+        return {
+            attr: attr_mapping[dataset.attrs[attr]]
+            for attr, attr_mapping in config["attribute_mapping_corrections"].items()
+            if attr in dataset.attrs and dataset.attrs[attr] in attr_mapping
+        }
 
     odf_original_header = odf_header.copy()
     odf_original_header.pop("variable_attributes")
@@ -412,6 +420,11 @@ def global_attributes_from_header(dataset, odf_header, config=None):
             **cdm_data_type_attributes,
         }
     )
+    # Apply global attributes corrections
+    dataset.attrs.update(config['global_attributes'])
+    dataset.attrs.update(config['file_specific_attributes'].get(os.path.basename(dataset.attrs['source'])))
+    dataset.attrs.update(_get_attribute_mapping_corrections())
+
     # Generate attributes from other attributes
     dataset.attrs["title"] = _generate_title_from_global_attributes(dataset.attrs)
     dataset.attrs.update(**_generate_program_specific_attritutes(dataset.attrs))
@@ -423,15 +436,6 @@ def global_attributes_from_header(dataset, odf_header, config=None):
         dataset.attrs["comments"] = "\n".join(
             [line for line in dataset.attrs["comments"] if line]
         )
-
-    # Apply attributes corrections from attribute_correction json
-    dataset.attrs.update(
-        {
-            attr: attr_mapping[dataset.attrs[attr]]
-            for attr, attr_mapping in config["attribute_mapping_corrections"].items()
-            if attr in dataset.attrs and dataset.attrs[attr] in attr_mapping
-        }
-    )
 
     # Drop empty global attributes
     dataset.attrs = {
