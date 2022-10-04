@@ -46,7 +46,7 @@ class CtdNcFile(OceanNcFile):
 
             if value:
                 setattr(ncvar, key, value)
-        
+
         for key, value in var.attributes.items():
             if value:
                 setattr(ncvar, key, value)
@@ -65,13 +65,20 @@ class CtdNcFile(OceanNcFile):
         vardim=(),
         varnull=float("nan"),
         conv_to_BODC=True,
-        attributes={}
+        attributes={},
     ):
 
         varnames = list(map(lambda var: var.name, self.varlist))
 
         nc_var = NcVar(
-            vartype, varname, varunits, varval, vardim, varnull, conv_to_BODC, attributes
+            vartype,
+            varname,
+            varunits,
+            varval,
+            vardim,
+            varnull,
+            conv_to_BODC,
+            attributes,
         )
 
         nc_var.add_var(varnames)
@@ -89,7 +96,7 @@ class NcVar(OceanNcVar):
         vardim=(),
         varnull=float("nan"),
         conv_to_BODC=True,
-        attributes={}
+        attributes={},
     ):
         self.cf_role = None
         self.name = varname

@@ -112,7 +112,11 @@ class ObsFile(object):
                 EOR = False
                 record_name = l.strip()
                 if self.debug:
-                    print("Found subsection:{} in section:{}".format(record_name, section_name))
+                    print(
+                        "Found subsection:{} in section:{}".format(
+                            record_name, section_name
+                        )
+                    )
                 info[record_name] = []
                 while not EOR:
                     idx += 1
@@ -233,7 +237,8 @@ class ObsFile(object):
                         # data.append(struct.unpack(self.channel_details['fmt_struct'], lines[i].rstrip().ljust(fmt_len)))
                         data.append(
                             struct.unpack(
-                                fmt_struct, lines[i].rstrip().ljust(fmt_len).encode("utf-8")
+                                fmt_struct,
+                                lines[i].rstrip().ljust(fmt_len).encode("utf-8"),
                             )
                         )
                         # data.append([r for r in lines[i].split()])
@@ -301,7 +306,9 @@ class ObsFile(object):
         info["Format"] = [l[4] for l in ch_det]
         info["Type"] = [l[5] for l in ch_det]
         if int(self.file["NUMBER OF CHANNELS"]) != len(info["Pad"]):
-            raise Exception("Number of channels in file record does not match channel_details!")
+            raise Exception(
+                "Number of channels in file record does not match channel_details!"
+            )
         else:
             fmt = ""
             for i in range(len(info["Pad"])):
@@ -386,7 +393,11 @@ class ObsFile(object):
         # skip * in beginning of section name
         sections_list = []
         for i, line in enumerate(self.lines[2:]):
-            if line[0] == "*" and line[0:4] != "*END" and line[1] not in ["*", " ", "\n"]:
+            if (
+                line[0] == "*"
+                and line[0:4] != "*END"
+                and line[1] not in ["*", " ", "\n"]
+            ):
                 sections_list.append(line.strip()[1:])
             else:
                 continue
@@ -413,19 +424,30 @@ class ObsFile(object):
 
         if "date" in chnList and "time" in chnList:
             if isinstance(self.data[0, chnList.index("date")], bytes):
-                dates = [i.decode("utf8").strip() for i in self.data[:, chnList.index("date")]]
-                times = [i.decode("utf8").strip() for i in self.data[:, chnList.index("time")]]
+                dates = [
+                    i.decode("utf8").strip()
+                    for i in self.data[:, chnList.index("date")]
+                ]
+                times = [
+                    i.decode("utf8").strip()
+                    for i in self.data[:, chnList.index("time")]
+                ]
             else:
                 dates = [i.strip() for i in self.data[:, chnList.index("date")]]
                 times = [i.strip() for i in self.data[:, chnList.index("time")]]
-            datetime = to_datetime([date + " " + time for date, time in zip(dates, times)])
+            datetime = to_datetime(
+                [date + " " + time for date, time in zip(dates, times)]
+            )
             self.obs_time = datetime.to_pydatetime()
             self.obs_time = [
                 timezone("UTC").localize(i + timedelta(hours=0)) for i in self.obs_time
             ]
         elif "date" in chnList and "time" not in chnList:
             if isinstance(self.data[0, chnList.index("date")], bytes):
-                dates = [i.decode("utf8").strip() for i in self.data[:, chnList.index("date")]]
+                dates = [
+                    i.decode("utf8").strip()
+                    for i in self.data[:, chnList.index("date")]
+                ]
             else:
                 dates = [i.strip() for i in self.data[:, chnList.index("date")]]
             datetime = to_datetime([date for date in dates])
@@ -450,7 +472,10 @@ class ObsFile(object):
 
         if self.obs_time[0] != self.start_dateobj:
             print(self.obs_time[0], self.start_dateobj)
-            print("Error: First record in data does not match start date in header", self.filename)
+            print(
+                "Error: First record in data does not match start date in header",
+                self.filename,
+            )
             return 0
 
 

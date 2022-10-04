@@ -12,12 +12,8 @@ from glob import glob
 def convert_mctd_files(f, out_path):
     fdata = ios.MCtdFile(filename=f, debug=False)
     if fdata.import_data():
-        fdata.assign_geo_code(
-            fix_path("tests/test_files/ios_polygons.geojson")
-        )
-        write_mctd_ncfile(
-            fix_path(out_path + f.split(os.path.sep)[-1] + ".nc"), fdata
-        )
+        fdata.assign_geo_code(fix_path("tests/test_files/ios_polygons.geojson"))
+        write_mctd_ncfile(fix_path(out_path + f.split(os.path.sep)[-1] + ".nc"), fdata)
         cioos_utils.add_standard_variables(
             fix_path(out_path + f.split(os.path.sep)[-1] + ".nc")
         )
@@ -30,12 +26,8 @@ def convert_bot_files(f, out_path):
     print(fdata.filename)
     if fdata.import_data():
         # print(fdata.data)
-        fdata.assign_geo_code(
-            fix_path("tests/test_files/ios_polygons.geojson")
-        )
-        write_ctd_ncfile(
-            fix_path(out_path + f.split(os.path.sep)[-1] + ".nc"), fdata
-        )
+        fdata.assign_geo_code(fix_path("tests/test_files/ios_polygons.geojson"))
+        write_ctd_ncfile(fix_path(out_path + f.split(os.path.sep)[-1] + ".nc"), fdata)
         cioos_utils.add_standard_variables(
             fix_path(out_path + f.split(os.path.sep)[-1] + ".nc")
         )
@@ -49,12 +41,8 @@ def convert_ctd_files(f, out_path):
     print(fdata.filename)
     if fdata.import_data():
         # print(fdata.data)
-        fdata.assign_geo_code(
-            fix_path("tests/test_files/ios_polygons.geojson")
-        )
-        write_ctd_ncfile(
-            fix_path(out_path + f.split(os.path.sep)[-1] + ".nc"), fdata
-        )
+        fdata.assign_geo_code(fix_path("tests/test_files/ios_polygons.geojson"))
+        write_ctd_ncfile(fix_path(out_path + f.split(os.path.sep)[-1] + ".nc"), fdata)
         cioos_utils.add_standard_variables(
             fix_path(out_path + f.split(os.path.sep)[-1] + ".nc")
         )
@@ -66,12 +54,8 @@ def convert_cur_files(f, out_path):
     print(f)
     fdata = ios.CurFile(filename=f, debug=False)
     if fdata.import_data():
-        fdata.assign_geo_code(
-            fix_path("tests/test_files/ios_polygons.geojson")
-        )
-        write_cur_ncfile(
-            fix_path(out_path + f.split(os.path.sep)[-1] + ".nc"), fdata
-        )
+        fdata.assign_geo_code(fix_path("tests/test_files/ios_polygons.geojson"))
+        write_cur_ncfile(fix_path(out_path + f.split(os.path.sep)[-1] + ".nc"), fdata)
         # iod.utils.add_standard_variables(fix_path(out_path + f.split(os.path.sep)[-1] + '.nc')) #Ignore for now
     else:
         print("Unable to import data from file", fdata.filename)
@@ -83,8 +67,8 @@ def convert_cur_files(f, out_path):
 for fn in glob(fix_path("./tests/test_files/ctd_profile/*.*"), recursive=True):
     convert_ctd_files(f=fn, out_path=fix_path("./tests/temp/"))
 
-for fn in glob(fix_path('./tests/test_files/bot/*.*'), recursive=True):
-    convert_bot_files(f=fn, out_path=fix_path('./tests/temp/'))
+for fn in glob(fix_path("./tests/test_files/bot/*.*"), recursive=True):
+    convert_bot_files(f=fn, out_path=fix_path("./tests/temp/"))
 
 # for fn in glob(
 #     fix_path("./tests/test_files/current_meter/*.*"), recursive=True

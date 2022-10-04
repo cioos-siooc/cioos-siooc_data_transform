@@ -74,13 +74,9 @@ def write_cur_ncfile(filename, curcls, config={}):
     global_attrs["Conventions"] = config.get("Conventions")
     global_attrs["cdm_data_type"] = "TimeSeries"
     global_attrs["cdm_timeseries_variables"] = "profile"
-    global_attrs["date_created"] = datetime.now(timezone("UTC")).strftime(
-        date_format
-    )
+    global_attrs["date_created"] = datetime.now(timezone("UTC")).strftime(date_format)
     global_attrs["processing_level"] = config.get("processing_level")
-    global_attrs["standard_name_vocabulary"] = config.get(
-        "standard_name_vocabulary"
-    )
+    global_attrs["standard_name_vocabulary"] = config.get("standard_name_vocabulary")
     # write full original header, as json dictionary
     global_attrs["header"] = json.dumps(
         curcls.get_complete_header(), ensure_ascii=False, indent=False
@@ -226,12 +222,8 @@ def write_cur_ncfile(filename, curcls, config={}):
     )
 
     ncfile.add_var("time", "time", None, curcls.obs_time, vardim=("time"))
-    global_attrs["time_coverage_start"] = curcls.obs_time[0].strftime(
-        date_format
-    )
-    global_attrs["time_coverage_end"] = curcls.obs_time[-1].strftime(
-        date_format
-    )
+    global_attrs["time_coverage_start"] = curcls.obs_time[0].strftime(date_format)
+    global_attrs["time_coverage_end"] = curcls.obs_time[-1].strftime(date_format)
     # direction_index = None
     # for i, channel in enumerate(curcls.channels['Name']):
     #     if is_in(['direction:geog(to)'], channel):
@@ -544,20 +536,12 @@ def write_cur_ncfile(filename, curcls, config={}):
                 and type(curcls.data[:, index_direction][0]) is np.bytes_
             ):
                 speed_decoded = np.array(
-                    [
-                        float(a.decode("ascii"))
-                        for a in curcls.data[:, index_speed]
-                    ]
+                    [float(a.decode("ascii")) for a in curcls.data[:, index_speed]]
                 )
                 direction_decoded = np.array(
-                    [
-                        float(a.decode("ascii"))
-                        for a in curcls.data[:, index_direction]
-                    ]
+                    [float(a.decode("ascii")) for a in curcls.data[:, index_direction]]
                 )
-                speed_east, speed_north = add_ne_speed(
-                    speed_decoded, direction_decoded
-                )
+                speed_east, speed_north = add_ne_speed(speed_decoded, direction_decoded)
             else:
                 speed_east, speed_north = add_ne_speed(
                     curcls.data[:, index_speed],
