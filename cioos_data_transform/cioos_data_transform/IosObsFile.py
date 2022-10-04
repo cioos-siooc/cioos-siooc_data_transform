@@ -456,9 +456,15 @@ class ObsFile(object):
             print("Error: First record in data does not match start date in header", self.filename)
             return 0
 
-    def add_ios_vocabulary(self, vocabulary_path=None):
+    def add_ios_vocabulary(self, vocab=None):
         def match_term(reference, value):
-            return True if reference in (None, np.nan) else re.search(reference, value)
+            if (
+                reference in (None, np.nan)
+                or re.search(reference, value)
+                or reference in value
+            ):
+                return True
+            return False
 
         def _generate_vocabulary_attr():
             return [
