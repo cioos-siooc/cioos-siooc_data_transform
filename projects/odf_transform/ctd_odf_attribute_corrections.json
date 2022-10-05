@@ -2455,5 +2455,11 @@
   },
   "CTD_72901_010_10_DN.ODF": {
     "initial_longitude": -60.74
+  },
+  "CTD_74006_058_1_DN.ODF":{
+    "initial_longitude":-69.55
+  },
+  "CTD_74006_058_1_UP.ODF":{
+    "initial_longitude":-69.55
   }
 }
