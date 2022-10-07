@@ -1,0 +1,163 @@
+*2022/06/07 16:09:21.26
+*IOS HEADER VERSION 2.0      2016/04/28 2016/06/13 MATLAB
+
+*FILE
+    START TIME          : UTC 1998/11/17 17:00:00.000
+    END TIME            : UTC 1998/11/19 18:30:00.000
+    TIME INCREMENT      : 0 1 0 0 0  ! (day hr min sec ms)
+    TIME UNITS          : Hours
+    NUMBER OF RECORDS   : 51
+    DATA DESCRIPTION    : Drifting Buoy
+    NUMBER OF CHANNELS  : 7
+
+    $TABLE: CHANNELS
+    ! No Name            Units        Minimum      Maximum   
+    !--- --------------- ------------ ------------ ----------
+       1 Record_Number   n/a          1            51        
+       2 Date            YYYY/MM/DD   n/a          n/a       
+       3 Time            HH:MM:SS     n/a          n/a       
+       4 Latitude        degrees      48.13440     48.19909  
+       5 Longitude       degrees      -123.60840   -123.30610
+       6 Flag:At_Sea     n/a          1            1         
+       7 Temperature     'deg C'      9.3          11.7      
+    $END
+
+    $TABLE: CHANNEL DETAIL
+    ! No  Pad        Start  Width  Format      Type  Decimal_Places
+    !---  ---------  -----  -----  ----------  ----  --------------
+       1  ' '        ' '        8  F           R4      1           
+       2  ' '        ' '    ' '    YYYY/MM/DD  D     ' '           
+       3  ' '        ' '    ' '    HH:MM:SS    T     ' '           
+       4  999.00000  ' '       10  F           R4      5           
+       5  999.00000  ' '       11  F           R4      5           
+       6  9          ' '        2  D           I       0           
+       7  999.0      ' '        6  F           R4      1           
+    $END
+    $REMARKS
+        At_Sea flags have the following significance:
+        -------------------------------------------------------------------------
+        0 = Not classified.
+        1 = Good - at sea, freely floating (valid).
+        2 = Bad - at sea but trapped in rocky intertidal (floating but not free).
+        3 = Bad - on land (grounded, test data, etc.).
+        4 = Bad - at sea (large GPS error, on ship, etc.).
+        5 = Bad - land travel.
+        -------------------------------------------------------------------------
+    $END
+
+*ADMINISTRATION
+    MISSION             : 1998-039
+    AGENCY              : IOS, Ocean Sciences Division, Sidney, B.C.
+    COUNTRY             : Canada
+    PROJECT             : Wide Straits - PERD
+    SCIENTIST           : Thomson R.
+    PLATFORM            : John P. Tully
+    $REMARKS
+        For information about the IOS drifter program see https://www.waterproperties.ca/drifters
+    $END
+
+*LOCATION
+    GEOGRAPHIC AREA     : Juan de Fuca Strait
+    LATITUDE            :  48   8.06400 N  ! (deg min)
+    LONGITUDE           : 123  36.50400 W  ! (deg min)
+    LATITUDE 2          :  48  11.94540 N  ! (deg min)
+    LONGITUDE 2         : 123  18.36600 W  ! (deg min)
+
+*DEPLOYMENT
+    MISSION             : 1998-39
+    TIME IN WATER       : UTC 1998/11/17 16:49:00.000
+    LATITUDE            :  48  11.86100 N  ! (deg min)
+    LONGITUDE           : 123  35.32300 W  ! (deg min)
+
+*RECOVERY
+    MISSION             : 1998-39
+    TIME OUT OF WATER   : UTC 1998/11/19 18:35:00.000
+    LATITUDE            :  49   9.14800 N  ! (deg min)
+    LONGITUDE           : 123  19.34500 W  ! (deg min)
+
+*INSTRUMENT
+    TYPE                : Metocean
+    MODEL               : WOCE/SVP-GPS drifter
+    ID                  : 20307
+    DEVICE ID           : 20307
+    DRAFT               : 18.2 m
+    DRAG AREA RATIO     : 0.006
+    DROGUE TYPE         : Holey Sock
+    DROGUE MID DEPTH    : 15 m
+    DROGUE LENGTH       : 6.4 m
+    DROGUE DIAMETER     : 0.9 m
+
+*HISTORY
+
+    $TABLE: PROGRAMS
+    !   Name            Vers  Date       Time     Recs In   Recs Out
+    !   --------------- ----  ---------- -------- --------- ---------
+        DRIFTS2IOSMATNC 1.0   2022/06/07 16:09:21        51        51
+    $END
+    $REMARKS
+        -DRIFTS2IOSMATNC processing: 2022/06/07 16:09:21
+         All atSea=4,5 locations were removed.
+    $END
+
+*COMMENTS
+    West of Eastern Bank, eastern Juan de Fuca Strait
+    
+    Data processed using drifteval software provided by R.Pawlowicz, see:
+      Pawlowicz, R., Hannah, C. and Rosenberger, A., 2019. Lagrangian
+      observations of estuarine residence times, dispersion, and
+      trapping in the Salish Sea. Estuarine, Coastal and Shelf Science,
+      225, p.106246.
+      http://www.sciencedirect.com/science/article/pii/S0272771419302719
+
+*END OF HEADER
+     1.0 1998/11/17 17:00:00  48.19800 -123.59250 1  11.7
+     2.0 1998/11/17 18:00:00  48.19778 -123.59840 1  11.7
+     3.0 1998/11/17 19:00:00  48.19909 -123.59350 1  11.7
+     4.0 1998/11/17 20:00:00  48.19800 -123.57910 1  11.7
+     5.0 1998/11/17 21:00:00  48.19297 -123.55920 1  11.3
+     6.0 1998/11/17 22:00:00  48.18379 -123.54440 1  11.4
+     7.0 1998/11/17 23:00:00  48.17308 -123.54220 1  11.4
+     8.0 1998/11/18 00:00:00  48.16762 -123.56080 1  11.6
+     9.0 1998/11/18 01:00:00  48.15713 -123.58590 1  11.6
+    10.0 1998/11/18 02:00:00  48.14773 -123.60320 1   9.4
+    11.0 1998/11/18 03:00:00  48.14467 -123.60840 1  10.4
+    12.0 1998/11/18 04:00:00  48.14248 -123.59770 1  10.8
+    13.0 1998/11/18 05:00:00  48.14510 -123.58020 1  11.3
+    14.0 1998/11/18 06:00:00  48.15538 -123.55530 1  11.1
+    15.0 1998/11/18 07:00:00  48.15188 -123.51900 1  11.6
+    16.0 1998/11/18 08:00:00  48.14336 -123.49410 1  11.6
+    17.0 1998/11/18 09:00:00  48.13986 -123.47620 1  11.5
+    18.0 1998/11/18 10:00:00  48.13833 -123.47160 1  11.4
+    19.0 1998/11/18 11:00:00  48.13745 -123.47200 1  11.4
+    20.0 1998/11/18 12:00:00  48.13702 -123.48010 1  11.4
+    21.0 1998/11/18 13:00:00  48.13461 -123.48860 1  11.4
+    22.0 1998/11/18 14:00:00  48.13440 -123.49960 1  11.3
+    23.0 1998/11/18 15:00:00  48.13483 -123.51420 1  11.4
+    24.0 1998/11/18 16:00:00  48.14204 -123.52010 1  11.4
+    25.0 1998/11/18 17:00:00  48.14489 -123.52840 1  11.4
+    26.0 1998/11/18 18:00:00  48.14751 -123.53100 1  11.4
+    27.0 1998/11/18 19:00:00  48.14532 -123.52620 1  11.3
+    28.0 1998/11/18 20:00:00  48.13855 -123.51570 1  11.4
+    29.0 1998/11/18 21:00:00  48.13571 -123.50900 1  11.4
+    30.0 1998/11/18 22:00:00  48.13461 -123.50680 1  11.4
+    31.0 1998/11/18 23:00:00  48.13483 -123.51030 1  11.4
+    32.0 1998/11/19 00:00:00  48.13789 -123.51680 1  11.4
+    33.0 1998/11/19 01:00:00  48.14248 -123.52640 1  11.3
+    34.0 1998/11/19 02:00:00  48.15559 -123.54980 1  11.4
+    35.0 1998/11/19 03:00:00  48.16784 -123.56880 1  10.9
+    36.0 1998/11/19 04:00:00  48.17330 -123.57170 1   9.3
+    37.0 1998/11/19 05:00:00  48.17614 -123.57340 1  11.1
+    38.0 1998/11/19 06:00:00  48.17876 -123.58700 1  10.9
+    39.0 1998/11/19 07:00:00  48.17964 -123.59310 1  10.8
+    40.0 1998/11/19 08:00:00  48.17811 -123.58870 1  11.1
+    41.0 1998/11/19 09:00:00  48.18554 -123.56230 1  11.1
+    42.0 1998/11/19 10:00:00  48.19231 -123.51140 1  11.1
+    43.0 1998/11/19 11:00:00  48.19188 -123.46280 1  10.9
+    44.0 1998/11/19 12:00:00  48.19035 -123.41480 1  10.8
+    45.0 1998/11/19 13:00:00  48.18095 -123.36230 1  10.6
+    46.0 1998/11/19 14:00:00  48.17024 -123.32360 1  10.6
+    47.0 1998/11/19 15:00:00  48.16215 -123.30610 1  10.5
+    48.0 1998/11/19 16:00:00  48.15210 -123.30980 1  10.4
+    49.0 1998/11/19 17:00:00  48.15232 -123.31790 1  10.6
+    50.0 1998/11/19 18:00:00  48.14969 -123.32340 1  10.7
+    51.0 1998/11/19 18:30:00  48.15250 -123.32240 1 999.0

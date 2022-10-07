@@ -1,0 +1,110 @@
+*1996/12/14 07:30:05.28
+*IOS HEADER VERSION 1.1  1995/02/17 1995/02/19
+
+*FILE
+    START TIME          : GMT 1988/09/27 14:31:00.000
+    NUMBER OF RECORDS   : 5
+    FILE TYPE           : ASCII
+    FORMAT              : (F8.2,F10.3,F3.0,F10.3,F3.0,F10.3,F3.0)
+    DATA TYPE           : REAL*4
+    NUMBER OF CHANNELS  : 7
+    Q_DATE_TIME         : 1                                     ! custom item
+    Q_RECORD            : 3                                     ! custom item
+    QC_VERSION          :  1.0                                  ! custom item
+
+    $TABLE: CHANNELS
+    ! No Name                 Units         Minimum        Maximum
+    ! -- -------------------- ------------- -------------- --------------
+       1 Depth                Metres        0              30
+       2 Temperature          Degrees_C     9.91           11.08
+       3 Quality_Flag:Temp    IGOSS_flags   ' '            ' '
+       4 'Salinity: Pre-1978' PPT           11.093         31.789
+       5 Quality_Flag:Sali    IGOSS_flags   ' '            ' '
+       6 Oxygen               mmol/m**3     112.5422       181.318
+       7 Quality_Flag:Oxyg    IGOSS_flags   ' '            ' '
+    $END
+
+    $TABLE: CHANNEL DETAIL
+    ! No  Pad             Start  Width  Format    Type      Decimal Places
+    ! --  --------------  -----  -----  --------  --------  --------------
+       1  9999.99         ' '    ' '    ' '       ' '       ' '
+       2  9999.99         ' '    ' '    ' '       ' '       ' '
+       3  9               ' '    ' '    ' '       ' '       ' '
+       4  9999.99         ' '    ' '    ' '       ' '       ' '
+       5  9               ' '    ' '    ' '       ' '       ' '
+       6  9999.99         ' '    ' '    ' '       ' '       ' '
+       7  9               ' '    ' '    ' '       ' '       ' '
+    $END
+    $REMARKS
+         This file was created by MEDS
+         MEDS File name : 181388017_0001
+         Data quality is expressed with the following flags
+            0 = not checked
+            1 = appears to be good
+            2 = inconsistent with climatology
+            3 = appears to be doubtful
+            4 = appears to be wrong
+            5 = value was changed, see the history record
+         Q_DATE_TIME is the quality of the date/time
+         Q_RECORD is the worst quality flag for the entire station expressed
+             as 1,2,3,5,4,0 from best to worst
+         QC_VERSION is the version of quality control software used
+
+        Parameter               DUP_FLAG   DIGIT_CODE   STANDARD
+        --------------------    --------    --------    --------
+        Temperature                    N           1           1
+        Salinity: Pre-1978             N           1           1
+        Oxygen                         N           1           1
+
+        DUP_FLAG indicates if another profile exists in MEDS that is of
+             higher quality (0=N= no duplicate)
+        DIGIT_CODE indicates the type of digitization used
+        STANDARD indicates the precision of the observation
+    $END
+
+*ADMINISTRATION
+    MISSION             : 88017
+    AGENCY              : UBC, INSTITUTE OF OCEANOGRAPHY,U.B.C.(IOUBC)
+
+*LOCATION
+    EVENT NUMBER        : 1
+    LATITUDE            :  49  10.00000 N  ! (deg min)
+    LONGITUDE           : 124  49.00000 W  ! (deg min)
+    Q_POS               : 1                                     ! custom item
+    BATH                :    118.872                            ! custom item
+    OID$                : A1B-2                                 ! custom item
+    ACC$                : A9017701                              ! custom item
+    QCP$                :   0061FFCE                            ! custom item
+    QCF$                :   00006000                            ! custom item
+    $REMARKS
+         Q_POS is the quality of the position
+         Other custom items are defined by GF3 or MEDS codes
+    $END
+
+*INSTRUMENT
+    TYPE                : Bottle
+
+*COMMENTS
+     MEDS processing history records
+       IDENT PRC_CODE  VERSION PRC_DATE ACT_CODE ACT_PARM     AUX_ID    O_VALUE
+    -------- -------- -------- -------- ---------------- ---------- ----------
+    -------- -------- -------- -------- ---------------- ---------- ----------
+    -------- -------- -------- -------- ---------------- ---------- ----------
+    -------- -------- -------- -------- ---------------- ---------- ----------
+    -------- -------- -------- -------- ---------------- ---------- ----------
+    -------- -------- -------- -------- ---------------- ---------- ----------
+
+    IDENT is a code idicating the agency writing this history record
+    PRC_CODE is the identifier of the software writing this history record
+    VERSION is the version of the software used
+    PRC_DATE is the date as YYYYMMDD this record was written
+    ACT_CODE tells what action was taken against the data
+    ACT_PARM = idicates whhich parameter was acted on
+    AUX-ID helps to further quality the parameter affected
+    O_VALUE was the original value of the parameter if an action changed it
+*END OF HEADER
+    0.00    10.500 1.    11.093 3.  9999.990 9.
+    5.00    11.080 1.    30.714 3.   181.318 1.
+   10.00    10.740 1.    31.541 1.   178.192 1.
+   20.00    10.240 1.    31.674 1.   146.483 1.
+   30.00     9.910 1.    31.789 1.   112.542 1.
