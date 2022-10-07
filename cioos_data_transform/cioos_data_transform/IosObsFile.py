@@ -11,7 +11,16 @@ import numpy as np
 from pytz import timezone
 from .utils.utils import find_geographic_area, read_geojson, read_ios_vocabulary
 from shapely.geometry import Point
+import pandas as pd
 from io import StringIO
+
+ios_dtypes_to_python = {
+    "F": "float32",
+    "f": "float32",
+    "I": "int32",
+    "YYYY/MM/DD": str,
+    "HH:MM:SS": str,
+}
 
 
 class ObsFile(object):
@@ -527,10 +536,6 @@ class ObsFile(object):
             xarray dataset
         """
 
-        import pandas as pd
-
-        ios_dtypes_to_python = {"F": float, "f": float}
-
         def _format_attributes(attrs, prefix=""):
             return {
                 f"{prefix}{name}".replace(" ", "_").lower(): value.strip()
@@ -556,8 +561,7 @@ class ObsFile(object):
                 if re.match(rf"{var}\d\d", before_var) or var == before_var
             ]
             if preceding_vars:
-                var_index = len(preceding_vars) + 1
-                new_name = f"{var}{var_index:02g}"
+                new_name = f"{var}{len(preceding_vars) + 1:02g}"
                 print(f"Avoid duplicated variable names {var} to {new_name}")
                 column_names[id] = new_name
                 self.channels["Name"][id] = new_name
