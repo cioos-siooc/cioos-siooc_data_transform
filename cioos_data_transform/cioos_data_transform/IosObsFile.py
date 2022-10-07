@@ -524,8 +524,12 @@ class ObsFile(object):
             name_match_type = vocab["variable_type"].apply(
                 lambda x: match_term(x, name.lower())
             )
-            match_name = vocab["accepted_varname"].apply(lambda x: match_term(x, name.strip()))
-            match_units = vocab["accepted_units"].apply(lambda x: match_term(x, units.strip()))
+            match_name = vocab["accepted_varname"].apply(
+                lambda x: match_term(x, name.strip())
+            )
+            match_units = vocab["accepted_units"].apply(
+                lambda x: match_term(x, units.strip())
+            )
 
             matched_vocab = vocab.loc[name_match_type & match_units & match_name]
             if not matched_vocab.empty:
@@ -579,12 +583,12 @@ class ObsFile(object):
         df = pd.DataFrame.from_records(self.data, columns=column_names)
         # Format data type
         if self.channel_details:
-        df = df.astype(
-            {
-                chan.strip(): python_format
-                for chan, python_format in zip(self.channels["Name"], _get_dtypes())
-            }
-        )
+            df = df.astype(
+                {
+                    chan.strip(): python_format
+                    for chan, python_format in zip(self.channels["Name"], _get_dtypes())
+                }
+            )
         else:
             print("%s is missing channel details" % self.filename)
         ds = df.to_xarray()
@@ -592,7 +596,7 @@ class ObsFile(object):
         # Generate global attributes
         ds.attrs.update(_format_attributes(self.administration))
         ds.attrs.update(_format_attributes(self.file))
-        ds.attrs.update(_format_attributes(self.instrument, "instrument_"))
+        ds.attrs.update(_format_attributes(self.instrument, prefix="instrument_"))
         ds.attrs.update(_format_attributes(self.location))
         ds.attrs["comments"] = str(self.comments)
         ds.attrs["remarks"] = str(self.remarks)
@@ -821,6 +825,11 @@ class GenFile(ObsFile):
         self.administration = self.get_section("ADMINISTRATION")
         self.instrument = self.get_section("INSTRUMENT")
         self.channel_details = self.get_channel_detail()
+        if "DEPLOYMENT" in self.file:
+            self.deployment = self.get_section("DEPLOYMENT")
+        if "RECOVERY" in self.file:
+            self.recovery = self.get_section("RECOVERY")
+
         if self.channel_details is None:
             print("Unable to get channel details from header...")
         # try reading file using format specified in 'FORMAT'
