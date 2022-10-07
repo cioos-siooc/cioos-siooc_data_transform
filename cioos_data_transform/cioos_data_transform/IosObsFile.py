@@ -506,13 +506,22 @@ class ObsFile(object):
                 for id, row in matched_vocab.iterrows()
             ]
 
+        def _add_to_missing_vocabulary(name, units, data_type="float32"):
+            print(f"Missing vocabulary for name: {name} Units: {units}")
+            with open("missing_vocabulary.txt", "a") as handle:
+                handle.write(
+                    f"{name.lower()},{data_type},{re.sub('[:_]',' ',name)},,,{units},{units}\n"
+                )
+
         # Load vocabulary
         if vocab is None or isinstance(vocab, str):
             vocab = read_ios_vocabulary(vocab)
 
         # iterate over variables and find matching vocabulary
         self.extra_var_attrs = {}
-        for name, units in zip(self.channels["Name"], self.channels["Units"]):
+        for id, (name, units) in enumerate(
+            zip(self.channels["Name"], self.channels["Units"])
+        ):
             units = re.sub("^'|'$", "", units)
             # name_match_type = vocab["variable_type"].str.startswith(
             #     name.lower().strip()
@@ -520,14 +529,20 @@ class ObsFile(object):
             name_match_type = vocab["variable_type"].apply(
                 lambda x: match_term(x, name.lower())
             )
-            match_name = vocab["accepted_varname"].apply(lambda x: match_term(x, name))
-            match_units = vocab["accepted_units"].apply(lambda x: match_term(x, units))
+            match_name = vocab["accepted_varname"].apply(lambda x: match_term(x, name.strip()))
+            match_units = vocab["accepted_units"].apply(lambda x: match_term(x, units.strip()))
 
             matched_vocab = vocab.loc[name_match_type & match_units & match_name]
             if not matched_vocab.empty:
                 self.extra_var_attrs[name] = _generate_vocabulary_attr()
             else:
-                print(f"Missing vocabulary for name: {name} Units: {units}")
+
+                data_type = (
+                    self.channel_details["Format"][id] if self.channel_details else None
+                )
+                _add_to_missing_vocabulary(
+                    name.strip(), units.strip(), data_type.strip()
+                )
 
     def to_xarray(self):
         """Convert ios class to xarray dataset
