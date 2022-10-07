@@ -277,23 +277,18 @@ class ObsFile(object):
         # read 'LOCATION' section from ios header
         # convert lat and lon to standard format (float, -180 to +180)
         # initialize some other standard section variables if possible
+        def _convert_latlong_string(ll):
+            if not isinstance(ll, str):
+                return ll
+            degrees, minutes, direction = ll.split()
+            return (-1 if direction in ("S", "W") else 1) * (degrees + minutes / 60)
+
         info = self.get_section("LOCATION")
         if self.debug:
             print("Location details", info.keys())
-        # handle lat conversion
-        c = info["LATITUDE"].split()
-        buf = float(c[0]) + float(c[1]) / 60.0
-        if c[2] == "S":
-            info["LATITUDE"] = -1.0 * buf
-        else:
-            info["LATITUDE"] = buf
-        c = info["LONGITUDE"].split()
-        # handle lon conversion
-        buf = float(c[0]) + float(c[1]) / 60.0
-        if c[2] == "W":
-            info["LONGITUDE"] = -1.0 * buf
-        else:
-            info["LONGITUDE"] = buf
+        # Convert lat and lon
+        info["LATITUDE"] = _convert_latlong_string(info.get("LATITUDE"))
+        info["LONGITUDE"] = _convert_latlong_string(info.get("LONGITUDE"))
         # initialize some dict items if not available
         # if 'EVENT NUMBER' not in info.keys():
         # info['EVENT NUMBER'] = ''
