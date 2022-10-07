@@ -590,6 +590,8 @@ class ObsFile(object):
                 for chan, python_format in zip(self.channels["Name"], _get_dtypes())
             }
         )
+        else:
+            print("%s is missing channel details" % self.filename)
         ds = df.to_xarray()
 
         # Generate global attributes
