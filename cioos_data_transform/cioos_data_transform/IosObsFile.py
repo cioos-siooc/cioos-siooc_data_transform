@@ -610,7 +610,6 @@ class ObsFile(object):
                 }
             )
             .apply(lambda x: x.strip() if isinstance(x, str) else x)
-            .astype({"Minimum": float, "Maximum": float})
             .set_index(["Name"])
             .drop(columns=["fmt_struct"], errors="ignore")
             .to_dict(orient="index")
