@@ -12,6 +12,7 @@ import unittest
 GEOJSON_AREAS_PATH = fix_path(
     "./projects/ios_data_transform/tests/test_files/ios_polygons.geojson"
 )
+OUTPUT_PATH = fix_path("./projects/ios_data_transform/tests/temp/")
 
 
 def convert_mctd_files(f, out_path):
@@ -89,7 +90,7 @@ class TestIOSConversion(unittest.TestCase):
         )
         assert len(files) > 0, "No files found for conversion tests"
         for fn in files:
-            convert_mctd_files(f=fn, out_path=fix_path("./tests/temp/"))
+            convert_mctd_files(f=fn, out_path=OUTPUT_PATH)
 
     def test_cur_files(self):
         """Test to parse cur files with the original method conversion"""
@@ -101,7 +102,7 @@ class TestIOSConversion(unittest.TestCase):
         )
         assert len(files) > 0, "No files found for conversion tests"
         for fn in files:
-            convert_cur_files(f=fn, out_path=fix_path("./tests/temp/"))
+            convert_cur_files(f=fn, out_path=OUTPUT_PATH)
 
     def test_bot_files(self):
         """Test to parse bot files with the original method conversion"""
@@ -111,7 +112,7 @@ class TestIOSConversion(unittest.TestCase):
         )
         assert len(files) > 0, "No files found for conversion tests"
         for fn in files:
-            convert_bot_files(f=fn, out_path=fix_path("./tests/temp/"))
+            convert_bot_files(f=fn, out_path=OUTPUT_PATH)
 
     def test_all_ios_files(self):
         """Test to convert all the file types by using the general parser"""
@@ -123,6 +124,6 @@ class TestIOSConversion(unittest.TestCase):
         for fn in files:
             if fn.endswith(("geojson")):
                 continue
-            convert_any_files(f=fn, out_path=fix_path("./tests/temp/"))
+            convert_any_files(f=fn, out_path=OUTPUT_PATH)
 
     # TODO compare general parser generated netcdfs vs original netcdfs
