@@ -619,7 +619,16 @@ class ObsFile(object):
             .to_dict(orient="index")
         )
         for var, attrs in ios_variables_attributes.items():
-            ds[var.strip()].attrs.update(attrs)
+            ds[var.strip()].attrs.update(
+                {
+                    **attrs,
+                    **(
+                        self.extra_var_attrs[var][0]
+                        if var in self.extra_var_attrs
+                        else {}
+                    ),
+                }
+            )
 
         return ds
 
