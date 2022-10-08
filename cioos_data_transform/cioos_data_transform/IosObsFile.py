@@ -537,11 +537,11 @@ class ObsFile(object):
             else:
 
                 data_type = (
-                    self.channel_details["Format"][id] if self.channel_details else None
+                    self.channel_details["Format"][id].strip()
+                    if self.channel_details
+                    else None
                 )
-                _add_to_missing_vocabulary(
-                    name.strip(), units.strip(), data_type.strip()
-                )
+                _add_to_missing_vocabulary(name.strip(), units.strip(), data_type)
 
     def to_xarray(self):
         """Convert ios class to xarray dataset
