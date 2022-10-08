@@ -518,21 +518,18 @@ class ObsFile(object):
         for id, (name, units) in enumerate(
             zip(self.channels["Name"], self.channels["Units"])
         ):
+            if name.lower().startswith(("flag", "quality_flag")):
+                # TODO add flag related metadata
+                self.extra_var_attrs[name] = [{}]
+                continue
+
             units = re.sub("^'|'$", "", units)
-            # name_match_type = vocab["variable_type"].str.startswith(
-            #     name.lower().strip()
-            # )
-            name_match_type = vocab["variable_type"].apply(
-                lambda x: match_term(x, name.lower())
-            )
-            match_name = vocab["accepted_varname"].apply(
-                lambda x: match_term(x, name.strip())
-            )
+            name_match_type = vocab["name"] == name.strip().lower()
             match_units = vocab["accepted_units"].apply(
                 lambda x: match_term(x, units.strip())
             )
 
-            matched_vocab = vocab.loc[name_match_type & match_units & match_name]
+            matched_vocab = vocab.loc[name_match_type & match_units]
             if not matched_vocab.empty:
                 self.extra_var_attrs[name] = _generate_vocabulary_attr()
             else:
