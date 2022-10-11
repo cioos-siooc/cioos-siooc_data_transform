@@ -575,7 +575,7 @@ class ObsFile(object):
             ].to_json(orient="index")
             print(f"Missing dtype mapping for {missing_dtype_mapping_str}")
             channel_attributes["dtype"].fillna("str", inplace=True)
-        return channel_attributes
+        return channel_attributes.to_dict(orient="index")
 
     def rename_duplicated_channels(self):
         old_channel_names = [chan.strip() for chan in self.channels["Name"]]
@@ -627,7 +627,9 @@ class ObsFile(object):
         # Format data type
         # TODO replace Pad values
         channel_attributes = self.get_channel_attributes()
-        df.astype({chan: attrs["dtype"] for chan, attrs in channel_attributes.items()})
+        df = df.astype(
+            {chan: attrs["dtype"] for chan, attrs in channel_attributes.items()}
+        )
         ds = df.to_xarray()
 
         # Generate global attributes
