@@ -602,12 +602,19 @@ class ObsFile(object):
             else:
                 print(f"Unkown date time channel {chan}")
 
-    def to_xarray(self):
+    def to_xarray(self, rename_variables=True):
         """Convert ios class to xarray dataset
 
         Returns:
             xarray dataset
         """
+
+        def make_variable_names_compatiple(varname):
+            varname = re.sub(r"[-\.\[\]\s\:\/\\\'\"]", "_", varname)
+            varname = re.sub('%','perc',varname)
+            varname = re.sub(r"_+", "_", varname)
+            varname = re.sub(r"^_|_$", "", varname)
+            return varname
 
         def _format_attributes(attrs, prefix=""):
             return {
@@ -668,6 +675,14 @@ class ObsFile(object):
                     ),
                 }
             )
+
+        # Convert any object variables to strings
+        for var in ds:
+            if ds[var].dtype == object:
+                ds[var] = ds[var].astype(str)
+
+        if rename_variables:
+            ds = ds.rename({var: make_variable_names_compatiple(var) for var in ds})
 
         return ds
 
