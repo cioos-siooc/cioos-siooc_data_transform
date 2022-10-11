@@ -595,9 +595,9 @@ class ObsFile(object):
         for id, chan in enumerate(self.channels["Name"]):
             if not re.search("^(time|date)", chan, re.IGNORECASE):
                 continue
-            elif re.match("Date[\s\t]*($|YYYY/MM/DD)", chan.strip()):
+            elif re.match(r"Date[\s\t]*($|YYYY/MM/DD)", chan.strip()):
                 rename_channels[id] = "Date"
-            elif re.match("Time[\s\t]*($|HH:MM:SS)", chan.strip()):
+            elif re.match(r"Time[\s\t]*($|HH:MM:SS)", chan.strip()):
                 rename_channels[id] = "Time"
             else:
                 print(f"Unkown date time channel {chan}")
