@@ -15,11 +15,12 @@ import pandas as pd
 from io import StringIO
 
 ios_dtypes_to_python = {
+    "R": "float32",
     "F": "float32",
-    "f": "float32",
     "I": "int32",
-    "YYYY/MM/DD": str,
-    "HH:MM:SS": str,
+    "D": str,
+    "T": str,
+    "E": "int32",
 }
 
 
@@ -52,7 +53,7 @@ class ObsFile(object):
         self.deployment = None
         self.recovery = None
         self.obs_time = None
-        self.extra_var_attrs = None
+        self.vocabylary_attributes = None
 
         # try opening and reading the file. if error. soft-exit.
         try:
@@ -514,13 +515,13 @@ class ObsFile(object):
             vocab = read_ios_vocabulary(vocab)
 
         # iterate over variables and find matching vocabulary
-        self.extra_var_attrs = {}
+        self.vocabylary_attributes = {}
         for id, (name, units) in enumerate(
             zip(self.channels["Name"], self.channels["Units"])
         ):
             if name.lower().startswith(("flag", "quality_flag")):
                 # TODO add flag related metadata
-                self.extra_var_attrs[name] = [{}]
+                self.vocabylary_attributes[name] = [{}]
                 continue
 
             units = re.sub("^'|'$", "", units)
@@ -531,7 +532,7 @@ class ObsFile(object):
 
             matched_vocab = vocab.loc[name_match_type & match_units]
             if not matched_vocab.empty:
-                self.extra_var_attrs[name] = _generate_vocabulary_attr()
+                self.vocabylary_attributes[name] = _generate_vocabulary_attr()
             else:
 
                 data_type = (
@@ -540,6 +541,66 @@ class ObsFile(object):
                     else None
                 )
                 _add_to_missing_vocabulary(name.strip(), units.strip(), data_type)
+
+    def get_channel_attributes(self):
+        def _map_dtype(ios_type):
+            if ios_type in ios_dtypes_to_python:
+                return ios_dtypes_to_python[ios_type]
+            elif ios_type[0] in ios_dtypes_to_python:
+                return ios_dtypes_to_python[ios_type[0]]
+
+        if self.channel_details is None:
+            print("Channel details not available")
+            return {}
+
+        channel_attributes = (
+            pd.DataFrame({**self.channels, **self.channel_details})
+            .set_index("Name")
+            .applymap(lambda x: x.strip())
+            .drop(columns=["fmt_struct"])
+        )
+
+        # Generate dtype attribute r
+        channel_attributes["dtype"] = (
+            channel_attributes["Type"]
+            .apply(_map_dtype)
+            .fillna(channel_attributes["Format"].apply(_map_dtype))
+        )
+
+        # Detect missing mapping
+        is_missing_dtype = channel_attributes["dtype"].isna()
+        if is_missing_dtype.any():
+            missing_dtype_mapping_str = channel_attributes.loc[is_missing_dtype][
+                ["Format", "Type"]
+            ].to_json(orient="index")
+            print(f"Missing dtype mapping for {missing_dtype_mapping_str}")
+            channel_attributes["dtype"].fillna("str", inplace=True)
+        return channel_attributes
+
+    def rename_duplicated_channels(self):
+        old_channel_names = [chan.strip() for chan in self.channels["Name"]]
+        new_channel_names = old_channel_names.copy()
+
+        for id, chan in enumerate(old_channel_names):
+            preceding_channels = old_channel_names[:id]
+            if chan in preceding_channels:
+                new_channel_names[
+                    id
+                ] = f"{chan}{len([c for c in preceding_channels if c==chan]) + 1:02g}"
+
+        self.channels["Name"] = new_channel_names
+
+    def rename_date_time_variables(self):
+        rename_channels = self.channels["Name"]
+        for id, chan in enumerate(self.channels["Name"]):
+            if not re.search("^(time|date)", chan, re.IGNORECASE):
+                continue
+            elif re.match("Date[\s\t]*($|YYYY/MM/DD)", chan.strip()):
+                rename_channels[id] = "Date"
+            elif re.match("Time[\s\t]*($|HH:MM:SS)", chan.strip()):
+                rename_channels[id] = "Time"
+            else:
+                print(f"Unkown date time channel {chan}")
 
     def to_xarray(self):
         """Convert ios class to xarray dataset
@@ -554,41 +615,59 @@ class ObsFile(object):
                 if isinstance(value, str)
                 else value
                 for name, value in attrs.items()
+                if isinstance(value, (float, int, str))
             }
 
-        def _get_dtypes():
-            return [
-                ios_dtypes_to_python.get(chan_form.strip(), object)
-                for chan_form in self.channel_details["Format"]
-            ]
+        def _get_dtype_from_channel_details():
+            channel_types_mapping = []
+            for chan_format, chan_type in zip(
+                self.channel_details["Format"], self.channel_details["Type"]
+            ):
+                chan_type = chan_type.strip()
+                chan_format = chan_format.strip()
+                if chan_type in ios_dtypes_to_python:
+                    channel_types_mapping += [ios_dtypes_to_python[chan_type]]
+                elif chan_type[0] in ios_dtypes_to_python:
+                    channel_types_mapping += [ios_dtypes_to_python[chan_type[0]]]
+                elif chan_format in ios_dtypes_to_python:
+                    channel_types_mapping += [ios_dtypes_to_python[chan_format]]
+                else:
+                    print(f"Unknown ios channel type: {chan_type}")
+                    channel_types_mapping += [str]
+            return channel_types_mapping
 
-        print("Convert ios Class to xarray dataset")
-
-        # Format column names
-        column_names = [chan.strip() for chan in self.channels["Name"]]
-        for id, var in enumerate(column_names):
+        def _rename_duplicate_channels(chan, id):
             preceding_vars = [
                 before_var
                 for before_var in column_names[:id]
-                if re.match(rf"{var}\d\d", before_var) or var == before_var
+                if re.match(rf"{chan}\d\d", before_var) or chan == before_var
             ]
             if preceding_vars:
-                new_name = f"{var}{len(preceding_vars) + 1:02g}"
-                print(f"Avoid duplicated variable names {var} to {new_name}")
-                column_names[id] = new_name
-                self.channels["Name"][id] = new_name
+                chan = f"{chan}{len(preceding_vars) + 1:02g}"
+                print(f"Rename duplicated channel name {var} to {chan}")
+            return chan
 
-        df = pd.DataFrame.from_records(self.data, columns=column_names)
+        def _rename_date_time_variables(chan):
+            if not re.search("^(Date|date|Time|time)", chan):
+                return chan
+            elif re.match(r"date[\t\s]*($|YYYY/MM/DD)", chan, re.IGNORECASE):
+                return "Date"
+            elif re.match(r"time[\t\s]*($|HH:MM:SS)", chan, re.IGNORECASE):
+                return "Time"
+            else:
+                print("Unknown date/time channel name")
+                return chan
+
+        # Fix some issues
+        self.rename_duplicated_channels()
+        self.rename_date_time_variables()
+
+        # Parse data
+        df = pd.DataFrame.from_records(self.data, columns=self.channels["Name"])
         # Format data type
-        if self.channel_details:
-            df = df.astype(
-                {
-                    chan.strip(): python_format
-                    for chan, python_format in zip(self.channels["Name"], _get_dtypes())
-                }
-            )
-        else:
-            print("%s is missing channel details" % self.filename)
+        # TODO replace Pad values 
+        channel_attributes = self.get_channel_attributes()
+        df.astype({chan: attrs["dtype"] for chan, attrs in channel_attributes.items()})
         ds = df.to_xarray()
 
         # Generate global attributes
@@ -619,10 +698,10 @@ class ObsFile(object):
         for var, attrs in ios_variables_attributes.items():
             ds[var.strip()].attrs.update(
                 {
-                    **attrs,
+                    **{attr.lower(): value for attr, value in attrs.items()},
                     **(
-                        self.extra_var_attrs[var][0]
-                        if var in self.extra_var_attrs
+                        self.vocabylary_attributes[var][0]
+                        if var in self.vocabylary_attributes
                         else {}
                     ),
                 }
