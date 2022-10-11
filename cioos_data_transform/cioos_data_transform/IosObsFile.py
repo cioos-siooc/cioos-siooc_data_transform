@@ -618,46 +618,6 @@ class ObsFile(object):
                 if isinstance(value, (float, int, str))
             }
 
-        def _get_dtype_from_channel_details():
-            channel_types_mapping = []
-            for chan_format, chan_type in zip(
-                self.channel_details["Format"], self.channel_details["Type"]
-            ):
-                chan_type = chan_type.strip()
-                chan_format = chan_format.strip()
-                if chan_type in ios_dtypes_to_python:
-                    channel_types_mapping += [ios_dtypes_to_python[chan_type]]
-                elif chan_type[0] in ios_dtypes_to_python:
-                    channel_types_mapping += [ios_dtypes_to_python[chan_type[0]]]
-                elif chan_format in ios_dtypes_to_python:
-                    channel_types_mapping += [ios_dtypes_to_python[chan_format]]
-                else:
-                    print(f"Unknown ios channel type: {chan_type}")
-                    channel_types_mapping += [str]
-            return channel_types_mapping
-
-        def _rename_duplicate_channels(chan, id):
-            preceding_vars = [
-                before_var
-                for before_var in column_names[:id]
-                if re.match(rf"{chan}\d\d", before_var) or chan == before_var
-            ]
-            if preceding_vars:
-                chan = f"{chan}{len(preceding_vars) + 1:02g}"
-                print(f"Rename duplicated channel name {var} to {chan}")
-            return chan
-
-        def _rename_date_time_variables(chan):
-            if not re.search("^(Date|date|Time|time)", chan):
-                return chan
-            elif re.match(r"date[\t\s]*($|YYYY/MM/DD)", chan, re.IGNORECASE):
-                return "Date"
-            elif re.match(r"time[\t\s]*($|HH:MM:SS)", chan, re.IGNORECASE):
-                return "Time"
-            else:
-                print("Unknown date/time channel name")
-                return chan
-
         # Fix some issues
         self.rename_duplicated_channels()
         self.rename_date_time_variables()
@@ -665,7 +625,7 @@ class ObsFile(object):
         # Parse data
         df = pd.DataFrame.from_records(self.data, columns=self.channels["Name"])
         # Format data type
-        # TODO replace Pad values 
+        # TODO replace Pad values
         channel_attributes = self.get_channel_attributes()
         df.astype({chan: attrs["dtype"] for chan, attrs in channel_attributes.items()})
         ds = df.to_xarray()
@@ -700,8 +660,8 @@ class ObsFile(object):
                 {
                     **{attr.lower(): value for attr, value in attrs.items()},
                     **(
-                        self.vocabylary_attributes[var][0]
-                        if var in self.vocabylary_attributes
+                        self.vocabulary_attributes[var][0]
+                        if var in self.vocabulary_attributes
                         else {}
                     ),
                 }
