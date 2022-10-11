@@ -53,7 +53,7 @@ class ObsFile(object):
         self.deployment = None
         self.recovery = None
         self.obs_time = None
-        self.vocabylary_attributes = None
+        self.vocabulary_attributes = None
 
         # try opening and reading the file. if error. soft-exit.
         try:
@@ -515,13 +515,13 @@ class ObsFile(object):
             vocab = read_ios_vocabulary(vocab)
 
         # iterate over variables and find matching vocabulary
-        self.vocabylary_attributes = {}
+        self.vocabulary_attributes = {}
         for id, (name, units) in enumerate(
             zip(self.channels["Name"], self.channels["Units"])
         ):
             if name.lower().startswith(("flag", "quality_flag")):
                 # TODO add flag related metadata
-                self.vocabylary_attributes[name] = [{}]
+                self.vocabulary_attributes[name] = [{}]
                 continue
 
             units = re.sub("^'|'$", "", units)
@@ -532,7 +532,7 @@ class ObsFile(object):
 
             matched_vocab = vocab.loc[name_match_type & match_units]
             if not matched_vocab.empty:
-                self.vocabylary_attributes[name] = _generate_vocabulary_attr()
+                self.vocabulary_attributes[name] = _generate_vocabulary_attr()
             else:
 
                 data_type = (
