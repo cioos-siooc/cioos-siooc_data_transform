@@ -20,7 +20,7 @@ ios_dtypes_to_python = {
     "I": "int32",
     "D": str,
     "T": str,
-    "E": "int32",
+    "E": "float32",
 }
 
 
