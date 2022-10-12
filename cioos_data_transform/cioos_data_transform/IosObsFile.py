@@ -618,7 +618,7 @@ class ObsFile(object):
 
         def make_variable_names_compatiple(varname):
             varname = re.sub(r"[-\.\[\]\s\:\/\\\'\"]", "_", varname)
-            varname = re.sub('%','perc',varname)
+            varname = re.sub("%", "perc", varname)
             varname = re.sub(r"_+", "_", varname)
             varname = re.sub(r"^_|_$", "", varname)
             return varname
