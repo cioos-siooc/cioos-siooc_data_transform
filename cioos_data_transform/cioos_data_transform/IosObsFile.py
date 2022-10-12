@@ -490,7 +490,7 @@ class ObsFile(object):
     def add_ios_vocabulary(self, vocab=None):
         def match_term(reference, value):
             if (
-                reference in (None, np.nan)
+                reference in (None, np.nan, "None")
                 or re.search(reference, value)
                 or reference in value
             ):
@@ -510,6 +510,10 @@ class ObsFile(object):
                     f"{self.filename},{name.lower()},{data_type},{re.sub('[:_]',' ',name)},,,{units},{units}\n"
                 )
 
+        def _save_variable(name, units, data_type="float32"):
+            with open("variable.log", "a") as handle:
+                handle.write(f"{self.filename},{name.lower()},{data_type},{units}\n")
+
         # Load vocabulary
         if vocab is None or isinstance(vocab, str):
             vocab = read_ios_vocabulary(vocab)
@@ -522,6 +526,7 @@ class ObsFile(object):
 
             # Drop trailing spaces and commas
             name = re.sub(r"^\'|[\s\']+$", "", name)
+            units = re.sub(r"^\'|[\s\']+$", "", units)
 
             if re.match(r"\'*(flag|quality_flag)", name, re.IGNORECASE):
                 # TODO add flag related metadata
@@ -538,15 +543,15 @@ class ObsFile(object):
             )
 
             matched_vocab = vocab.loc[name_match_type & match_units]
+            data_type = (
+                self.channel_details["Format"][id].strip()
+                if self.channel_details
+                else None
+            )
+            _save_variable(name.strip(), units.strip(), data_type)
             if not matched_vocab.empty:
                 self.vocabulary_attributes[name] = _generate_vocabulary_attr()
             else:
-
-                data_type = (
-                    self.channel_details["Format"][id].strip()
-                    if self.channel_details
-                    else None
-                )
                 _add_to_missing_vocabulary(name.strip(), units.strip(), data_type)
 
     def get_channel_attributes(self):
