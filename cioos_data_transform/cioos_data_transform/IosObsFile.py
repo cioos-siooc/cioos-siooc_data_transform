@@ -507,7 +507,7 @@ class ObsFile(object):
             print(f"Missing vocabulary for name: {name} Units: {units}")
             with open("missing_vocabulary.txt", "a") as handle:
                 handle.write(
-                    f"{name.lower()},{data_type},{re.sub('[:_]',' ',name)},,,{units},{units}\n"
+                    f"{self.filename},{name.lower()},{data_type},{re.sub('[:_]',' ',name)},,,{units},{units}\n"
                 )
 
         # Load vocabulary
