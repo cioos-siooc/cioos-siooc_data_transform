@@ -519,8 +519,15 @@ class ObsFile(object):
         for id, (name, units) in enumerate(
             zip(self.channels["Name"], self.channels["Units"])
         ):
-            if name.lower().startswith(("flag", "quality_flag")):
+
+            # Drop trailing spaces and commas
+            name = re.sub(r"^\'|[\s\']+$", "", name)
+
+            if re.match(r"\'*(flag|quality_flag)", name, re.IGNORECASE):
                 # TODO add flag related metadata
+                self.vocabulary_attributes[name] = [{}]
+                continue
+            elif re.match("(Date|Time)", name, re.IGNORECASE):
                 self.vocabulary_attributes[name] = [{}]
                 continue
 
