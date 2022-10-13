@@ -36,8 +36,8 @@ carbon:particulate:total,23.0,umol\/L,,float32,Carbon Particulate Total,,umol/L,
 carbon:total:organic,,mg/L,,float32,Carbon Total Organic,,,,,,,,,,1.0,F5.2,{'BOT'}
 carbon:total:organic,26.0,umol\/kg,,float32,Carbon Total Organic,,umol/kg,,,,,,,,24.0,F6.0,{'CHE'}
 carbon:total:organic,25.0,uM|umol\/L,,float32,Carbon Total Organic,,umol/L,,,,,,,,24.0,F6.0,{'CHE'}
-carbontetrachloride,,pmol\/kg,,float32,Carbontetrachloride,,,,,,,,,,4.0,F7.2,{'CHE'}
 carbontetrachloride,27.0,pmol\/L,,f7.2,Carbontetrachloride,,pmol/L,,,,,,,,36.0,f7.2,{'CHE'}
+carbontetrachloride,,pmol\/kg,,float32,Carbontetrachloride,,,,,,,,,,4.0,F7.2,{'CHE'}
 cdom_a250,28.0,m\^-1,,float32,CDOM a250,,1/m,,,,,,,,30.0,F,{'CHE'}
 cdom_a250:a365,29.0,m\^-1,,float32,CDOM a250 a365,,1/m,,,,,,,,30.0,F,{'CHE'}
 cdom_a254,30.0,m\^-1,,float32,CDOM a254,,1/m,,,,,,,,30.0,F,{'CHE'}
@@ -89,8 +89,8 @@ depth,73.0,,,float32,Depth below surface,depth,,,,,,,,,,,
 depth:corrected,,metres,,float32,Depth Corrected,,,,,,,,,,27.0,F,{'BOT'}
 depth:ctd,,metres,,float32,Depth CTD,,,,,,,,,,56.0,F,{'BOT'}
 depth:nominal,74.0,metres|meters,,float32,Depth Nominal,,m,,,,,,,,26.0,F7.1,{'CHE'}
-dimethyl_sulphide,76.0,nmol\/L,,float32,Dimethyl Sulphide,,nmol/L,,,,,,,,,,
 dimethyl_sulphide,75.0,umol\/L,,float32,Dimethyl Sulphide,,umol/L,,,,,,,,2.0,F,{'CHE'}
+dimethyl_sulphide,76.0,nmol\/L,,float32,Dimethyl Sulphide,,nmol/L,,,,,,,,,,
 dimethylsulfoniopropionate_dissolved,78.0,nmol\/L,,float32,Dimethylsulfoniopropionate Dissolved,,nmol/L,,,,,,,,,,
 dimethylsulfoniopropionate_dissolved,77.0,umol\/L,,float32,Dimethylsulfoniopropionate Dissolved,,umol/L,,,,,,,,4.0,F,{'CHE'}
 dimethylsulfoniopropionate_total,80.0,nmol\/L,,float32,Dimethylsulfoniopropionate Total,,nmol/L,,,,,,,,,,
@@ -193,8 +193,8 @@ nitrate,159.0,umol\/L,,float32,Nitrate,,umol/L,,,,,,,,68.0,F,{'CHE'}
 nitrate_plus_nitrite,160.0,ug-at\/L,,float32,Nitrate plus Nitrite,,ug-at/L,,,,,,,,7.0,F6.1,{'CHE'}
 nitrate_plus_nitrite,161.0,umol\/l|umol\/L,,float32,Mole Concentration of Nitrate and Nitrite in Sea Water,mole_concentration_of_nitrate_and_nitrite_in_sea_water,umol/L,,,,,,NTRZAAZ,,,,
 nitrate_plus_nitrite2,162.0,umol\/L,,float32,Nitrate plus Nitrite2,,umol/L,,,,,,,,62.0,F,{'CHE'}
-nitrate_plus_nitrite:isus,163.0,volts|Volts,,float32,Nitrate plus nitrite ISUS,,Volts,,,,,,,,109.0,F,"{'CHE, 'CTD'}"
 nitrate_plus_nitrite:isus,,umol\/L,,float32,Nitrate plus nitrite ISUS,,,,,,,,,,1.0,F,{'CHE'}
+nitrate_plus_nitrite:isus,163.0,volts|Volts,,float32,Nitrate plus nitrite ISUS,,Volts,,,,,,,,109.0,F,"{'CHE, 'CTD'}"
 nitrate_plus_nitrite:isus:voltage,164.0,Volts,,float32,Nitrate plus nitrite ISUS Voltage,,Volts,,,,,,,,14.0,F,{'CHE'}
 nitrite,165.0,umol\/L|mmol\/m,,float32,Nitrite,,umol/L,,,,,,,,122.0,F,"{'CHE, 'UBC'}"
 nitrite,,microg-at\/l,,' ',Nitrite,,,,,,,,,,210.0,' ',{'BOT'}
@@ -205,13 +205,15 @@ nitrogen:particulate:total,169.0,umol\/kg,,float32,Nitrogen Particulate Total,,u
 nitrogen:total,170.0,uM,,float32,Nitrogen Total,,umol/L,,,,,,,,11.0,F7.1,{'CHE'}
 nitrogen:total:dissolved,171.0,uM,,float32,Nitrogen Total Dissolved,,umol/L,,,,,,,,11.0,F7.1,{'CHE'}
 number_of_bin_records,172.0,,,int,,,,,,,,,,,,,
-oxygen,174.0,umol\/kg,,float32,Oxygen concentration,dissolved_oxygen_concentration,umol/kg,,,,,,DOXMZZ01,,,,
-oxygen,175.0,ml\/l|mL\/L,,float32,Oxygen concentration,dissolved_oxygen_concentration,mL/L,,,,,,DOXYZZ01,,,,
-oxygen,173.0,umol\/L|mmol\/m,,float32,Oxygen concentration,dissolved_oxygen_concentration,umol/L,,,,,,DOXY01,x,,,
 oxygen,176.0,mmol\/m,,float32,Oxygen,,mmol/m,,,,,,,,,,
-oxygen:dissolved,177.0,mL\/L,,float32,Oxygen Dissolved,,mL/L,,,,,,,,2786.0,F,"{'CHE, 'CTD'}"
-oxygen:dissolved,,umol/L|mg/L,,float32,Oxygen Dissolved,,,,,,,,,,200.0,F,{'BOT'}
+oxygen,173.0,umol\/L|mmol\/m,,float32,Oxygen concentration,dissolved_oxygen_concentration,umol/L,,,,,,DOXY01,x,,,
+oxygen,,mg\/l,,float32,Oxygen,,,,,,,,,,1787.0,F,{'UBC'}
+oxygen,175.0,ml\/l|mL\/L,,float32,Oxygen concentration,dissolved_oxygen_concentration,mL/L,,,,,,DOXYZZ01,,,,
+oxygen,174.0,umol\/kg,,float32,Oxygen concentration,dissolved_oxygen_concentration,umol/kg,,,,,,DOXMZZ01,,,,
 oxygen:dissolved,178.0,umol\/kg,,float32,Oxygen Dissolved,,umol/kg,,,,,,,,,,
+oxygen:dissolved,177.0,mL\/L,,float32,Oxygen Dissolved,,mL/L,,,,,,,,2786.0,F,"{'CHE, 'CTD'}"
+oxygen:dissolved,,umol\/L,,float32,Oxygen Dissolved,,,,,,,,,,200.0,F,{'BOT'}
+oxygen:dissolved,,mg\/L,,float32,Oxygen Dissolved,,,,,,,,,,200.0,F,{'BOT'}
 oxygen:dissolved2,,mL\/L,,float32,Oxygen Dissolved2,,,,,,,,,,3.0,F,{'CHE'}
 oxygen:dissolved:bottle:mass [ml/l],179.0,umol\/kg,,float32,Oxygen Dissolved Bottle Mass [ml/l],,umol/kg,,,,,,,,,,
 oxygen:dissolved:bottle:volume [ml/l],180.0,mL\/L,,float32,Oxygen Dissolved Bottle Volume [ml/l],,mL/L,,,,,,,,,,
@@ -259,8 +261,8 @@ pressure:atmospheric:sealevel,214.0,mbar,,float32,Pressure Atmospheric SeaLevel,
 pressure:atmospheric:sealevel:flag,215.0,,,int32,Pressure Atmospheric SeaLevel Flag,,,,,,,,,,3.0,I,{'ANE'}
 pressure:ctd,216.0,decibar,,float32,Pressure CTD,,decibar,,,,,,PRESPR01,,,,
 pressure:reversing,,decibar,,float32,Pressure Reversing,,,,,,,,,,44.0,F,{'BOT'}
-production:primary,,mgC\/m\^3\/hour,,float32,Production Primary,,,,,,,,,,184.0,F,{'BOT'}
 production:primary,217.0,mgC\/m\^3\/day,,float32,Production Primary,,mgC/m^3/day,,,,,,,,146.0,F,{'CHE'}
+production:primary,,mgC\/m\^3\/hour,,float32,Production Primary,,,,,,,,,,184.0,F,{'BOT'}
 profile,218.0,,,str,,,,,,,,,,,,,
 propane,219.0,nmol\/L,,float32,Propane,,nmol/L,,,,,,,,2.0,F6.1,{'CHE'}
 radiation:solar,220.0,W\/m\^2,,float32,Solar Radiation,,W/m^2,,,,,,,,,,
@@ -285,11 +287,11 @@ salinity: practical,239.0,PSS-78|PSU,,float32,Sea Water Practical Salinity,sea_w
 salinity: practical,238.0,PSU,,float32,Salinity  Practical,,PSU,,,,,,,,,,
 salinity: pre-1978,240.0,PPT,,float32,Salinity  Pre-1978,,PPT,,,,,,,,,,
 salinity: pre-1978,241.0,PPT,,float32,Salinity  Pre-1978,,PPT,,,,,,,,,,
+salinity:bottle,,,,float32,Salinity Bottle,,,,,,,,,,32.0,F9.4,{'CHE'}
 salinity:bottle,243.0,PSS-78,,float32,Salinity Bottle,,PSS-78,,,,,,,,,,
 salinity:bottle,242.0,PPT|ppt,,float32,Salinity Bottle,,PPT,,,,,,,,23.0,F,{'CHE'}
-salinity:bottle,,nan,,float32,Salinity Bottle,,,,,,,,,,32.0,F9.4,{'CHE'}
-salinity:ctd,244.0,PSS-78,,float32,Salinity CTD,,PSS-78,,,,,,,,,,
 salinity:ctd,,umol\/kg,,float32,Salinity CTD,,,,,,,,,,6.0,F,{'BOT'}
+salinity:ctd,244.0,PSS-78,,float32,Salinity CTD,,PSS-78,,,,,,,,,,
 salinity:cur,246.0,ppt,,float32,Sea Water Practical Salinity,sea_water_practical_salinity,PPT,,,,,,ODSDM021,,,,
 salinity:cur,245.0,PSS-78,,float32,Sea Water Practical Salinity,sea_water_practical_salinity,PSS-78,,,,,,PSLTZZ01,,,,
 salinity:t0:c0,247.0,PSS-78,,float32,Salinity T0 C0,,PSS-78,,,,,,,,,,
@@ -336,9 +338,9 @@ station,,None,,' ',Station,,,,,,,,,,1.0,' ',{'BOT'}
 station_name,282.0,,,NQ,Station Name,,,,,,,,,,,,
 str_id,283.0,,,str,,,,,,,,,,,,,
 sulphate so4,284.0,mol\/m,,float32,Sulphate SO4,,mol/m,,,,,,,,7.0,F,{'UBC'}
+temperature,287.0,ITS90|ITS-90,,float32,Sea Water Temperature,sea_water_temperature,degree_celsius (ITS-90),ITS-90,,,,,TEMPS9,,,,
 temperature,285.0,DEG C|Deg c|deg C|deg c|degc|deg C|Degrees_C,,,Sea Water Temperature,sea_water_temperature,degree_celsius,,,,,,,,406.0,,"{'UBC, 'BOT'}"
 temperature,286.0,IPTS-68|IPTS68|DEG C \(ITS 68\),,float32,Sea Water Temperature,sea_water_temperature,degree_celsius (IPTS-68),IPTS-68,,,,,TEMPS6,,,,
-temperature,287.0,ITS90|ITS-90,,float32,Sea Water Temperature,sea_water_temperature,degree_celsius (ITS-90),ITS-90,,,,,TEMPS9,,,,
 temperature:air,288.0,deg C,,float32,Temperature Air,,degree_celsius,,,,,,,,,,
 temperature:air,289.0,deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,float32,Temperature Air,,degree_celsius (ITS-90),,,,,,,,31.0,F,{'ANE'}
 temperature:air:1,290.0,deg C,,float32,Temperature Air 1,,degree_celsius,,,,,,,,1.0,F,{'ANE'}
@@ -351,8 +353,8 @@ temperature:air:flag,296.0,,,int32,Temperature Air Flag,,,,,,,,,,3.0,I,{'ANE'}
 temperature:air:high,297.0,deg C,,float32,Temperature Air High,,degree_celsius,,,,,,,,,,
 temperature:air:high,298.0,deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,float32,Temperature Air High,,degree_celsius (ITS-90),,,,,,,,31.0,F,{'ANE'}
 temperature:air:high:flag,299.0,,,int32,Temperature Air High Flag,,,,,,,,,,3.0,I,{'ANE'}
-temperature:air:inside,300.0,deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,float32,Temperature Air Inside,,degree_celsius (ITS-90),,,,,,,,29.0,F,{'ANE'}
 temperature:air:inside,301.0,deg C,,float32,Temperature Air Inside,,degree_celsius,,,,,,,,,,
+temperature:air:inside,300.0,deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,float32,Temperature Air Inside,,degree_celsius (ITS-90),,,,,,,,29.0,F,{'ANE'}
 temperature:air:low,302.0,deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,float32,Temperature Air Low,,degree_celsius (ITS-90),,,,,,,,31.0,F,{'ANE'}
 temperature:air:low,303.0,deg C,,float32,Temperature Air Low,,degree_celsius,,,,,,,,,,
 temperature:air:low:flag,304.0,,,int32,Temperature Air Low Flag,,,,,,,,,,3.0,I,{'ANE'}
@@ -363,8 +365,8 @@ temperature:cur,306.0,deg C \(IPTS68\),,float32,Sea Water Temperature,sea_water_
 temperature:cur,307.0,deg c|degc,,float32,Sea Water Temperature,sea_water_temperature,degree_celsius,,,,,,TEMPPR01,,,,
 temperature:cur:high_res,308.0,deg C \(IPTS68\),,float32,Sea Water Temperature (High Resolution),sea_water_temperature,degree_celsius (IPTS-68),,,,,,TEMPP682,,,,
 temperature:cur:high_res,309.0,deg c|degc,,float32,Sea Water Temperature (High Resolution),sea_water_temperature,degree_celsius,,,,,,TEMPPR02,,,,
-temperature:cur:low_res,310.0,deg c|degc,,float32,Sea Water Temperature (Low Resolution),sea_water_temperature,degree_celsius,,,,,,TEMPPR03,,,,
 temperature:cur:low_res,311.0,deg C \(IPTS68\),,float32,Sea Water Temperature (Low Resolution),sea_water_temperature,degree_celsius (IPTS-68),,,,,,TEMPP683,,,,
+temperature:cur:low_res,310.0,deg c|degc,,float32,Sea Water Temperature (Low Resolution),sea_water_temperature,degree_celsius,,,,,,TEMPPR03,,,,
 temperature:draw,312.0,deg C \(ITS90\),,float32,Temperature Draw,,degree_celsius (ITS-90),,,,,,,,,,
 temperature:flag,313.0,,,int32,Temperature Flag,,,,,,,,,,2.0,I,{'ANE'}
 temperature:heat_index,314.0,deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,float32,Temperature Heat Index,,degree_celsius (ITS-90),,,,,,,,31.0,F,{'ANE'}
@@ -377,9 +379,9 @@ temperature:lab,320.0,deg C \(ITS90\),,float32,Temperature Lab,,degree_celsius (
 temperature:low_res,321.0,deg C \(IPTS68\),,float32,Sea Water Temperature Low Res,,degree_celsius (IPTS-68),,,,,,,,,,
 temperature:low_res,322.0,deg C \(IPTS68\),,float32,Sea Water Temperature Low Res,,degree_celsius (IPTS-68),,,,,,,,,,
 temperature:oxygen,323.0,DEG C,,float32,Temperature Oxygen,,degree_celsius,,,,,,,,206.0,F,{'CTD'}
-temperature:primary,324.0,deg C \(IPTS68\),,float32,Temperature Primary,,degree_celsius (IPTS-68),,,,,,,,,,
-temperature:primary,325.0,deg C \(ITS90\),,float32,Temperature Primary,,degree_celsius (ITS-90),,,,,,,,,,
 temperature:primary,326.0,DEG C \(ITS90\),,float32,Temperature Primary,,degree_celsius (ITS-90),,,,,,,,206.0,F,{'CTD'}
+temperature:primary,325.0,deg C \(ITS90\),,float32,Temperature Primary,,degree_celsius (ITS-90),,,,,,,,,,
+temperature:primary,324.0,deg C \(IPTS68\),,float32,Temperature Primary,,degree_celsius (IPTS-68),,,,,,,,,,
 temperature:reversing,327.0,deg C,,float32,Temperature Reversing,,degree_celsius,,,,,,,,14.0,F,{'CHE'}
 temperature:second,328.0,deg C \(ITS90\)|deg C \(ITS9|deg C|deg C \(ITS-90\),,float32,Temperature Second,,degree_celsius (ITS-90),,,,,,,,20.0,F,{'ANE'}
 temperature:secondary,329.0,deg C \(IPTS68\),,float32,Temperature Secondary,,degree_celsius (IPTS-68),,,,,,,,2.0,F,{'CTD'}
@@ -389,8 +391,8 @@ temperature:temperature_humidity_sun_index,332.0,deg C,,float32,Temperature Temp
 temperature:temperature_humidity_sun_wind_index,333.0,deg C,,float32,Temperature Temperature Humidity Sun Wind Index,,degree_celsius,,,,,,,,9.0,F,{'ANE'}
 temperature:temperature_humidity_wind_index,334.0,deg C,,float32,Temperature Temperature Humidity Wind Index,,degree_celsius,,,,,,,,,,
 temperature:temperature_humidity_wind_index,335.0,deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,float32,Temperature Temperature Humidity Wind Index,,degree_celsius (ITS-90),,,,,,,,31.0,F,{'ANE'}
-temperature:wind_chill_index,336.0,deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,float32,Temperature Wind Chill Index,,degree_celsius (ITS-90),,,,,,,,31.0,F,{'ANE'}
 temperature:wind_chill_index,337.0,deg C,,float32,Temperature Wind Chill Index,,degree_celsius,,,,,,,,,,
+temperature:wind_chill_index,336.0,deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,float32,Temperature Wind Chill Index,,degree_celsius (ITS-90),,,,,,,,31.0,F,{'ANE'}
 time,338.0,,,double,time,time,,,,,,,,,,,
 time,339.0,HH:MM:SS,,str,,,HH:MM:SS,,,,,,,,,,
 time:day_of_year,340.0,days,,float32,Time Day Of Year,,days,,,,,,,,,,
