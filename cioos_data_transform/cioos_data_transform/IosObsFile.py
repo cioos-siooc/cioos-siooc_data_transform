@@ -566,7 +566,9 @@ class ObsFile(object):
 
     def get_channel_attributes(self):
         def _map_dtype(ios_type):
-            if ios_type in ios_dtypes_to_python:
+            if ios_type.strip() in (None,""):
+                return str
+            elif ios_type in ios_dtypes_to_python:
                 return ios_dtypes_to_python[ios_type]
             elif ios_type[0] in ios_dtypes_to_python:
                 return ios_dtypes_to_python[ios_type[0]]
