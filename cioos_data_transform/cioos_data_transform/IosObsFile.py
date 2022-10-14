@@ -358,9 +358,19 @@ class ObsFile(object):
         data = data.rstrip().ljust(len(mask))
         a = [d == "-" for d in mask]
         ret = []
+        quoted = False
+        pass_column_limit = False
         for i in range(len(data)):
-            if not a[i]:
+            # Some IOS tables have quoted values that extend over the limits of the colmns
+            if data[i] == "'":
+                if quoted and pass_column_limit:
+                    pass_column_limit = False
+                    ret.append("*")
+                quoted = not quoted
+            elif not a[i] and not quoted:
                 ret.append("*")
+            elif not a[i]:
+                pass_column_limit = True
             else:
                 ret.append(data[i])
         buf = "".join(ret).split("*")
