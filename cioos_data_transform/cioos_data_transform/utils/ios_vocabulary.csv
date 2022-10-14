@@ -126,7 +126,7 @@ fluorescence:calibrated:wetlab,102.0,mg\/m\^3,,float32,Sea Water Calibrated Fluo
 fluorescence:calibrated:wetlabs,103.0,mg\/m\^3,,float32,Fluorescence Calibrated Wetlabs,,mg/m^3,,,,,,,,123.0,F,{'CTD'}
 fluorescence:ctd,104.0,mg\/m\^3,,float32,Fluorescence CTD,,mg/m^3,,,,,,,,,,
 fluorescence:uru,105.0,mg\/m\^3,,float32,Sea Water Fluorescence,,mg/m^3,,,,,,,,,,
-fluorescence:uru:ctd,,mg\/m^3,,float32,Fluorescence URU CTD,,,,,,,,,,18.0,F,{'BOT'}
+fluorescence:uru:ctd,,mg\/m\^3,,float32,Fluorescence URU CTD,,,,,,,,,,18.0,F,{'BOT'}
 fluorescence:uru:rbr,,mg\/m\^3,,float32,Fluorescence URU RBR,,,,,,,,,,5.0,F,{'CTD'}
 fluorescence:uru:seapoint,106.0,mg\/m\^3,,float32,Sea Water Fluorescence Seapoint,,mg/m^3,,,,,,,,,,
 fluorescence:uru:seapoint:2,107.0,mg\/m\^3,,float32,Fluorescence URU Seapoint 2,,mg/m^3,,,,,,,,17.0,F,{'CHE'}
@@ -417,6 +417,7 @@ temperature:temperature_humidity_wind_index,335.0,deg c \(ITS\-90\)|deg C \(ITS9
 temperature:upcast,,deg C \(ITS90\),,float32,Temperature Upcast,,,,,,,,,,4.0,F,{'CTD'}
 temperature:wind_chill_index,337.0,deg C,,float32,Temperature Wind Chill Index,,degree_celsius,,,,,,,,,,
 temperature:wind_chill_index,336.0,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,float32,Temperature Wind Chill Index,,degree_celsius (ITS-90),,,,,,,,31.0,F,{'ANE'}
+thin flag,,None,,float32,,,,,,,,,,,,,
 time,339.0,HH:MM:SS,,str,,,HH:MM:SS,,,,,,,,,,
 time,338.0,,,double,time,time,,,,,,,,,,,
 time:day_of_year,340.0,days,,float32,Time Day Of Year,,days,,,,,,,,,,
