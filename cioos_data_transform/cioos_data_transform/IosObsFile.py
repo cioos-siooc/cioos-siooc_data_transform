@@ -566,7 +566,7 @@ class ObsFile(object):
 
     def get_channel_attributes(self):
         def _map_dtype(ios_type):
-            if ios_type.strip() in (None,""):
+            if ios_type.strip() in (None, ""):
                 return str
             elif ios_type in ios_dtypes_to_python:
                 return ios_dtypes_to_python[ios_type]
@@ -662,6 +662,8 @@ class ObsFile(object):
             {chan: attrs["dtype"] for chan, attrs in channel_attributes.items()}
         )
         ds = df.to_xarray()
+        if self.obs_time:
+            ds["observation_time"] = (ds.dims, self.obs_time)
 
         # Generate global attributes
         ds.attrs.update(_format_attributes(self.administration))
@@ -902,6 +904,8 @@ class BotFile(ObsFile):
 
 
 class GenFile(ObsFile):
+    """General method used to parse the different IOS data types."""
+
     def import_data(self):
         self.type = None
         self.start_dateobj, self.start_date = self.get_date(opt="start")
@@ -933,4 +937,7 @@ class GenFile(ObsFile):
             except Exception as e:
                 return 0
 
+        chnList = [i.strip().lower() for i in self.channels["Name"]]
+        if "date" in chnList and "time" in chnList:
+            self.get_obs_time()
         return 1
