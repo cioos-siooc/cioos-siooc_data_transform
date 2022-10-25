@@ -13,15 +13,16 @@ standard_name_range = {
 
 def review_data_range(dataset: xr.Dataset, drop_bad_values: bool = True) -> xr.Dataset:
     """Review each standard_name variables and drop any values out of the acceptable range.s"""
-    for standard_name, range in standard_name_range.items():
+    for standard_name, (min_range,max_range) in standard_name_range.items():
         for var in dataset.filter_by_attrs(standard_name=standard_name):
-            in_range = (range[0] < dataset[var]) & (dataset[var] < range[1])
-            if any(~in_range) and drop_bad_values:
-                dataset[var] = xr.where(in_range, dataset[var], np.nan)
+            in_range = (min_range < dataset[var]) & (dataset[var] < max_range)
+            if any(~in_range):
                 logger.warning(
                     "Some values in %s is out of range %s %s.",
                     var,
                     standard_name_range,
-                    range,
+                    (min_range,max_range),
                 )
+                if drop_bad_values:
+                    dataset[var] = xr.where(in_range, dataset[var], np.nan)
     return dataset
