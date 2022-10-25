@@ -12,7 +12,6 @@ import pandas as pd
 from cioos_data_transform.utils.utils import read_geojson
 from odf_transform import attributes
 from odf_transform import parser as odf_parser
-from odf_transform import review_data
 from odf_transform._version import __version__
 from odf_transform.utils import seabird
 from odf_transform.utils.standarize_attributes import standardize_dataset
@@ -138,7 +137,7 @@ def odf_to_netcdf(odf_path, config=None):
 
     # Write global and variable attributes
     dataset.attrs = config["global_attributes"]
-    dataset.attrs["source"] = odf_path
+    dataset.attrs['source'] =  odf_path
     dataset = attributes.global_attributes_from_header(dataset, metadata, config=config)
     dataset.attrs[
         "history"
@@ -152,7 +151,7 @@ def odf_to_netcdf(odf_path, config=None):
 
     # Define coordinates variables from attributes, assign geographic_area and nearest stations
     dataset = attributes.generate_coordinates_variables(dataset)
-    dataset = attributes.generate_spatial_attributes(dataset, config)
+    dataset = attributes.generate_spatial_attributes(dataset,config)
 
     # Add Vocabulary attributes
     dataset = odf_parser.get_vocabulary_attributes(
@@ -192,9 +191,6 @@ def odf_to_netcdf(odf_path, config=None):
         and "depth" in dataset
     ):
         dataset = dataset.swap_dims({"index": "depth"}).drop_vars("index")
-
-    # Review data range
-    dataset = review_data.review_data_range(dataset)
 
     # Log variables available per file
     logger.info(f"Variable List: {list(dataset)}")
@@ -285,6 +281,7 @@ def run_odf_conversion_from_config(config):
             or outputted_files[os.path.basename(file)]["last_modified"]
             < os.path.getmtime(file)
         ]
+
 
     def _generate_input_by_program(files, config):
         """Generate mission specific input to apply for the conversion
