@@ -114,6 +114,16 @@ class TestIOSConversion(unittest.TestCase):
         for fn in files:
             convert_bot_files(f=fn, out_path=OUTPUT_PATH)
 
+    def test_drf_files(self):
+        """Test to parse drf files to xarray and netCDF"""
+        files = glob(
+            fix_path("./projects/ios_data_transform/tests/test_files/drf/*.*"),
+            recursive=True,
+        )
+        assert len(files) > 0, "No files found for conversion tests"
+        for fn in files:
+            convert_any_files(f=fn, out_path=OUTPUT_PATH)
+
     def test_all_ios_files(self):
         """Test to convert all the file types by using the general parser"""
         files = glob(
