@@ -76,7 +76,7 @@ def convert_any_files(f, out_path):
         fdata.add_ios_vocabulary()
         ds = fdata.to_xarray()
 
-        # ds.to_netcdf(out_path + f.split(os.path.sep)[-1] + ".nc")
+        ds.to_netcdf(out_path + f.split(os.path.sep)[-1] + ".nc")
 
 
 class TestIOSConversion(unittest.TestCase):
