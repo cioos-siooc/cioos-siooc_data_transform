@@ -15,10 +15,7 @@ from odf_transform.utils.seabird import (
     get_seabird_instrument_from_header,
     get_seabird_processing_history,
 )
-from cioos_data_transform.utils.utils import (
-    get_geo_code,
-    get_nearest_station
-)
+from cioos_data_transform.utils.utils import get_geo_code, get_nearest_station
 
 no_file_logger = logging.getLogger(__name__)
 logger = logging.LoggerAdapter(no_file_logger, {"file": None})
@@ -263,7 +260,7 @@ def _generate_instrument_attributes(odf_header, instrument_manufacturer_header=N
     # Attempt to generate an instrument_type attribute
     # TODO handle Aanderaa RCM-4
     if re.search(
-        r"(SBE\s*(9|16|19|25|37))|CTD|Guildline|GUILDLN|GUILDLIN|GLD3NO.2|STD",
+        r"(SBE\s*(9|16|19|25|37))|Sea-Bird|CTD|Guildline|GUILDLN|GUILDLIN|GULIDLIN|GLDLNE|GULDLNEDIG|GLD3NO.2|STD",
         attributes["instrument"],
         re.IGNORECASE,
     ):
@@ -357,7 +354,7 @@ def global_attributes_from_header(dataset, odf_header, config=None):
 
     def _review_longitude(value):
         return value if value != -999.9 else None
-    
+
     def _get_attribute_mapping_corrections():
         return {
             attr: attr_mapping[dataset.attrs[attr]]
@@ -427,8 +424,12 @@ def global_attributes_from_header(dataset, odf_header, config=None):
         }
     )
     # Apply global attributes corrections
-    dataset.attrs.update(config['global_attributes'])
-    dataset.attrs.update(config['file_specific_attributes'].get(os.path.basename(dataset.attrs['source']),{}))
+    dataset.attrs.update(config["global_attributes"])
+    dataset.attrs.update(
+        config["file_specific_attributes"].get(
+            os.path.basename(dataset.attrs["source"]), {}
+        )
+    )
     dataset.attrs.update(_get_attribute_mapping_corrections())
 
     # Generate attributes from other attributes
@@ -503,15 +504,17 @@ def generate_coordinates_variables(dataset):
     return dataset
 
 
-def generate_spatial_attributes(dataset,config):
+def generate_spatial_attributes(dataset, config):
     if "latitude" not in dataset or "longitude" not in dataset:
-        logger.warning("Missing latitude and/or longitude, we can't generate spatial attributes")
+        logger.warning(
+            "Missing latitude and/or longitude, we can't generate spatial attributes"
+        )
         return dataset
 
     dataset.attrs["geographic_area"] = get_geo_code(
-            [dataset["longitude"].mean(), dataset["latitude"].mean()],
-            config["geographic_areas"],
-        )
+        [dataset["longitude"].mean(), dataset["latitude"].mean()],
+        config["geographic_areas"],
+    )
 
     nearest_station = get_nearest_station(
         config["reference_stations"][["station", "latitude", "longitude"]].values,
@@ -521,7 +524,7 @@ def generate_spatial_attributes(dataset,config):
 
     if nearest_station:
         dataset.attrs["station"] = nearest_station
-    
+
     # If no nearest station exist and the file suggest one, log it.
     if (
         dataset.attrs.get("station")
