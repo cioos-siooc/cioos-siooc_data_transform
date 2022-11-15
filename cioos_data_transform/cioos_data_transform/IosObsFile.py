@@ -547,7 +547,7 @@ class ObsFile(object):
                 continue
 
             units = re.sub("^'|'$", "", units)
-            name_match_type = vocab["name"] == name.strip().lower()
+            name_match_type = vocab["ios_name"] == name.strip().lower()
             match_units = vocab["accepted_units"].apply(
                 lambda x: match_term(x, units.strip())
             )
