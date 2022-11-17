@@ -38,6 +38,7 @@ seabird_to_bodc = {
     "Fluorometer, Wetlabs Wetstar": ["CPHLPR01", "CPHLPR02"],
     "Fluorometer, Wetlab Wetstar": ["CPHLPR01", "CPHLPR02"],
     "Fluorometer, WET Labs ECO-AFL/FL": ["CPHLPR01", "CPHLPR02"],
+    "Fluorometer, Seatech/Wetlabs FLF": ["CPHLPR01", "CPHLPR02"],
     "Fluorometer, Chelsea Aqua": ["CPHLPR01", "CPHLPR02"],
     "Fluorometer, Chelsea Aqua 3": ["CPHLPR01", "CPHLPR02"],
     "Fluorometer, Chelsea Minitracka": ["CPHLPR01", "CPHLPR02"],
