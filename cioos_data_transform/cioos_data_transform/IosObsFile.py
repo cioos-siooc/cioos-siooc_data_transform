@@ -715,13 +715,14 @@ class ObsFile(object):
 
         # Set dimensions from index
         if "time" in ds:
-            ds = ds.swap_dims({"index": "observation_time"})
+            ds = ds.swap_dims({"index": "time"})
 
         # Set coordinates
         coordinates_variables = ["time", "Latitude", "Longitude", "depth"]
-        ds = ds.set_coords(
-            [var for var in coordinates_variables if var in ds]
-        ).reset_coords("index")
+        if any(var in ds for var in coordinates_variables):
+            ds = ds.set_coords(
+                [var for var in coordinates_variables if var in ds]
+            ).reset_coords("index")
 
         return ds
 
