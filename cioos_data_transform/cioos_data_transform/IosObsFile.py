@@ -658,6 +658,9 @@ class ObsFile(object):
         # Format data type
         # TODO replace Pad values
         channel_attributes = self.get_channel_attributes()
+        df = df.replace(
+            {chan: attrs["Pad"] for chan, attrs in channel_attributes.items()}, np.nan
+        )
         df = df.astype(
             {chan: attrs["dtype"] for chan, attrs in channel_attributes.items()}
         )
