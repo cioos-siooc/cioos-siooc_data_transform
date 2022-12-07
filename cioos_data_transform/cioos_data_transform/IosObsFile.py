@@ -666,7 +666,7 @@ class ObsFile(object):
         )
         ds = df.to_xarray()
         if self.obs_time:
-            ds["observation_time"] = (ds.dims, self.obs_time)
+            ds["time"] = (ds.dims, self.obs_time)
 
         # Generate global attributes
         ds.attrs.update(_format_attributes(self.administration))
