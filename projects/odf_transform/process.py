@@ -353,8 +353,14 @@ def run_odf_conversion_from_config(config):
             file for file in odf_files_list if not re.search("|".join(missions), file)
         ]
         if unmatched_odfs:
+            logger.info(
+                "%s odf files aren't matched to any provided missions",
+                len(unmatched_odfs),
+            )
             with open("unmatched_odfs.txt", "w", encoding="UTF-8") as file_handle:
                 file_handle.write("\n".join(unmatched_odfs))
+        else:
+            logger.info("All odf files available match a mission")
 
     # Sort files that needs to be converted
     if config["overwrite"]:
