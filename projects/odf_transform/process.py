@@ -346,11 +346,11 @@ def run_odf_conversion_from_config(config):
                     "No file available is related to program_log input %s",
                     row.dropna().to_dict(),
                 )
-        odf_files_list = [
-            file for file in odf_files_list if re.search("|".join(missions), file)
-        ]
         unmatched_odfs = [
             file for file in odf_files_list if not re.search("|".join(missions), file)
+        ]
+        odf_files_list = [
+            file for file in odf_files_list if re.search("|".join(missions), file)
         ]
         if unmatched_odfs:
             logger.warning(
