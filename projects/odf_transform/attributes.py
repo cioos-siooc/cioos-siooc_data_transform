@@ -57,6 +57,8 @@ def _generate_cf_history_from_odf(odf_header):
         "history": "",
     }
     for history_group in odf_header["HISTORY_HEADER"]:
+        if "PROCESS" not in history_group:
+            continue
         # Convert single processes to list
         if isinstance(history_group["PROCESS"], str):
             history_group["PROCESS"] = [history_group["PROCESS"]]
