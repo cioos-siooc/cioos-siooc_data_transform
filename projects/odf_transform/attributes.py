@@ -330,7 +330,7 @@ def _generate_program_specific_attritutes(global_attributes):
             "cruise_name": None if project else f"{program} {season} {year}",
         }
 
-    elif program == "Maritime Region Ecosystem Survey":
+    elif program == "Maritimes Region Ecosystem Survey":
         season = "Summer" if 5 <= month <= 9 else "Winter"
         return {
             "project": f"{program} {season}",
