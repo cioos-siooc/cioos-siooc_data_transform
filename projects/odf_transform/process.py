@@ -201,10 +201,13 @@ def odf_to_netcdf(odf_path, config=None):
     else:
         # Retrieve subfolder path
         subfolders = [
-            dataset.attrs.get(key, default)
-            for key, default in config.get(
-                "subfolder_attribute_output_path", {}
-            ).items()
+            dataset.attrs.get(
+                key,
+                str(dataset["time"].min().dt.year.item(0))
+                if default == "year"
+                else default,
+            )
+            for key, default in config["subfolder_attribute_output_path"].items()
             if dataset.attrs.get(key, default)
         ]
         output_path = os.path.join(
