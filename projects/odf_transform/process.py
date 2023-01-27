@@ -200,16 +200,6 @@ def odf_to_netcdf(odf_path, config=None):
         output_path = odf_path + config["addFileNameSuffix"] + ".nc"
     else:
         # Retrieve subfolder path
-        subfolders = [
-            str(dataset.attrs.get(
-                key,
-                dataset["time"].min().dt.year.item(0)
-                if default == "year"
-                else default,
-            ))
-            for key, default in config["subfolder_attribute_output_path"].items()
-            if dataset.attrs.get(key, default)
-        ]
         output_path = os.path.join(
             eval('f"{}"'.format(config["output_path"])),
             os.path.basename(odf_path) + config["addFileNameSuffix"] + ".nc",
