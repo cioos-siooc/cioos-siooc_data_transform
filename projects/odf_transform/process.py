@@ -201,7 +201,8 @@ def odf_to_netcdf(odf_path, config=None):
     else:
         # Retrieve subfolder path
         output_path = os.path.join(
-            eval('f"{}"'.format(config["output_path"])),
+            config['output_path'],
+            eval('f"{}"'.format("".join(config["subfolder_path"]))),
             os.path.basename(odf_path) + config["addFileNameSuffix"] + ".nc",
         )
 

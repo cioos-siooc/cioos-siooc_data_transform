@@ -3,7 +3,12 @@
   "recursive": true,
   "pathRegex": null,
   "program_log_path": null,
-  "output_path": "./output/{dataset.attrs.get('program','Other')}/{dataset.attrs['project']+'/'+dataset.attrs['cruise_name'] if 'project' in dataset.attrs else str(dataset['time'].dt.year.min().item(0))}/{dataset.attrs['cruise_number']}",
+  "output_path": "./output/",
+  "subfolder_path": [
+    "{dataset.attrs.get('program','Other')}/",
+    "{(dataset.attrs['project'] + '/')if 'project' in dataset.attrs else ''}",
+    "{dataset.attrs['cruise_name'] if dataset.attrs.get('program') in ['Atlantic Zone Off-Shelf Monitoring Program','Atlantic Zone Monitoring Program','Maritimes Region Ecosystem Survey'] else str(dataset['time'].dt.year.min().item(0))}"
+  ],
   "addFileNameSuffix": "_dev",
   "overwrite": false,
   "geographic_area_reference_files": [
