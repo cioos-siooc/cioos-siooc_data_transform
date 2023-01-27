@@ -3,12 +3,7 @@
   "recursive": true,
   "pathRegex": null,
   "program_log_path": null,
-  "output_path": "./output",
-  "subfolder_attribute_output_path": {
-    "program": "Others",
-    "project": "year",
-    "cruise_number": null
-  },
+  "output_path": "./output/{dataset.attrs.get('program','Other')}/{dataset.attrs['project']+'/'+dataset.attrs['cruise_name'] if 'project' in dataset.attrs else str(dataset['time'].dt.year.min().item(0))}/{dataset.attrs['cruise_number']}",
   "addFileNameSuffix": "_dev",
   "overwrite": false,
   "geographic_area_reference_files": [
