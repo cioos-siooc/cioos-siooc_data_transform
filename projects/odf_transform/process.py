@@ -137,7 +137,7 @@ def odf_to_netcdf(odf_path, config=None):
 
     # Write global and variable attributes
     dataset.attrs = config["global_attributes"]
-    dataset.attrs['source'] =  odf_path
+    dataset.attrs["source"] = odf_path
     dataset = attributes.global_attributes_from_header(dataset, metadata, config=config)
     dataset.attrs[
         "history"
@@ -151,7 +151,7 @@ def odf_to_netcdf(odf_path, config=None):
 
     # Define coordinates variables from attributes, assign geographic_area and nearest stations
     dataset = attributes.generate_coordinates_variables(dataset)
-    dataset = attributes.generate_spatial_attributes(dataset,config)
+    dataset = attributes.generate_spatial_attributes(dataset, config)
 
     # Add Vocabulary attributes
     dataset = odf_parser.get_vocabulary_attributes(
@@ -200,16 +200,9 @@ def odf_to_netcdf(odf_path, config=None):
         output_path = odf_path + config["addFileNameSuffix"] + ".nc"
     else:
         # Retrieve subfolder path
-        subfolders = [
-            dataset.attrs.get(key, default)
-            for key, default in config.get(
-                "subfolder_attribute_output_path", {}
-            ).items()
-            if dataset.attrs.get(key, default)
-        ]
         output_path = os.path.join(
-            config["output_path"],
-            *subfolders,
+            config['output_path'],
+            eval('f"{}"'.format("".join(config["subfolder_path"]))),
             os.path.basename(odf_path) + config["addFileNameSuffix"] + ".nc",
         )
 
@@ -282,7 +275,6 @@ def run_odf_conversion_from_config(config):
             < os.path.getmtime(file)
         ]
 
-
     def _generate_input_by_program(files, config):
         """Generate mission specific input to apply for the conversion
 
@@ -347,9 +339,21 @@ def run_odf_conversion_from_config(config):
                     "No file available is related to program_log input %s",
                     row.dropna().to_dict(),
                 )
+        unmatched_odfs = [
+            file for file in odf_files_list if not re.search("|".join(missions), file)
+        ]
         odf_files_list = [
             file for file in odf_files_list if re.search("|".join(missions), file)
         ]
+        if unmatched_odfs:
+            logger.warning(
+                "%s odf files aren't matched to any provided missions",
+                len(unmatched_odfs),
+            )
+            with open("unmatched_odfs.txt", "w", encoding="UTF-8") as file_handle:
+                file_handle.write("\n".join(unmatched_odfs))
+        else:
+            logger.warning("All odf files available match a mission")
 
     # Sort files that needs to be converted
     if config["overwrite"]:
