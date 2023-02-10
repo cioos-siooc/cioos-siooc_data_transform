@@ -327,7 +327,7 @@ def run_odf_conversion_from_config(config):
                 file_handle.write("\n".join(files_matched['files']))
 
         # Generate inputs to conversion tool
-        return [(file, config, attrs.dropna().to_dict()) for file, attrs in files_matched.set_index('files').iterrows()]
+        return [(file, config, attrs.dropna().to_dict()) for file, attrs in files_matched.query('program.notna()').set_index('files').iterrows()]
 
     # Parse config file if file is given
     if isinstance(config, str):
