@@ -290,21 +290,13 @@ def run_odf_conversion_from_config(config):
         Returns:
             list: list of inputs used for each files [(file_path, file_specific_configuration),...]
         """
-        def _generate_input(file,global_attributes):
-            file_config = copy.deepcopy(config)
-            file_config['global_attributes'].update(global_attributes)
-            return (file,file_config)
         
         logger.info(
             "Generate Mission Specific Configuration for %s files associated with %s missions",
             len(files),
             len(config["program_log"]),
         )
-        inputs = []
-        tqdm_dict = {
-            "desc": "Generate file specific configuration",
-            "total": len(files),
-        }
+
         df_files = pd.DataFrame({"files":files})
         df_files['mission'] = df_files['files'].apply(_get_mission_from_bio_filename)
         program_log = config['program_log'].set_index('mission')
