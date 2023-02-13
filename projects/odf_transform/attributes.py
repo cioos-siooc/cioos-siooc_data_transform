@@ -262,7 +262,7 @@ def _generate_instrument_attributes(odf_header, instrument_manufacturer_header=N
     # Attempt to generate an instrument_type attribute
     # TODO handle Aanderaa RCM-4
     if re.search(
-        r"(SBE\s*(9|16|19|25|37))|Sea-Bird|CTD|Guildline|GUILDLN|GUILDLIN|GULIDLIN|GLDLNE|GULDLNEDIG|GLD3NO.2|STD",
+        r"(SBE\s*(9|16|19|25|37))|Sea-Bird|CTD|Guildline|GUILDLN|GUILDLIN|GULIDLIN|GLDLNE|GULDLNEDIG|GUIDLINE|GUIDELINE|DIGITAL|GLD3NO.2|STD|RCM",
         attributes["instrument"],
         re.IGNORECASE,
     ):
