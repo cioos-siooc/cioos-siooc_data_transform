@@ -458,7 +458,7 @@ class ObsFile(object):
                 dates = [i.strip() for i in self.data[:, chnList.index("date")]]
                 times = [i.strip() for i in self.data[:, chnList.index("time")]]
             datetime = to_datetime(
-                [date + " " + time for date, time in zip(dates, times)]
+                [date.replace(" ", "") + " " + time for date, time in zip(dates, times)]
             )
             self.obs_time = datetime.to_pydatetime()
             self.obs_time = [
