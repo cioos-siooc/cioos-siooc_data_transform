@@ -464,7 +464,7 @@ class ObsFile(object):
             self.obs_time = [
                 timezone("UTC").localize(i + timedelta(hours=0)) for i in self.obs_time
             ]
-        elif "date" in chnList and "time" not in chnList:
+        elif "date" in chnList:
             if isinstance(self.data[0, chnList.index("date")], bytes):
                 dates = [
                     i.decode("utf8").strip()
@@ -472,7 +472,7 @@ class ObsFile(object):
                 ]
             else:
                 dates = [i.strip() for i in self.data[:, chnList.index("date")]]
-            datetime = to_datetime([date for date in dates])
+            datetime = to_datetime(dates)
             self.obs_time = datetime.to_pydatetime()
             self.obs_time = [
                 timezone("UTC").localize(i + timedelta(hours=0)) for i in self.obs_time
