@@ -955,6 +955,6 @@ class GenFile(ObsFile):
                 return 0
 
         chnList = [i.strip().lower() for i in self.channels["Name"]]
-        if "date" in chnList and "time" in chnList:
+        if "date" in chnList and ("time" in chnList or "time:utc" in chnList):
             self.get_obs_time()
         return 1
