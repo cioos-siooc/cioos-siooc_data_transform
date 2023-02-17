@@ -441,6 +441,9 @@ class ObsFile(object):
 
         chnList = [i.strip().lower() for i in self.channels["Name"]]
 
+        if "time:utc" in chnList:
+            chnList[chnList.index("time:utc")] = "time"
+
         if "date" in chnList and "time" in chnList:
             if isinstance(self.data[0, chnList.index("date")], bytes):
                 dates = [
