@@ -723,9 +723,10 @@ class ObsFile(object):
         # Set coordinates
         coordinates_variables = ["time", "Latitude", "Longitude", "depth"]
         if any(var in ds for var in coordinates_variables):
-            ds = ds.set_coords(
-                [var for var in coordinates_variables if var in ds]
-            ).reset_coords("index")
+            ds = ds.set_coords([var for var in coordinates_variables if var in ds])
+            if "index" in ds.coords and "time" in ds.coords:
+                ds = ds.reset_coords("index")
+
 
         return ds
 
