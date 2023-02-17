@@ -501,8 +501,8 @@ class ObsFile(object):
         def match_term(reference, value):
             if (
                 reference in (None, np.nan, "None")
-                or re.search(reference, value)
-                or reference in value
+                or re.match(reference, value)
+                or value in reference.split("|")
             ):
                 return True
             return False
