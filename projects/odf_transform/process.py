@@ -111,7 +111,7 @@ def read_config(config_file: str = DEFAULT_CONFIG_PATH) -> dict:
     return config
 
 
-def odf_to_netcdf(odf_path, config=None):
+def odf_to_netcdf(odf_path, config=None, global_attributes=None):
     """Convert an ODF file to a netcdf.
     Args:
         odf_path (str): path to ODF file to convert
@@ -122,6 +122,9 @@ def odf_to_netcdf(odf_path, config=None):
     # Use default config if no config is given
     if config is None:
         config = read_config(DEFAULT_CONFIG_PATH)
+    
+    if global_attributes:
+        config['global_attributes'].update(global_attributes)
 
     # Parse the ODF file with the CIOOS python parsing tool
     metadata, raw_data = odf_parser.read(odf_path)
@@ -274,6 +277,8 @@ def run_odf_conversion_from_config(config):
             or outputted_files[os.path.basename(file)]["last_modified"]
             < os.path.getmtime(file)
         ]
+    def _get_mission_from_bio_filename(file):
+        return os.path.basename(file).split('_')[1]
 
     def _generate_input_by_program(files, config):
         """Generate mission specific input to apply for the conversion
@@ -285,28 +290,44 @@ def run_odf_conversion_from_config(config):
         Returns:
             list: list of inputs used for each files [(file_path, file_specific_configuration),...]
         """
+        
         logger.info(
             "Generate Mission Specific Configuration for %s files associated with %s missions",
             len(files),
             len(config["program_log"]),
         )
-        inputs = []
-        tqdm_dict = {
-            "desc": "Generate mission specific configuration",
-            "total": len(config["program_log"]),
-        }
-        for mission, row in tqdm(
-            config["program_log"].set_index("mission", drop=False).iterrows(),
-            **tqdm_dict,
-        ):
-            related_files = [
-                file for file in odf_files_list if re.search(mission, file)
-            ]
-            if related_files:
-                mission_config = copy.deepcopy(config)
-                mission_config["global_attributes"].update(dict(row.dropna()))
-                inputs += [(file, mission_config) for file in related_files]
-        return inputs
+
+        df_files = pd.DataFrame({"files":files})
+        df_files['mission'] = df_files['files'].apply(_get_mission_from_bio_filename)
+        program_log = config['program_log'].set_index('mission')
+
+        # match mission to program_log by exact terms
+        logger.info("Match file by mission with extact term")
+        files_matched = pd.merge(df_files,config['program_log'], on='mission', how='left').set_index('mission', drop=False)
+
+        # tries to match unmatched missions left using regexp
+        logger.info("Match file by mission using regex")
+        for mission in set(files_matched.query('program.isna()').index):
+            matched_mission_expression = [expr for expr in config['program_log']['mission'] if re.match(expr,mission)]
+            if not matched_mission_expression:
+                logger.warning("No program_log entry available for mission: %s", mission)
+                continue
+            elif len(matched_mission_expression)>1:
+                logger.warning("Multiple entry in program_log %s match this mission: %s", matched_mission_expression, mission)
+            files_matched.loc[mission, program_log.columns] = program_log.loc[matched_mission_expression[0]].tolist()
+
+        # flag what's left
+        files_unmatched = files_matched.query('program.isna()')
+        if not files_unmatched.empty:
+            logger.warning(
+                "%s odf files aren't matched to any provided missions",
+                len(files_unmatched),
+            )
+            with open("unmatched_odfs.txt", "w", encoding="UTF-8") as file_handle:
+                file_handle.write("\n".join(files_matched['files']))
+
+        # Generate inputs to conversion tool
+        return [(file, config, attrs.dropna().to_dict()) for file, attrs in files_matched.query('program.notna()').set_index('files').iterrows()]
 
     # Parse config file if file is given
     if isinstance(config, str):
@@ -328,33 +349,6 @@ def run_odf_conversion_from_config(config):
     # Review keep files that needs an update only
     output_path = config["output_path"]
 
-    if config["program_log"] is not None:
-        # Consider only files related to missions available in the program_log
-        missions = config["program_log"]["mission"].values
-        # Review first if any files are matching a specific mission
-        files_list = ", ".join(odf_files_list)
-        for _, row in config["program_log"].iterrows():
-            if re.search(row["mission"], files_list) is None:
-                logger.warning(
-                    "No file available is related to program_log input %s",
-                    row.dropna().to_dict(),
-                )
-        unmatched_odfs = [
-            file for file in odf_files_list if not re.search("|".join(missions), file)
-        ]
-        odf_files_list = [
-            file for file in odf_files_list if re.search("|".join(missions), file)
-        ]
-        if unmatched_odfs:
-            logger.warning(
-                "%s odf files aren't matched to any provided missions",
-                len(unmatched_odfs),
-            )
-            with open("unmatched_odfs.txt", "w", encoding="UTF-8") as file_handle:
-                file_handle.write("\n".join(unmatched_odfs))
-        else:
-            logger.warning("All odf files available match a mission")
-
     # Sort files that needs to be converted
     if config["overwrite"]:
         # overwrite all files
@@ -371,11 +365,10 @@ def run_odf_conversion_from_config(config):
         inputs = [(file, config) for file in odf_files_list]
 
     # Review input list
-    if inputs:
-        logger.info(f"{len(inputs)} files will be converted")
-    else:
+    if not inputs:
         logger.info("No file to convert")
         quit()
+    logger.info(f"{len(inputs)} files will be converted")
 
     tqdm_dict = {
         "total": len(inputs),
