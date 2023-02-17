@@ -119,7 +119,7 @@ projects/odf_transform/odf_transform/p07_reference.csv
 
 
 **/output
+**/temp
 missing_vocabulary.txt
 failed_files.txt
 temp_scripts
-**/temp/*

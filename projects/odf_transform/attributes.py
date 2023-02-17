@@ -8,12 +8,14 @@ import logging
 import re
 from datetime import datetime, timezone
 from difflib import get_close_matches
+import os
 
 import pandas as pd
 from odf_transform.utils.seabird import (
     get_seabird_instrument_from_header,
     get_seabird_processing_history,
 )
+from cioos_data_transform.utils.utils import get_geo_code, get_nearest_station
 
 no_file_logger = logging.getLogger(__name__)
 logger = logging.LoggerAdapter(no_file_logger, {"file": None})
@@ -55,6 +57,8 @@ def _generate_cf_history_from_odf(odf_header):
         "history": "",
     }
     for history_group in odf_header["HISTORY_HEADER"]:
+        if "PROCESS" not in history_group:
+            continue
         # Convert single processes to list
         if isinstance(history_group["PROCESS"], str):
             history_group["PROCESS"] = [history_group["PROCESS"]]
@@ -258,7 +262,7 @@ def _generate_instrument_attributes(odf_header, instrument_manufacturer_header=N
     # Attempt to generate an instrument_type attribute
     # TODO handle Aanderaa RCM-4
     if re.search(
-        r"(SBE\s*(9|16|19|25|37))|CTD|Guildline|GUILDLN|GUILDLIN|GLD3NO.2|STD",
+        r"(SBE\s*(9|16|19|25|37))|Sea-Bird|CTD|Guildline|GUILDLN|GUILDLIN|GULIDLIN|GLDLNE|GULDLNEDIG|GUIDLINE|GUIDELINE|DIGITAL|GLD3NO.2|STD|RCM",
         attributes["instrument"],
         re.IGNORECASE,
     ):
@@ -326,7 +330,7 @@ def _generate_program_specific_attritutes(global_attributes):
             "cruise_name": None if project else f"{program} {season} {year}",
         }
 
-    elif program == "Maritime Region Ecosystem Survey":
+    elif program == "Maritimes Region Ecosystem Survey":
         season = "Summer" if 5 <= month <= 9 else "Winter"
         return {
             "project": f"{program} {season}",
@@ -352,6 +356,13 @@ def global_attributes_from_header(dataset, odf_header, config=None):
 
     def _review_longitude(value):
         return value if value != -999.9 else None
+
+    def _get_attribute_mapping_corrections():
+        return {
+            attr: attr_mapping[dataset.attrs[attr]]
+            for attr, attr_mapping in config["attribute_mapping_corrections"].items()
+            if attr in dataset.attrs and dataset.attrs[attr] in attr_mapping
+        }
 
     odf_original_header = odf_header.copy()
     odf_original_header.pop("variable_attributes")
@@ -414,6 +425,15 @@ def global_attributes_from_header(dataset, odf_header, config=None):
             **cdm_data_type_attributes,
         }
     )
+    # Apply global attributes corrections
+    dataset.attrs.update(config["global_attributes"])
+    dataset.attrs.update(
+        config["file_specific_attributes"].get(
+            os.path.basename(dataset.attrs["source"]), {}
+        )
+    )
+    dataset.attrs.update(_get_attribute_mapping_corrections())
+
     # Generate attributes from other attributes
     dataset.attrs["title"] = _generate_title_from_global_attributes(dataset.attrs)
     dataset.attrs.update(**_generate_program_specific_attritutes(dataset.attrs))
@@ -425,15 +445,6 @@ def global_attributes_from_header(dataset, odf_header, config=None):
         dataset.attrs["comments"] = "\n".join(
             [line for line in dataset.attrs["comments"] if line]
         )
-
-    # Apply attributes corrections from attribute_correction json
-    dataset.attrs.update(
-        {
-            attr: attr_mapping[dataset.attrs[attr]]
-            for attr, attr_mapping in config["attribute_mapping_corrections"].items()
-            if attr in dataset.attrs and dataset.attrs[attr] in attr_mapping
-        }
-    )
 
     # Drop empty global attributes
     dataset.attrs = {
@@ -492,6 +503,44 @@ def generate_coordinates_variables(dataset):
     for var, attrs in coordinate_attributes.items():
         if var in dataset:
             dataset[var].attrs = attrs
+    return dataset
+
+
+def generate_spatial_attributes(dataset, config):
+    if "latitude" not in dataset or "longitude" not in dataset:
+        logger.warning(
+            "Missing latitude and/or longitude, we can't generate spatial attributes"
+        )
+        return dataset
+
+    dataset.attrs["geographic_area"] = get_geo_code(
+        [dataset["longitude"].mean(), dataset["latitude"].mean()],
+        config["geographic_areas"],
+    )
+
+    nearest_station = get_nearest_station(
+        config["reference_stations"][["station", "latitude", "longitude"]].values,
+        (dataset["latitude"], dataset["longitude"]),
+        config["maximum_distance_from_station_km"],
+    )
+
+    if nearest_station:
+        dataset.attrs["station"] = nearest_station
+
+    # If no nearest station exist and the file suggest one, log it.
+    if (
+        dataset.attrs.get("station")
+        and dataset.attrs.get("station")
+        not in config["reference_stations"]["station"].tolist()
+        and re.match(r"[^0-9]", dataset.attrs["station"])
+    ):
+        logger.warning(
+            "Station %s [%sN, %sE] is missing from the reference_station.",
+            dataset.attrs["station"],
+            dataset["latitude"].mean().values,
+            dataset["longitude"].mean().values,
+        )
+
     return dataset
 
 
