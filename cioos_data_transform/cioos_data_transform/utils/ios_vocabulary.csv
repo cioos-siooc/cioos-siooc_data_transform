@@ -333,11 +333,9 @@ speed,,,,float32,sea_water_speed,cm/s,,,,,,,LCSAEL01,,,,
 speed,cm\/s,,,float32,sea_water_speed,cm/s,,,,,,,LCSAEL01,,,,
 speed,m\/s,,,float32,,m/s,,,,,,,LCSAEL01,,,,
 speed:east,,,,float32,eastward_sea_water_velocity,cm/s,,,,,,,LCEWEL01,,,,
-speed:east,,,,float32,eastward_sea_water_velocity,cm/s,,,,,,,LCEWEL01,,,,
 speed:gust,m\/s,,,None,Speed Gust,,,,,,,,,,7.0,None,{'ANE'}
 speed:gust:1,m\/s,,,float32,Speed Gust 1,,m/s,,,,,,,,1.0,F,{'ANE'}
 speed:gust:2,m\/s,,,float32,Speed Gust 2,,m/s,,,,,,,,1.0,F,{'ANE'}
-speed:north,,,,float32,northward_sea_water_velocity,cm/s,,,,,,,LCNSEL01,,,,
 speed:north,,,,float32,northward_sea_water_velocity,cm/s,,,,,,,LCNSEL01,,,,
 speed:sound,,,,float32,speed_of_sound_in_sea_water,m/s,,,,,,,SVELCV01,,,,
 speed:sound:1,,,,float32,speed_of_sound_in_sea_water,m/s,,,,,,,SVELCV01,,,,
@@ -395,7 +393,6 @@ temperature:heat_index:inside,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|de
 temperature:high_res,deg C,,,float32,Sea Water Temperature High Res,,degree_celsius,,,,,,,,,,
 temperature:intake,deg C \(ITS90\),,,float32,Temperature Intake,,degree_celsius (ITS-90),,,,,,,,,,
 temperature:lab,deg C \(ITS90\),,,float32,Temperature Lab,,degree_celsius (ITS-90),,,,,,,,,,
-temperature:low_res,deg C \(IPTS68\),,,float32,Sea Water Temperature Low Res,,degree_celsius (IPTS-68),,,,,,,,,,
 temperature:low_res,deg C \(IPTS68\),,,float32,Sea Water Temperature Low Res,,degree_celsius (IPTS-68),,,,,,,,,,
 temperature:oxygen,DEG C,,,float32,Temperature Oxygen,,degree_celsius,,,,,,,,206.0,F,{'CTD'}
 temperature:primary,DEG C \(ITS90\),,,float32,Temperature Primary,,degree_celsius (ITS-90),,,,,,,,206.0,F,{'CTD'}
