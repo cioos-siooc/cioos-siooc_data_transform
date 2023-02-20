@@ -13,6 +13,9 @@ from .utils.utils import find_geographic_area, read_geojson, read_ios_vocabulary
 from shapely.geometry import Point
 import pandas as pd
 from io import StringIO
+import logging
+
+logger = logging.getLogger(__name__)
 
 ios_dtypes_to_python = {
     "R": "float32",
@@ -63,8 +66,8 @@ class ObsFile(object):
             self.file = self.get_section("FILE")
             self.status = 1
         except Exception as e:
-            print("Unable to open file", filename)
-            print(e)
+            logger.error("Unable to open file", filename)
+            logger.info(e)
             self.status = 0
             exit(0)
 
@@ -82,7 +85,7 @@ class ObsFile(object):
             if l.lstrip()[0 : len(string)] == string:
                 return i
         if self.debug:
-            print("Index not found", string)
+            logger.debug("Index not found", string)
         return -1
 
     def get_complete_header(self):
@@ -90,7 +93,7 @@ class ObsFile(object):
         sections = self.get_list_of_sections()
         header = {}
         for sec in sections:
-            # print ("getting section:", sec)
+            # logger.info ("getting section:", sec)
             if sec in ["COMMENTS", "REMARKS", "HISTORY"]:
                 header[sec] = self.get_comments_like(sec)
             else:
@@ -106,7 +109,7 @@ class ObsFile(object):
             section_name = "*" + section_name
         idx = self.find_index(section_name)
         if idx == -1:
-            print("Section not found" + section_name + self.filename)
+            logger.info("Section not found" + section_name + self.filename)
             return {}
         info = {}
         # EOS = False # end of section logical
@@ -125,7 +128,7 @@ class ObsFile(object):
                 EOR = False
                 record_name = l.strip()
                 if self.debug:
-                    print(
+                    logger.debug(
                         "Found subsection:{} in section:{}".format(
                             record_name, section_name
                         )
@@ -140,7 +143,7 @@ class ObsFile(object):
                         info[record_name].append(l)
             else:
                 if self.debug:
-                    print(l)
+                    logger.info(l)
                 if len(l.split(":", 1)) > 1:
                     info[l.split(":", 1)[0].strip()] = l.split(":", 1)[1]
         return info
@@ -153,10 +156,12 @@ class ObsFile(object):
         info = None
         if name[0] != "$":
             if self.debug:
-                print("Finding subsection", name)
+                logger.debug("Finding subsection", name)
             name = "$" + name
         if name not in self.file.keys():
-            print("Did not find subsection:{} in {}".format(name, self.filename))
+            logger.warning(
+                "Did not find subsection:{} in {}".format(name, self.filename)
+            )
         elif name == "$TABLE: CHANNELS":
             info = self.file[name]
         elif name == "$TABLE: CHANNEL DETAIL":
@@ -171,7 +176,7 @@ class ObsFile(object):
             dt = np.asarray(line.split("!")[0].split(), dtype=float)
             dt = sum(dt * [24.0 * 3600.0, 3600.0, 60.0, 1.0, 0.001])  # in seconds
         else:
-            print("Time Increment not found in Section:FILE", self.filename)
+            logger.warning("Time Increment not found in Section:FILE", self.filename)
             dt = None
         return dt
 
@@ -189,14 +194,14 @@ class ObsFile(object):
         else:
             raise Exception("Invalid option for get_date function !")
         if self.debug:
-            print("Raw date string:", date_string)
+            logger.debug("Raw date string:", date_string)
         # get the naive (timezone unaware) datetime obj
         try:
             date_obj = datetime.strptime(date_string[4:], "%Y/%m/%d %H:%M:%S.%f")
         except Exception as e:
-            print(e)
+            logger.warning(e)
             date_obj = datetime.strptime(date_string[4:], "%Y/%m/%d")
-            print(date_obj)
+            logger.info(date_obj)
         # make datetime object, aware of its timezone
         # for GMT, UTC
         if any([date_string.find(z) == 0 for z in ["GMT", "UTC"]]):
@@ -219,7 +224,7 @@ class ObsFile(object):
         else:
             raise Exception("Problem finding the timezone information->", self.filename)
         if self.debug:
-            print("Date obj with timezone info:", date_obj)
+            logger.debug("Date obj with timezone info:", date_obj)
         # convert all datetime to utc before writing to netcdf file
         date_obj = date_obj.astimezone(timezone("UTC"))
         return date_obj, date_obj.strftime("%Y/%m/%d %H:%M:%S.%f %Z")
@@ -240,8 +245,12 @@ class ObsFile(object):
         #       if space limited strategy does not work, try to create format line)
         if formatline is None:
             try:
-                print("Trying to read file using format created using column width")
-                print("Reading data using format", self.channel_details["fmt_struct"])
+                logger.info(
+                    "Trying to read file using format created using column width"
+                )
+                logger.info(
+                    "Reading data using format %s", self.channel_details["fmt_struct"]
+                )
                 fmt_len = self.fmt_len(self.channel_details["fmt_struct"])
                 fmt_struct = self.channel_details["fmt_struct"]
                 for i in range(len(lines)):
@@ -259,7 +268,7 @@ class ObsFile(object):
                 data = np.genfromtxt(
                     StringIO("".join(lines)), delimiter="", dtype=str, comments=None
                 )
-                print("Reading data using delimiter was successful !")
+                logger.info("Reading data using delimiter was successful !")
 
         else:
             ffline = ff.FortranRecordReader(formatline)
@@ -268,7 +277,7 @@ class ObsFile(object):
                     data.append([float(r) for r in ffline.read(lines[i])])
         data = np.asarray(data)
         if self.debug:
-            print(data)
+            logger.debug(data)
         # if data is at only one, convert list to 2D matrix
         if len(data.shape) == 1:
             data = data.reshape((1, -1))
@@ -287,7 +296,7 @@ class ObsFile(object):
 
         info = self.get_section("LOCATION")
         if self.debug:
-            print("Location details", info.keys())
+            logger.debug("Location details", info.keys())
         # Convert lat and lon
         info["LATITUDE"] = _convert_latlong_string(info.get("LATITUDE"))
         info["LONGITUDE"] = _convert_latlong_string(info.get("LONGITUDE"))
@@ -334,7 +343,7 @@ class ObsFile(object):
 
             info["fmt_struct"] = fmt
         if self.debug:
-            print("Python compatible data format:", fmt)
+            logger.debug("Python compatible data format:", fmt)
         return info
 
     def get_channels(self):
@@ -354,7 +363,7 @@ class ObsFile(object):
         # apply mask to string (data) to get columns
         # return list of columns
         if self.debug:
-            print(data, mask)
+            logger.debug(data, mask)
         data = data.rstrip().ljust(len(mask))
         a = [d == "-" for d in mask]
         ret = []
@@ -402,7 +411,7 @@ class ObsFile(object):
                 break
             else:
                 if self.debug:
-                    print(l)
+                    logger.info(l)
                 info["{:d}".format(count)] = l.rstrip()
         return info
 
@@ -421,7 +430,7 @@ class ObsFile(object):
             else:
                 continue
         if self.debug:
-            print(sections_list)
+            logger.debug(sections_list)
         return sections_list
 
     def assign_geo_code(self, geojson_file):
@@ -478,7 +487,7 @@ class ObsFile(object):
                 timezone("UTC").localize(i + timedelta(hours=0)) for i in self.obs_time
             ]
         else:
-            print("Unable to find date/time columns in file", self.filename)
+            logger.warning("Unable to find date/time columns in file", self.filename)
             try:
                 time_increment = self.get_dt()
                 self.obs_time = [
@@ -491,10 +500,10 @@ class ObsFile(object):
 
         # date/time section in data is supposed to be in UTC.
         # check if they match, if not then raise fatal error
-
-        if self.obs_time[0] != self.start_dateobj:
-            print(self.obs_time[0], self.start_dateobj)
-            print(
+        dt = pd.Timedelta('1s')
+        if not(-dt < self.obs_time[0] - self.start_dateobj < dt):
+            logger.error(self.obs_time[0], self.start_dateobj)
+            logger.error(
                 "Error: First record in data does not match start date in header",
                 self.filename,
             )
@@ -517,7 +526,7 @@ class ObsFile(object):
             ]
 
         def _add_to_missing_vocabulary(name, units, data_type="float32"):
-            print(f"Missing vocabulary for name: {name} Units: {units}")
+            logger.info(f"Missing vocabulary for name: {name} Units: {units}")
             with open("missing_vocabulary.txt", "a") as handle:
                 handle.write(
                     f"{self.filename},{name.lower()},{data_type},{re.sub('[:_]',' ',name)},,,{units},{units}\n"
@@ -577,7 +586,7 @@ class ObsFile(object):
                 return ios_dtypes_to_python[ios_type[0]]
 
         if self.channel_details is None:
-            print("Channel details not available")
+            logger.info("Channel details not available")
             return {}
 
         channel_attributes = (
@@ -600,7 +609,7 @@ class ObsFile(object):
             missing_dtype_mapping_str = channel_attributes.loc[is_missing_dtype][
                 ["Format", "Type"]
             ].to_json(orient="index")
-            print(f"Missing dtype mapping for {missing_dtype_mapping_str}")
+            logger.warning(f"Missing dtype mapping for {missing_dtype_mapping_str}")
             channel_attributes["dtype"].fillna("str", inplace=True)
         return channel_attributes.to_dict(orient="index")
 
@@ -627,7 +636,7 @@ class ObsFile(object):
             elif re.match(r"Time[\s\t]*($|HH:MM:SS)", chan.strip()):
                 rename_channels[id] = "Time"
             else:
-                print(f"Unkown date time channel {chan}")
+                logger.warning(f"Unkown date time channel {chan}")
 
     def to_xarray(self, rename_variables=True):
         """Convert ios class to xarray dataset
@@ -705,6 +714,7 @@ class ObsFile(object):
                         if var in self.vocabulary_attributes
                         else {}
                     ),
+                    "source": var,
                 }
             )
 
@@ -726,7 +736,6 @@ class ObsFile(object):
             ds = ds.set_coords([var for var in coordinates_variables if var in ds])
             if "index" in ds.coords and "time" in ds.coords:
                 ds = ds.reset_coords("index")
-
 
         return ds
 
@@ -755,14 +764,16 @@ class CtdFile(ObsFile):
         self.instrument = self.get_section("INSTRUMENT")
         self.channel_details = self.get_channel_detail()
         if self.channel_details is None:
-            print("Unable to get channel details from header...")
+            logger.info("Unable to get channel details from header...")
 
         # try reading file using format specified in 'FORMAT'
         try:
             self.data = self.get_data(formatline=self.file["FORMAT"])
         except Exception as e:
             self.data = None
-            print("Could not read file using 'FORMAT' description ...", self.filename)
+            logger.error(
+                "Could not read file using 'FORMAT' description ...", self.filename
+            )
         if self.data is None:
             try:
                 # self.channel_details = self.get_channel_detail()
@@ -793,12 +804,12 @@ class CurFile(ObsFile):
 
         self.channel_details = self.get_channel_detail()
         if self.channel_details is None:
-            print("Unable to get channel details from header...")
+            logger.info("Unable to get channel details from header...")
         # try reading file using format specified in 'FORMAT'
         try:
             self.data = self.get_data(formatline=self.file["FORMAT"])
         except Exception as e:
-            print("Could not read file using 'FORMAT' description...")
+            logger.error("Could not read file using 'FORMAT' description...")
             self.data = None
 
         if self.data is None:
@@ -806,16 +817,18 @@ class CurFile(ObsFile):
                 # self.channel_details = self.get_channel_detail()
                 self.data = self.get_data(formatline=None)
             except Exception as e:
-                print("Could not read file using 'struct' data format description...")
+                logger.error(
+                    "Could not read file using 'struct' data format description..."
+                )
                 return 0
 
         # if time_increment is None:
-        # print("Did not find 'TIME INCREMENT'. Trying to calculate it from endtime and nrecs ...")
+        # logger.info("Did not find 'TIME INCREMENT'. Trying to calculate it from endtime and nrecs ...")
         # enddateobj, _ = self.get_date(opt='end')
-        # print((enddateobj - self.start_dateobj).total_seconds(), self.file['NUMBER OF RECORDS'])
+        # logger.info((enddateobj - self.start_dateobj).total_seconds(), self.file['NUMBER OF RECORDS'])
         # time_increment = (enddateobj - self.start_dateobj).total_seconds()/(int(self.file['NUMBER OF RECORDS'])-1)
-        # print('New time increment =', time_increment)
-        # print('Getting time increment from data section ...')
+        # logger.info('New time increment =', time_increment)
+        # logger.info('Getting time increment from data section ...')
 
         # get timeseries times from data directly. raise fatal error if not availale
         # (2021/Jan - tpp) time increment based method is nor reliable (burst mode/ incorrect nrec etc.)
@@ -853,23 +866,23 @@ class MCtdFile(ObsFile):
         time_increment = self.get_dt()
         self.channel_details = self.get_channel_detail()
         if self.channel_details is None:
-            print("Unable to get channel details from header...")
+            logger.info("Unable to get channel details from header...")
 
         # if time_increment is None:
-        # print("Did not find 'TIME INCREMENT'. Trying to calculate it from endtime and nrecs ...")
+        # logger.info("Did not find 'TIME INCREMENT'. Trying to calculate it from endtime and nrecs ...")
         # enddateobj, _ = self.get_date(opt='end')
         # time_increment = (enddateobj - self.start_dateobj).total_seconds()/(int(self.file['NUMBER OF RECORDS'])-1)
-        # print('New time increment =', time_increment)
+        # logger.info('New time increment =', time_increment)
 
         # self.obs_time = [self.start_dateobj + timedelta(seconds=time_increment * (i))
         #  for i in range(int(self.file['NUMBER OF RECORDS']))]
         if self.debug:
-            print(self.obs_time[0], self.obs_time[-1])
+            logger.info(self.obs_time[0], self.obs_time[-1])
         # try reading file using format specified in 'FORMAT'
         try:
             self.data = self.get_data(formatline=self.file["FORMAT"])
         except Exception as e:
-            print("Could not read file using 'FORMAT' description...")
+            logger.error("Could not read file using 'FORMAT' description...")
             self.data = None
 
         if self.data is None:
@@ -903,12 +916,12 @@ class BotFile(ObsFile):
         self.instrument = self.get_section("INSTRUMENT")
         self.channel_details = self.get_channel_detail()
         if self.channel_details is None:
-            print("Unable to get channel details from header...")
+            logger.warning("Unable to get channel details from header...")
         # try reading file using format specified in 'FORMAT'
         try:
             self.data = self.get_data(formatline=self.file["FORMAT"])
         except Exception as e:
-            print("Could not read file using 'FORMAT' description...")
+            logger.error("Could not read file using 'FORMAT' description...")
             self.data = None
 
         if self.data is None:
@@ -940,12 +953,12 @@ class GenFile(ObsFile):
             self.recovery = self.get_section("RECOVERY")
 
         if self.channel_details is None:
-            print("Unable to get channel details from header...")
+            logger.warning("Unable to get channel details from header...")
         # try reading file using format specified in 'FORMAT'
         try:
             self.data = self.get_data(formatline=self.file.get("FORMAT"))
         except Exception as e:
-            print("Could not read file using 'FORMAT' description...")
+            logger.error("Could not read file using 'FORMAT' description...")
             self.data = None
 
         if self.data is None:
