@@ -15,7 +15,7 @@ altimeter,metres,,,float32,Altimeter,altimeter_range,metres,,SDN:P01::ADEPWI01,,
 aluminum:dissolved,pmol\/L,,,float32,Aluminum Dissolved,,pmol/L,,SDN:P01::ALXXFIP5,,,,,,11.0,F,{'CHE'}
 ammonia,microg-at/l,,,' ',Ammonia,,microg-at/l,,SDN:P01::AMNH3G01,,,,,,210.0,' ',{'BOT'}
 ammonia,microg-at\/l,,,,,,microg-at/l,,SDN:P01::AMNH3G01,,,,,,,,
-ammonium,umol\/L,,,,,mole_concentration_of_ammonium_in_sea_water,umol/L,,"SDN:P01::AMONFSG1,SDN:P01::AMONAAZX,SDN:P01::AMONZZXX ",,,,,,,,
+ammonium,umol\/L,,,,,mole_concentration_of_ammonium_in_sea_water,umol/L,,"SDN:P01::AMONFSG1,SDN:P01::AMONAAZX,SDN:P01::AMONZZXX",,,,,,,,
 ammonium,umol\/l|umol\/L,,,float32,Mole Concentration of Amonium in Sea Water,mole_concentration_of_ammonium_in_sea_water,umol/L,,,,,,AMONZZXX,,,,
 amplitude:beam1,,,,float32,signal_intensity_from_multibeam_acoustic_doppler_velocity_sensor_in_sea_water,count,,,,,,,ISCMBMA1,,,,
 amplitude:beam2,,,,float32,signal_intensity_from_multibeam_acoustic_doppler_velocity_sensor_in_sea_water,count,,,,,,,ISCMBMA2,,,,
@@ -298,14 +298,14 @@ par:ctd,uE\/m\^2\/sec,,,float32,PAR CTD,,uE/m^2/sec,,,,,,,,,,
 par:reference,uE\/m\^2\/sec,,,float32,PAR Reference,,uE/m^2/sec,,SDN:P01::SCIRR4PI,,,,,,,,
 ph,None,,,float32,pH,,,,,,,,,,115.0,F,"{'CHE, 'CTD, 'UBC'}"
 ph,none|n\/a,,,,,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR01,,,,,,,,
-ph:nbs,None,,,float32,pH NBS,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR02,,,,,,86.0,F,{'BOT'}
-ph:nbs,,,,,,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR02,,,,,,,,
+ph:nbs,None,,,float32,pH NBS,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR01,,,,,,86.0,F,{'BOT'}
+ph:nbs,,,,,,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR01,,,,,,,,
 ph:sbe,None,,,float32,pH SBE,,,,,,,,,,155.0,F,"{'CHE, 'CTD'}"
-ph:sbe,n\/a|pH Units,,,,,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR03,,,,,,,,
-ph:sbe:nominal,None,,,float,pH SBE Nominal,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR04,,,,,,,,
-ph:sbe:nominal,,,,,,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR04,,,,,,,,
-ph:sws,None,,,float32,pH SWS,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR05,,,,,,77.0,F,"{'BOT', 'CHE'}"
-ph:sws,,,,,,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR05,,,,,,,,
+ph:sbe,n\/a|pH Units,,,,,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR01,,,,,,,,
+ph:sbe:nominal,None,,,float,pH SBE Nominal,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR01,,,,,,,,
+ph:sbe:nominal,,,,,,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR01,,,,,,,,
+ph:sws,None,,,float32,pH SWS,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR01,,,,,,77.0,F,"{'BOT', 'CHE'}"
+ph:sws,,,,,,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR01,,,,,,,,
 phaeo-pigment:extracted,mg\/m\^3,,,float32,Phaeo-Pigment Extracted,mass_concentration_of_phaeopigments_in_sea_water,mg/m^3,,SDN:P01::PHAEFLPZ,,,,,,1052.0,F,{'CHE'}
 phaeo-pigment:extracted3,mg\/m\^3,,,float32,Phaeo-Pigment Extracted3,mass_concentration_of_phaeopigments_in_sea_water,mg/m^3,,SDN:P01::PHAEFLPZ,,,,,,31.0,F,{'CHE'}
 phaeo-pigment:extracted:0.3um,mg\/m\^3,,,float32,Phaeo-Pigment Extracted 0.3um,mass_concentration_of_phaeopigments_in_sea_water,mg/m^3,,,,,,,,3.0,F7.2,{'CHE'}
@@ -359,12 +359,8 @@ reference,None,,,str,,,,,,,,,,,,,
 roll,,,,float32,platform_roll,degrees,,,,,,,ROLLEI01,,,,
 run:wind,km,,,float32,Run Wind,,km,,,,,,,,9.0,F,{'ANE'}
 run_wind,km,,,float32,Run Wind,,km,,,,,,,,,,
-salinity,PPS78,,,,,sea_water_practical_salinity,PPS-78,,SDN:P01::PSALST01,,,,,,,,
-salinity,PPT|ppt,,,,,sea_water_salinity,PPT,,SDN:P01::SSALST01,,,,,,,,
-salinity,PSS-78,,,,,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,,,,,,,,
-salinity,PSS\-78|PPS78,,,float32,Sea Water Practical Salinity,sea_water_practical_salinity,PSS-78,,,,,,PSALT01,,,,
-salinity,ppt,,,,,sea_water_salinity,ppt,,SDN:P01::SSALST01,,,,,,,,
-salinity,ppt|PPT,,,float32,Sea Water Practical Salinity,sea_water_practical_salinity,PPT,,,,,,SSALST01,,,,
+salinity,PSS\-78|PPS78,,,float32,Sea Water Practical Salinity,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,,,,PSALT01,,,,
+salinity,ppt|PPT,,,float32,Sea Water Practical Salinity,sea_water_practical_salinity,PPT,,SDN:P01::SSALST01,,,,SSALST01,,,,
 salinity: practical,PSS-78|PSU,,,float32,Sea Water Practical Salinity,sea_water_practical_salinity,PSS-78,,,,,,PSALBST01,,,,
 salinity: practical,PSU,,,,,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,,,,,,,,
 salinity: pre-1978,PPT,,,float32,Salinity  Pre-1978,sea_water_salinity,PPT,,SDN:P01::SSALST01,,,,,,,,
@@ -498,7 +494,7 @@ temperature:secondary,deg C (IPTS68),,,,,sea_water_temperature,deg C (IPTS-68),,
 temperature:secondary,deg C (ITS90),,,,,sea_water_temperature,deg C (ITS-90),,"SDN:P01::TEMPPR02,SDN:P01::TEMPP902",,,,,,,,
 temperature:secondary,deg C \(IPTS68\),,,float32,Temperature Secondary,,degree_celsius (IPTS-68),,,,,,,,2.0,F,{'CTD'}
 temperature:secondary,deg C \(ITS90\),,,float32,Temperature Secondary,,degree_celsius (ITS-90),,,,,,,,,,
-temperature:smoothed,deg C (IPTS68),,,,,sea_water_temperature,deg C (IPTS-68),,,,,,,,,,
+temperature:smoothed,deg C (IPTS68),,,,,sea_water_temperature,deg C (IPTS-68),,"SDN:P01::TEMPPR01,SDN:P01::TEMPP681",,,,,,,,
 temperature:smoothed,deg C \(IPTS68\),,,float32,Temperature Smoothed,,,,,,,,,,7.0,F,{'CTD'}
 temperature:temperature_humidity_sun_index,deg C,,,float32,Temperature Temperature Humidity Sun Index,,degree_celsius,,,,,,,,,,
 temperature:temperature_humidity_sun_index,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,float32,Temperature Temperature Humidity Sun Index,,degree_celsius (ITS-90),,,,,,,,31.0,F,{'ANE'}
@@ -516,11 +512,11 @@ time,,,,double,time,time,,,,,,,,,,,
 time:day_of_year,days,,,float32,Time Day Of Year,,days,,,,,,,,,,
 time:utc,,,,,,,,,,,,,,,,,
 total_suspended_solids,mg\/L,,,,,mass_concentration_of_suspended_matter_in_sea_water,mg/L,,SDN:P01::RBYJLY26,,,,,,,,
-total_suspended_solids,mg\/m3,,,,,mass_concentration_of_suspended_matter_in_sea_water,mg/m3,,SDN:P01::RBYJLY29,,,,,,,,
+total_suspended_solids,mg\/m3,,,,,mass_concentration_of_suspended_matter_in_sea_water,mg/m3,,SDN:P01::RBYJLY26,,,,,,,,
 total_suspended_solids,mg\/m3|ug\/L,,,float32,Total Suspended Solids,,ug/L,,,,,,,,6.0,F8.2,{'CHE'}
-total_suspended_solids,ppmV,,,,,,ppmV,,SDN:P01::RBYJLY27,,,,,,,,
+total_suspended_solids,ppmV,,,,,,ppmV,,SDN:P01::RBYJLY26,,,,,,,,
 total_suspended_solids,ppmV|mg/L,,,float32,Total Suspended Solids,,,,,,,,,,153.0,F,{'BOT'}
-total_suspended_solids,ug\/L,,,,,mass_concentration_of_suspended_matter_in_sea_water,ug/L,,SDN:P01::RBYJLY28,,,,,,,,
+total_suspended_solids,ug\/L,,,,,mass_concentration_of_suspended_matter_in_sea_water,ug/L,,SDN:P01::RBYJLY26,,,,,,,,
 transmissivity,%\/5cm,,,,,,%/5cm,,SDN:P01::ABS650AC,,,,,,,,
 transmissivity,%\/metre,,,float32,Sea Water Transmissivity,,%/metre,,SDN:P01::ABS650AC,,,,,,,,
 transmissivity,\%\/5cm,,,float32,Transmissivity,,,,,,,,,,33.0,F,{'CTD'}
