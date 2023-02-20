@@ -3,14 +3,14 @@ ios_name,accepted_units,equivalent_to,apply_func,datatype,long_name,standard_nam
 adenosine_triphosphate,mg\/m\^3,,,float32,Adenosine Triphosphate,,,,,,,,,,36.0,F,{'BOT'}
 alkalinity,mmol\/m,,,float32,Alkalinity,,mmol/m,,,,,,,,23.0,F,{'UBC'}
 alkalinity:carbonate,mmol/L|umol/kg,,,float32,Alkalinity Carbonate,,,,,,,,,,160.0,F,{'BOT'}
-alkalinity:total,mmol/L,,,float32,Alkalinity Total,,,,,,,,,,138.0,F,{'BOT'}
+alkalinity:total,mmol/L,,,float32,Alkalinity Total,sea_water_alkalinity_expressed_as_mole_equivalent,mmol/L,,SDN:P01::ALKYZZXX,,,,,,138.0,F,{'BOT'}
 alkalinity:total,umol\/kg,,,float32,Alkalinity Total,,umol/kg,,,,,,,,223.0,F7.1,{'CHE'}
 alkalinity:total:colorimetric,umol\/kg,,,float32,Alkalinity Total Colorimetric,,,,,,,,,,46.0,F,{'BOT'}
 alkalinity:total:crm:corrected,umol\/kg,,,float32,Alkalinity Total CRM Corrected,,umol/kg,,,,,,,,16.0,F,{'CHE'}
 alkalinity:total:potentiometric,umol\/kg,,,float32,Alkalinity Total Potentiometric,,umol/kg,,,,,,,,95.0,F8.2,{'CHE'}
-altimeter,metres,,,float32,Altimeter,,metres,,,,,,,,,,
+altimeter,metres,,,float32,Altimeter,altimeter_range,metres,,SDN:P01::ADEPWI01,,,,,,,,
 aluminum:dissolved,pmol\/L,,,float32,Aluminum Dissolved,,pmol/L,,,,,,,,11.0,F,{'CHE'}
-ammonia,microg-at/l,,,' ',Ammonia,,,,,,,,,,210.0,' ',{'BOT'}
+ammonia,microg-at/l,,,' ',Ammonia,,microg-at/l,,SDN:P01::AMNH3G01,,,,,,210.0,' ',{'BOT'}
 ammonium,umol\/l|umol\/L,,,float32,Mole Concentration of Amonium in Sea Water,mole_concentration_of_ammonium_in_sea_water,umol/L,,,,,,AMONZZXX,,,,
 amplitude:beam1,,,,float32,signal_intensity_from_multibeam_acoustic_doppler_velocity_sensor_in_sea_water,count,,,,,,,ISCMBMA1,,,,
 amplitude:beam2,,,,float32,signal_intensity_from_multibeam_acoustic_doppler_velocity_sensor_in_sea_water,count,,,,,,,ISCMBMA2,,,,
@@ -34,7 +34,7 @@ carbon:isotope:14,\/mille,,,float32,Carbon Isotope 14,,,,,,,,,,1.0,F7.1,{'BOT'}
 carbon:particulate:organic,mg\/m\^3|mg\/m3|umol\/L,,,float32,Carbon Particulate Organic,,umol/L,,,,,,,,17.0,F7.1,{'CHE'}
 carbon:particulate:total,umol\/L,,,float32,Carbon Particulate Total,,umol/L,,,,,,,,38.0,F8.3,{'CHE'}
 carbon:particulate:total,umol\/kg,,,float32,Carbon Particulate Total,,umol/kg,,,,,,,,38.0,F8.3,{'CHE'}
-carbon:total:organic,mg/L,,,float32,Carbon Total Organic,,,,,,,,,,1.0,F5.2,{'BOT'}
+carbon:total:organic,mg/L,,,float32,Carbon Total Organic,,mg/L,,,,,,,,1.0,F5.2,{'BOT'}
 carbon:total:organic,uM|umol\/L,,,float32,Carbon Total Organic,,umol/L,,,,,,,,24.0,F6.0,{'CHE'}
 carbon:total:organic,umol\/kg,,,float32,Carbon Total Organic,,umol/kg,,,,,,,,24.0,F6.0,{'CHE'}
 carbontetrachloride,pmol\/L,,,f7.2,Carbontetrachloride,,pmol/L,,,,,,,,36.0,f7.2,{'CHE'}
@@ -72,7 +72,7 @@ chlorophyll:extracted:>5.0um,mg\/m\^3,,,float32,Chlorophyll Extracted >5.0um,,mg
 chlorophyll_plus_phaeo-pigment:extracted,mg\/m\^3,,,float32,Chlorophyll plus Phaeo-Pigment Extracted,,mg/m^3,,,,,,,,8.0,F,{'CHE'}
 conductance:specific,S\/m,,,float32,Conductance Specific,,,,,,,,,,551.0,F,{'CTD'}
 conductance:specific,mS\/cm,,,float32,Conductance Specific,,,,,,,,,,551.0,F,{'CTD'}
-conductivity,Ratio,,,,Conductivity,,,,,,,,,,378.0,,{'BOT'}
+conductivity,Ratio,,,,Conductivity,,Ratio,,,,,,,,378.0,,{'BOT'}
 conductivity,counts|count,,,float32,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,count,,,,,,CNDCZZ01,,,,
 conductivity,ms\/cm|mS\/cm,,lambda x: x/10,float32,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,S/cm,,,,,,CNDCST01,,,,
 conductivity,s\/m|S\/m,,,float32,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,S/m,,,,,,CNDCST01,,,,
@@ -91,11 +91,11 @@ degree_days:heating,deg C day,,,float32,Heating Degree Days,,deg C day,,,,,,,,,,
 degree_days:heating,,,,float32,Degree Days Heating,,,,,,,,,,5.0,F,{'ANE'}
 density,kg\/m\^3,,,float32,Density,,,,,,,,,,616.0,F,{'CTD'}
 density:air:inside,kg\/m\^3,,,float32,Air Density Inside,,kg/m^3,,,,,,,,,,
-depth,,,,float32,Depth below surface,depth,,,,,,,,,,,
-depth,m|metres|metre|meter|meters|Metres|Metre|Meter|Meters,,,float32,Depth below surface,depth,,,,,,,,,,,
-depth:corrected,metres,,,float32,Depth Corrected,,,,,,,,,,27.0,F,{'BOT'}
-depth:ctd,metres,,,float32,Depth CTD,,,,,,,,,,56.0,F,{'BOT'}
-depth:nominal,metres|meters,,,float32,Depth Nominal,,m,,,,,,,,26.0,F7.1,{'CHE'}
+depth,,,,float32,Depth below surface,depth,,,SDN:P01::ADEPZZ01,,,,,,,,
+depth,m|metres|metre|meter|meters|Metres|Metre|Meter|Meters,,,float32,Depth below surface,depth,,,SDN:P01::ADEPZZ01,,,,,,,,
+depth:corrected,metres,,,float32,Depth Corrected,depth,m,,SDN:P01::ADEPZZ01,,,,,,27.0,F,{'BOT'}
+depth:ctd,metres,,,float32,Depth CTD,depth,m,,SDN:P01::ADEPZZ01,,,,,,56.0,F,{'BOT'}
+depth:nominal,metres|meters,,,float32,Depth Nominal,depth,m,,SDN:P01::ADEPZZ01,,,,,,26.0,F7.1,{'CHE'}
 dimethyl_sulphide,nmol\/L,,,float32,Dimethyl Sulphide,,nmol/L,,,,,,,,,,
 dimethyl_sulphide,umol\/L,,,float32,Dimethyl Sulphide,,umol/L,,,,,,,,2.0,F,{'CHE'}
 dimethylsulfoniopropionate_dissolved,nmol\/L,,,float32,Dimethylsulfoniopropionate Dissolved,,nmol/L,,,,,,,,,,
@@ -138,7 +138,7 @@ fluorescence:uru:wetlabs,mg\/m\^3,,,float32,Sea Water Fluorescence WetLabs,,mg/m
 fluorescence:uru:wetlabs:eco-afl,mg\/m\^3,,,float32,Fluorescence URU Wetlabs ECO-AFL,,,,,,,,,,4.0,F,{'CTD'}
 fluorescence:wetlabs:eco-afl,mg\/m\^3,,,float32,Fluorescence Wetlabs ECO-AFL,,,,,,,,,,38.0,F,{'CTD'}
 fluorescence_cdom:uru:wetlabs,mg\/m\^3,,,float32,Fluorescence CDOM URU Wetlabs,,,,,,,,,,206.0,F,"{'CTD', 'CHE'}"
-fluorescence_cdom:uru:wetlabs,volts,,,float32,Fluorescence CDOM URU Wetlabs,,volts,,,,,,,,42.0,F,{'CHE'}
+fluorescence_cdom:uru:wetlabs,volts,,,float32,Fluorescence CDOM URU Wetlabs,,volts,,SDN:P01::NVLTWL01,,,,,,42.0,F,{'CHE'}
 fluorescensce:uru:turner,mg\/m\^3,,,float32,Fluorescensce URU Turner,,mg/m^3,,,,,,,,2.0,F8.3,{'CHE'}
 fluorometry-chlorophyll,,,,float32,Fluorometry-Chlorophyll,,,,,,,,,,1.0,e,{'CTD'}
 heading,,,,float32,platform_orientation,degrees,,,,,,,HEADCM01,,,,
@@ -193,31 +193,31 @@ iron:unfiltered:strongacid,nmol\/L,,,float32,Iron Unfiltered StrongAcid,,nmol/L,
 iron:unfiltered:strongacid:mv,nmol\/L,,,float32,Iron Unfiltered StrongAcid MV,,,,,,,,,,95.0,F7.2,{'BOT'}
 iss_reception,,,,HH:MM:SS,ISS Reception,,,,,,,,,,,,
 julian,Record,,,float32,Julian,,Record,,,,,,,,2.0,F7.0,{'ANE'}
-kraft-mill_effluent,ppm,,,float32,Kraft-Mill Effluent,,,,,,,,,,11.0,F,{'BOT'}
+kraft-mill_effluent,ppm,,,float32,Kraft-Mill Effluent,,ppm,,,,,,,,11.0,F,{'BOT'}
 lat,degrees,,,float32,Latitude,latitude,degrees,,,,,,,,,,
-latitude,degrees,,,float32,Latitude,latitude,degrees,,,,,,,,,,
+latitude,degrees,,,float32,Latitude,latitude,degrees,,SDN:P01::ALATZZ01,,,,,,,,
 lon,degrees,,,float32,Longitude,longitude,degrees,,,,,,,,,,
-longitude,degrees,,,float32,Longitude,,degrees,,,,,,,,,,
+longitude,degrees,,,float32,Longitude,longitude,degrees,,SDN:P01::ALONZZ01,,,,,,,,
 methane,nmol\/L,,,float32,Methane,,nmol/L,,,,,,,,2.0,F7.1,{'CHE'}
 methylene_chloride,pmol\/L,,,float32,Methylene Chloride,,,,,,,,,,11.0,F7.2,{'CHE'}
 nanophytoplankton,\/mL,,,f10.2,Nanophytoplankton,,/mL,,,,,,,,49.0,f10.2,{'CHE'}
-nitrate,microg-at/l,,,' ',Nitrate,,,,,,,,,,210.0,' ',{'BOT'}
+nitrate,microg-at/l,,,' ',Nitrate,,microg-at/l,,,,,,,,210.0,' ',{'BOT'}
 nitrate,umol\/L,,,float32,Nitrate,,umol/L,,,,,,,,68.0,F,{'CHE'}
 nitrate_plus_nitrite,ug-at\/L,,,float32,Nitrate plus Nitrite,,ug-at/L,,,,,,,,7.0,F6.1,{'CHE'}
 nitrate_plus_nitrite,umol\/l|umol\/L,,,float32,Mole Concentration of Nitrate and Nitrite in Sea Water,mole_concentration_of_nitrate_and_nitrite_in_sea_water,umol/L,,,,,,NTRZAAZ,,,,
 nitrate_plus_nitrite2,umol\/L,,,float32,Nitrate plus Nitrite2,,umol/L,,,,,,,,62.0,F,{'CHE'}
 nitrate_plus_nitrite:isus,umol\/L,,,float32,Nitrate plus nitrite ISUS,,,,,,,,,,1.0,F,{'CHE'}
-nitrate_plus_nitrite:isus,volts|Volts,,,float32,Nitrate plus nitrite ISUS,,Volts,,,,,,,,109.0,F,"{'CHE, 'CTD'}"
-nitrate_plus_nitrite:isus:voltage,Volts,,,float32,Nitrate plus nitrite ISUS Voltage,,Volts,,,,,,,,14.0,F,{'CHE'}
+nitrate_plus_nitrite:isus,volts|Volts,,,float32,Nitrate plus nitrite ISUS,mole_concentration_of_nitrate_and_nitrite_in_sea_water,volts,,SDN:P01::NTRZAAZX,,,,,,109.0,F,"{'CHE, 'CTD'}"
+nitrate_plus_nitrite:isus:voltage,Volts,,,float32,Nitrate plus nitrite ISUS Voltage,mole_concentration_of_nitrate_and_nitrite_in_sea_water,Volts,,,,,,,,14.0,F,{'CHE'}
 nitrite,microg-at\/l,,,' ',Nitrite,,,,,,,,,,210.0,' ',{'BOT'}
 nitrite,umol\/L|mmol\/m,,,float32,Nitrite,,umol/L,,,,,,,,122.0,F,"{'CHE, 'UBC'}"
 nitrogen:dissolved:organic,umol\/L,,,float32,Nitrogen Dissolved Organic,,umol/L,,,,,,,,29.0,F,{'CHE'}
 nitrogen:particulate:organic,mg\/m\^3,,,float32,Nitrogen Particulate Organic,,mg/m^3,,,,,,,,7.0,F7.1,{'CHE'}
 nitrogen:particulate:total,umol\/L,,,float32,Nitrogen Particulate Total,,umol/L,,,,,,,,41.0,F7.2,{'CHE'}
 nitrogen:particulate:total,umol\/kg,,,float32,Nitrogen Particulate Total,,umol/kg,,,,,,,,41.0,F7.2,{'CHE'}
-nitrogen:total,uM,,,float32,Nitrogen Total,,umol/L,,,,,,,,11.0,F7.1,{'CHE'}
-nitrogen:total:dissolved,uM,,,float32,Nitrogen Total Dissolved,,umol/L,,,,,,,,11.0,F7.1,{'CHE'}
-ntu,nan,,,f,NTU,,,,,,,,,,4.0,f,{'CTD'}
+nitrogen:total,uM,,,float32,Nitrogen Total,,uM,,SDN:P01::NTOTZZXX,,,,,,11.0,F7.1,{'CHE'}
+nitrogen:total:dissolved,uM,,,float32,Nitrogen Total Dissolved,mole_concentration_of_dissolved_nitrogen_in_sea_water,uM,,,,,,,,11.0,F7.1,{'CHE'}
+ntu,,,,f,NTU,sea_water_turbidity,,,SDN:P01::TURBXXXX,,,,,,4.0,f,{'CTD'}
 number_of_bin_records,None,,,int,,,,,,,,,,,,,
 oxygen,mg\/l,,,float32,Oxygen,,,,,,,,,,1787.0,F,{'UBC'}
 oxygen,ml\/l|mL\/L,,,float32,Oxygen concentration,dissolved_oxygen_concentration,mL/L,,,,,,DOXYZZ01,,,,
@@ -234,9 +234,9 @@ oxygen:dissolved:ctd,umol\/kg|mL\/L,,,float32,Oxygen Dissolved CTD,,,,,,,,,,84.0
 oxygen:dissolved:g+g,mL\/L,,,f,Oxygen dissolved G+G,,,,,,,,,,1.0,f,{'CTD'}
 oxygen:dissolved:mass:ctd,umol\/kg,,,float32,Oxygen Dissolved Mass CTD,,umol/kg,,,,,,,,,,
 oxygen:dissolved:rinko,mL\/L|Volts,,,float32,Oxygen Dissolved Rinko,,mL/L|Volts,,,,,,,,4.0,F11.7,{'CHE'}
-oxygen:dissolved:saturation,%,,,float32,Oxygen Dissolved Saturation,,,,,,,,,,206.0,F,{'BOT'}
-oxygen:dissolved:saturation:rbr,%,,,float32,Oxygen Dissolved Saturation RBR,,,,,,,,,,436.0,F,{'CTD'}
-oxygen:dissolved:saturation:rinko,%,,,float32,Oxygen Dissolved Saturation Rinko,,%,,,,,,,,2.0,F8.2,{'CHE'}
+oxygen:dissolved:saturation,%,,,float32,Oxygen Dissolved Saturation,fractional_saturation_of_oxygen_in_sea_water,%,,SDN:P01::OXYSOP01,,,,,,206.0,F,{'BOT'}
+oxygen:dissolved:saturation:rbr,%,,,float32,Oxygen Dissolved Saturation RBR,fractional_saturation_of_oxygen_in_sea_water,%,,SDN:P01::OXYSOP01,,,,,,436.0,F,{'CTD'}
+oxygen:dissolved:saturation:rinko,%,,,float32,Oxygen Dissolved Saturation Rinko,fractional_saturation_of_oxygen_in_sea_water,%,,SDN:P01::OXYSOP01,,,,,,2.0,F8.2,{'CHE'}
 oxygen:dissolved:saturation:upcast,mL\/L,,,float32,Oxygen Dissolved Saturation Upcast,,,,,,,,,,4.0,F,{'CTD'}
 oxygen:dissolved:sbe,mL\/L,,,float32,Oxygen Dissolved SBE,,mL/L,,,,,,,,,,
 oxygen:dissolved:sbe,umol\/l,,,f,Oxygen Dissolved SBE,,,,,,,,,,1.0,f,{'CTD'}
@@ -245,17 +245,17 @@ oxygen:dissolved:volume:ctd,mL\/L,,,float32,Oxygen Dissolved Volume CTD,,mL/L,,,
 oxygen:dissolved:volume:sbe,mL\/L,,,float32,Oxygen Dissolved Volume SBE,,,,,,,,,,20.0,F,{'BOT'}
 oxygen:dissolved:weiss,mL\/L,,,f,Oxygen Dissolved Weiss,,,,,,,,,,1.0,f,{'CTD'}
 oxygen:isotope:18,\/mille,,,float32,Oxygen Isotope 18,,/mille,,,,,,,,134.0,F,{'CHE'}
-oxygen_temperature:rinko,Volts,,,float32,Oxygen Temperature Rinko,,Volts,,,,,,,,2.0,F11.7,{'CHE'}
+oxygen_temperature:rinko,Volts,,,float32,Oxygen Temperature Rinko,temperature_of_sensor_for_oxygen_in_sea_water,Volts,,SDN:P01::OXYTAAOP,,,,,,2.0,F11.7,{'CHE'}
 par,uE\/m\^2\/sec,,,float32,Photoactive Radiation,,uE/m^2/sec,,,,,,,,,,
 par1,uE\/m\^2\/sec,,,float32,PAR1,,uE/m^2/sec,,,,,,,,13.0,F,{'CHE'}
 par:1,uE\/m\^2\/sec,,,float32,PAR 1,,,,,,,,,,1.0,F,{'CTD'}
 par:ctd,uE\/m\^2\/sec,,,float32,PAR CTD,,uE/m^2/sec,,,,,,,,,,
 par:reference,uE\/m\^2\/sec,,,float32,PAR Reference,,uE/m^2/sec,,,,,,,,,,
 ph,None,,,float32,pH,,,,,,,,,,115.0,F,"{'CHE, 'CTD, 'UBC'}"
-ph:nbs,None,,,float32,pH NBS,,,,,,,,,,86.0,F,{'BOT'}
+ph:nbs,None,,,float32,pH NBS,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR02,,,,,,86.0,F,{'BOT'}
 ph:sbe,None,,,float32,pH SBE,,,,,,,,,,155.0,F,"{'CHE, 'CTD'}"
-ph:sbe:nominal,None,,,float,pH SBE Nominal,,,,,,,,,,,,
-ph:sws,None,,,float32,pH SWS,,,,,,,,,,77.0,F,"{'BOT', 'CHE'}"
+ph:sbe:nominal,None,,,float,pH SBE Nominal,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR04,,,,,,,,
+ph:sws,None,,,float32,pH SWS,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR05,,,,,,77.0,F,"{'BOT', 'CHE'}"
 phaeo-pigment:extracted,mg\/m\^3,,,float32,Phaeo-Pigment Extracted,,mg/m^3,,,,,,,,1052.0,F,{'CHE'}
 phaeo-pigment:extracted3,mg\/m\^3,,,float32,Phaeo-Pigment Extracted3,,mg/m^3,,,,,,,,31.0,F,{'CHE'}
 phaeo-pigment:extracted:0.3um,mg\/m\^3,,,float32,Phaeo-Pigment Extracted 0.3um,,mg/m^3,,,,,,,,3.0,F7.2,{'CHE'}
@@ -278,8 +278,8 @@ pressure,dbar|dbars|decibar|decibars|DBars|DBAR,,,float32,Pressure,,decibar,,,,,
 pressure,kpascal|kilopascal|Kpascal,,,float32,Pressure,,kilopascal,,,,,,PRESPR01,,,,
 pressure:atmospheric:sealevel,mbar,,,float32,Pressure Atmospheric SeaLevel,,mbar,,,,,,,,,,
 pressure:atmospheric:sealevel:flag,,,,int32,Pressure Atmospheric SeaLevel Flag,,,,,,,,,,3.0,I,{'ANE'}
-pressure:ctd,decibar,,,float32,Pressure CTD,,decibar,,,,,,PRESPR01,,,,
-pressure:reversing,decibar,,,float32,Pressure Reversing,,,,,,,,,,44.0,F,{'BOT'}
+pressure:ctd,decibar,,,float32,Pressure CTD,sea_water_pressure,decibar,,SDN:P01::PRESPR01,,,,PRESPR01,,,,
+pressure:reversing,decibar,,,float32,Pressure Reversing,sea_water_pressure,decibar,,SDN:P01::PRESPR01,,,,,,44.0,F,{'BOT'}
 production:primary,mgC\/m\^3\/day,,,float32,Production Primary,,mgC/m^3/day,,,,,,,,146.0,F,{'CHE'}
 production:primary,mgC\/m\^3\/hour,,,float32,Production Primary,,,,,,,,,,184.0,F,{'BOT'}
 profile,None,,,str,,,,,,,,,,,,,
@@ -290,8 +290,6 @@ radiation:solar:high,W\/m\^2,,,float32,High Solar Radiation,,W/m^2,,,,,,,,,,
 radiation:solar:high:flag,None,,,int32,Radiation Solar High Flag,,,,,,,,,,3.0,I,{'ANE'}
 record #,None,,,int32,Record #,,,,,,,,,,2.0,I,{'ANE'}
 record_number,None,,,int,,,,,,,,,,,,,
-record_numberu,None,,,float32,Record Numberu,,,,,,,,,,1.0,F,{'ANE'}
-record_numer,None,,,float32,Record Numer,,,,,,,,,,1.0,F,{'ANE'}
 recordnumber,None,,,float32,RecordNumber,,,,,,,,,,1.0,F,{'ANE'}
 reference,None,,,str,,,,,,,,,,,,,
 roll,,,,float32,platform_roll,degrees,,,,,,,ROLLEI01,,,,
@@ -300,28 +298,28 @@ run_wind,km,,,float32,Run Wind,,km,,,,,,,,,,
 salinity,PSS\-78|PPS78,,,float32,Sea Water Practical Salinity,sea_water_practical_salinity,PSS-78,,,,,,PSALT01,,,,
 salinity,ppt|PPT,,,float32,Sea Water Practical Salinity,sea_water_practical_salinity,PPT,,,,,,SSALST01,,,,
 salinity: practical,PSS-78|PSU,,,float32,Sea Water Practical Salinity,sea_water_practical_salinity,PSS-78,,,,,,PSALBST01,,,,
-salinity: pre-1978,PPT,,,float32,Salinity  Pre-1978,,PPT,,,,,,,,,,
+salinity: pre-1978,PPT,,,float32,Salinity  Pre-1978,sea_water_salinity,PPT,,SDN:P01::SSALST01,,,,,,,,
 salinity:bottle,PPT|ppt,,,float32,Salinity Bottle,,PPT,,,,,,,,23.0,F,{'CHE'}
-salinity:bottle,PSS-78,,,float32,Salinity Bottle,,PSS-78,,,,,,,,,,
-salinity:bottle,,,,float32,Salinity Bottle,,,,,,,,,,32.0,F9.4,{'CHE'}
-salinity:ctd,PSS-78,,,float32,Salinity CTD,,PSS-78,,,,,,,,,,
+salinity:bottle,PSS-78,,,float32,Salinity Bottle,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALBSTX,,,,,,,,
+salinity:bottle,,,,float32,Salinity Bottle,sea_water_salinity,,,SDN:P01::SSALBSTX,,,,,,32.0,F9.4,{'CHE'}
+salinity:ctd,PSS-78,,,float32,Salinity CTD,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,,,,,,,,
 salinity:ctd,umol\/kg,,,float32,Salinity CTD,,,,,,,,,,6.0,F,{'BOT'}
 salinity:cur,PSS-78,,,float32,Sea Water Practical Salinity,sea_water_practical_salinity,PSS-78,,,,,,PSLTZZ01,,,,
 salinity:cur,ppt,,,float32,Sea Water Practical Salinity,sea_water_practical_salinity,PPT,,,,,,ODSDM021,,,,
-salinity:t0:c0,PSS-78,,,float32,Salinity T0 C0,,PSS-78,,,,,,,,,,
-salinity:t1:c1,PSS-78,,,float32,Salinity T1 C1,,PSS-78,,,,,,,,,,
-salinity:upcast,PSS-78,,,float32,Salinity Upcast,,,,,,,,,,4.0,F,{'CTD'}
+salinity:t0:c0,PSS-78,,,float32,Salinity T0 C0,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,,,,,,,,
+salinity:t1:c1,PSS-78,,,float32,Salinity T1 C1,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST02,,,,,,,,
+salinity:upcast,PSS-78,,,float32,Salinity Upcast,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,,,,,,4.0,F,{'CTD'}
 sample_method,None,,,NQ,Sample Method,,,,,,,,,,,,
 sample_number,None,,,int,,,,,,,,,,,,,
 sample_order,None,,,int32,Sample Order,,,,,,,,,,277.0,I4,{'BOT'}
 sampler_id_number,None,,,' ',Sampler ID Number,,,,,,,,,,264.0,' ',{'BOT'}
 sampler_type,None,,,' ',Sampler Type,,,,,,,,,,281.0,' ',{'BOT'}
 scan_number,None,,,float32,Scan Number,,,,,,,,,,206.0,F,{'CTD'}
-sigma-t,,,,float32,Sigma-theta,,,,,,,,SIGTEQST,weird units n/a,,,
-sigma-t,kg\/m\^3,,,float32,Sigma-theta,,,,,,,,SIGTEQST,,,,
+sigma-t,,,,float32,Sigma-theta,sea_water_sigma_t,,,SDN:P01::SIGTPR01,,,,SIGTEQST,weird units n/a,,,
+sigma-t,kg\/m\^3,,,float32,Sigma-theta,sea_water_sigma_t,,,SDN:P01::SIGTPR01,,,,SIGTEQST,,,,
 sigma-t:ctd,Kg\/m\^3,,,float32,Sigma-t CTD,,Kg/m^3,,,,,,,,,,
 sigmat-t,,,,,Sigmat-T,,,,,,,,,,378.0,,{'BOT'}
-silicate,microg-at/l,,,' ',Silicate,,,,,,,,,,210.0,' ',{'BOT'}
+silicate,microg-at/l,,,' ',Silicate,mass_concentration_of_silicate_in_sea_water,microg-at/l,,SDN:P01::SLCAZZXX,,,,,,210.0,' ',{'BOT'}
 silicate,ug-at\/L,,,float32,Silicate,,ug-at/L,,,,,,,,57.0,F6.1,"{'CHE, 'UBC'}"
 silicate,umol\/l|umol\/L|mmol\/m,,,float32,Mole Concentration of Silicate in Sea Water,mole_concentration_of_silicate_in_sea_water,umol/L,,,,,,SLCAAAZ,,,,
 silicate2,umol\/L,,,float32,Silicate2,,umol/L,,,,,,,,62.0,F,{'CHE'}
@@ -375,7 +373,7 @@ temperature:air:inside,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(I
 temperature:air:low,deg C,,,float32,Temperature Air Low,,degree_celsius,,,,,,,,,,
 temperature:air:low,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,float32,Temperature Air Low,,degree_celsius (ITS-90),,,,,,,,31.0,F,{'ANE'}
 temperature:air:low:flag,,,,int32,Temperature Air Low Flag,,,,,,,,,,3.0,I,{'ANE'}
-temperature:bt,deg C,,,float32,Temperature BT,,,,,,,,,,178.0,F,{'BOT'}
+temperature:bt,deg C,,,float32,Temperature BT,sea_water_temperature,deg C,,"SDN:P01::TEMPPR01,SDN:P01::TEMPRTNX",,,,,,178.0,F,{'BOT'}
 temperature:bucket,deg C \(IPTS68\),,,float32,Temperature Bucket,,,,,,,,,,135.0,F,{'BOT'}
 temperature:ctd,deg C \(ITS90\),,,float32,Temperature CTD,,degree_celsius (ITS-90),,,,,,,,,,
 temperature:cur,deg C \(IPTS68\),,,float32,Sea Water Temperature,sea_water_temperature,degree_celsius (IPTS-68),,,,,,TEMPP681,,,,
@@ -394,11 +392,11 @@ temperature:high_res,deg C,,,float32,Sea Water Temperature High Res,,degree_cels
 temperature:intake,deg C \(ITS90\),,,float32,Temperature Intake,,degree_celsius (ITS-90),,,,,,,,,,
 temperature:lab,deg C \(ITS90\),,,float32,Temperature Lab,,degree_celsius (ITS-90),,,,,,,,,,
 temperature:low_res,deg C \(IPTS68\),,,float32,Sea Water Temperature Low Res,,degree_celsius (IPTS-68),,,,,,,,,,
-temperature:oxygen,DEG C,,,float32,Temperature Oxygen,,degree_celsius,,,,,,,,206.0,F,{'CTD'}
+temperature:oxygen,DEG C,,,float32,Temperature Oxygen,temperature_of_sensor_for_oxygen_in_sea_water,DEG C,,SDN:P01::OXYTAAOP,,,,,,206.0,F,{'CTD'}
 temperature:primary,DEG C \(ITS90\),,,float32,Temperature Primary,,degree_celsius (ITS-90),,,,,,,,206.0,F,{'CTD'}
 temperature:primary,deg C \(IPTS68\),,,float32,Temperature Primary,,degree_celsius (IPTS-68),,,,,,,,,,
 temperature:primary,deg C \(ITS90\),,,float32,Temperature Primary,,degree_celsius (ITS-90),,,,,,,,,,
-temperature:reversing,deg C,,,float32,Temperature Reversing,,degree_celsius,,,,,,,,14.0,F,{'CHE'}
+temperature:reversing,deg C,,,float32,Temperature Reversing,sea_water_temperature,deg C,,"SDN:P01::TEMPPR01,SDN:P01::TEMPRTNX",,,,,,14.0,F,{'CHE'}
 temperature:reversing,deg C \(IPTS68\),,,float32,Temperature Reversing,,degree_celsius,,,,,,,,14.0,F,{'CHE'}
 temperature:second,deg c \(ITS\-90\)|deg C \(ITS90\)|deg C \(ITS9|deg C|deg C \(ITS-90\),,,float32,Temperature Second,,degree_celsius (ITS-90),,,,,,,,20.0,F,{'ANE'}
 temperature:secondary,deg C \(IPTS68\),,,float32,Temperature Secondary,,degree_celsius (IPTS-68),,,,,,,,2.0,F,{'CTD'}
@@ -424,12 +422,12 @@ transmissivity,%\/metre,,,float32,Sea Water Transmissivity,,%/metre,,,,,,,,,,
 transmissivity2,%\/metre,,,float32,Transmissivity2,,%/metre,,,,,,,,43.0,F,"{'CHE, 'CTD'}"
 transmissivity:ctd,%\/metre,,,float32,Transmissivity CTD,,%/metre,,,,,,,,,,
 transmissivity:green,%\/metre,,,float32,Transmissivity Green,,%/metre,,,,,,,,310.0,F,{'CHE'}
-tritium,TU81N,,,float32,Tritium,,,,,,,,,,18.0,F7.2,{'BOT'}
-turbidity,NTU,,,f,Turbidity,,,,,,,,,,5.0,f,{'CTD'}
-turbidity:seapoint,FTU,,,float32,Turbidity,,FTU,,,,,,,,,,
+tritium,TU81N,,,float32,Tritium,,TU81N,,SDN:P01::MXTX3H1H,,,,,,18.0,F7.2,{'BOT'}
+turbidity,NTU,,,f,Turbidity,sea_water_turbidity,NTU,,SDN:P01::TURBXXXX,,,,,,5.0,f,{'CTD'}
+turbidity:seapoint,FTU,,,float32,Turbidity,sea_water_turbidity,FTU,,SDN:P01::TURBSP01,,,,,,,,
 turbidity:wetlabs,NTU|FTU,,,float32,Turbidity Wetlabs,,,,,,,,,,43.0,F,{'CTD'}
-turbidity:wetlabs:eco-ntu,None,,,float32,Turbidity WETLabs ECO-NTU,,,,,,,,,,9.0,F,{'CTD'}
-turbidity:wetlabs:ntu,None,,,float32,Turbidity WETLabs NTU,,,,,,,,,,1.0,F,{'CTD'}
+turbidity:wetlabs:eco-ntu,None,,,float32,Turbidity WETLabs ECO-NTU,sea_water_turbidity,,,SDN:P01::TURBPR01,,,,,,9.0,F,{'CTD'}
+turbidity:wetlabs:ntu,None,,,float32,Turbidity WETLabs NTU,sea_water_turbidity,,,SDN:P01::TURBPR01,,,,,,1.0,F,{'CTD'}
 uv:dose,MEDs,,,float32,UV Dose,,MEDs,,,,,,,,9.0,F,{'ANE'}
 uv:high,,,,float32,UV High,,,,,,,,,,9.0,F,{'ANE'}
 uv:index,,,,float32,UV Index,,,,,,,,,,9.0,F,{'ANE'}
