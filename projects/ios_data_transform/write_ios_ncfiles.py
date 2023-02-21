@@ -7,7 +7,7 @@ import json
 import cioos_data_transform.IosObsFile as ios
 from tqdm import tqdm
 
-logging.basicConfig(filename="drf.log", level=logging.DEBUG)
+logging.basicConfig(filename="ios_nc_conversion.log", level=logging.DEBUG)
 logger = logging.getLogger()
 
 
