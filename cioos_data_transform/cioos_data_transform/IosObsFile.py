@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 import re
 import fortranformat as ff
 import numpy as np
+import json
 from pytz import timezone
 from .utils.utils import find_geographic_area, read_geojson, read_ios_vocabulary
 from shapely.geometry import Point
@@ -129,9 +130,7 @@ class ObsFile(object):
                 record_name = l.strip()
                 if self.debug:
                     logger.debug(
-                        "Found subsection:{} in section:{}".format(
-                            record_name, section_name
-                        )
+                        "Found subsection:%s in section:%s", record_name, section_name
                     )
                 info[record_name] = []
                 while not EOR:
@@ -159,9 +158,7 @@ class ObsFile(object):
                 logger.debug("Finding subsection", name)
             name = "$" + name
         if name not in self.file.keys():
-            logger.warning(
-                "Did not find subsection:{} in {}".format(name, self.filename)
-            )
+            logger.warning("Did not find subsection:%s in %s", name, self.filename)
         elif name == "$TABLE: CHANNELS":
             info = self.file[name]
         elif name == "$TABLE: CHANNEL DETAIL":
@@ -500,8 +497,8 @@ class ObsFile(object):
 
         # date/time section in data is supposed to be in UTC.
         # check if they match, if not then raise fatal error
-        dt = pd.Timedelta('1s')
-        if not(-dt < self.obs_time[0] - self.start_dateobj < dt):
+        dt = pd.Timedelta("1s")
+        if not (-dt < self.obs_time[0] - self.start_dateobj < dt):
             logger.error(self.obs_time[0], self.start_dateobj)
             logger.error(
                 "Error: First record in data does not match start date in header",
@@ -510,6 +507,15 @@ class ObsFile(object):
             return 0
 
     def add_ios_vocabulary(self, vocab=None):
+
+        ignored_vocabulary_columns = [
+            "ios_file",
+            "accepted_units",
+            "accepted_instrument",
+            "apply_func",
+            "rename",
+        ]
+
         def match_term(reference, value):
             if (
                 reference in (None, np.nan, "None")
@@ -521,7 +527,11 @@ class ObsFile(object):
 
         def _generate_vocabulary_attr():
             return [
-                {attr: value for (attr, value) in row.to_dict().items() if value}
+                {
+                    attr: value
+                    for (attr, value) in row.to_dict().items()
+                    if pd.notna(value) and attr not in ignored_vocabulary_columns
+                }
                 for id, row in matched_vocab.iterrows()
             ]
 
@@ -541,7 +551,7 @@ class ObsFile(object):
             vocab = read_ios_vocabulary(vocab)
 
         # iterate over variables and find matching vocabulary
-        self.vocabulary_attributes = {}
+        self.vocabulary_attributes = []
         for id, (name, units) in enumerate(
             zip(self.channels["Name"], self.channels["Units"])
         ):
@@ -552,10 +562,10 @@ class ObsFile(object):
 
             if re.match(r"\'*(flag|quality_flag)", name, re.IGNORECASE):
                 # TODO add flag related metadata
-                self.vocabulary_attributes[name] = [{}]
+                self.vocabulary_attributes += [[{}]]
                 continue
             elif re.match("(Date|Time)", name, re.IGNORECASE):
-                self.vocabulary_attributes[name] = [{}]
+                self.vocabulary_attributes += [[{}]]
                 continue
 
             units = re.sub("^'|'$", "", units)
@@ -571,10 +581,15 @@ class ObsFile(object):
                 else None
             )
             _save_variable(name.strip(), units.strip(), data_type)
-            if not matched_vocab.empty:
-                self.vocabulary_attributes[name] = _generate_vocabulary_attr()
-            else:
-                _add_to_missing_vocabulary(name.strip(), units.strip(), data_type)
+            if matched_vocab.empty:
+                logger.warning(
+                    "Missing vocabulary for variable name=%s,units=%s,attrs=%s",
+                    name,
+                    units,
+                    data_type,
+                )
+                
+            self.vocabulary_attributes += [_generate_vocabulary_attr()]
 
     def get_channel_attributes(self):
         def _map_dtype(ios_type):
@@ -628,17 +643,25 @@ class ObsFile(object):
 
     def rename_date_time_variables(self):
         rename_channels = self.channels["Name"]
+        history = []
         for id, chan in enumerate(self.channels["Name"]):
             if not re.search("^(time|date)", chan, re.IGNORECASE):
                 continue
             elif re.match(r"Date[\s\t]*($|YYYY/MM/DD)", chan.strip()):
+                history += [f"rename variable '{chan}' -> 'Date'"]
                 rename_channels[id] = "Date"
             elif re.match(r"Time[\s\t]*($|HH:MM:SS)", chan.strip()):
+                history += [f"rename variable '{chan}' -> 'Time'"]
                 rename_channels[id] = "Time"
             else:
                 logger.warning(f"Unkown date time channel {chan}")
 
-    def to_xarray(self, rename_variables=True):
+    def to_xarray(
+        self,
+        rename_variables=True,
+        append_sub_variables=False,
+        replace_date_time_variables=True,
+    ):
         """Convert ios class to xarray dataset
 
         Returns:
@@ -652,45 +675,68 @@ class ObsFile(object):
             varname = re.sub(r"^_|_$", "", varname)
             return varname
 
-        def _format_attributes(attrs, prefix=""):
+        def _format_attributes(section, prefix=""):
+            def _format_attribute_name(name):
+                if name == "$REMARKS":
+                    return f"{section}_remarks"
+                return f"{prefix}{name}".replace(" ", "_").lower()
+
+            def _format_attribute_value(value):
+                if isinstance(value, str):
+                    return value.strip()
+                elif isinstance(value, (float, int)):
+                    return value
+                elif isinstance(value, list):
+                    return "".join(value)
+                else:
+                    return value
+
+            attrs = getattr(self, section)
+            if attrs:
+                return {
+                    _format_attribute_name(name): _format_attribute_value(value)
+                    for name, value in attrs.items()
+                }
+            else:
+                return {}
+
+        def _get_attribute_mapping(attr):
             return {
-                f"{prefix}{name}".replace(" ", "_").lower(): value.strip()
-                if isinstance(value, str)
-                else value
-                for name, value in attrs.items()
-                if isinstance(value, (float, int, str))
+                chan: attrs[attr]
+                for chan, attrs in self.get_channel_attributes().items()
             }
 
         # Fix some issues
         self.rename_duplicated_channels()
         self.rename_date_time_variables()
 
-        # Parse data
-        df = pd.DataFrame.from_records(self.data, columns=self.channels["Name"])
-        # Format data type
-        # TODO replace Pad values
-        channel_attributes = self.get_channel_attributes()
-        df = df.replace(
-            {chan: attrs["Pad"] for chan, attrs in channel_attributes.items()}, np.nan
+        # Parse data, assign appropriate data type, padding values
+        #  and convert to xarray object
+        ds = (
+            pd.DataFrame.from_records(self.data, columns=self.channels["Name"])
+            .replace(
+                _get_attribute_mapping("Pad"),
+                np.nan,
+            )
+            .astype(_get_attribute_mapping("dtype"))
+            .to_xarray()
         )
-        df = df.astype(
-            {chan: attrs["dtype"] for chan, attrs in channel_attributes.items()}
-        )
-        ds = df.to_xarray()
-        if self.obs_time:
+
+        if self.obs_time and replace_date_time_variables:
+            ds = ds.drop([var for var in ds if var in ["Date", "Time"]])
             ds["time"] = (ds.dims, self.obs_time)
 
         # Generate global attributes
-        ds.attrs.update(_format_attributes(self.administration))
-        ds.attrs.update(_format_attributes(self.file))
-        ds.attrs.update(_format_attributes(self.instrument, prefix="instrument_"))
-        ds.attrs.update(_format_attributes(self.location))
+        ds.attrs.update(_format_attributes("administration"))
+        ds.attrs.update(_format_attributes("file"))
+        ds.attrs.update(_format_attributes("instrument", prefix="instrument_"))
+        ds.attrs.update(_format_attributes("location"))
         ds.attrs["comments"] = str(self.comments)
         ds.attrs["remarks"] = str(self.remarks)
         if self.deployment:
-            ds.attrs.update(_format_attributes(self.recovery, "deployment_"))
+            ds.attrs.update(_format_attributes("deployment", "deployment_"))
         if self.recovery:
-            ds.attrs.update(_format_attributes(self.recovery, "recovery_"))
+            ds.attrs.update(_format_attributes("recovery", "recovery_"))
 
         # Generate Variable attributes
         ios_variables_attributes = (
@@ -698,23 +744,31 @@ class ObsFile(object):
                 {
                     **self.channels,
                     **(self.channel_details if self.channel_details else {}),
+                    **{"vocabulary_attributes": self.vocabulary_attributes},
                 }
             )
             .apply(lambda x: x.strip() if isinstance(x, str) else x)
             .set_index(["Name"])
-            .drop(columns=["fmt_struct"], errors="ignore")
-            .to_dict(orient="index")
         )
-        for var, attrs in ios_variables_attributes.items():
-            ds[var.strip()].attrs.update(
+        for var, row in ios_variables_attributes.iterrows():
+            if var not in ds:
+                continue
+            if row["vocabulary_attributes"][-1]:
+                attrs = row["vocabulary_attributes"][-1]
+            else:
+                attrs = {"long_name": var, "units": row["Units"]}
+
+            ds[var].attrs.update(
                 {
-                    **{attr.lower(): value for attr, value in attrs.items()},
-                    **(
-                        self.vocabulary_attributes[var][0]
-                        if var in self.vocabulary_attributes
-                        else {}
+                    **attrs,
+                    "ios_shell_variable": json.dumps(
+                        {
+                            "Name": var,
+                            **row.drop(["fmt_struct", "vocabulary_attributes"])
+                            .str.strip()
+                            .to_dict(),
+                        }
                     ),
-                    "source": var,
                 }
             )
 
@@ -727,15 +781,15 @@ class ObsFile(object):
             ds = ds.rename({var: make_variable_names_compatiple(var) for var in ds})
 
         # Set dimensions from index
-        if "time" in ds:
+        if "time" in ds and ds["index"].size == ds["time"].size:
             ds = ds.swap_dims({"index": "time"})
 
         # Set coordinates
-        coordinates_variables = ["time", "Latitude", "Longitude", "depth"]
+        coordinates_variables = ["time", "latitude", "longitude", "depth"]
         if any(var in ds for var in coordinates_variables):
             ds = ds.set_coords([var for var in coordinates_variables if var in ds])
             if "index" in ds.coords and "time" in ds.coords:
-                ds = ds.reset_coords("index")
+                ds = ds.reset_coords("index").drop("index")
 
         return ds
 
@@ -938,6 +992,7 @@ class GenFile(ObsFile):
     """General method used to parse the different IOS data types."""
 
     def import_data(self):
+        sections_available = self.get_list_of_sections()
         self.type = None
         self.start_dateobj, self.start_date = self.get_date(opt="start")
         self.location = self.get_location()
@@ -947,9 +1002,10 @@ class GenFile(ObsFile):
         self.administration = self.get_section("ADMINISTRATION")
         self.instrument = self.get_section("INSTRUMENT")
         self.channel_details = self.get_channel_detail()
-        if "DEPLOYMENT" in self.file:
+        self.history = self.get_section("HISTORY")
+        if "DEPLOYMENT" in sections_available:
             self.deployment = self.get_section("DEPLOYMENT")
-        if "RECOVERY" in self.file:
+        if "RECOVERY" in sections_available:
             self.recovery = self.get_section("RECOVERY")
 
         if self.channel_details is None:
