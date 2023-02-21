@@ -7,7 +7,8 @@ import json
 import cioos_data_transform.IosObsFile as ios
 from tqdm import tqdm
 
-logger = logging.getLogger(__name__)
+logging.basicConfig(filename="drf.log", level=logging.DEBUG)
+logger = logging.getLogger()
 
 
 def read_config(config_input):
@@ -28,16 +29,15 @@ def read_config(config_input):
 
 def convert_file_to_netcdf(input_path, output_path, config_input=None, overwrite=False):
 
-    if config_input:
-        config.update(config_input)
+    config = read_config(config_input)
     overwrite = overwrite or config.get("overwrite")
 
     # Generate output path
     original_filename = os.path.basename(input_path)
-    if os.path.isdir(output_path):
-        output_path = os.path.join(output_path, f"{original_filename}.nc")
-    elif output_path is None:
+    if output_path is None:
         output_path = f"{input_path}.nc"
+    elif os.path.isdir(output_path):
+        output_path = os.path.join(output_path, f"{original_filename}.nc")
 
     # overwrite?
     if os.path.exists(output_path) and not overwrite:
@@ -56,12 +56,19 @@ def convert_file_to_netcdf(input_path, output_path, config_input=None, overwrite
         ds.to_netcdf(output_path)
 
 
-def run_batch_conversion(input_path, output_path, config_input=None, recursive=True):
+def run_batch_conversion(
+    input_path=None, output_path=None, config_input=None, recursive=None
+):
+
+    config = read_config(config_input)
+    input_path = input_path or config["input_path"]
+    output_path or config.get("output_path")
+    recursive = recursive or config.get("recursive", True)
 
     files = glob(input_path, recursive=recursive)
     for file in tqdm(files, unit="file", desc="Convert IOS CTD to ODF"):
         try:
-            convert_file_to_netcdf(file, output_path, config_input=config_input)
+            convert_file_to_netcdf(file, output_path, config_input=config)
         except Exception as e:
             logger.exception("Failed to read %s", file)
 
@@ -74,7 +81,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "-c",
-        "--config",
+        "--config_input",
         default=None,
         help="Path to configuration file or json string",
     )
@@ -96,13 +103,4 @@ if __name__ == "__main__":
         action="store_true",
         help='Output path where to save netcdf files to input, (default: original file +".nc")',
     )
-
-    args = parser.parse_args()
-    config = read_config(args.config)
-
-    run_batch_conversion(
-        args.input_path or config.get("input_path"),
-        args.output_path or config.get("output_path"),
-        config_input=config,
-        recursive=args.recursive or config.get("recursive"),
-    )
+    run_batch_conversion(**parser.parse_args().__dict__)
