@@ -513,7 +513,6 @@ class ObsFile(object):
             "accepted_units",
             "accepted_instrument",
             "apply_func",
-            "rename",
         ]
 
         def match_term(reference, value):
@@ -661,7 +660,7 @@ class ObsFile(object):
     def to_xarray(
         self,
         rename_variables=True,
-        append_sub_variables=False,
+        append_sub_variables=True,
         replace_date_time_variables=True,
     ):
         """Convert ios class to xarray dataset
@@ -778,13 +777,24 @@ class ObsFile(object):
                 }
             )
 
+            # Append sub variables
+            if append_sub_variables and len(row["vocabulary_attributes"]) > 1:
+                for sub_var in row["vocabulary_attributes"][0:-1]:
+                    ds[sub_var.pop("rename")] = (ds[var].dims, ds[var].data, sub_var)
+
         # Convert any object variables to strings
         for var in ds:
             if ds[var].dtype == object:
                 ds[var] = ds[var].astype(str)
 
         if rename_variables:
-            ds = ds.rename({var: make_variable_names_compatiple(var) for var in ds})
+            ds = ds.rename(
+                {
+                    var: ds[var].attrs.get("rename")
+                    or make_variable_names_compatiple(var)
+                    for var in ds
+                }
+            )
 
         # Set dimensions from index
         if "time" in ds and ds["index"].size == ds["time"].size:
