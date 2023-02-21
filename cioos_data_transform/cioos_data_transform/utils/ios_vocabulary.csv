@@ -289,9 +289,9 @@ ios_file,ios_name,accepted_units,accepted_instrument,apply_func,long_name,standa
 ,propane,nmol\/L,,,Propane,,nmol/L,,SDN:P01::AX03GCTX,,,,
 ,radiation:solar,W\/m\^2,,,Solar Radiation,,W/m^2,,,,,,
 ,radiation:solar:high,W\/m\^2,,,High Solar Radiation,,W/m^2,,,,,,
-,record #,None,,,Record #,,,,,,,,
-,record_number,None,,,,,,,,,,,
-,recordnumber,None,,,RecordNumber,,,,,,,,
+,record #,None,,,Record #,,,,,,,,record_number
+,record_number,None,,,,,,,,,,,record_number
+,recordnumber,None,,,RecordNumber,,,,,,,,record_number
 ,reference,None,,,,,,,,,,,
 ,roll,,,,platform_roll,degrees,,,,,,,ROLLEI01
 ,run:wind,km,,,Run Wind,,km,,,,,,
