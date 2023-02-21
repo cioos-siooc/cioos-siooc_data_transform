@@ -584,7 +584,8 @@ class ObsFile(object):
             _save_variable(name.strip(), units.strip(), data_type)
             if matched_vocab.empty:
                 logger.warning(
-                    "Missing vocabulary for variable name=%s,units=%s,attrs=%s",
+                    "Missing vocabulary for file=%s; variable name=%s,units=%s,attrs=%s",
+                    self.filename,
                     name,
                     units,
                     data_type,
@@ -779,7 +780,14 @@ class ObsFile(object):
 
             # Append sub variables
             if append_sub_variables and len(row["vocabulary_attributes"]) > 1:
-                for sub_var in row["vocabulary_attributes"][0:-1]:
+                for sub_var in row["vocabulary_attributes"][:-1]:
+                    if not sub_var.get("rename"):
+                        logger.warning(
+                            "Missing vocabulary rename attribute for %s -> %s",
+                            var,
+                            row.to_dict(),
+                        )
+                        continue
                     ds[sub_var.pop("rename")] = (ds[var].dims, ds[var].data, sub_var)
 
         # Convert any object variables to strings
