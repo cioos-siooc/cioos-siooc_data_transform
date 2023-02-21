@@ -517,8 +517,10 @@ class ObsFile(object):
         ]
 
         def match_term(reference, value):
+            if reference in (None, np.nan):
+                return False
             if (
-                reference in (None, np.nan, "None")
+                "None" in reference.split("|")
                 or re.match(reference, value)
                 or value in reference.split("|")
             ):
@@ -588,7 +590,7 @@ class ObsFile(object):
                     units,
                     data_type,
                 )
-                
+
             self.vocabulary_attributes += [_generate_vocabulary_attr()]
 
     def get_channel_attributes(self):
@@ -696,6 +698,7 @@ class ObsFile(object):
                 return {
                     _format_attribute_name(name): _format_attribute_value(value)
                     for name, value in attrs.items()
+                    if value and not name.startswith("$TABLE:")
                 }
             else:
                 return {}
@@ -731,13 +734,16 @@ class ObsFile(object):
         ds.attrs.update(_format_attributes("file"))
         ds.attrs.update(_format_attributes("instrument", prefix="instrument_"))
         ds.attrs.update(_format_attributes("location"))
-        ds.attrs["comments"] = str(self.comments)
-        ds.attrs["remarks"] = str(self.remarks)
         if self.deployment:
             ds.attrs.update(_format_attributes("deployment", "deployment_"))
         if self.recovery:
             ds.attrs.update(_format_attributes("recovery", "recovery_"))
-
+        if self.comments:
+            ds.attrs["comments"] = str(self.comments)
+        if self.remarks:
+            ds.attrs["remarks"] = str(self.remarks)
+        if self.history:
+            ds.attrs["history"] = str(self.history)
         # Generate Variable attributes
         ios_variables_attributes = (
             pd.DataFrame(
@@ -753,7 +759,7 @@ class ObsFile(object):
         for var, row in ios_variables_attributes.iterrows():
             if var not in ds:
                 continue
-            if row["vocabulary_attributes"][-1]:
+            if len(row["vocabulary_attributes"]) > 0:
                 attrs = row["vocabulary_attributes"][-1]
             else:
                 attrs = {"long_name": var, "units": row["Units"]}
