@@ -789,7 +789,8 @@ class ObsFile(object):
                             row.to_dict(),
                         )
                         continue
-                    ds[sub_var.pop("rename")] = (ds[var].dims, ds[var].data, sub_var)
+                    new_var = sub_var.pop("rename")
+                    ds[new_var] = (ds[var].dims, ds[var].data, sub_var)
 
         # Convert any object variables to strings
         for var in ds:
@@ -799,9 +800,9 @@ class ObsFile(object):
         if rename_variables:
             ds = ds.rename(
                 {
-                    var: ds[var].attrs.get("rename")
-                    or make_variable_names_compatiple(var)
+                    var: ds[var].attrs["rename"]
                     for var in ds
+                    if "rename" in ds[var].attrs
                 }
             )
 
