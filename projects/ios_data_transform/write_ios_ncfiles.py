@@ -18,12 +18,11 @@ def read_config(config_input):
 
     if isinstance(config_input, str):
         if os.path.exists(config_input):
-            logger.info("Parse json file config")
             with open(config_input, "r", encoding="UTF-8") as config_file:
                 return json.load(config_file)
-        logger.info("Parse json string config")
         return json.loads(config_input)
-    logger.info("Return config dictionary")
+
+    logger.setLevel(config_input.get("log_level", "INFO"))
     return config_input
 
 

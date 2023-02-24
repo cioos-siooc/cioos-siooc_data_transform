@@ -4,6 +4,7 @@
   "output_path": "tests/temp/IOS_DRF",
   "overwrite": true,
   "geojson_file": "tests/test_files/ios_polygons.geojson",
+  "log_level": "WARNING",
   "global_attributes": {
     "summary": "This dataset contains observations made by the Institute of Ocean Sciences of Fisheries and Oceans (DFO) using CTDs mounted on moorings. The moorings were deployed by DFO and partner organizations between 1965 to present. Variables present in the dataset include Temperature, Salinity, Oxygen, Conductivity, Depth, and Pressure as a timeseries. For any questions please contact (DFO.PAC.SCI.IOSData-DonneesISO.SCI.PAC.MPO@dfo-mpo.gc.ca).",
     "title": "Moored CTD data from IOS",
