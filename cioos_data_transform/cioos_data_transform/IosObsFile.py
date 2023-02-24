@@ -558,7 +558,7 @@ class ObsFile(object):
         ):
 
             # Drop trailing spaces and commas
-            name = re.sub(r"^\'|[\s\']+$", "", name)
+            name = re.sub(r"^\'|[\s\']+$", "", name.lower())
             units = re.sub(r"^\'|[\s\']+$", "", units)
 
             if re.match(r"\'*(flag|quality_flag)", name, re.IGNORECASE):
