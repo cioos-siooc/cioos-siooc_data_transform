@@ -270,7 +270,7 @@ class ObsFile(object):
         else:
             ffline = ff.FortranRecordReader(formatline)
             for i in range(len(lines)):
-                if len(lines[i]) > 0:
+                if len(lines[i]) > 0 and not re.match("\x1a+", lines[i]):
                     data.append([float(r) for r in ffline.read(lines[i])])
         data = np.asarray(data)
         if self.debug:
