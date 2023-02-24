@@ -1040,7 +1040,10 @@ class GenFile(ObsFile):
         try:
             self.data = self.get_data(formatline=self.file.get("FORMAT"))
         except Exception as e:
-            logger.error("Could not read file using 'FORMAT' description...")
+            logger.warning(
+                "Could not read file data using FORMAT=%s ",
+                self.file.get("FORMAT").strip(),
+            )
             self.data = None
 
         if self.data is None:
@@ -1048,6 +1051,7 @@ class GenFile(ObsFile):
                 # self.channel_details = self.get_channel_detail()
                 self.data = self.get_data(formatline=None)
             except Exception as e:
+                logger.error("Failed to read file: %s", self.filename)
                 return 0
 
         chnList = [i.strip().lower() for i in self.channels["Name"]]
