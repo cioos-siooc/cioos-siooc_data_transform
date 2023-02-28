@@ -336,7 +336,9 @@ class ObsFile(object):
             raise Exception(
                 "Number of channels in file record does not match channel_details!"
             )
-        else:
+        elif any([item for item in info["Type"] if item.strip()]) or any(
+            [item for item in info["Format"] if item.strip()]
+        ):
             fmt = ""
             for i in range(len(info["Pad"])):
                 if info["Type"][i].strip() == "D":
@@ -365,6 +367,11 @@ class ObsFile(object):
                         + re.match("I(\d+)", info["Format"][i], re.IGNORECASE)[1]
                         + "s"
                     )
+                elif info["Format"][i].strip() in ("F", "I", "f", "i"):
+                    logger.info(
+                        "Unable to retrieve the fmt format from the CHANNEL DETAIL Table"
+                    )
+                    break
                 else:
                     logger.error(
                         "Unknown variable format Format: %s, Type: %s",
@@ -375,7 +382,8 @@ class ObsFile(object):
                         "Unknown variable format Format: %s, Type: %s"
                         % (info["Format"][i], info["Type"][i])
                     )
-            info["fmt_struct"] = fmt
+            else:
+                info["fmt_struct"] = fmt
         if self.debug:
             logger.debug("Python compatible data format:", fmt)
         return info
@@ -556,7 +564,7 @@ class ObsFile(object):
                 return False
             if (
                 ("None" in reference.split("|") and value in (None, "n/a", ""))
-                or re.match(reference, value)
+                or re.fullmatch(reference, value)
                 or value in reference.split("|")
             ):
                 return True
