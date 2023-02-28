@@ -335,9 +335,20 @@ class ObsFile(object):
                     fmt = fmt + "9s"
                 elif info["Format"][i].strip().upper() == "HH:MM":
                     fmt = fmt + "6s"
-                else:
+                elif info["Width"][i].strip():
                     fmt = fmt + info["Width"][i].strip() + "s"
-
+                elif re.match("F\d+\.\d+", info["Format"][i]):
+                    fmt = fmt + re.match("F(\d+)\.\d+\s*", info["Format"][i])[1] + "s"
+                else:
+                    logger.error(
+                        "Unknown variable format Format: %s, Type: %s",
+                        info["Format"][i],
+                        info["Type"][i],
+                    )
+                    raise Exception(
+                        "Unknown variable format Format: %s, Type: %s"
+                        % (info["Format"][i], info["Type"][i])
+                    )
             info["fmt_struct"] = fmt
         if self.debug:
             logger.debug("Python compatible data format:", fmt)
