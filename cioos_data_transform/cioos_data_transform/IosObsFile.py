@@ -552,7 +552,7 @@ class ObsFile(object):
             if reference in (None, np.nan):
                 return False
             if (
-                "None" in reference.split("|")
+                ("None" in reference.split("|") and value in (None, "n/a",""))
                 or re.match(reference, value)
                 or value in reference.split("|")
             ):
