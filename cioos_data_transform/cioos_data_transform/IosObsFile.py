@@ -339,6 +339,8 @@ class ObsFile(object):
                     fmt = fmt + info["Width"][i].strip() + "s"
                 elif re.match("F\d+\.\d+", info["Format"][i]):
                     fmt = fmt + re.match("F(\d+)\.\d+\s*", info["Format"][i])[1] + "s"
+                elif re.match("I\d+", info["Format"][i]):
+                    fmt = fmt + re.match("I(\d+)", info["Format"][i])[1] + "s"
                 else:
                     logger.error(
                         "Unknown variable format Format: %s, Type: %s",
