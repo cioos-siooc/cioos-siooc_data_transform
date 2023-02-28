@@ -559,17 +559,6 @@ class ObsFile(object):
                 for id, row in matched_vocab.iterrows()
             ]
 
-        def _add_to_missing_vocabulary(name, units, data_type="float32"):
-            logger.info(f"Missing vocabulary for name: {name} Units: {units}")
-            with open("missing_vocabulary.txt", "a") as handle:
-                handle.write(
-                    f"{self.filename},{name.lower()},{data_type},{re.sub('[:_]',' ',name)},,,{units},{units}\n"
-                )
-
-        def _save_variable(name, units, data_type="float32"):
-            with open("variable.log", "a") as handle:
-                handle.write(f"{self.filename},{name.lower()},{data_type},{units}\n")
-
         # Load vocabulary
         if vocab is None or isinstance(vocab, str):
             vocab = read_ios_vocabulary(vocab)
@@ -604,7 +593,6 @@ class ObsFile(object):
                 if self.channel_details
                 else None
             )
-            _save_variable(name.strip(), units.strip(), data_type)
             if matched_vocab.empty:
                 logger.warning(
                     "Missing vocabulary for file=%s; variable name=%s,units=%s,attrs=%s",
@@ -615,44 +603,6 @@ class ObsFile(object):
                 )
 
             self.vocabulary_attributes += [_generate_vocabulary_attr()]
-
-    def get_channel_attributes(self):
-        def _map_dtype(ios_type):
-            if ios_type.strip() in (None, ""):
-                return
-            elif ios_type in ios_dtypes_to_python:
-                return ios_dtypes_to_python[ios_type]
-            elif ios_type[0] in ios_dtypes_to_python:
-                return ios_dtypes_to_python[ios_type[0]]
-
-        if self.channel_details is None:
-            logger.info("Channel details not available")
-            return {}
-
-        channel_attributes = (
-            pd.DataFrame({**self.channels, **self.channel_details})
-            .set_index("Name")
-            .applymap(lambda x: x.strip())
-            .drop(columns=["fmt_struct"])
-        )
-
-        # Generate dtype attribute r
-        channel_attributes["dtype"] = (
-            channel_attributes["Type"]
-            .apply(_map_dtype)
-            .fillna(channel_attributes["Format"].apply(_map_dtype))
-            .fillna(str)
-        )
-
-        # Detect missing mapping
-        is_missing_dtype = channel_attributes["dtype"].isna()
-        if is_missing_dtype.any():
-            missing_dtype_mapping_str = channel_attributes.loc[is_missing_dtype][
-                ["Format", "Type"]
-            ].to_json(orient="index")
-            logger.warning(f"Missing dtype mapping for {missing_dtype_mapping_str}")
-            channel_attributes["dtype"].fillna("str", inplace=True)
-        return channel_attributes.to_dict(orient="index")
 
     def rename_duplicated_channels(self):
         old_channel_names = [chan.strip() for chan in self.channels["Name"]]
