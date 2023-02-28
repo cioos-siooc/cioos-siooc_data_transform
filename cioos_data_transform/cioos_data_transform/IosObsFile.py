@@ -660,7 +660,9 @@ class ObsFile(object):
     def rename_date_time_variables(self):
         rename_channels = self.channels["Name"]
         history = []
-        for id, chan in enumerate(self.channels["Name"]):
+        for id, (chan, units) in enumerate(
+            zip(self.channels["Name"], self.channels["Units"])
+        ):
             if not re.search("^(time|date)", chan, re.IGNORECASE):
                 continue
             elif re.match(r"Date[\s\t]*($|YYYY/MM/DD)", chan.strip()):
@@ -669,6 +671,11 @@ class ObsFile(object):
             elif re.match(r"Time[\s\t]*($|HH:MM:SS)", chan.strip()):
                 history += [f"rename variable '{chan}' -> 'Time'"]
                 rename_channels[id] = "Time"
+            elif chan.strip() == "Time02" and units.strip() == "days":
+                # TODO confirm time units and time
+                rename_channels[id] = "Time:Day_of_Year"
+            elif chan.strip() in ["Time:Day_of_Year", "Time:Julian"]:
+                continue
             else:
                 logger.warning(f"Unkown date time channel {chan}")
 
