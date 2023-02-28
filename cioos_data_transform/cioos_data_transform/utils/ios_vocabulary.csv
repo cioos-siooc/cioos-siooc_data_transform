@@ -77,9 +77,7 @@ ios_file,ios_name,accepted_units,accepted_instrument,apply_func,long_name,standa
 ,conductance:specific,S\/m,,,Conductance Specific,,S/m,,,,,,
 ,conductance:specific,mS\/cm,,,Conductance Specific,,mS/cm,,,,,,
 ,conductivity,Ratio,,,Conductivity,,Ratio,,,,,,
-,conductivity,S\/m,,,,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCST01,Electrical conductivity of the water body by CTD,,,CNDCST01
 ,conductivity,counts|count,,,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,count,,,,,,CNDCZZ01
-,conductivity,mS\/cm,,,,sea_water_electrical_conductivity,mS/cm,,SDN:P01::CNDCZZ01,Electrical conductivity of the water body,,,CNDCZZ01
 ,conductivity,ms\/cm|mS\/cm,,lambda x: x/10,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,S/cm,,SDN:P01::CNDCZZ01,Electrical conductivity of the water body,,,CNDCST01
 ,conductivity,s\/m|S\/m,,,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCZZ01,Electrical conductivity of the water body,,,CNDCST01
 ,conductivity:primary,S\/m,,,Conductivity Primary,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCST01,Electrical conductivity of the water body by CTD,,,CNDCST01
@@ -129,11 +127,11 @@ ios_file,ios_name,accepted_units,accepted_instrument,apply_func,long_name,standa
 ,flow_rate_fl,L\/min,,,Flow Rate FL,,L/min,,,,,,
 ,fluorescence,mg\/m\^3|ug\/L,,,,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
 ,fluorescence:calibrated,mg\/m\^3,,,Sea Water Calibrated Fluorescence,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPS01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer and calibration against sample data,,,CPHLPS01
-,fluorescence:calibrated:seapoint,mg\/m\^3,,,Sea Water Calibrated Fluorescence Seapoint,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,,,,,
 ,fluorescence:calibrated:seapoint,mg\/m\^3,,,Sea Water Calibrated Fluorescence Seapoint,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPS01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer and calibration against sample data,,,CPHLPS01
 ,fluorescence:calibrated:seatech,mg\/m\^3,,,Fluorescence Calibrated Seatech,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPS01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer and calibration against sample data,,,CPHLPS01
 ,fluorescence:calibrated:wetlabs,mg\/m\^3,,,,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPS01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer and calibration against sample data,,,CPHLPS01
 ,fluorescence:ctd,mg\/m\^3,,,Fluorescence CTD,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
+tob,fluorescence:range,Volts|volts,
 ,fluorescence:uru,mg\/m\^3,,,Sea Water Fluorescence,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
 ,fluorescence:uru:ctd,mg\/m\^3,,,Fluorescence URU CTD,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
 ,fluorescence:uru:rbr,mg\/m\^3,,,Fluorescence URU RBR,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
@@ -225,7 +223,7 @@ ios_file,ios_name,accepted_units,accepted_instrument,apply_func,long_name,standa
 ,nitrogen:total,uM,,,Nitrogen Total,,uM,,SDN:P01::NTOTZZXX,Concentration of total nitrogen {total_N} per unit volume of the water body [dissolved plus reactive particulate phase],,,NTOTZZXX
 ,nitrogen:total:dissolved,uM,,,Nitrogen Total Dissolved,mole_concentration_of_dissolved_nitrogen_in_sea_water,uM,,,,,,
 ,ntu,,,,Turbidity,sea_water_turbidity,NTU,,SDN:P01::TURBXXXX,Turbidity of water in the water body,,,TURBXXXX
-,number_of_bin_records,,,,,,,,,,,,
+,number_of_bin_records,None,,,,,,,,,,,
 ,oxygen,mg\/l,,,Oxygen,mass_concentration_of_oxygen_in_sea_water,mg/l,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen,ml\/l|mL\/L,,,Oxygen concentration,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen,umol\/L|mmol\/m,,,Oxygen concentration,mole_concentration_of_dissolved_molecular_oxygen_in_sea_water,umol/L,,SDN:P01::DOXMZZ01,,,,DOXY01
@@ -257,10 +255,10 @@ ios_file,ios_name,accepted_units,accepted_instrument,apply_func,long_name,standa
 ,oxygen:isotope:18,\/mille,,,Oxygen Isotope 18,,/mille,,SDN:P01::D18OMXWT,Enrichment of oxygen-18 in water molecules {18O in H2O CAS 14797-71-8} {delta(18)O} in the water body by mass spectrometry,,,D18OMXWT
 ,oxygen_temperature:rinko,Volts,,,Oxygen Temperature Rinko,temperature_of_sensor_for_oxygen_in_sea_water,Volts,,SDN:P01::OXYTAAOP,Temperature of oxygen determination by optode,,,OXYTAAOP
 ,par,uE\/m\^2\/sec,,,Photoactive Radiation,,uE/m^2/sec,,SDN:P01::SCIRR4PI,4-pi scalar irradiance as photons of electromagnetic radiation (PAR wavelengths) in the water body by 4-pi scalar radiometer,,,SCIRR4PI
-,par1,uE\/m\^2\/sec,,,PAR1,,uE/m^2/sec,,SDN:P01::SCIRR4PI,4-pi scalar irradiance as photons of electromagnetic radiation (PAR wavelengths) in the water body by 4-pi scalar radiometer,,,SCIRR4PI
-,par:1,uE\/m\^2\/sec,,,PAR 1,,uE/m^2/sec,,SDN:P01::SCIRR4PI,4-pi scalar irradiance as photons of electromagnetic radiation (PAR wavelengths) in the water body by 4-pi scalar radiometer,,,SCIRR4PI
-,par:ctd,uE\/m\^2\/sec,,,PAR CTD,,uE/m^2/sec,,,,,,
-,par:reference,uE\/m\^2\/sec,,,PAR Reference,,uE/m^2/sec,,SDN:P01::SCIRR4PI,4-pi scalar irradiance as photons of electromagnetic radiation (PAR wavelengths) in the water body by 4-pi scalar radiometer,,,SCIRR4PI
+,par1,uE\/m\^2\/sec,,,PAR1,,uE/m^2/sec,,SDN:P01::SCIRR4PI,4-pi scalar irradiance as photons of electromagnetic radiation (PAR wavelengths) in the water body by 4-pi scalar radiometer,SDN:P06::UMES,MicroEinsteins per square metre per second,SCIRR4PI
+,par:1,uE\/m\^2\/sec,,,PAR 1,,uE/m^2/sec,,SDN:P01::SCIRR4PI,4-pi scalar irradiance as photons of electromagnetic radiation (PAR wavelengths) in the water body by 4-pi scalar radiometer,SDN:P06::UMES,MicroEinsteins per square metre per second,SCIRR4PI
+,par:ctd,uE\/m\^2\/sec,,,PAR CTD,,uE/m^2/sec,,SDN:P01::SCIRR4PI,4-pi scalar irradiance as photons of electromagnetic radiation (PAR wavelengths) in the water body by 4-pi scalar radiometer,SDN:P06::UMES,MicroEinsteins per square metre per second,
+,par:reference,uE\/m\^2\/sec,,,PAR Reference,,uE/m^2/sec,,SDN:P01::IRRDSV01,Downwelling vector irradiance as photons of electromagnetic radiation (PAR wavelengths) in the atmosphere by cosine-collector radiometer,SDN:P06::UMES,MicroEinsteins per square metre per second,IRRDSV01
 ,ph,None,,,,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR01,pH (unspecified scale) of the water body by pH electrode,,,PHXXPR01
 ,ph:nbs,None,,,pH NBS,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR01,pH (unspecified scale) of the water body by pH electrode,,,PHXXPR01
 ,ph:sbe,None,,,,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR01,pH (unspecified scale) of the water body by pH electrode,,,PHXXPR01
@@ -333,6 +331,8 @@ ios_file,ios_name,accepted_units,accepted_instrument,apply_func,long_name,standa
 ,sound velocity,m\/s,,,Sound Velocity,speed_of_sound_in_sea_water,m/s,,SDN:P01::SVELCV01,Sound velocity in the water body by computation from temperature and salinity by unspecified algorithm,,,SVELCV01
 ,speed,cm\/s,,,sea_water_speed,cm/s,,,,,,,LCSAEL01
 ,speed,m\/s,,,,m/s,,,,,,,LCSAEL01
+tob,speed:ship,knots,,,platform_speed_wrt_ground
+tob,direction:ship,degrees,,,platform_course,degrees
 ane,speed:gust,m\/s,,,Speed Gust,,,,,,,,
 ane,speed:gust:1,m\/s,,,Speed Gust 1,,m/s,,,,,,
 ane,speed:gust:2,m\/s,,,Speed Gust 2,,m/s,,,,,,
