@@ -628,7 +628,10 @@ class ObsFile(object):
         for id, (chan, units) in enumerate(
             zip(self.channels["Name"], self.channels["Units"])
         ):
-            if not re.search("^(time|date)", chan, re.IGNORECASE) or chan.strip() in ("Time","Date"):
+            if not re.search("^(time|date)", chan, re.IGNORECASE) or chan.strip() in (
+                "Time",
+                "Date",
+            ):
                 continue
             elif (
                 chan.startswith("Time") and units.strip().lower() == "days"
@@ -789,6 +792,7 @@ class ObsFile(object):
                         )
                         continue
                     new_var = sub_var.pop("rename")
+                    logger.info("Append new variable %s -> %s", sub_var, new_var)
                     ds[new_var] = (ds[var].dims, ds[var].data, sub_var)
 
         # Convert any object variables to strings
