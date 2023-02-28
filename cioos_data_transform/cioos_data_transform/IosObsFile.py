@@ -628,19 +628,18 @@ class ObsFile(object):
         for id, (chan, units) in enumerate(
             zip(self.channels["Name"], self.channels["Units"])
         ):
-            if not re.search("^(time|date)", chan, re.IGNORECASE):
+            if not re.search("^(time|date)", chan, re.IGNORECASE) or chan.strip() in ("Time","Date"):
                 continue
+            elif (
+                chan.startswith("Time") and units.strip().lower() == "days"
+            ) or chan.strip().lower() in ["time:day_of_year", "time:julian"]:
+                rename_channels[id] = "Time:Day_of_Year"
             elif re.match(r"Date[\s\t]*($|YYYY/MM/DD)", chan.strip()):
                 history += [f"rename variable '{chan}' -> 'Date'"]
                 rename_channels[id] = "Date"
             elif re.match(r"Time[\s\t]*($|HH:MM:SS)", chan.strip()):
                 history += [f"rename variable '{chan}' -> 'Time'"]
                 rename_channels[id] = "Time"
-            elif chan.strip() == "Time02" and units.strip() == "days":
-                # TODO confirm time units and time
-                rename_channels[id] = "Time:Day_of_Year"
-            elif chan.strip() in ["Time:Day_of_Year", "Time:Julian"]:
-                continue
             else:
                 logger.warning(f"Unkown date time channel {chan}")
 
@@ -696,8 +695,8 @@ class ObsFile(object):
             }
 
         # Fix some issues
-        self.rename_duplicated_channels()
         self.rename_date_time_variables()
+        self.rename_duplicated_channels()
 
         variables_dtype = {
             name: get_ios_dtype_to_python(ios_type)
