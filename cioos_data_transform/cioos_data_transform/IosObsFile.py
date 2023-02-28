@@ -532,10 +532,11 @@ class ObsFile(object):
 
         # date/time section in data is supposed to be in UTC.
         # check if they match, if not then raise fatal error
-        dt = pd.Timedelta("1s")
+        dt = pd.Timedelta("1minute")
         if not (-dt < self.obs_time[0] - self.start_dateobj < dt):
             logger.error(
-                "Error: First record in data does not match start date in header"
+                "Error: First record in data does not match start date in header  self.obs_time[0]-self.start_dateobj=%s",
+                self.obs_time[0] - self.start_dateobj,
             )
             return 0
 
