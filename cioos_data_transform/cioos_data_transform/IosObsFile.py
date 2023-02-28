@@ -28,6 +28,18 @@ ios_dtypes_to_python = {
 }
 
 
+def get_ios_dtype_to_python(ios_type):
+    if ios_type.strip() in (None, ""):
+        return str
+    elif ios_type in ios_dtypes_to_python:
+        return ios_dtypes_to_python[ios_type]
+    elif ios_type[0] in ios_dtypes_to_python:
+        return ios_dtypes_to_python[ios_type[0]]
+    else:
+        logger.warning("Unknown IOS Type %s, will map to str", ios_type)
+        return str
+
+
 class ObsFile(object):
     """
     Class template for all the different data file types
@@ -734,15 +746,27 @@ class ObsFile(object):
         self.rename_duplicated_channels()
         self.rename_date_time_variables()
 
+        variables_dtype = {
+            name: get_ios_dtype_to_python(ios_type)
+            for name, ios_type in zip(
+                self.channels["Name"], self.channel_details["Type"]
+            )
+        }
+        variables_pad = {
+            name: pd.Series(pad).astype(get_ios_dtype_to_python(ios_type)).values[0]
+            for name, ios_type, pad in zip(
+                self.channels["Name"],
+                self.channel_details["Type"],
+                self.channel_details["Pad"],
+            )
+            if pad.strip()
+        }
         # Parse data, assign appropriate data type, padding values
         #  and convert to xarray object
         ds = (
             pd.DataFrame.from_records(self.data, columns=self.channels["Name"])
-            .replace(
-                _get_attribute_mapping("Pad"),
-                np.nan,
-            )
-            .astype(_get_attribute_mapping("dtype"))
+            .astype(variables_dtype)
+            .replace(variables_pad, np.nan)
             .to_xarray()
         )
 
