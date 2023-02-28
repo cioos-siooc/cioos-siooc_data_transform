@@ -509,7 +509,7 @@ class ObsFile(object):
                 timezone("UTC").localize(i + timedelta(hours=0)) for i in self.obs_time
             ]
         else:
-            logger.warning("Unable to find date/time columns in file", self.filename)
+            logger.info("Unable to find date/time columns in file", self.filename)
             try:
                 time_increment = self.get_dt()
                 self.obs_time = [
@@ -524,10 +524,8 @@ class ObsFile(object):
         # check if they match, if not then raise fatal error
         dt = pd.Timedelta("1s")
         if not (-dt < self.obs_time[0] - self.start_dateobj < dt):
-            logger.error(self.obs_time[0], self.start_dateobj)
             logger.error(
-                "Error: First record in data does not match start date in header",
-                self.filename,
+                "Error: First record in data does not match start date in header"
             )
             return 0
 
@@ -666,6 +664,11 @@ class ObsFile(object):
                 new_channel_names[
                     id
                 ] = f"{chan}{len([c for c in preceding_channels if c==chan]) + 1:02g}"
+                logger.info(
+                    "Duplicated channel exists, rename channel %s to %s",
+                    chan,
+                    new_channel_names[id],
+                )
 
         self.channels["Name"] = new_channel_names
 
@@ -809,13 +812,16 @@ class ObsFile(object):
             else:
                 attrs = {"long_name": var, "units": row["Units"]}
 
+            # Add original attributes to the each respective variables as a json dictionary
             ds[var].attrs.update(
                 {
                     **attrs,
                     "ios_shell_variable": json.dumps(
                         {
                             "Name": var,
-                            **row.drop(["fmt_struct", "vocabulary_attributes"])
+                            **row.drop(
+                                ["fmt_struct", "vocabulary_attributes"], errors="ignore"
+                            )
                             .str.strip()
                             .to_dict(),
                         }
@@ -1079,14 +1085,14 @@ class GenFile(ObsFile):
             self.recovery = self.get_section("RECOVERY")
 
         if self.channel_details is None:
-            logger.warning("Unable to get channel details from header...")
+            logger.info("Unable to get channel details from header...")
         # try reading file using format specified in 'FORMAT'
         try:
             self.data = self.get_data(formatline=self.file.get("FORMAT"))
         except Exception as e:
-            logger.warning(
+            logger.info(
                 "Could not read file data using FORMAT=%s ",
-                self.file.get("FORMAT").strip(),
+                self.file.get("FORMAT"),
             )
             self.data = None
 

@@ -7,8 +7,15 @@ import json
 import cioos_data_transform.IosObsFile as ios
 from tqdm import tqdm
 
-logging.basicConfig(filename="ios_nc_conversion.log", level=logging.DEBUG)
 logger = logging.getLogger()
+
+console_log = logging.StreamHandler()
+console_log.setLevel(logging.WARNING)
+logger.addHandler(console_log)
+
+log_file = logging.FileHandler(filename="ios_nc_conversion.log")
+log_file.setLevel(logging.DEBUG)
+logger.addHandler(log_file)
 
 
 def read_config(config_input):
@@ -65,7 +72,7 @@ def run_batch_conversion(
     recursive = recursive or config.get("recursive", True)
 
     files = glob(input_path, recursive=recursive)
-    for file in tqdm(files, unit="file", desc="Convert IOS CTD to ODF"):
+    for file in tqdm(files, unit="file", desc="Convert IOS files to NetCDF"):
         try:
             convert_file_to_netcdf(file, output_path, config_input=config)
         except Exception as e:
