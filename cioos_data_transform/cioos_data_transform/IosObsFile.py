@@ -552,11 +552,17 @@ class ObsFile(object):
 
     def add_ios_vocabulary(self, vocab=None):
 
-        ignored_vocabulary_columns = [
-            "ios_file",
-            "accepted_units",
-            "accepted_instrument",
-            "apply_func",
+        vocabulary_attributes = [
+            "ios_name",
+            "long_name",
+            "standard_name",
+            "units",
+            "scale",
+            "sdn_parameter_urn",
+            "sdn_parameter_name",
+            "sdn_uom_urn",
+            "sdn_uom_name",
+            "rename",
         ]
 
         def match_term(reference, value):
@@ -570,21 +576,11 @@ class ObsFile(object):
                 return True
             return False
 
-        def _generate_vocabulary_attr():
-            return [
-                {
-                    attr: value
-                    for (attr, value) in row.to_dict().items()
-                    if pd.notna(value) and attr not in ignored_vocabulary_columns
-                }
-                for id, row in matched_vocab.iterrows()
-            ]
-
         # Load vocabulary
         if vocab is None or isinstance(vocab, str):
             vocab = read_ios_vocabulary(vocab)
 
-        # iterate over variables and find matching vocabulary
+        # iterate over variables and find matching vocabulary 
         self.vocabulary_attributes = []
         for id, (name, units) in enumerate(
             zip(self.channels["Name"], self.channels["Units"])
@@ -609,21 +605,22 @@ class ObsFile(object):
             )
 
             matched_vocab = vocab.loc[name_match_type & match_units]
-            data_type = (
-                self.channel_details["Format"][id].strip()
-                if self.channel_details
-                else None
-            )
             if matched_vocab.empty:
                 logger.warning(
-                    "Missing vocabulary for file=%s; variable name=%s,units=%s,attrs=%s",
+                    "Missing vocabulary for file=%s; variable name=%s,units=%s",
                     self.filename,
                     name,
                     units,
-                    data_type,
                 )
+                self.vocabulary_attributes += [[{"long_name": name, "units": units}]]
+                continue
 
-            self.vocabulary_attributes += [_generate_vocabulary_attr()]
+            self.vocabulary_attributes += [
+                [
+                    row.dropna().to_dict()
+                    for _, row in matched_vocab[vocabulary_attributes].iterrows()
+                ]
+            ]
 
     def rename_duplicated_channels(self):
         old_channel_names = [chan.strip() for chan in self.channels["Name"]]
