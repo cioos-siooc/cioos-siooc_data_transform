@@ -33,7 +33,7 @@ def get_ios_dtype_to_python(ios_type):
         return str
     elif ios_type in ios_dtypes_to_python:
         return ios_dtypes_to_python[ios_type]
-    elif ios_type[0] in ios_dtypes_to_python:
+    elif ios_type[0].upper() in ios_dtypes_to_python:
         return ios_dtypes_to_python[ios_type[0]]
     else:
         logger.warning("Unknown IOS Type %s, will map to str", ios_type)
