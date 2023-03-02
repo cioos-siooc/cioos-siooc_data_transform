@@ -1,8 +1,8 @@
-from glob import glob
-import os
-import logging
 import argparse
 import json
+import logging
+import os
+from glob import glob
 
 import cioos_data_transform.IosObsFile as ios
 from tqdm import tqdm
