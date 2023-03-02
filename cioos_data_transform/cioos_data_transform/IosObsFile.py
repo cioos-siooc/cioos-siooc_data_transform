@@ -848,7 +848,7 @@ class ObsFile(object):
         # Replace date/time variables by a single time
         if self.obs_time and replace_date_time_variables:
             ds = ds.drop([var for var in ds if var in ["Date", "Time"]])
-            ds["time"] = (ds.dims, self.obs_time)
+            ds["time"] = (ds.dims, pd.Series(self.obs_time))
 
         # Generate global attributes
         ds.attrs.update(_format_attributes("administration"))
