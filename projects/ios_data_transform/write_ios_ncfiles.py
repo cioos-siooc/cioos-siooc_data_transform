@@ -8,12 +8,17 @@ import cioos_data_transform.IosObsFile as ios
 from tqdm import tqdm
 
 logger = logging.getLogger()
+formatter = logging.Formatter(
+    '%(levelname)s - %(asctime)s [code= "%(pathname)s", line %(lineno)s; file="%(file)s"] %(message)s'
+)
 
 console_log = logging.StreamHandler()
 console_log.setLevel(logging.WARNING)
+console_log.setFormatter(formatter)
 logger.addHandler(console_log)
 
 log_file = logging.FileHandler(filename="ios_nc_conversion.log")
+log_file.setFormatter(formatter)
 log_file.setLevel(logging.DEBUG)
 logger.addHandler(log_file)
 
@@ -76,7 +81,7 @@ def run_batch_conversion(
         try:
             convert_file_to_netcdf(file, output_path, config_input=config)
         except Exception as e:
-            logger.exception("Failed to read %s", file)
+            logger.exception("Failed to read %s", file, extra={"file": file})
 
 
 # sourcery skip: avoid-builtin-shadow

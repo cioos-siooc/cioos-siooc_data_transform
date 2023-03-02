@@ -17,6 +17,7 @@ from io import StringIO
 import logging
 
 logger = logging.getLogger(__name__)
+logger = logging.LoggerAdapter(logger, {"file": None})
 
 ios_dtypes_to_python = {
     "R": "float32",
@@ -53,6 +54,9 @@ class ObsFile(object):
         # initializes object by reading *FILE and ios_header_version
         # reads entire file to memory for all subsequent processing
         # inputs are filename and debug state
+
+        logger.extra["file"] = filename
+
         self.type = None
         self.debug = debug
         self.filename = filename
