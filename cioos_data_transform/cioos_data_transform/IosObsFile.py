@@ -824,16 +824,24 @@ class ObsFile(object):
 
                     # if variable already exist from a different source variable
                     #  append variable index
-                    if (
-                        new_var in ds
-                        and ds["new_var"].attrs["original_ios_name"]
-                        != var.attrs["original_ios_name"]
-                    ):
-                        logging.warning(
-                            "Duplicated variable from sub variables: %s, rename +1",
-                            new_var,
-                        )
-                        new_var = update_variable_index(new_var, 2)
+                    if new_var in ds:
+                        if (
+                            ds[new_var].attrs["original_ios_name"]
+                            == var.attrs["original_ios_name"]
+                        ):
+                            logger.error("Duplicated vocabulary output for %s", row)
+                            continue
+                        else:
+                            new_index = (
+                                len([var for var in ds if var.startswith(new_var[:-1])])
+                                + 1
+                            )
+                            logging.warning(
+                                "Duplicated variable from sub variables: %s, rename +%s",
+                                new_var,
+                                new_index,
+                            )
+                            new_var = update_variable_index(new_var, new_index)
 
                     ds[new_var] = (var.dims, var.data, new_var_attrs)
 
