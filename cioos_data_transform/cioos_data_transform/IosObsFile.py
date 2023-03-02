@@ -721,9 +721,15 @@ class ObsFile(object):
                 {
                     "ios_name": self.channels["Name"],
                     "units": self.channels["Units"],
-                    "ios_type": self.channel_details.get("Type"),
-                    "ios_format": self.channel_details.get("Format"),
-                    "pad": self.channel_details.get("Pad"),
+                    "ios_type": self.channel_details.get("Type")
+                    if self.channel_details
+                    else None,
+                    "ios_format": self.channel_details.get("Format")
+                    if self.channel_details
+                    else None,
+                    "pad": self.channel_details.get("Pad")
+                    if self.channel_details
+                    else None,
                 }
             )
             .applymap(str.strip)
