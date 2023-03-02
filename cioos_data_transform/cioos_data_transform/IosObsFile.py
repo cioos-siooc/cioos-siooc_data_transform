@@ -732,7 +732,9 @@ class ObsFile(object):
             return f"{varname}{id:02g}"
 
         def _drop_empty_attrs(attrs):
-            return {key: value for key, value in attrs.items() if value}
+            if isinstance(attrs, dict):
+                return {key: value for key, value in attrs.items() if value}
+            return attrs
 
         # Fix time variable(s)
         self.rename_date_time_variables()
@@ -866,7 +868,7 @@ class ObsFile(object):
                             )
                             new_var = update_variable_index(new_var, new_index)
 
-                    ds[new_var] = (var.dims, var.data, _drop_empty_attrs(new_var))
+                    ds[new_var] = (var.dims, var.data, _drop_empty_attrs(new_var_attrs))
 
         # Replace date/time variables by a single time
         if self.obs_time and replace_date_time_variables:
