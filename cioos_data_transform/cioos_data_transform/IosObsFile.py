@@ -647,7 +647,7 @@ class ObsFile(object):
             zip(self.channels["Name"], self.channels["Units"])
         ):
             if (
-                chan.startswith("Time") and units.strip().lower() == "days"
+                chan.startswith("Time") and units.strip().lower() in ("days","day_of_year")
             ) or chan.strip().lower() in ["time:day_of_year", "time:julian"]:
                 rename_channels[id] = "Time:Day_of_Year"
             elif not re.search("^(time|date)", chan, re.IGNORECASE) or chan.strip() in (
