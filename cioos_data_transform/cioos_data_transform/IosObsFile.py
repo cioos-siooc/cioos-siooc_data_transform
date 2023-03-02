@@ -647,7 +647,8 @@ class ObsFile(object):
             zip(self.channels["Name"], self.channels["Units"])
         ):
             if (
-                chan.startswith("Time") and units.strip().lower() in ("days","day_of_year")
+                chan.startswith("Time")
+                and units.strip().lower() in ("days", "day_of_year")
             ) or chan.strip().lower() in ["time:day_of_year", "time:julian"]:
                 rename_channels[id] = "Time:Day_of_Year"
             elif not re.search("^(time|date)", chan, re.IGNORECASE) or chan.strip() in (
@@ -855,7 +856,7 @@ class ObsFile(object):
         if self.obs_time and replace_date_time_variables:
             ds = ds.drop([var for var in ds if var in ["Date", "Time"]])
             ds["time"] = (ds.dims, pd.Series(self.obs_time))
-            ds['time'].encoding['units'] = 'seconds since 1970-01-01T00:00:00Z'
+            ds["time"].encoding["units"] = "seconds since 1970-01-01T00:00:00Z"
 
         # Generate global attributes
         ds.attrs.update(_format_attributes("administration"))
