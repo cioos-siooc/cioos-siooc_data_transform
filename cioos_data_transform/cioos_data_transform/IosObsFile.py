@@ -584,6 +584,15 @@ class ObsFile(object):
         if vocab is None or isinstance(vocab, str):
             vocab = read_ios_vocabulary(vocab)
 
+        # Filter vocabulary to handle only file extension and global terms
+        vocab = (
+            vocab.query(
+                f"ios_file_extension == '{self.get_file_extension()}' or ios_file_extension.isna()"
+            )
+            .sort_values("ios_file_extension")
+            .set_index("ios_file_extension")
+        )
+
         # iterate over variables and find matching vocabulary
         self.vocabulary_attributes = []
         for id, (name, units) in enumerate(
@@ -595,10 +604,9 @@ class ObsFile(object):
             units = re.sub(r"^\'|[\s\']+$", "", units)
 
             if re.match(r"\'*(flag|quality_flag)", name, re.IGNORECASE):
-                # TODO add flag related metadata
-                self.vocabulary_attributes += [[{}]]
+                self.vocabulary_attributes += [[self.get_flag_convention(name)]]
                 continue
-            elif re.match("(Date|Time)", name, re.IGNORECASE):
+            if re.match("(Date|Time)", name, re.IGNORECASE):
                 self.vocabulary_attributes += [[{}]]
                 continue
 
@@ -619,6 +627,10 @@ class ObsFile(object):
                 self.vocabulary_attributes += [[{"long_name": name, "units": units}]]
                 continue
 
+            # consider only the vocabularies specific to this ios_file_extension group only
+            matched_vocab = matched_vocab.filter(
+                items=matched_vocab.index.get_level_values(0), axis="index"
+            )
             self.vocabulary_attributes += [
                 [
                     row.dropna().to_dict()
