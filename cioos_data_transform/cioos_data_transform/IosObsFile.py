@@ -580,7 +580,7 @@ class ObsFile(object):
         if vocab is None or isinstance(vocab, str):
             vocab = read_ios_vocabulary(vocab)
 
-        # iterate over variables and find matching vocabulary 
+        # iterate over variables and find matching vocabulary
         self.vocabulary_attributes = []
         for id, (name, units) in enumerate(
             zip(self.channels["Name"], self.channels["Units"])
@@ -656,9 +656,10 @@ class ObsFile(object):
             ) or chan.strip().lower() in ["time:day_of_year", "time:julian"]:
                 rename_channels[id] = "Time:Day_of_Year"
             elif re.match(r"Date[\s\t]*($|YYYY/MM/DD)", chan.strip()):
-                history += [f"rename variable '{chan}' -> 'Date'"]
+                logger.warning("Rename variable '%s' -> 'Date'", chan)
                 rename_channels[id] = "Date"
             elif re.match(r"Time[\s\t]*($|HH:MM:SS)", chan.strip()):
+                logger.warning("Rename variable '%s' -> 'Time'", chan)
                 history += [f"rename variable '{chan}' -> 'Time'"]
                 rename_channels[id] = "Time"
             else:
@@ -675,13 +676,6 @@ class ObsFile(object):
         Returns:
             xarray dataset
         """
-
-        def make_variable_names_compatiple(varname):
-            varname = re.sub(r"[-\.\[\]\s\:\/\\\'\"]", "_", varname)
-            varname = re.sub("%", "perc", varname)
-            varname = re.sub(r"_+", "_", varname)
-            varname = re.sub(r"^_|_$", "", varname)
-            return varname
 
         def _format_attributes(section, prefix=""):
             def _format_attribute_name(name):
@@ -709,40 +703,133 @@ class ObsFile(object):
             else:
                 return {}
 
-        def _get_attribute_mapping(attr):
-            return {
-                chan: attrs[attr]
-                for chan, attrs in self.get_channel_attributes().items()
-            }
+        def update_variable_index(varname, id):
+            """Replace variable index (1,01,X,XX) by the given index or append
+            0 padded index if no index exist in original variable name"""
+            if varname.endswith(("01", "XX")):
+                return f"{varname[:-2]}{id:02g}"
+            elif varname.endswith(("1", "X")):
+                return f"{varname[:-1]}{id}"
+            return f"{varname}{id:02g}"
 
-        # Fix some issues
+        # Fix time variable(s)
         self.rename_date_time_variables()
-        self.rename_duplicated_channels()
 
-        variables_dtype = {
-            name: get_ios_dtype_to_python(ios_type)
-            for name, ios_type in zip(
-                self.channels["Name"], self.channel_details["Type"]
+        # Retrieve the different variable attributes
+        variables = (
+            pd.DataFrame(
+                {
+                    "ios_name": self.channels["Name"],
+                    "units": self.channels["Units"],
+                    "ios_type": self.channel_details.get("Type"),
+                    "ios_format": self.channel_details.get("Format"),
+                    "pad": self.channel_details.get("Pad"),
+                }
             )
-        }
-        variables_pad = {
-            name: pd.Series(pad).astype(get_ios_dtype_to_python(ios_type)).values[0]
-            for name, ios_type, pad in zip(
-                self.channels["Name"],
-                self.channel_details["Type"],
-                self.channel_details["Pad"],
+            .applymap(str.strip)
+            .replace({"": None})
+        )
+        variables["matching_vocabularies"] = self.vocabulary_attributes
+        variables["dtype"] = (
+            variables["ios_type"]
+            .fillna(variables["ios_format"])
+            .apply(get_ios_dtype_to_python)
+        )
+        _FillValues = variables.apply(
+            lambda x: pd.Series(x["pad"] or None).astype(x["dtype"]), axis="columns"
+        )
+        variables["_FillValues"] = _FillValues if not _FillValues.empty else None
+        variables["renamed_name"] = variables.apply(
+            lambda x: x["matching_vocabularies"][-1].get("rename", x["ios_name"]),
+            axis="columns",
+        )
+
+        # Detect duplicated variables ios_name,units pairs
+        duplicates = variables.duplicated(subset=["ios_name", "units"], keep=False)
+        if duplicates.any():
+            logger.warning(
+                "Duplicated variables (Name,Units) pair was detected, only the first one will be considerd:\n%s",
+                variables.loc[duplicates][["ios_name", "units"]],
             )
-            if pad.strip()
-        }
+            variables.drop_duplicates(
+                subset=["ios_name", "units"], keep="first", inplace=True
+            )
+
+        # Detect and rename duplicated variable names with different units
+        col_name = "renamed_name" if rename_variables else "ios_name"
+        duplicated_name = variables.duplicated(subset=[col_name])
+        if duplicated_name.any():
+            variables["var_index"] = variables.groupby(col_name).cumcount()
+            to_replace = duplicated_name & (variables["var_index"] > 0)
+            new_names = variables.loc[to_replace].apply(
+                lambda x: update_variable_index(x[col_name], x["var_index"] + 1),
+                axis="columns",
+            )
+            logger.warning(
+                "Duplicated variable names, will rename the variables according to: %s",
+                list(
+                    zip(
+                        variables.loc[
+                            to_replace, set(["ios_name", "units"] + [col_name])
+                        ]
+                        .reset_index()
+                        .values.tolist(),
+                        "renamed -> " + new_names,
+                    )
+                ),
+            )
+            variables.loc[to_replace, col_name] = new_names
+
         # Parse data, assign appropriate data type, padding values
         #  and convert to xarray object
         ds = (
-            pd.DataFrame.from_records(self.data, columns=self.channels["Name"])
-            .astype(variables_dtype)
-            .replace(variables_pad, np.nan)
+            pd.DataFrame.from_records(
+                self.data[:, variables.index], columns=variables[col_name]
+            )
+            .astype(dict(variables[[col_name, "dtype"]].values))
+            .replace(
+                dict(variables[[col_name, "_FillValues"]].dropna().values), value=np.nan
+            )
             .to_xarray()
         )
 
+        # Add variable attributes
+        for id, row in variables.iterrows():
+            var = ds[row[col_name]]
+            vocab_attrs = row["matching_vocabularies"][-1]
+            vocab_attrs.pop("rename", None)
+            var.attrs = {
+                "original_ios_variable": str(
+                    {id: row[["ios_name", "units"]].to_json()}
+                ),
+                "original_ios_name": row["ios_name"],
+                "long_name": row["ios_name"],
+                "units": row["units"],
+                **vocab_attrs,
+            }
+
+            if append_sub_variables:
+                for new_var_attrs in row["matching_vocabularies"][:-1]:
+                    if "rename" not in new_var_attrs:
+                        continue
+                    new_var = new_var_attrs.pop("rename")
+
+                    # if variable already exist from a different source variable
+                    #  append variable index
+                    if (
+                        new_var in ds
+                        and ds["new_var"].attrs["original_ios_name"]
+                        != var.attrs["original_ios_name"]
+                    ):
+                        logging.warning(
+                            "Duplicated variable from sub variables: %s, rename +1",
+                            new_var,
+                        )
+                        new_var = update_variable_index(new_var, 2)
+
+                    ds[new_var] = (var.dims, var.data, new_var_attrs)
+
+        # Replace date/time variables by a single time
         if self.obs_time and replace_date_time_variables:
             ds = ds.drop([var for var in ds if var in ["Date", "Time"]])
             ds["time"] = (ds.dims, self.obs_time)
@@ -762,70 +849,6 @@ class ObsFile(object):
             ds.attrs["remarks"] = str(self.remarks)
         if self.history:
             ds.attrs["history"] = str(self.history)
-        # Generate Variable attributes
-        ios_variables_attributes = (
-            pd.DataFrame(
-                {
-                    **self.channels,
-                    **(self.channel_details if self.channel_details else {}),
-                    **{"vocabulary_attributes": self.vocabulary_attributes},
-                }
-            )
-            .apply(lambda x: x.strip() if isinstance(x, str) else x)
-            .set_index(["Name"])
-        )
-        for var, row in ios_variables_attributes.iterrows():
-            if var not in ds:
-                continue
-            if len(row["vocabulary_attributes"]) > 0:
-                attrs = row["vocabulary_attributes"][-1]
-            else:
-                attrs = {"long_name": var, "units": row["Units"]}
-
-            # Add original attributes to the each respective variables as a json dictionary
-            ds[var].attrs.update(
-                {
-                    **attrs,
-                    "ios_shell_variable": json.dumps(
-                        {
-                            "Name": var,
-                            **row.drop(
-                                ["fmt_struct", "vocabulary_attributes"], errors="ignore"
-                            )
-                            .str.strip()
-                            .to_dict(),
-                        }
-                    ),
-                }
-            )
-
-            # Append sub variables
-            if append_sub_variables and len(row["vocabulary_attributes"]) > 1:
-                for sub_var in row["vocabulary_attributes"][:-1]:
-                    if not sub_var.get("rename"):
-                        logger.warning(
-                            "Missing vocabulary rename attribute for %s -> %s",
-                            var,
-                            row.to_dict(),
-                        )
-                        continue
-                    new_var = sub_var.pop("rename")
-                    logger.info("Append new variable %s -> %s", sub_var, new_var)
-                    ds[new_var] = (ds[var].dims, ds[var].data, sub_var)
-
-        # Convert any object variables to strings
-        for var in ds:
-            if ds[var].dtype == object:
-                ds[var] = ds[var].astype(str)
-
-        if rename_variables:
-            ds = ds.rename(
-                {
-                    var: ds[var].attrs["rename"]
-                    for var in ds
-                    if "rename" in ds[var].attrs
-                }
-            )
 
         # Set dimensions from index
         if "time" in ds and ds["index"].size == ds["time"].size:
