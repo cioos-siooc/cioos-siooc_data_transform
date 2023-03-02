@@ -163,6 +163,22 @@ class ObsFile(object):
                     info[l.split(":", 1)[0].strip()] = l.split(":", 1)[1]
         return info
 
+    def get_flag_convention(self, flag):
+        if flag.lower() == "flag:at_sea":
+            return {
+                "rename": "flag:at_sea",
+                "flag_values": [0, 1, 2, 3, 4, 5],
+                "flag_meanings": "not_classified good_at_sea_freely_floating bad_at_sea_but_trapped_in_rocky_intertidal bad_on_land bad:at_sea bad_land_travel",
+                "units": None,
+            }
+        logger.warning("Unknown flag %s", flag)
+        return {}
+
+    def get_file_extension(self):
+        if "." in self.filename:
+            return self.filename.rsplit(".", 1)[1]
+        return None
+
     def get_subsection(self, name, section):
         # return subsection information from a section
         # used as interface for data actually read into dictionary by get_section
