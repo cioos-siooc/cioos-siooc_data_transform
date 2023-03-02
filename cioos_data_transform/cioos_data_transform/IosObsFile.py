@@ -714,6 +714,9 @@ class ObsFile(object):
                 return f"{varname[:-1]}{id}"
             return f"{varname}{id:02g}"
 
+        def _drop_empty_attrs(attrs):
+            return {key: value for key, value in attrs.items() if value}
+
         # Fix time variable(s)
         self.rename_date_time_variables()
 
@@ -806,15 +809,18 @@ class ObsFile(object):
             var = ds[row[col_name]]
             vocab_attrs = row["matching_vocabularies"][-1]
             vocab_attrs.pop("rename", None)
-            var.attrs = {
-                "original_ios_variable": str(
-                    {id: row[["ios_name", "units"]].to_json()}
-                ),
-                "original_ios_name": row["ios_name"],
-                "long_name": row["ios_name"],
-                "units": row["units"],
-                **vocab_attrs,
-            }
+            # Combine attributes and ignore empty values
+            var.attrs = _drop_empty_attrs(
+                {
+                    "original_ios_variable": str(
+                        {id: row[["ios_name", "units"]].to_json()}
+                    ),
+                    "original_ios_name": row["ios_name"],
+                    "long_name": row["ios_name"],
+                    "units": row["units"],
+                    **vocab_attrs,
+                }
+            )
 
             if append_sub_variables:
                 for new_var_attrs in row["matching_vocabularies"][:-1]:
@@ -843,7 +849,7 @@ class ObsFile(object):
                             )
                             new_var = update_variable_index(new_var, new_index)
 
-                    ds[new_var] = (var.dims, var.data, new_var_attrs)
+                    ds[new_var] = (var.dims, var.data, _drop_empty_attrs(new_var))
 
         # Replace date/time variables by a single time
         if self.obs_time and replace_date_time_variables:
