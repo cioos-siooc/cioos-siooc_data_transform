@@ -30,7 +30,7 @@ ios_dtypes_to_python = {
 
 
 def get_ios_dtype_to_python(ios_type):
-    if ios_type.strip() in (None, ""):
+    if not ios_type or ios_type.strip() == "":
         return str
     elif ios_type in ios_dtypes_to_python:
         return ios_dtypes_to_python[ios_type]
@@ -74,7 +74,6 @@ class ObsFile(object):
         self.recovery = None
         self.obs_time = None
         self.vocabulary_attributes = None
-
         # try opening and reading the file. if error. soft-exit.
         try:
             with open(self.filename, "r", encoding="ASCII", errors="ignore") as fid:
