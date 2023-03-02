@@ -646,15 +646,15 @@ class ObsFile(object):
         for id, (chan, units) in enumerate(
             zip(self.channels["Name"], self.channels["Units"])
         ):
-            if not re.search("^(time|date)", chan, re.IGNORECASE) or chan.strip() in (
+            if (
+                chan.startswith("Time") and units.strip().lower() == "days"
+            ) or chan.strip().lower() in ["time:day_of_year", "time:julian"]:
+                rename_channels[id] = "Time:Day_of_Year"
+            elif not re.search("^(time|date)", chan, re.IGNORECASE) or chan.strip() in (
                 "Time",
                 "Date",
             ):
                 continue
-            elif (
-                chan.startswith("Time") and units.strip().lower() == "days"
-            ) or chan.strip().lower() in ["time:day_of_year", "time:julian"]:
-                rename_channels[id] = "Time:Day_of_Year"
             elif re.match(r"Date[\s\t]*($|YYYY/MM/DD)", chan.strip()):
                 logger.warning("Rename variable '%s' -> 'Date'", chan)
                 rename_channels[id] = "Date"
@@ -664,6 +664,8 @@ class ObsFile(object):
                 rename_channels[id] = "Time"
             else:
                 logger.warning(f"Unkown date time channel {chan}")
+
+        self.channels["Name"] = rename_channels
 
     def to_xarray(
         self,
