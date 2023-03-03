@@ -162,15 +162,21 @@ class ObsFile(object):
                     info[l.split(":", 1)[0].strip()] = l.split(":", 1)[1]
         return info
 
-    def get_flag_convention(self, flag):
-        if flag.lower() == "flag:at_sea":
+    def get_flag_convention(self, name, units=None):
+        if name.lower() == "flag:at_sea":
             return {
                 "rename": "flag:at_sea",
                 "flag_values": [0, 1, 2, 3, 4, 5],
                 "flag_meanings": "not_classified good_at_sea_freely_floating bad_at_sea_but_trapped_in_rocky_intertidal bad_on_land bad:at_sea bad_land_travel",
                 "units": None,
             }
-        logger.warning("Unknown flag %s", flag)
+        elif units.lower() == "igoss_flags":
+            return {
+                "flag_values": [0, 1, 2, 3, 4, 5],
+                "flag_meanings": "not_checked appears_to_be_good inconsistent_with_climatology appears_to_be_doubtful appears_to_be_wrong value_was_changed_see_history_record",
+            }
+
+        logger.warning("Unknown flag name=%s, units=%s", name, units)
         return {}
 
     def get_file_extension(self):
@@ -619,7 +625,7 @@ class ObsFile(object):
             units = re.sub(r"^\'|[\s\']+$", "", units)
 
             if re.match(r"\'*(flag|quality_flag)", name, re.IGNORECASE):
-                self.vocabulary_attributes += [[self.get_flag_convention(name)]]
+                self.vocabulary_attributes += [[self.get_flag_convention(name, units)]]
                 continue
             if re.match("(Date|Time)", name, re.IGNORECASE):
                 self.vocabulary_attributes += [[{}]]
