@@ -768,13 +768,13 @@ class ObsFile(object):
                     "units": self.channels["Units"],
                     "ios_type": self.channel_details.get("Type")
                     if self.channel_details
-                    else None,
+                    else "",
                     "ios_format": self.channel_details.get("Format")
                     if self.channel_details
-                    else None,
-                    "pad": self.channel_details.get("Pad")
+                    else "",
+                    "pad": self.channel_details.get("Pad") 
                     if self.channel_details
-                    else None,
+                    else "",
                 }
             )
             .applymap(str.strip)
