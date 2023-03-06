@@ -1,4 +1,4 @@
-ios_file,ios_name,accepted_units,accepted_instrument,apply_func,long_name,standard_name,units,scale,sdn_parameter_urn,sdn_parameter_name,sdn_uom_urn,sdn_uom_name,rename
+ios_file_extension,ios_name,accepted_units,accepted_instrument_type,apply_func,long_name,standard_name,units,scale,sdn_parameter_urn,sdn_parameter_name,sdn_uom_urn,sdn_uom_name,rename,
 ,% light transmittance,%,,,% Light transmittance,,%,,,,,,
 ,adenosine_triphosphate,mg\/m\^3,,,Adenosine Triphosphate,mass_concentration_of_adenosine_triphosphate_in_sea_water,mg/m^3,,SDN:P01::ATPXZZDZ,Concentration of adenosine triphosphate {ATP CAS 56-65-5} per unit volume of the water body [dissolved plus reactive particulate <unknown phase],,,ATPXZZDZ
 ,alkalinity,mmol\/m,,,Alkalinity,sea_water_alkalinity_expressed_as_mole_equivalent,mmol/m,,SDN:P01::ALKYZZXX,Total alkalinity per unit volume of the water body,,,ALKYZZXX
@@ -95,10 +95,10 @@ ios_file,ios_name,accepted_units,accepted_instrument,apply_func,long_name,standa
 ,degree_days:heating,,,,Degree Days Heating,,,,,,,,
 ,density,kg\/m\^3,,,Density,sea_water_density,kg/m^3,,SDN:P01::POTDENS0,Density (potential) of the water body by computation from salinity and potential temperature using UNESCO algorithm with 0 decibar reference pressure,,,POTDENS0
 ,density:air:inside,kg\/m\^3,,,Air Density Inside,,kg/m^3,,,,,,
-,depth,m|metres|metre|meter|meters|Metres|Metre|Meter|Meters,,,Depth,depth,m,,SDN:P01::ADEPZZ01,Depth (spatial coordinate) relative to water surface in the water body,,,ADEPZZ01
-,depth:corrected,metres,,,Depth Corrected,depth,m,,SDN:P01::ADEPZZ01,Depth (spatial coordinate) relative to water surface in the water body,,,ADEPZZ01
-,depth:ctd,metres,,,Depth CTD,depth,m,,SDN:P01::ADEPZZ01,Depth (spatial coordinate) relative to water surface in the water body,,,ADEPZZ01
-,depth:nominal,metres|meters,,,Depth Nominal,depth,m,,SDN:P01::ADEPZZ01,Depth (spatial coordinate) relative to water surface in the water body,,,ADEPZZ01
+,depth,m|metres|metre|meter|meters|Metres|Metre|Meter|Meters,,,Depth,depth,m,,SDN:P01::ADEPZZ01,Depth (spatial coordinate) relative to water surface in the water body,,,depth
+,depth:corrected,metres,,,Depth Corrected,depth,m,,SDN:P01::ADEPZZ01,Depth (spatial coordinate) relative to water surface in the water body,,,depth
+,depth:ctd,metres,,,Depth CTD,depth,m,,SDN:P01::ADEPZZ01,Depth (spatial coordinate) relative to water surface in the water body,,,depth
+,depth:nominal,metres|meters,,,Depth Nominal,depth,m,,SDN:P01::ADEPZZ01,Depth (spatial coordinate) relative to water surface in the water body,,,depth
 ,dimethyl_sulphide,nmol\/L,,,Dimethyl Sulphide,mole_concentration_of_dimethyl_sulfide_in_sea_water,nmol/L,,SDN:P01::DMSXGCDZ,"Concentration of dimethyl sulphide {DMS CAS 75-18-3} per unit volume of the water body [dissolved plus reactive particulate <unknown phase] by filtration, purging, cryogenic trapping and gas chromatography",,,DMSXGCDZ
 ,dimethyl_sulphide,umol\/L,,,Dimethyl Sulphide,mole_concentration_of_dimethyl_sulfide_in_sea_water,umol/L,,SDN:P01::DMSXGCDZ,"Concentration of dimethyl sulphide {DMS CAS 75-18-3} per unit volume of the water body [dissolved plus reactive particulate <unknown phase] by filtration, purging, cryogenic trapping and gas chromatography",,,DMSXGCDZ
 ,dimethylsulfoniopropionate_dissolved,nmol\/L,,,Dimethylsulfoniopropionate Dissolved,,nmol/L,,SDN:P01::DMSPGCD1,Concentration of dimethylsulphoniopropionate {DMSP dimethylsulfoniopropionate CAS 7314-30-9} per unit volume of the water body [dissolved plus reactive particulate <GF/F phase] by filtration and gas chromatography,,,DMSPGCD1
@@ -121,11 +121,11 @@ ios_file,ios_name,accepted_units,accepted_instrument,apply_func,long_name,standa
 ,evapotranspiration,mm\/h,,,Evapotranspiration,,mm/h,,,,,,
 ,event_number,None,,,Event Number,,,,,,,,
 ,event_number,,,,,,,,,,,,
-,flag,None,,,,,,,,,,,
-,flag:at_sea,None,,,Flag at Sea,,,,,,,,
-,flow_rate,L\/min,,,Flow Rate,,L/min,,,,,,
+drf,flag:at_sea,None,,,Flag at Sea,,,,,,,,,
+,flow_rate,L/min,,,Flow Rate,,L/min,,,,,,
 ,flow_rate_fl,L\/min,,,Flow Rate FL,,L/min,,,,,,
 ,fluorescence,mg\/m\^3|ug\/L,,,,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
+,fluorescence,volts,,,Sea Water Fluorescence,,Volts,,,,,,
 ,fluorescence:calibrated,mg\/m\^3,,,Sea Water Calibrated Fluorescence,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPS01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer and calibration against sample data,,,CPHLPS01
 ,fluorescence:calibrated:seapoint,mg\/m\^3,,,Sea Water Calibrated Fluorescence Seapoint,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPS01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer and calibration against sample data,,,CPHLPS01
 ,fluorescence:calibrated:seatech,mg\/m\^3,,,Fluorescence Calibrated Seatech,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPS01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer and calibration against sample data,,,CPHLPS01
@@ -140,6 +140,8 @@ tob,fluorescence:range,Volts|volts,
 ,fluorescence:uru:seatech,mg\/m\^3,,,Fluorescence URU Seatech,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
 ,fluorescence:uru:upcast,mg\/m\^3,,,Fluorescence URU Upcast,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
 ,fluorescence:uru:wetlabs,mg\/m\^3,,,Sea Water Fluorescence WetLabs,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
+,fluorescence:uru:wetlabs,volts,,,Sea Water Fluorescence WetLabs,,Volts,,,,,,
+,fluorescence:wetlabs,volts,,,Sea Water Fluorescence WetLabs,,Volts,,,,,,
 ,fluorescence:uru:wetlabs:eco-afl,mg\/m\^3,,,Fluorescence URU Wetlabs ECO-AFL,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
 ,fluorescence:wetlabs:eco-afl,mg\/m\^3,,,Fluorescence Wetlabs ECO-AFL,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
 ,fluorescence_cdom:uru:wetlabs,mg\/m\^3,,,Fluorescence CDOM URU Wetlabs,,mg/m^3,,SDN:P01::CCOMD002,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ WET Labs FDOM ECO fluorometer,,,CCOMD002
@@ -230,6 +232,7 @@ tob,fluorescence:range,Volts|volts,
 ,oxygen,umol\/kg,,,Oxygen concentration,moles_of_oxygen_per_unit_mass_in_sea_water,umol/kg,,,,,,DOXMZZ01
 ,oxygen:dissolved,L\/L,,,,volume_fraction_of_oxygen_in_sea_water,L/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen:dissolved,mL\/L,,,Oxygen Dissolved,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
+,oxygen:dissolved:ysi,mL\/L,,,Oxygen Dissolved,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen:dissolved,mg\/L,,,Oxygen Dissolved,mass_concentration_of_oxygen_in_sea_water,mg/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen:dissolved,umol\/L,,,Oxygen Dissolved,mole_concentration_of_dissolved_molecular_oxygen_in_sea_water,umol/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen:dissolved,umol\/kg,,,Oxygen Dissolved,moles_of_oxygen_per_unit_mass_in_sea_water,umol/kg,,SDN:P01::DOXMZZ01,,,,DOXMZZ01
@@ -319,6 +322,7 @@ tob,fluorescence:range,Volts|volts,
 ,scan_number,None,,,Scan Number,,,,,,,,
 ,sigma-t,kg\/m\^3,,,Sigma-theta,sea_water_sigma_t,kg/m^3,,SDN:P01::SIGTPR01,Sigma-theta of the water body by CTD and computation from salinity and potential temperature using UNESCO algorithm,,,SIGTEQST
 ,sigma-t:ctd,Kg\/m\^3,,,Sigma-t CTD,,Kg/m^3,,,,,,
+tob,sigma-t,None,,,Sigma-t,,,,,,,,
 ,silicate,microg-at/l,,,Silicate,mass_concentration_of_silicate_in_sea_water,microg-at/l,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
 ,silicate,microg-at\/l,,,,mass_concentration_of_silicate_in_sea_water,microg-at/l,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
 ,silicate,mmol\/m,,,,mole_concentration_of_silicate_in_sea_water,mmol/m,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
@@ -337,7 +341,7 @@ ane,speed:gust,m\/s,,,Speed Gust,,,,,,,,
 ane,speed:gust:1,m\/s,,,Speed Gust 1,,m/s,,,,,,
 ane,speed:gust:2,m\/s,,,Speed Gust 2,,m/s,,,,,,
 ,speed:sound,m,,,,speed_of_sound_in_sea_water,m,,SDN:P01::SVELXXXX,Sound velocity in the water body,,,SVELXXXX
-,speed:sound,m\/s,,,,speed_of_sound_in_sea_water,m/s,,SDN:P01::SVELXXXX,Sound velocity in the water body,,,SVELXXXX
+,speed:sound,m/s,,,,speed_of_sound_in_sea_water,m/s,,SDN:P01::SVELXXXX,Sound velocity in the water body,,,SVELXXXX
 ,speed:sound,,,,speed_of_sound_in_sea_water,m/s,,,,,,,SVELCV01
 ,speed:sound:1,,,,speed_of_sound_in_sea_water,m/s,,,,,,,SVELCV01
 ,speed:sound:2,,,,speed_of_sound_in_sea_water,m/s,,,,,,,SVELCV02
@@ -354,11 +358,11 @@ ane,speed:wind_high,m\/s,,,Speed Wind High,,m/s,,,,,,
 ,station_name,None,,,Station Name,,,,,,,,
 ,str_id,None,,,,,,,,,,,
 ,sulphate so4,mol\/m,,,Sulphate SO4,,mol/m,,SDN:P01::SO4XCLP1,Concentration of sulphate {SO4(2-) sulfate CAS 14808-79-8} per unit volume of the water body [dissolved plus reactive particulate <GF/F phase] by filtration and colorimetric autoanalysis,,,SO4XCLP1
-,temperature,DEG C (ITS 68)|deg C (IPTS68),,,,sea_water_temperature,deg C (IPTS68),,SDN:P01::TEMPP681,Temperature (IPTS-68) of the water body,,,TEMPP681
-,temperature,DEG C (ITS 68)|deg C (IPTS68),,,,sea_water_temperature,deg C (IPTS68),,SDN:P01::TEMPS601,Temperature (IPTS-68) of the water body by CTD or STD,,,TEMPS601
-,temperature,deg C\s*\(ITS[-\s]*90\),,,,sea_water_temperature,deg C (ITS-90),,SDN:P01::TEMPP901,Temperature (ITS-90) of the water body,,,TEMPP901
-,temperature,deg C\s*\(ITS[-\s]*90\),,,,sea_water_temperature,deg C (ITS-90),,SDN:P01::TEMPS901,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS901
-,temperature,deg C|Degrees_C|DEG C|deg C\s*\(ITS[-\s]*90\)|DEG C (ITS 68)|deg C (IPTS68),,,,sea_water_temperature,deg C,,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
+,temperature,DEG C (ITS 68)|deg C (IPTS68)|DEG C (ITS68),,,,sea_water_temperature,degrees_celsius (IPTS68),,SDN:P01::TEMPP681,Temperature (IPTS-68) of the water body,,,TEMPP681
+,temperature,DEG C (ITS 68)|deg C (IPTS68)|DEG C (ITS68),,,,sea_water_temperature,degrees_celsius (IPTS68),,SDN:P01::TEMPS601,Temperature (IPTS-68) of the water body by CTD or STD,,,TEMPS601
+,temperature,deg C\s*\(ITS[-\s]*90\),,,,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPP901,Temperature (ITS-90) of the water body,,,TEMPP901
+,temperature,deg C\s*\(ITS[-\s]*90\),,,,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS901,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS901
+,temperature,deg C|Degrees_C|DEG C|deg C\s*\(ITS[-\s]*90\)|DEG C (ITS 68)|deg C (IPTS68)|DEG C (ITS68),,,,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
 ane,temperature:air,deg C,,,Temperature Air,,degree_celsius,,,,,,
 ane,temperature:air,deg c \(ITS-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Air,,degree_celsius (ITS-90),,,,,,
 ane,temperature:air:1,deg C,,,Temperature Air 1,,degree_celsius,,,,,,
@@ -373,18 +377,18 @@ ane,temperature:air:inside,deg C,,,Temperature Air Inside,,degree_celsius,,,,,,
 ane,temperature:air:inside,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Air Inside,,degree_celsius (ITS-90),,,,,,
 ane,temperature:air:low,deg C,,,Temperature Air Low,,degree_celsius,,,,,,
 ane,temperature:air:low,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Air Low,,degree_celsius (ITS-90),,,,,,
-,temperature:bt,deg C,,,Temperature BT,sea_water_temperature,deg C,,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
-,temperature:bt,deg C,,,Temperature BT,sea_water_temperature,deg C,,SDN:P01::TEMPRTNX,Temperature of the water body by reversing thermometer,,,TEMPRTNX
-,temperature:bucket,deg C (IPTS68),,,,sea_water_temperature,deg C (IPTS-68),,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
-,temperature:ctd,deg C (ITS90),,,,sea_water_temperature,deg C (ITS-90),,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
-,temperature:ctd,deg C (ITS90),,,,sea_water_temperature,deg C (ITS-90),,SDN:P01::TEMPS901,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS901
+,temperature:bt,deg C,,,Temperature BT,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
+,temperature:bt,deg C,,,Temperature BT,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPRTNX,Temperature of the water body by reversing thermometer,,,TEMPRTNX
+,temperature:bucket,deg C (IPTS68),,,,sea_water_temperature,degrees_celsius (IPTS-68),,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
+,temperature:ctd,deg C (ITS90),,,,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
+,temperature:ctd,deg C (ITS90),,,,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS901,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS901
 ,temperature:cur,deg C \(IPTS68\),,,Sea Water Temperature,sea_water_temperature,degree_celsius (IPTS-68),,,,,,TEMPP681
 ,temperature:cur,deg c|degc,,,Sea Water Temperature,sea_water_temperature,degree_celsius,,,,,,TEMPPR01
 ,temperature:cur:high_res,deg C \(IPTS68\),,,Sea Water Temperature (High Resolution),sea_water_temperature,degree_celsius (IPTS-68),,,,,,TEMPP682
 ,temperature:cur:high_res,deg c|degc,,,Sea Water Temperature (High Resolution),sea_water_temperature,degree_celsius,,,,,,TEMPPR02
 ,temperature:cur:low_res,deg C \(IPTS68\),,,Sea Water Temperature (Low Resolution),sea_water_temperature,degree_celsius (IPTS-68),,,,,,TEMPP683
 ,temperature:cur:low_res,deg c|degc,,,Sea Water Temperature (Low Resolution),sea_water_temperature,degree_celsius,,,,,,TEMPPR03
-,temperature:draw,deg C (ITS90),,,,sea_water_temperature,deg C (ITS-90),,,,,,
+,temperature:draw,deg C (ITS90),,,,sea_water_temperature,degrees_celsius (ITS-90),,,,,,
 ,temperature:draw,deg C \(ITS90\),,,Temperature Draw,,degree_celsius (ITS-90),,,,,,
 ane,temperature:heat_index,deg C,,,Temperature Heat Index,,degree_celsius,,,,,,
 ane,temperature:heat_index,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Heat Index,,degree_celsius (ITS-90),,,,,,
@@ -392,33 +396,35 @@ ane,temperature:heat_index:inside,deg C,,,Temperature Heat Index Inside,,degree_
 ane,temperature:heat_index:inside,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Heat Index Inside,,degree_celsius (ITS-90),,,,,,
 ,temperature:high_res,deg C,,,Sea Water Temperature High Res,,degree_celsius,,,,,,
 ,temperature:intake,deg C \(ITS90\),,,Temperature Intake,,degree_celsius (ITS-90),,,,,,
-,temperature:lab,deg C \(ITS90\),,,Temperature Lab,,degree_celsius (ITS-90),,,,,,
+tob,temperature:lab,deg C \(ITS90\),,,Temperature Lab,,degree_celsius (ITS-90),,,,,,
+tob,temperature:lab,None,,,Temperature Lab,,,,,,,,
 ,temperature:low_res,deg C \(IPTS68\),,,Sea Water Temperature Low Res,,degree_celsius (IPTS-68),,,,,,
 ,temperature:oxygen,DEG C,,,Temperature Oxygen,temperature_of_sensor_for_oxygen_in_sea_water,DEG C,,SDN:P01::OXYTAAOP,Temperature of oxygen determination by optode,,,OXYTAAOP
-,temperature:primary,deg C (IPTS68),,,,sea_water_temperature,deg C (IPTS-68),,SDN:P01::TEMPP681,Temperature (IPTS-68) of the water body,,,TEMPP681
-,temperature:primary,deg C (IPTS68),,,,sea_water_temperature,deg C (IPTS-68),,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
-,temperature:primary,deg C (ITS90)|DEG C (ITS90),,,,sea_water_temperature,deg C (ITS-90),,SDN:P01::TEMPP901,Temperature (ITS-90) of the water body,,,TEMPP901
-,temperature:primary,deg C (ITS90)|DEG C (ITS90),,,,sea_water_temperature,deg C (ITS-90),,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
-,temperature:primary,deg C (ITS90)|DEG C (ITS90),,,,sea_water_temperature,deg C (ITS-90),,SDN:P01::TEMPS901,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS901
-,temperature:reversing,deg C,,,Temperature Reversing,sea_water_temperature,deg C,,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
-,temperature:reversing,deg C,,,Temperature Reversing,sea_water_temperature,deg C,,SDN:P01::TEMPRTNX,Temperature of the water body by reversing thermometer,,,TEMPRTNX
-,temperature:reversing,deg C (IPTS68),,,,sea_water_temperature,deg C (IPTS-68),,SDN:P01::TEMPP681,Temperature (IPTS-68) of the water body,,,TEMPP681
-,temperature:reversing,deg C (IPTS68),,,,sea_water_temperature,deg C (IPTS-68),,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
-,temperature:reversing,deg C (IPTS68),,,,sea_water_temperature,deg C (IPTS-68),,SDN:P01::TEMPR601,Temperature (IPTS-68) of the water body by reversing thermometer,,,TEMPR601
-,temperature:second,deg c \(ITS\-90\)|deg C \(ITS90\)|deg C \(ITS9|deg C|deg C \(ITS-90\),,,Temperature Second,sea_water_temperature,degree_celsius (ITS-90),,,,,,
-,temperature:secondary,deg C (IPTS68),,,,sea_water_temperature,deg C (IPTS-68),,SDN:P01::TEMPP682,,,,TEMPP682
-,temperature:secondary,deg C (IPTS68),,,,sea_water_temperature,deg C (IPTS-68),,SDN:P01::TEMPPR02,Temperature of the water body by second sensor,,,TEMPPR02
-,temperature:secondary,deg C (ITS90),,,,sea_water_temperature,deg C (ITS-90),,SDN:P01::TEMPP902,,,,TEMPP902
-,temperature:secondary,deg C (ITS90),,,,sea_water_temperature,deg C (ITS-90),,SDN:P01::TEMPPR02,Temperature of the water body by second sensor,,,TEMPPR02
-,temperature:smoothed,deg C (IPTS68),,,,sea_water_temperature,deg C (IPTS-68),,SDN:P01::TEMPP681,Temperature (IPTS-68) of the water body,,,TEMPP681
-,temperature:smoothed,deg C (IPTS68),,,,sea_water_temperature,deg C (IPTS-68),,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
+,temperature:primary,deg C (IPTS68),,,,sea_water_temperature,degrees_celsius (IPTS-68),,SDN:P01::TEMPP681,Temperature (IPTS-68) of the water body,,,TEMPP681
+,temperature:primary,deg C (IPTS68),,,,sea_water_temperature,degrees_celsius (IPTS-68),,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
+,temperature:primary,deg C (ITS90)|DEG C (ITS90),,,,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPP901,Temperature (ITS-90) of the water body,,,TEMPP901
+,temperature:primary,deg C (ITS90)|DEG C (ITS90),,,,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
+,temperature:primary,deg C (ITS90)|DEG C (ITS90),,,,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS901,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS901
+,temperature:reversing,deg C,,,Temperature Reversing,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
+,temperature:reversing,deg C,,,Temperature Reversing,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPRTNX,Temperature of the water body by reversing thermometer,,,TEMPRTNX
+,temperature:reversing,deg C (IPTS68),,,,sea_water_temperature,degrees_celsius (IPTS-68),,SDN:P01::TEMPP681,Temperature (IPTS-68) of the water body,,,TEMPP681
+,temperature:reversing,deg C (IPTS68),,,,sea_water_temperature,degrees_celsius (IPTS-68),,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
+,temperature:reversing,deg C (IPTS68),,,,sea_water_temperature,degrees_celsius (IPTS-68),,SDN:P01::TEMPR601,Temperature (IPTS-68) of the water body by reversing thermometer,,,TEMPR601
+,temperature:second,deg c \(ITS\-90\)|deg C \(ITS90\)|deg C \(ITS9|deg C|deg C \(ITS-90\),,,Temperature Second,sea_water_temperature,degree_celsius (ITS-90),,SDN:P01::TEMPPR02,Temperature of the water body by second sensor,,,TEMPPR02
+,temperature:second,deg c \(ITS\-90\)|deg C \(ITS90\)|deg C \(ITS9|deg C|deg C \(ITS-90\),,,Temperature Second,sea_water_temperature,degree_celsius (ITS-90),,SDN:P01::TEMPP902,Temperature (ITS-90) of the water body,,,TEMPP902
+,temperature:second,deg c \(ITS\-90\)|deg C \(ITS90\)|deg C \(ITS9|deg C|deg C \(ITS-90\),,,Temperature Second,sea_water_temperature,degree_celsius (ITS-90),,SDN:P01::TEMPS902,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS902
+,temperature:secondary,deg C (IPTS68),,,,sea_water_temperature,degrees_celsius (IPTS-68),,SDN:P01::TEMPP682,,,,TEMPP682
+,temperature:secondary,deg C (IPTS68),,,,sea_water_temperature,degrees_celsius (IPTS-68),,SDN:P01::TEMPPR02,Temperature of the water body by second sensor,,,TEMPPR02
+,temperature:secondary,deg C (ITS90),,,,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPP902,Temperature (ITS-90) of the water body,,,TEMPP902
+,temperature:secondary,deg C (ITS90),,,,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPPR02,Temperature of the water body by second sensor,,,TEMPPR02
+,temperature:smoothed,deg C (IPTS68),,,,sea_water_temperature,degrees_celsius (IPTS-68),,,,,,
 ane,temperature:temperature_humidity_sun_index,deg C,,,Temperature Temperature Humidity Sun Index,,degree_celsius,,,,,,
 ane,temperature:temperature_humidity_sun_index,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Temperature Humidity Sun Index,,degree_celsius (ITS-90),,,,,,
 ane,temperature:temperature_humidity_sun_wind_index,deg C,,,Temperature Temperature Humidity Sun Wind Index,,degree_celsius,,,,,,
 ane,temperature:temperature_humidity_wind_index,deg C,,,Temperature Temperature Humidity Wind Index,,degree_celsius,,,,,,
 ane,temperature:temperature_humidity_wind_index,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Temperature Humidity Wind Index,,degree_celsius (ITS-90),,,,,,
-,temperature:upcast,deg C (ITS90),,,,sea_water_temperature,deg C (ITS-90),,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
-,temperature:upcast,deg C (ITS90),,,,sea_water_temperature,deg C (ITS-90),,SDN:P01::TEMPS901,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS901
+,temperature:upcast,deg C (ITS90),,,,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
+,temperature:upcast,deg C (ITS90),,,,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS901,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS901
 ane,temperature:wind_chill_index,deg C,,,Temperature Wind Chill Index,,degree_celsius,,,,,,
 ane,temperature:wind_chill_index,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Wind Chill Index,,degree_celsius (ITS-90),,,,,,
 ,total_suspended_solids,mg\/L,,,,mass_concentration_of_suspended_matter_in_sea_water,mg/L,,SDN:P01::RBYJLY26,Concentration of solids (total) per unit volume of the water body,,,RBYJLY26
@@ -426,16 +432,14 @@ ane,temperature:wind_chill_index,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)
 ,total_suspended_solids,ppmV,,,,,ppmV,,SDN:P01::RBYJLY26,Concentration of solids (total) per unit volume of the water body,,,RBYJLY26
 ,transmissivity,%\/5cm,,,Sea Water Transmissivity,,%/5cm,,SDN:P01::ABS650AC,Absorbance of electromagnetic radiation (650nm wavelength) {light absorbance} by the water body by transmissometer and calibration to read zero in clear water,,,ABS650AC
 ,transmissivity,%\/metre,,,Sea Water Transmissivity,,%/metre,,SDN:P01::ABS650AC,Absorbance of electromagnetic radiation (650nm wavelength) {light absorbance} by the water body by transmissometer and calibration to read zero in clear water,,,ABS650AC
-,transmissivity,\%\/5cm,,,Transmissivity,,,,,,,,
-,transmissivity2,%\/metre,,,Transmissivity2,,%/metre,,SDN:P01::ABS650AC,Absorbance of electromagnetic radiation (650nm wavelength) {light absorbance} by the water body by transmissometer and calibration to read zero in clear water,,,ABS650AC
-,transmissivity:ctd,%\/metre,,,Transmissivity CTD,,%/metre,,,,,,
+,transmissivity2,%\/metre,,,Transmissivity2,,%/metre,,SDN:P01::ABS650AC,Absorbance of electromagnetic radiation (650nm wavelength) {light absorbance} by the water body by transmissometer and calibration to read zero in clear water,,,ABS650AC02
+,transmissivity:ctd,%\/metre,,,Transmissivity CTD,,%/metre,,SDN:P01::ABS650AC,Absorbance of electromagnetic radiation (650nm wavelength) {light absorbance} by the water body by transmissometer and calibration to read zero in clear water,,,ABS650AC
 ,transmissivity:green,%\/metre,,,Transmissivity Green,,%/metre,,,,,,
 ,tritium,TU81N,,,Tritium,,TU81N,,SDN:P01::MXTX3H1H,Atomic ratio of tritium/hydrogen {'Concentration of tritium'} in the water body [dissolved plus reactive particulate phase],,,MXTX3H1H
 ,turbidity,NTU,,,Turbidity,sea_water_turbidity,NTU,,SDN:P01::TURBXXXX,Turbidity of water in the water body,,,TURBXXXX
 ,turbidity:seapoint,FTU,,,Turbidity,sea_water_turbidity,FTU,,SDN:P01::TURBSP01,Turbidity of water in the water body by SeaPoint turbidity meter and laboratory calibration against formazin,,,TURBSP01
 ,turbidity:wetlabs,FTU,,,,sea_water_turbidity,FTU,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
 ,turbidity:wetlabs,NTU,,,,sea_water_turbidity,NTU,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
-,turbidity:wetlabs,NTU|FTU,,,Turbidity Wetlabs,,,,,,,,
 ,turbidity:wetlabs:eco-ntu,None,,,Turbidity WETLabs ECO-NTU,sea_water_turbidity,,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
 ,turbidity:wetlabs:eco-ntu,,,,,sea_water_turbidity,,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
 ,turbidity:wetlabs:ntu,None,,,Turbidity WETLabs NTU,sea_water_turbidity,,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
@@ -449,3 +453,4 @@ ane,uv_index,,,,UV Index,,,,,,,,
 ,vitamin b12,m-microg\/l,,,Vitamin B12,,m-microg/l,,,,,,
 ,voltage,None,,,Voltage,,,,,,,,
 ane,wind:sampling_period,s,,,Wind Sampling Period,,s,,,,,,
+,velocity:probe,m/s,,,Velocity,,m/s
