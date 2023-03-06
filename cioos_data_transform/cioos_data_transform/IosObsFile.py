@@ -783,7 +783,7 @@ class ObsFile(object):
                     "ios_format": self.channel_details.get("Format")
                     if self.channel_details
                     else "",
-                    "pad": self.channel_details.get("Pad") 
+                    "pad": self.channel_details.get("Pad")
                     if self.channel_details
                     else "",
                 }
