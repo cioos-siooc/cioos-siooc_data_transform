@@ -29,16 +29,22 @@ ios_dtypes_to_python = {
 }
 
 
-def get_ios_dtype_to_python(ios_type):
+def get_dtype_from_ios_type(ios_type):
     if not ios_type or ios_type.strip() == "":
-        return str
+        return
     elif ios_type in ios_dtypes_to_python:
         return ios_dtypes_to_python[ios_type]
     elif ios_type[0].upper() in ios_dtypes_to_python:
         return ios_dtypes_to_python[ios_type[0]]
-    else:
-        logger.warning("Unknown IOS Type %s, will map to str", ios_type)
+
+
+def get_dtype_from_ios_name(ios_name):
+    if re.search("flag", ios_name, re.IGNORECASE):
+        return "int32"
+    elif re.search("time|date", ios_name, re.IGNORECASE):
         return str
+    else:
+        return float
 
 
 class ObsFile(object):
@@ -784,8 +790,13 @@ class ObsFile(object):
         variables["dtype"] = (
             variables["ios_type"]
             .fillna(variables["ios_format"])
-            .apply(get_ios_dtype_to_python)
+            .apply(get_dtype_from_ios_type)
         )
+        if variables["dtype"].isna().any():
+            variables["dtype"] = variables["dtype"].fillna(
+                variables["ios_name"].apply(get_dtype_from_ios_name)
+            )
+
         _FillValues = variables.apply(
             lambda x: pd.Series(x["pad"] or None).astype(x["dtype"]), axis="columns"
         )
