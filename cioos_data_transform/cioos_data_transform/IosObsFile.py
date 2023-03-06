@@ -181,6 +181,11 @@ class ObsFile(object):
                 "flag_values": [0, 1, 2, 3, 4, 5],
                 "flag_meanings": "not_checked appears_to_be_good inconsistent_with_climatology appears_to_be_doubtful appears_to_be_wrong value_was_changed_see_history_record",
             }
+        elif name.lower() == "flag:ctd" or name.lower() == "flag":
+            return {
+                "flag_values": [0, 2, 6],
+                "flag_meanings": "not_quality_control good interpolated_or_replaced_by_dual_sensor_or_upcast_value",
+            }
 
         logger.warning("Unknown flag name=%s, units=%s", name, units)
         return {}
