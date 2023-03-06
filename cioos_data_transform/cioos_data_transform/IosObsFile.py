@@ -8,6 +8,9 @@ from datetime import datetime, timedelta
 import re
 import fortranformat as ff
 import numpy as np
+import json
+
+import pkg_resources
 
 from pytz import timezone
 from .utils.utils import find_geographic_area, read_geojson, read_ios_vocabulary
@@ -16,6 +19,7 @@ import pandas as pd
 from io import StringIO
 import logging
 
+VERSION = pkg_resources.require("cioos_data_transform")[0].version
 logger = logging.getLogger(__name__)
 logger = logging.LoggerAdapter(logger, {"file": None})
 
@@ -85,6 +89,7 @@ class ObsFile(object):
             with open(self.filename, "r", encoding="ASCII", errors="ignore") as fid:
                 self.lines = [l for l in fid.readlines()]
             self.ios_header_version = self.get_header_version()
+            self.date_created = self.get_date_created()
             self.file = self.get_section("FILE")
             self.status = 1
         except Exception as e:
@@ -95,6 +100,9 @@ class ObsFile(object):
 
     def import_data(self):
         pass
+
+    def get_date_created(self):
+        return pd.to_datetime(self.lines[0][1:], utc=True)
 
     def get_header_version(self):
         # reads header version
@@ -909,7 +917,6 @@ class ObsFile(object):
                     ds[new_var] = (var.dims, var.data, _drop_empty_attrs(new_var_attrs))
 
         # Replace date/time variables by a single time column
-        ds["start_time"] = self.start_dateobj.isoformat()
         if self.obs_time and replace_date_time_variables:
             ds = ds.drop([var for var in ds if var in ["Date", "Time"]])
             ds["time"] = (ds.dims, pd.Series(self.obs_time))
@@ -917,7 +924,13 @@ class ObsFile(object):
 
         # Generate global attributes
         ds.attrs.update(_format_attributes("administration"))
-        ds.attrs.update(_format_attributes("file"))
+        ds.attrs.update(
+            {
+                key: value
+                for key, value in _format_attributes("file").items()
+                if key not in ["format", "data_type", "file_type"]
+            }
+        )
         ds.attrs.update(_format_attributes("instrument", prefix="instrument_"))
         ds.attrs.update(_format_attributes("location"))
         if self.deployment:
@@ -930,18 +943,100 @@ class ObsFile(object):
             ds.attrs["remarks"] = str(self.remarks)
         if self.history:
             ds.attrs["history"] = str(self.history)
+        ds.attrs["comments"] = ds.attrs.pop("file_remarks", None)
+        ds.attrs["header"] = json.dumps(
+            self.get_complete_header(), ensure_ascii=False, indent=False
+        )
+        ds.attrs["start_time"] = self.start_dateobj.isoformat()
+        ds.attrs["end_time"] = (
+            self.end_dateobj.isoformat() if self.end_dateobj else None
+        )
+        ds.attrs["source"] = self.filename
+        ds.attrs["ios_header_version"] = self.ios_header_version
+        ds.attrs["cioos_data_transform_version"] = VERSION
+        ds.attrs[
+            "product_version"
+        ] = f"ios_header={self.ios_header_version}; cioos_transform={VERSION}"
+        ds.attrs["date_created"] = self.date_created.isoformat()
 
-        # Set dimensions from index
+        # Geospatial attributes
+        ds.attrs["start_time"] = self.start_dateobj.isoformat()
+        ds.attrs["end_time"] = (
+            self.end_dateobj.isoformat() if self.end_dateobj else None
+        )
+        ds.attrs["time_coverage_start"] = ds.attrs["start_time"]
+        ds.attrs["time_coverage_end"] = (
+            ds.attrs.get("end_time") or ds.attrs["start_time"]
+        )
+        ds.attrs["time_coverage_duration"] = pd.Timedelta(
+            self.end_dateobj or self.start_dateobj - self.start_dateobj
+        ).isoformat()
+        ds.attrs["time_coverage_resolution"] = (
+            pd.Timedelta(self.time_increment).isoformat()
+            if self.time_increment
+            else None
+        )
+
+        ds.attrs["geospatial_lat_min"] = (
+            ds["latitude"].min().item(0) if "latitude" in ds else ds.attrs["latitude"]
+        )
+        ds.attrs["geospatial_lat_max"] = (
+            ds["latitude"].max().item(0) if "latitude" in ds else ds.attrs["latitude"]
+        )
+        ds.attrs["geospatial_lat_units"] = "degrees_north"
+        ds.attrs["geospatial_lon_min"] = (
+            ds["longitude"].min().item(0)
+            if "longitude" in ds
+            else ds.attrs["longitude"]
+        )
+        ds.attrs["geospatial_lon_max"] = (
+            ds["longitude"].max().item(0)
+            if "longitude" in ds
+            else ds.attrs["longitude"]
+        )
+        ds.attrs["geospatial_lon_units"] = "degrees_east"
+
+        if "depth" in ds:
+            ds.attrs["geospatial_vertical_min"] = ds["depth"].min().item(0)
+            ds.attrs["geospatial_vertical_max"] = ds["depth"].max().item(0)
+            ds.attrs["geospatial_vertical_positive"] = "down"
+            ds.attrs["geospatial_vertical_units"] = ds["depth"].attrs["units"]
+
+        # replace index dimension by the appropriate dimension for this file
         if "time" in ds and ds["index"].size == ds["time"].size:
             ds = ds.swap_dims({"index": "time"})
+        elif "depth" in ds and ds["index"].size == ds["depth"].size:
+            ds = ds.swap_dims({"index": "depth"})
 
-        # Set coordinates
+        # Define featureType attribute
+        if "time" in ds.dims:
+            if (
+                "latitude" in ds
+                and "time" in ds["latitude"].dims
+                and "longitude" in ds
+                and "time" in ds["longitude"].dims
+            ):
+                featureType = "trajectory"
+            else:
+                featureType = "timeSeries"
+        else:
+            featureType = ""
+        if "depth" in ds.dims:
+            featureType += "Profile" if featureType else "profile"
+        ds.attrs["featureType"] = featureType
+        ds.attrs["cdm_data_type"] = featureType.title()
+
+        # Set coordinate variables
         coordinates_variables = ["time", "latitude", "longitude", "depth"]
         if any(var in ds for var in coordinates_variables):
             ds = ds.set_coords([var for var in coordinates_variables if var in ds])
-            if "index" in ds.coords and "time" in ds.coords:
+            if "index" in ds.coords and ("time" in ds.coords or "depth" in ds.coords):
                 ds = ds.reset_coords("index").drop("index")
 
+        # Drop empty attributes and variable attribtes
+        ds.attrs = {key: value for key, value in ds.attrs.items() if value}
+        for var in ds:
+            ds[var].attrs = {key: value for key, value in ds.attrs.items() if value}
         return ds
 
 
@@ -1146,6 +1241,10 @@ class GenFile(ObsFile):
         sections_available = self.get_list_of_sections()
         self.type = None
         self.start_dateobj, self.start_date = self.get_date(opt="start")
+        self.end_dateobj, self.end_date = (
+            self.get_date(opt="end") if "END TIME" in self.file else (None, None)
+        )
+        self.time_increment = self.get_dt() if "TIME INCREMENT" in self.file else None
         self.location = self.get_location()
         self.channels = self.get_channels()
         self.comments = self.get_comments_like("COMMENTS")
