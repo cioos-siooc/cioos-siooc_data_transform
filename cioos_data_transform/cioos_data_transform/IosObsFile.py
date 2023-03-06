@@ -908,7 +908,8 @@ class ObsFile(object):
 
                     ds[new_var] = (var.dims, var.data, _drop_empty_attrs(new_var_attrs))
 
-        # Replace date/time variables by a single time
+        # Replace date/time variables by a single time column
+        ds["start_time"] = self.start_dateobj.isoformat()
         if self.obs_time and replace_date_time_variables:
             ds = ds.drop([var for var in ds if var in ["Date", "Time"]])
             ds["time"] = (ds.dims, pd.Series(self.obs_time))
