@@ -853,6 +853,7 @@ class ObsFile(object):
             pd.DataFrame.from_records(
                 self.data[:, variables.index], columns=variables[col_name]
             )
+            .replace("\.$", "", regex=True)
             .astype(dict(variables[[col_name, "dtype"]].values))
             .replace(
                 dict(variables[[col_name, "_FillValues"]].dropna().values), value=np.nan
