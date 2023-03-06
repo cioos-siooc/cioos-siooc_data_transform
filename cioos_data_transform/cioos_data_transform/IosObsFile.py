@@ -789,7 +789,7 @@ class ObsFile(object):
                 }
             )
             .applymap(str.strip)
-            .replace({"": None})
+            .replace({"": None,"n/a":None})
         )
         variables["matching_vocabularies"] = self.vocabulary_attributes
         variables["dtype"] = (
