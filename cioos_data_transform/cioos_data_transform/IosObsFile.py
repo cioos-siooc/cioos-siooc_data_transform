@@ -343,6 +343,8 @@ class ObsFile(object):
         def _convert_latlong_string(ll):
             if not isinstance(ll, str):
                 return ll
+            # ignore trailing comments
+            ll = ll.rsplit('!')[0] 
             buf = ll.split()
             direction = -1 if len(buf) == 3 and buf[2] in ("S", "W") else 1
             return direction * (float(buf[0]) + float(buf[1]) / 60)
