@@ -971,7 +971,7 @@ class ObsFile(object):
             ds.attrs.get("end_time") or ds.attrs["start_time"]
         )
         ds.attrs["time_coverage_duration"] = pd.Timedelta(
-            self.end_dateobj or self.start_dateobj - self.start_dateobj
+            (self.end_dateobj or self.start_dateobj) - self.start_dateobj
         ).isoformat()
         ds.attrs["time_coverage_resolution"] = (
             pd.Timedelta(self.time_increment).isoformat()
