@@ -22,6 +22,8 @@ logging.config.fileConfig(log_config_path)
 main_logger = logging.getLogger()
 logger = logging.LoggerAdapter(main_logger, {"file": None})
 
+MODULE_PATH = os.path.dirname(__file__)
+
 
 def convert_files(config={}, opt="all", ftype=None):
     # path of raw files, path for nc files, and option
@@ -115,7 +117,7 @@ def convert_files_threads(ftype, fname, config={}):
                 standardize_variable_names(ncFileName)
             elif ftype == "cur":
                 write_cur_ncfile(ncFileName, fdata, config=config)
-            elif ftype in ("tob","ane","ubc","drf"):
+            elif ftype in ("tob", "ane", "ubc", "drf"):
                 write_ios_ncfile(ncFileName, fdata, config=config)
             else:
                 logger.error("Error: Unable to import data from file: %s", fname)
