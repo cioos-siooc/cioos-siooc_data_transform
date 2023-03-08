@@ -48,8 +48,8 @@ def convert_files(config={}, opt="all", ftype=None):
         flist = glob.glob(in_path + "**/*.[Cc][Uu][Rr]", recursive=True)
     elif ftype in ("tob", "drf", "ane", "ubc"):
         flist = []
-        for files in config['files']:
-            flist.extend(glob.glob(in_path + config["files"], recursive=True))
+        for files in config["files"]:
+            flist.extend(glob.glob(in_path + files, recursive=True))
     else:
         logger.error("ERROR: Filetype not understood ...")
         return None
