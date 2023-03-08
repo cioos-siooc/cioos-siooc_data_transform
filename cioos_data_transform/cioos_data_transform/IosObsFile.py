@@ -945,6 +945,8 @@ class ObsFile(object):
             ds.attrs["remarks"] = str(self.remarks)
         if self.history:
             ds.attrs["history"] = str(self.history)
+        if hasattr(self,"geo_code"):
+            ds.attrs["geographical_area"] = self.geo_code
         ds.attrs["comments"] = ds.attrs.pop("file_remarks", None)
         ds.attrs["header"] = json.dumps(
             self.get_complete_header(), ensure_ascii=False, indent=False
