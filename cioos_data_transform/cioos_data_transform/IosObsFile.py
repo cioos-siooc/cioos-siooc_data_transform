@@ -224,7 +224,7 @@ class ObsFile(object):
     def get_dt(self):
         # converts time increment from ios format to seconds
         # float32 accurate (seconds are not rounded to integers)
-        if "TIME INCREMENT" in self.file:
+        if "TIME INCREMENT" in self.file and "n/a" not in self.file["TIME INCREMENT"]:
             line = self.file["TIME INCREMENT"]
             dt = np.asarray(line.split("!")[0].split(), dtype=float)
             dt = sum(dt * [24.0 * 3600.0, 3600.0, 60.0, 1.0, 0.001])  # in seconds
