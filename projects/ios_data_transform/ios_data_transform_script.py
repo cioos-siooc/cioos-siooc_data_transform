@@ -138,10 +138,25 @@ if __name__ == "__main__":
         help="all: processing all files or new: just files newer than 24 hours",
     )
     parser.add_argument("ftype", default="ctd", help="IOS file type to convert")
+    parser.add_argument(
+        "-i",
+        "--raw_folder",
+        dest="raw_folder",
+        help="Raw folder where IOS files are stored",
+    )
+    parser.add_argument(
+        "-o",
+        "--nc_folder",
+        dest="nc_folder",
+        help="Folder where NetCDF files will be stored",
+    )
     args = parser.parse_args()
     opt, ftype = args.opt, args.ftype
 
     config = cioos_utils.read_config(f"config_{ftype}.json")
+    config["raw_folder"] = args.raw_folder or config.get("raw_folder")
+    config["nc_folder"] = args.nc_folder or config.get("nc_folder")
+
     logger.debug("Inputs from config file: %s", config)
     start = time()
     flist = convert_files(config=config, opt=opt, ftype=ftype)
