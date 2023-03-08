@@ -1,12 +1,12 @@
 {
-  "raw_folder": "/data/ios_raw_files/drifter_data/",
-  "files": ["**/*.[dD][rR][fF]"],
+  "raw_folder": "/data/ios_raw_files/ubc/",
+  "files": ["**/*.[uU][bB][cC"],
   "path_ignore": "HISTORY",
-  "nc_folder": "/data/erddap_data/IOS_DRF_data",
+  "nc_folder": "/data/erddap_data/IOS_UBC_Data",
   "geojson_file": "/home/ios/ios_polygons.geojson",
   "global_attributes": {
-    "summary": "This dataset contains observations made by the Institute of Ocean Sciences of Fisheries and Oceans (DFO) using CTDs mounted on moorings. The moorings were deployed by DFO and partner organizations between 1965 to present. Variables present in the dataset include Temperature, Salinity, Oxygen, Conductivity, Depth, and Pressure as a timeseries. For any questions please contact (DFO.PAC.SCI.IOSData-DonneesISO.SCI.PAC.MPO@dfo-mpo.gc.ca).",
-    "title": "IOS Drifter Data",
+    "summary": "This dataset contains observations made by the Institute of Ocean Sciences of Fisheries and Oceans (DFO) from UBC",
+    "title": "IOS UBC Historical Data",
     "infoUrl": "http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html",
     "institution": "Institute of Ocean Sciences, 9860 West Saanich Road, Sidney, B.C., Canada",
     "keywords": "CTD, depth, pressure, temperature, salinity, oxygen, subSurfaceSalinity, subSurfaceTemperature",
