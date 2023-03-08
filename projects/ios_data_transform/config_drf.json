@@ -3,7 +3,7 @@
   "files": ["**/*.[dD][rR][fF]"],
   "path_ignore": "HISTORY",
   "nc_folder": "/data/erddap_data/IOS_DRF_data",
-  "geojson_file": "/home/ios/ios_polygons.geojson",
+  "geojson_file": null,
   "global_attributes": {
     "summary": "This dataset contains observations made by the Institute of Ocean Sciences of Fisheries and Oceans (DFO) using CTDs mounted on moorings. The moorings were deployed by DFO and partner organizations between 1965 to present. Variables present in the dataset include Temperature, Salinity, Oxygen, Conductivity, Depth, and Pressure as a timeseries. For any questions please contact (DFO.PAC.SCI.IOSData-DonneesISO.SCI.PAC.MPO@dfo-mpo.gc.ca).",
     "title": "IOS Drifter Data",

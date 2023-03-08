@@ -1,9 +1,9 @@
 {
   "raw_folder": "/data/ios_raw_files/cruise_data/",
-  "files":["**/*.[tT][oO][bB]"],
+  "files": ["**/*.[tT][oO][bB]"],
   "path_ignore": "HISTORY",
   "nc_folder": "/data/erddap_data/IOS_TOB_Data",
-  "geojson_file": "/home/ios/ios_polygons.geojson",
+  "geojson_file": null,
   "global_attributes": {
     "summary": "This dataset contains observations made by the Institute of Ocean Sciences of Fisheries and Oceans (DFO) using CTDs mounted on rosettes. The CTDs were deployed by DFO and partner organizations on scientific cruises between 1968 to present. Variables present in the dataset include Temperature, Salinity, Oxygen, Conductivity, Depth, and Pressure. For any questions please contact (DFO.PAC.SCI.IOSData-DonneesISO.SCI.PAC.MPO@dfo-mpo.gc.ca).",
     "title": "IOS Underway TSG data",
