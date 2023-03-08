@@ -11,6 +11,7 @@ import cioos_data_transform.IosObsFile as ios
 from write_ctd_ncfile import write_ctd_ncfile
 from write_cur_ncfile import write_cur_ncfile
 from write_mctd_ncfile import write_mctd_ncfile
+from write_ios_ncfiles import write_ios_ncfile
 
 # .cioos_data_transform as iod
 import cioos_data_transform.utils as cioos_utils
@@ -45,6 +46,10 @@ def convert_files(config={}, opt="all", ftype=None):
         flist.extend(glob.glob(in_path + "**/*.[Cc][Hh][Ee]", recursive=True))
     elif ftype == "cur":
         flist = glob.glob(in_path + "**/*.[Cc][Uu][Rr]", recursive=True)
+    elif ftype in ("tob", "drf", "ane", "ubc"):
+        flist = []
+        for files in config['files']:
+            flist.extend(glob.glob(in_path + config["files"], recursive=True))
     else:
         logger.error("ERROR: Filetype not understood ...")
         return None
@@ -76,14 +81,14 @@ def convert_files_threads(ftype, fname, config={}):
         return 0
     logger.debug("Processing %s %s", ftype, fname)
     # read file based on file type
-    if ftype == "ctd":
+    if ftype in ("ctd", "bot"):
         fdata = ios.CtdFile(filename=fname, debug=False)
     elif ftype == "mctd":
         fdata = ios.MCtdFile(filename=fname, debug=False)
-    elif ftype == "bot":
-        fdata = ios.CtdFile(filename=fname, debug=False)
     elif ftype == "cur":
         fdata = ios.CurFile(filename=fname, debug=False)
+    elif ftype in ("tob", "drf", "ane", "loop"):
+        fdata = ios.GenFile(filename=fname, debug=False)
     else:
         logger.error("Filetype not understood!")
         sys.exit()
@@ -93,40 +98,28 @@ def convert_files_threads(ftype, fname, config={}):
         fdata.assign_geo_code(config.get("geojson_file"))
         out_path = config.get("nc_folder")
         # now try to write the file...
-        yy = fdata.start_date[0:4]
+        yy = fdata.start_date[:4]
         if not os.path.exists(out_path + yy):
             os.makedirs(out_path + yy)
         ncFileName = out_path + yy + "/" + fname.split("/")[-1] + ".nc"
-        if ftype == "ctd":
-            try:
+        try:
+            if ftype in ("ctd", "bot"):
                 write_ctd_ncfile(ncFileName, fdata, config=config)
                 standardize_variable_names(ncFileName)
-            except Exception as e:
-                print("Error: Unable to create netcdf file:", fname, e)
-                subprocess.call(["rm", "-f", ncFileName])
-        elif ftype == "mctd":
-            try:
+            elif ftype == "mctd":
                 write_mctd_ncfile(ncFileName, fdata, config=config)
                 standardize_variable_names(ncFileName)
-            except Exception as e:
-                print("Error: Unable to create netcdf file:", fname, e)
-                subprocess.call(["rm", "-f", ncFileName])
-        elif ftype == "bot":
-            try:
-                write_ctd_ncfile(ncFileName, fdata, config=config)
-                standardize_variable_names(ncFileName)
-            except Exception as e:
-                print("Error: Unable to create netcdf file:", fname, e)
-                subprocess.call(["rm", "-f", ncFileName])
-        elif ftype == "cur":
-            try:
+            elif ftype == "cur":
                 write_cur_ncfile(ncFileName, fdata, config=config)
-            except Exception as e:
-                print("Error: Unable to create netcdf file:", fname, e)
-                subprocess.call(["rm", "-f", ncFileName])
-    else:
-        print("Error: Unable to import data from file", fname)
-        return 0
+            elif ftype in ("tob","ane","ubc","drf"):
+                write_ios_ncfile(ncFileName, fdata, config=config)
+            else:
+                logger.error("Error: Unable to import data from file: %s", fname)
+                return 0
+
+        except Exception as e:
+            logger.error("Error: Unable to create netcdf file: %s -> %s", fname, e)
+            subprocess.call(["rm", "-f", ncFileName])
 
 
 # read inputs if any from the command line
