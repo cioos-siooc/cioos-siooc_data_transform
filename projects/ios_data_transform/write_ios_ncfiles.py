@@ -1,46 +1,20 @@
 import argparse
 import json
 import logging
+import logging.config
 import os
 from glob import glob
 
 import cioos_data_transform.IosObsFile as ios
+from cioos_data_transform.utils import read_config
 from tqdm import tqdm
 
-logger = logging.getLogger()
-formatter = logging.Formatter(
-    '%(levelname)s - %(asctime)s [code= "%(pathname)s", line %(lineno)s; file="%(file)s"] %(message)s'
-)
+logger = logging.getLogger(__name__)
 
-console_log = logging.StreamHandler()
-console_log.setLevel(logging.WARNING)
-console_log.setFormatter(formatter)
-logger.addHandler(console_log)
-
-log_file = logging.FileHandler(filename="ios_nc_conversion.log")
-log_file.setFormatter(formatter)
-log_file.setLevel(logging.DEBUG)
-logger.addHandler(log_file)
-
-
-def read_config(config_input):
-    """Read the configuration file"""
-    if config_input is None:
-        config_input = os.path.join(os.path.dirname(__file__), "config_default.json")
-
-    if isinstance(config_input, str):
-        if os.path.exists(config_input):
-            with open(config_input, "r", encoding="UTF-8") as config_file:
-                return json.load(config_file)
-        return json.loads(config_input)
-
-    logger.setLevel(config_input.get("log_level", "INFO"))
-    return config_input
-
-
-def convert_file_to_netcdf(input_path, output_path, config_input=None, overwrite=False):
-
-    config = read_config(config_input)
+def parse_ios_file(input_path, output_path, config_input=None, overwrite=False):
+    """Parse IOS file with default configuration associated with the file type."""
+    ftype = input_path.rsplit(".")[1]
+    config = read_config(config_input, ftype)
     overwrite = overwrite or config.get("overwrite")
 
     # Generate output path
@@ -56,15 +30,16 @@ def convert_file_to_netcdf(input_path, output_path, config_input=None, overwrite
         return
 
     logger.debug("Parse file: %s", input_path)
-    fdata = ios.GenFile(filename=input_path, debug=False)
+    return ios.GenFile(filename=input_path, debug=False)
 
-    if fdata.import_data():
-        fdata.assign_geo_code(config["geojson_file"])
-        fdata.add_ios_vocabulary()
 
-        ds = fdata.to_xarray()
-        ds.attrs.update(config.get("global_attributes"))
-        ds.to_netcdf(output_path)
+def write_ios_ncfile(output_path, fdata, config):
+    """Save parsed ios file data to a netcdf format"""
+    fdata.add_ios_vocabulary()
+
+    ds = fdata.to_xarray()
+    ds.attrs.update(config.get("global_attributes"))
+    ds.to_netcdf(output_path)
 
 
 def run_batch_conversion(
@@ -72,20 +47,31 @@ def run_batch_conversion(
 ):
 
     config = read_config(config_input)
-    input_path = input_path or config["input_path"]
-    output_path or config.get("output_path")
+    input_path = input_path or os.path.join(config["raw_folder"], config["files"])
+    output_path = output_path or config.get("nc_folder")
     recursive = recursive or config.get("recursive", True)
 
     files = glob(input_path, recursive=recursive)
     for file in tqdm(files, unit="file", desc="Convert IOS files to NetCDF"):
         try:
-            convert_file_to_netcdf(file, output_path, config_input=config)
+            fdata = parse_ios_file(file, output_path, config_input=config)
+            if not fdata.import_data():
+                logger.error("Failed to parseIOS File %s", file)
+                continue
+
+            fdata.assign_geo_code(config["geojson_file"])
+            write_ios_ncfile(output_path, fdata, config)
+
         except Exception as e:
             logger.exception("Failed to read %s", file, extra={"file": file})
 
 
-# sourcery skip: avoid-builtin-shadow
 if __name__ == "__main__":
+    log_config_path = os.path.join(os.path.dirname(__file__), "log_config.ini")
+    logging.config.fileConfig(log_config_path)
+    main_logger = logging.getLogger()
+    logger = logging.LoggerAdapter(main_logger, {"file": None})
+
     parser = argparse.ArgumentParser(
         prog="Convert IOS files to NetCDF",
         description="Run conversion of netcdf files",
