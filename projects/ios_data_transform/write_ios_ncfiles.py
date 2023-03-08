@@ -10,6 +10,8 @@ from cioos_data_transform.utils import read_config
 from tqdm import tqdm
 
 logger = logging.getLogger(__name__)
+MODULE_PATH = os.path.dirname(__file__)
+
 
 def parse_ios_file(input_path, output_path, config_input=None, overwrite=False):
     """Parse IOS file with default configuration associated with the file type."""
@@ -59,7 +61,10 @@ def run_batch_conversion(
                 logger.error("Failed to parseIOS File %s", file)
                 continue
 
-            fdata.assign_geo_code(config["geojson_file"])
+            fdata.assign_geo_code(
+                config.get("geojson_file")
+                or os.path.join(MODULE_PATH, "samples", "ios_polygon.geojson")
+            )
             write_ios_ncfile(output_path, fdata, config)
 
         except Exception as e:
