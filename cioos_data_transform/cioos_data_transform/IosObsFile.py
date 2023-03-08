@@ -1038,7 +1038,9 @@ class ObsFile(object):
         # Drop empty attributes and variable attribtes
         ds.attrs = {key: value for key, value in ds.attrs.items() if value}
         for var in ds:
-            ds[var].attrs = {key: value for key, value in ds.attrs.items() if value}
+            ds[var].attrs = {
+                key: value for key, value in ds[var].attrs.items() if value
+            }
         return ds
 
 
