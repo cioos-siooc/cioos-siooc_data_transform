@@ -95,7 +95,11 @@ def convert_files_threads(ftype, fname, config={}):
     # if file class was created properly, try to import data
     if fdata.import_data():
         logger.debug("Imported data successfully!")
-        fdata.assign_geo_code(config.get("geojson_file"))
+        if ftype not in ("drf",'tob'):
+            fdata.assign_geo_code(
+                config.get("geojson_file")
+                or os.path.join(MODULE_PATH, "samples", "ios_polygons.geojson")
+            )
         out_path = config.get("nc_folder")
         # now try to write the file...
         yy = fdata.start_date[:4]
