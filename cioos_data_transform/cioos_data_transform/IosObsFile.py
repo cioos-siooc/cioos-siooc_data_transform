@@ -229,7 +229,7 @@ class ObsFile(object):
             dt = np.asarray(line.split("!")[0].split(), dtype=float)
             dt = sum(dt * [24.0 * 3600.0, 3600.0, 60.0, 1.0, 0.001])  # in seconds
         else:
-            logger.warning("Time Increment not found in Section:FILE", self.filename)
+            logger.warning("Time Increment not found in Section:FILE")
             dt = None
         return dt
 
@@ -298,10 +298,10 @@ class ObsFile(object):
         #       if space limited strategy does not work, try to create format line)
         if formatline is None:
             try:
-                logger.info(
+                logger.debug(
                     "Trying to read file using format created using column width"
                 )
-                logger.info(
+                logger.debug(
                     "Reading data using format %s", self.channel_details["fmt_struct"]
                 )
                 fmt_len = self.fmt_len(self.channel_details["fmt_struct"])
@@ -498,8 +498,7 @@ class ObsFile(object):
             elif l[0] in ["$", "*"]:
                 break
             else:
-                if self.debug:
-                    logger.info(l)
+                logger.debug(l)
                 info["{:d}".format(count)] = l.rstrip()
         return info
 
@@ -1183,7 +1182,7 @@ class MCtdFile(ObsFile):
         # self.obs_time = [self.start_dateobj + timedelta(seconds=time_increment * (i))
         #  for i in range(int(self.file['NUMBER OF RECORDS']))]
         if self.debug:
-            logger.info(self.obs_time[0], self.obs_time[-1])
+            logger.debug(self.obs_time[0], self.obs_time[-1])
         # try reading file using format specified in 'FORMAT'
         try:
             self.data = self.get_data(formatline=self.file["FORMAT"])
