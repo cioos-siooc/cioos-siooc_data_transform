@@ -89,7 +89,7 @@ def convert_files_threads(ftype, fname, config={}):
         fdata = ios.MCtdFile(filename=fname, debug=False)
     elif ftype == "cur":
         fdata = ios.CurFile(filename=fname, debug=False)
-    elif ftype in ("tob", "drf", "ane", "loop"):
+    elif ftype in ("tob", "drf", "ane", "ubc"):
         fdata = ios.GenFile(filename=fname, debug=False)
     else:
         logger.error("Filetype not understood!")
@@ -97,7 +97,7 @@ def convert_files_threads(ftype, fname, config={}):
     # if file class was created properly, try to import data
     if fdata.import_data():
         logger.debug("Imported data successfully!")
-        if ftype not in ("drf",'tob'):
+        if ftype not in ("drf", "tob"):
             fdata.assign_geo_code(
                 config.get("geojson_file")
                 or os.path.join(MODULE_PATH, "samples", "ios_polygons.geojson")
