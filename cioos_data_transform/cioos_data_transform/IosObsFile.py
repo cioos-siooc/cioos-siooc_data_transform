@@ -944,7 +944,7 @@ class ObsFile(object):
             ds.attrs["remarks"] = str(self.remarks)
         if self.history:
             ds.attrs["history"] = str(self.history)
-        if hasattr(self,"geo_code"):
+        if hasattr(self, "geo_code"):
             ds.attrs["geographical_area"] = self.geo_code
         ds.attrs["comments"] = ds.attrs.pop("file_remarks", None)
         ds.attrs["header"] = json.dumps(
@@ -1073,17 +1073,18 @@ class CtdFile(ObsFile):
 
         # try reading file using format specified in 'FORMAT'
         try:
-            self.data = self.get_data(formatline=self.file["FORMAT"])
+            self.data = self.get_data(formatline=self.file.get("FORMAT"))
         except Exception as e:
             self.data = None
-            logger.error(
-                "Could not read file using 'FORMAT' description ...", self.filename
-            )
+            logger.info("Could not read file using 'FORMAT' description ...")
         if self.data is None:
             try:
                 # self.channel_details = self.get_channel_detail()
                 self.data = self.get_data(formatline=None)
             except Exception as e:
+                logger.error(
+                    "Faield to parse data with and without 'FORMAT' description"
+                )
                 return 0
 
         return 1
