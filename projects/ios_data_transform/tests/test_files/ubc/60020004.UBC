@@ -1,0 +1,109 @@
+*1998-10-16 14:19:33.33
+*IOS HEADER VERSION 1.0  1993/07/15 1994/07/15
+
+*FILE
+    START TIME          : GMT 1960/02/15 22:10:00.000
+    NUMBER OF RECORDS   : 6
+    FILE TYPE           : ASCII
+    FORMAT              : (F8.2,F10.3,F3.0,F10.3,F3.0)
+    DATA TYPE           : REAL*4
+    NUMBER OF CHANNELS  : 5
+    Q_DATE_TIME         : 1                                     ! custom item
+    Q_RECORD            : 3                                     ! custom item
+    QC_VERSION          :                                       ! custom item
+
+    $TABLE: CHANNELS
+    ! No Name                 Units         Minimum        Maximum
+    ! -- -------------------- ------------- -------------- --------------
+       1 Depth                Metres        0              100
+       2 Temperature          Degrees_C     6.18           7.91
+       3 Quality_Flag:Temp    IGOSS_flags   ' '            ' '
+       4 'Salinity: Pre-1978' PPT           16.65          27.25
+       5 Quality_Flag:Sali    IGOSS_flags   ' '            ' '
+    $END
+
+    $TABLE: CHANNEL DETAIL
+    ! No  Pad             Start  Width  Format    Type
+    ! --  --------------  -----  -----  --------  ----------
+       1  9999.99         ' '    ' '    ' '       ' '
+       2  9999.99         ' '    ' '    ' '       ' '
+       3  9               ' '    ' '    ' '       ' '
+       4  9999.99         ' '    ' '    ' '       ' '
+       5  9               ' '    ' '    ' '       ' '
+    $END
+    $REMARKS
+         This file was created by MEDS
+         MEDS File name : 181360002_0004
+         Data quality is expressed with the following flags
+            0 = not checked
+            1 = appears to be good
+            2 = inconsistent with climatology
+            3 = appears to be doubtful
+            4 = appears to be wrong
+            5 = value was changed, see the history record
+         Q_DATE_TIME is the quality of the date/time
+         Q_RECORD is the worst quality flag for the entire station expressed
+             as 1,2,3,5,4,0 from best to worst
+         QC_VERSION is the version of quality control software used
+ 
+        Parameter               DUP_FLAG   DIGIT_CODE   STANDARD
+        --------------------    --------    --------    --------
+        Temperature                    N           1           1
+        Salinity: Pre-1978             N           1           1
+ 
+        DUP_FLAG indicates if another profile exists in MEDS that is of
+             higher quality (0=N= no duplicate)
+        DIGIT_CODE indicates the type of digitization used
+        STANDARD indicates the precision of the observation
+    $END
+
+*ADMINISTRATION
+    CRUISE              : 60002
+    AGENCY              : UBC, INSTI
+
+*LOCATION
+    EVENT NUMBER        : 4
+    LATITUDE            :  49  21.0000 N  ! (deg min)
+    LONGITUDE           : 122  54.0000 W  ! (deg min)
+    Q_POS               : 1                                     ! custom item
+    CCVR                :      8.000                            ! custom item
+    WDIR                :      0.000                            ! custom item
+    WSPD                :      2.572                            ! custom item
+    DRYT                :      6.100                            ! custom item
+    WETT                :      5.000                            ! custom item
+    BATH                :    131.674                            ! custom item
+    ATMS                :   1025.000                            ! custom item
+    OID$                : IND-12                                ! custom item
+    CLDT                : ST                                    ! custom item
+    SEAS                : -                                     ! custom item
+    WWCD                : 02                                    ! custom item
+    QCP$                :   0061FFDE                            ! custom item
+    QCF$                :   00002000                            ! custom item
+    $REMARKS
+         Q_POS is the quality of the position
+         Other custom items are defined by GF3 or MEDS codes
+    $END
+
+*INSTRUMENT
+    TYPE                : Bottle
+*HISTORY
+
+    $TABLE: PROGRAMS
+    !   Name  Vers   Date       Time     Recs In Recs Out
+    !   ----- ------ ---------- -------- ------- -------
+        CORLT 1.5    1998-10-16 14:19:33
+    $END
+    $REMARKS
+        -CORLT is an program written in VBA used to correct
+         Latitude and Longitude problems found in some MEDS Data.
+         When it was found that some of the Lats and Longs from
+         MEDS were truncated, we had these reports re-issued and this
+         program was created to integrate the new numbers.
+    $END
+*END OF HEADER
+    0.00     6.180 1.    16.650 3.
+   10.00     7.500 1.    25.990 1.
+   20.00     7.570 1.    26.440 1.
+   50.00     7.910 1.    26.940 1.
+   75.00     7.820 1.    27.200 1.
+  100.00     7.810 1.    27.250 1.
