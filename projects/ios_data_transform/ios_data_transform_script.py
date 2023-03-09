@@ -18,7 +18,7 @@ import cioos_data_transform.utils as cioos_utils
 import subprocess
 
 log_config_path = os.path.join(os.path.dirname(__file__), "log_config.ini")
-logging.config.fileConfig(log_config_path)
+logging.config.fileConfig(log_config_path, disable_existing_loggers=False)
 main_logger = logging.getLogger()
 logger = logging.LoggerAdapter(main_logger, {"file": None})
 

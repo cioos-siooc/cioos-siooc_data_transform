@@ -9,8 +9,10 @@ import cioos_data_transform.IosObsFile as ios
 from cioos_data_transform.utils import read_config
 from tqdm import tqdm
 
-logger = logging.getLogger(__name__)
+log_config_path = os.path.join(os.path.dirname(__file__), "log_config.ini")
+logger = logging.getLogger(None if __name__ == "__main__" else __name__)
 MODULE_PATH = os.path.dirname(__file__)
+logger = logging.LoggerAdapter(logger, {"file": None})
 
 
 def parse_ios_file(input_path, output_path, config_input=None, overwrite=False):
@@ -72,10 +74,6 @@ def run_batch_conversion(
 
 
 if __name__ == "__main__":
-    log_config_path = os.path.join(os.path.dirname(__file__), "log_config.ini")
-    logging.config.fileConfig(log_config_path)
-    main_logger = logging.getLogger()
-    logger = logging.LoggerAdapter(main_logger, {"file": None})
 
     parser = argparse.ArgumentParser(
         prog="Convert IOS files to NetCDF",
