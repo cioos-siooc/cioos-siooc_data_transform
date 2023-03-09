@@ -1,6 +1,6 @@
 {
   "raw_folder": "/data/ios_raw_files/ubc/",
-  "files": ["**/*.[uU][bB][cC"],
+  "files": ["**/*.[uU][bB][cC]"],
   "path_ignore": "HISTORY",
   "nc_folder": "/data/erddap_data/IOS_UBC_Data",
   "geojson_file": null,
