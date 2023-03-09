@@ -66,6 +66,8 @@ class ObsFile(object):
         # inputs are filename and debug state
 
         logger.extra["file"] = filename
+        if debug:
+            logger.setLevel("DEBUG")
 
         self.type = None
         self.debug = debug
@@ -93,8 +95,7 @@ class ObsFile(object):
             self.file = self.get_section("FILE")
             self.status = 1
         except Exception as e:
-            logger.error("Unable to open file", filename)
-            logger.info(e)
+            logger.error("Unable to open file", filename, exc_info=True)
             self.status = 0
             exit(0)
 
@@ -114,8 +115,8 @@ class ObsFile(object):
         for i, l in enumerate(self.lines):
             if l.lstrip()[0 : len(string)] == string:
                 return i
-        if self.debug:
-            logger.debug("Index not found", string)
+
+        logger.debug("Index not found %s", string)
         return -1
 
     def get_complete_header(self):
@@ -157,10 +158,10 @@ class ObsFile(object):
                 # but can be 1 or 2 spaces as well for REMARKS
                 EOR = False
                 record_name = l.strip()
-                if self.debug:
-                    logger.debug(
-                        "Found subsection:%s in section:%s", record_name, section_name
-                    )
+
+                logger.debug(
+                    "Found subsection:%s in section:%s", record_name, section_name
+                )
                 info[record_name] = []
                 while not EOR:
                     idx += 1
@@ -170,8 +171,7 @@ class ObsFile(object):
                     else:
                         info[record_name].append(l)
             else:
-                if self.debug:
-                    logger.info(l)
+                logger.debug(l)
                 if len(l.split(":", 1)) > 1:
                     info[l.split(":", 1)[0].strip()] = l.split(":", 1)[1]
         return info
@@ -210,8 +210,7 @@ class ObsFile(object):
         # returns lines that make up 'subsection' if all is well
         info = None
         if name[0] != "$":
-            if self.debug:
-                logger.debug("Finding subsection", name)
+            logger.debug("Finding subsection %s", name)
             name = "$" + name
         if name not in self.file.keys():
             logger.warning("Did not find subsection:%s in %s", name, self.filename)
@@ -246,8 +245,7 @@ class ObsFile(object):
             date_string = self.file["END TIME"].strip().upper()
         else:
             raise Exception("Invalid option for get_date function !")
-        if self.debug:
-            logger.debug("Raw date string:", date_string)
+        logger.debug("Raw date string: %s", date_string)
         # get the naive (timezone unaware) datetime obj
         try:
             date_obj = datetime.strptime(date_string[4:], "%Y/%m/%d %H:%M:%S.%f")
@@ -276,8 +274,8 @@ class ObsFile(object):
             date_obj = timezone("UTC").localize(date_obj + timedelta(hours=3))
         else:
             raise Exception("Problem finding the timezone information->", self.filename)
-        if self.debug:
-            logger.debug("Date obj with timezone info:", date_obj)
+
+        logger.debug("Date obj with timezone info: %s", date_obj)
         # convert all datetime to utc before writing to netcdf file
         date_obj = date_obj.astimezone(timezone("UTC"))
         return date_obj, date_obj.strftime("%Y/%m/%d %H:%M:%S.%f %Z")
@@ -329,8 +327,7 @@ class ObsFile(object):
                 if len(lines[i]) > 0 and not re.match("\x1a+", lines[i]):
                     data.append([float(r) for r in ffline.read(lines[i])])
         data = np.asarray(data)
-        if self.debug:
-            logger.debug(data)
+        logger.debug(data)
         # if data is at only one, convert list to 2D matrix
         if len(data.shape) == 1:
             data = data.reshape((1, -1))
@@ -350,8 +347,7 @@ class ObsFile(object):
             return direction * (float(buf[0]) + float(buf[1]) / 60)
 
         info = self.get_section("LOCATION")
-        if self.debug:
-            logger.debug("Location details", info.keys())
+        logger.debug("Location details %s", info.keys())
         # Convert lat and lon
         info["LATITUDE"] = _convert_latlong_string(info.get("LATITUDE"))
         info["LONGITUDE"] = _convert_latlong_string(info.get("LONGITUDE"))
@@ -430,8 +426,8 @@ class ObsFile(object):
                     )
             else:
                 info["fmt_struct"] = fmt
-        if self.debug:
-            logger.debug("Python compatible data format:", fmt)
+
+            logger.debug("Python compatible data format: %s", fmt)
         return info
 
     def get_channels(self):
@@ -450,8 +446,7 @@ class ObsFile(object):
     def apply_col_mask(self, data, mask):
         # apply mask to string (data) to get columns
         # return list of columns
-        if self.debug:
-            logger.debug(data, mask)
+        logger.debug("data=%s, mask=%s", data, mask)
         data = data.rstrip().ljust(len(mask))
         a = [d == "-" for d in mask]
         ret = []
@@ -516,8 +511,7 @@ class ObsFile(object):
                 sections_list.append(line.strip()[1:])
             else:
                 continue
-        if self.debug:
-            logger.debug(sections_list)
+        logger.debug(sections_list)
         return sections_list
 
     def assign_geo_code(self, geojson_file):
@@ -574,7 +568,7 @@ class ObsFile(object):
                 timezone("UTC").localize(i + timedelta(hours=0)) for i in self.obs_time
             ]
         else:
-            logger.info("Unable to find date/time columns in file", self.filename)
+            logger.info("Unable to find date/time columns in file")
             try:
                 time_increment = self.get_dt()
                 self.obs_time = [
@@ -721,7 +715,7 @@ class ObsFile(object):
                 history += [f"rename variable '{chan}' -> 'Time'"]
                 rename_channels[id] = "Time"
             else:
-                logger.warning(f"Unkown date time channel {chan}")
+                logger.warning(f"Unkown date time channel %s", chan)
 
         self.channels["Name"] = rename_channels
 
@@ -1182,8 +1176,7 @@ class MCtdFile(ObsFile):
 
         # self.obs_time = [self.start_dateobj + timedelta(seconds=time_increment * (i))
         #  for i in range(int(self.file['NUMBER OF RECORDS']))]
-        if self.debug:
-            logger.debug(self.obs_time[0], self.obs_time[-1])
+        logger.debug("first obs_time[[0,1]]=%s", [self.obs_time[0], self.obs_time[-1]])
         # try reading file using format specified in 'FORMAT'
         try:
             self.data = self.get_data(formatline=self.file["FORMAT"])
