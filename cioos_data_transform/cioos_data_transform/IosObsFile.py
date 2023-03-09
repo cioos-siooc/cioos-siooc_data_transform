@@ -1109,7 +1109,7 @@ class CurFile(ObsFile):
         try:
             self.data = self.get_data(formatline=self.file["FORMAT"])
         except Exception as e:
-            logger.error("Could not read file using 'FORMAT' description...")
+            logger.info("Could not read file using 'FORMAT' description...")
             self.data = None
 
         if self.data is None:
