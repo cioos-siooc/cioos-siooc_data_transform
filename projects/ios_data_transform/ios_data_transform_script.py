@@ -139,7 +139,7 @@ def convert_files_threads(ftype, fname, config={}):
                 return 0
 
         except Exception as e:
-            logger.error("Error: Unable to create netcdf file: %s -> %s", fname, e)
+            logger.exception("Error: Unable to create netcdf file: %s -> %s", fname, e)
             subprocess.call(["rm", "-f", ncFileName])
 
 
