@@ -7,6 +7,8 @@ import argparse
 from tqdm import tqdm
 from multiprocessing import Pool
 from time import time
+import sentry_sdk
+from sentry_sdk.integrations.logging import LoggingIntegration
 import cioos_data_transform.IosObsFile as ios
 from ios_data_transform.write_ctd_ncfile import write_ctd_ncfile
 from ios_data_transform.write_cur_ncfile import write_cur_ncfile
@@ -21,6 +23,19 @@ log_config_path = os.path.join(os.path.dirname(__file__), "log_config.ini")
 logging.config.fileConfig(log_config_path, disable_existing_loggers=False)
 main_logger = logging.getLogger(__name__ if __name__ != "__main__" else None)
 logger = logging.LoggerAdapter(main_logger, {"file": None})
+
+sentry_logging = LoggingIntegration(
+    level=logging.INFO,        # Capture info and above as breadcrumbs
+    event_level=logging.WARNING  # Send errors as events
+)
+sentry_sdk.init(
+    dsn="https://23832428efb24e6d9344f4b5570ebfe3@o56764.ingest.sentry.io/4504816194551808",
+    integrations=[
+        sentry_logging,
+    ],
+    traces_sample_rate=1.0
+)
+
 
 MODULE_PATH = os.path.dirname(__file__)
 HANDLED_DATA_TYPES = ("tob", "drf", "ane", "ubc", "loop")

@@ -14,6 +14,7 @@ setuptools.setup(
         "xmltodict",
         "tqdm",
         "pytz",
+        "sentry_sdk",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
