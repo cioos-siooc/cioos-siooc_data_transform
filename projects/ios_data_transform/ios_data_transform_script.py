@@ -19,10 +19,12 @@ import subprocess
 
 log_config_path = os.path.join(os.path.dirname(__file__), "log_config.ini")
 logging.config.fileConfig(log_config_path, disable_existing_loggers=False)
-main_logger = logging.getLogger()
+main_logger = logging.getLogger(__name__ if __name__ != "__main__" else None)
 logger = logging.LoggerAdapter(main_logger, {"file": None})
 
 MODULE_PATH = os.path.dirname(__file__)
+HANDLED_DATA_TYPES = ("tob", "drf", "ane", "ubc", "loop")
+TRACJECTORY_DATA_TYPES = ("tob", "drf", "loop")
 
 
 def convert_files(config={}, opt="all", ftype=None):
@@ -48,7 +50,7 @@ def convert_files(config={}, opt="all", ftype=None):
         flist.extend(glob.glob(in_path + "**/*.[Cc][Hh][Ee]", recursive=True))
     elif ftype == "cur":
         flist = glob.glob(in_path + "**/*.[Cc][Uu][Rr]", recursive=True)
-    elif ftype in ("tob", "drf", "ane", "ubc"):
+    elif ftype in HANDLED_DATA_TYPES:
         flist = []
         for files in config["files"]:
             flist.extend(glob.glob(in_path + files, recursive=True))
@@ -90,7 +92,7 @@ def convert_files_threads(ftype, fname, config={}):
         fdata = ios.MCtdFile(filename=fname, debug=False)
     elif ftype == "cur":
         fdata = ios.CurFile(filename=fname, debug=False)
-    elif ftype in ("tob", "drf", "ane", "ubc"):
+    elif ftype in HANDLED_DATA_TYPES:
         fdata = ios.GenFile(filename=fname, debug=False)
     else:
         logger.error("Filetype not understood!")
@@ -98,7 +100,7 @@ def convert_files_threads(ftype, fname, config={}):
     # if file class was created properly, try to import data
     if fdata.import_data():
         logger.debug("Imported data successfully!")
-        if ftype not in ("drf", "tob"):
+        if ftype not in TRACJECTORY_DATA_TYPES:
             fdata.assign_geo_code(
                 config.get("geojson_file")
                 or os.path.join(MODULE_PATH, "samples", "ios_polygons.geojson")
@@ -118,7 +120,7 @@ def convert_files_threads(ftype, fname, config={}):
                 standardize_variable_names(ncFileName)
             elif ftype == "cur":
                 write_cur_ncfile(ncFileName, fdata, config=config)
-            elif ftype in ("tob", "ane", "ubc", "drf"):
+            elif ftype in HANDLED_DATA_TYPES:
                 write_ios_ncfile(ncFileName, fdata, config=config)
             else:
                 logger.error("Error: Unable to import data from file: %s", fname)
