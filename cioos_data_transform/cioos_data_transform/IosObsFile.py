@@ -654,8 +654,8 @@ class ObsFile(object):
             matched_vocab = vocab.loc[name_match_type & match_units]
             if matched_vocab.empty:
                 logger.warning(
-                    "Missing vocabulary for file=%s; variable name=%s,units=%s",
-                    self.filename,
+                    "Missing vocabulary for file_type=%s; variable name=%s,units=%s",
+                    self.filename.rsplit(".",1)[1],
                     name,
                     units,
                 )
