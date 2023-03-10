@@ -1176,12 +1176,15 @@ class MCtdFile(ObsFile):
 
         # self.obs_time = [self.start_dateobj + timedelta(seconds=time_increment * (i))
         #  for i in range(int(self.file['NUMBER OF RECORDS']))]
-        logger.debug("first obs_time[[0,1]]=%s", [self.obs_time[0], self.obs_time[-1]])
+        logger.debug(
+            "first obs_time[[0,1]]=%s",
+            [self.obs_time[0], self.obs_time[-1]] if self.obs_time else None,
+        )
         # try reading file using format specified in 'FORMAT'
         try:
             self.data = self.get_data(formatline=self.file["FORMAT"])
         except Exception as e:
-            logger.error("Could not read file using 'FORMAT' description...")
+            logger.info("Could not read file using 'FORMAT' description...")
             self.data = None
 
         if self.data is None:
@@ -1189,6 +1192,7 @@ class MCtdFile(ObsFile):
                 # self.channel_details = self.get_channel_detail()
                 self.data = self.get_data(formatline=None)
             except Exception as e:
+                logger.exception(e)
                 return 0
 
         # get timeseries times from data directly. raise fatal error if not availale
