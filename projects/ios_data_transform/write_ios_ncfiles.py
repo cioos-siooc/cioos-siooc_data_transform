@@ -18,7 +18,10 @@ logger = logging.LoggerAdapter(logger, {"file": None})
 def parse_ios_file(input_path, output_path, config_input=None, overwrite=False):
     """Parse IOS file with default configuration associated with the file type."""
     ftype = input_path.rsplit(".")[1]
-    config = read_config(config_input, ftype)
+    if isinstance(config_input, str):
+        config = read_config(config_input, ftype)
+    else:
+        config = config_input
     overwrite = overwrite or config.get("overwrite")
 
     # Generate output path
