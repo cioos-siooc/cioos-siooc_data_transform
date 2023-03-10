@@ -1,9 +1,12 @@
+import logging
 from shapely.geometry import Polygon, Point
 import json
 import os
 import geopy.distance
 import pandas as pd
 
+logger = logging.getLogger(__name__)
+logger = logging.LoggerAdapter(logger, extra={"file": None})
 
 # general utility functions common to multiple classes
 def fix_path(path):
@@ -64,6 +67,10 @@ def read_geojson(filename):
     # read shapefile in geojson format into Polygon object
     # input geojson file
     # output: Polygon object
+    if not os.path.exists(filename):
+        logger.error("Geojson file not found: %s", filename)
+        return {}
+
     with open(filename, encoding="utf-8") as f:
         data = json.load(f)
     poly_dict = {}
