@@ -156,12 +156,18 @@ if __name__ == "__main__":
         dest="nc_folder",
         help="Folder where NetCDF files will be stored",
     )
+    parser.add_argument(
+        "--geojson_file",
+        dest="geojson_file",
+        help="Geojson File used to defined the geographical areas",
+    )
     args = parser.parse_args()
     opt, ftype = args.opt, args.ftype
 
     config = cioos_utils.read_config(f"config_{ftype}.json")
     config["raw_folder"] = args.raw_folder or config.get("raw_folder")
     config["nc_folder"] = args.nc_folder or config.get("nc_folder")
+    config["geojson_file"] = args.geojson_file or config.get("geojson_file")
 
     logger.debug("Inputs from config file: %s", config)
     start = time()
