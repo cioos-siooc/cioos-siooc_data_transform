@@ -5,7 +5,7 @@ import sys
 import glob
 import argparse
 from tqdm import tqdm
-from multiprocessing import Process
+from multiprocessing import Pool
 from time import time
 import cioos_data_transform.IosObsFile as ios
 from ios_data_transform.write_ctd_ncfile import write_ctd_ncfile
@@ -64,14 +64,18 @@ def convert_files(config={}, opt="all", ftype=None):
         flist = [file for file in flist if cioos_utils.file_mod_time(file) > -24.0]
 
     # loop through files in list, read the data and write netcdf file if data read is successful
-    for fname in tqdm(
-        flist[:], unit="file", desc=f"Convert files {ftype} to netcdf format"
-    ):
-        # print('\nProcessing -> {} {}'.format(i, fname))
-        logger.extra["file"] = fname
-        p = Process(target=(convert_files_threads), args=(ftype, fname, config))
-        p.start()
-        p.join()
+    with Pool() as pool:
+        list(
+            tqdm(
+                pool.imap(
+                    unpack_file_convert_threads,
+                    [(ftype, fname, config) for fname in flist],
+                ),
+                unit="file",
+                desc=f"Convert files {ftype} to netcdf format",
+                total=len(flist),
+            )
+        )
     return flist
 
 
@@ -81,6 +85,14 @@ def standardize_variable_names(ncfile):
     # NOTE: netcdf files are overwritten
     logger.debug(f"Adding standard variables:{ncfile}")
     cioos_utils.add_standard_variables(ncfile)
+
+
+def unpack_file_convert_threads(inputs):
+    try:
+        logger.extra["file"] = inputs[1]
+        convert_files_threads(*inputs)
+    except Exception as e:
+        logger.exception("Failed to convert file")
 
 
 def convert_files_threads(ftype, fname, config={}):
