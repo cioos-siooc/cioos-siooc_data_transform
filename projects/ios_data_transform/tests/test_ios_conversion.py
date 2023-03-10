@@ -7,14 +7,17 @@ import cioos_data_transform.IosObsFile as ios
 import cioos_data_transform.utils as cioos_utils
 from cioos_data_transform.utils import fix_path
 
-from ..write_ctd_ncfile import write_ctd_ncfile
-from ..write_cur_ncfile import write_cur_ncfile
-from ..write_mctd_ncfile import write_mctd_ncfile
+from ios_data_transform.write_ctd_ncfile import write_ctd_ncfile
+from ios_data_transform.write_cur_ncfile import write_cur_ncfile
+from ios_data_transform.write_mctd_ncfile import write_mctd_ncfile
+from ios_data_transform import ios_data_transform_script
 
+MODULE_PATH = os.path.dirname(__file__)
 GEOJSON_AREAS_PATH = fix_path(
     "./projects/ios_data_transform/tests/test_files/ios_polygons.geojson"
 )
 OUTPUT_PATH = fix_path("./projects/ios_data_transform/tests/temp/")
+TEST_FILE_FOLDER = os.path.join(MODULE_PATH, "test_files")
 
 
 def convert_mctd_files(f, out_path):
@@ -138,4 +141,48 @@ class TestIOSConversion(unittest.TestCase):
                 continue
             convert_any_files(f=fn, out_path=OUTPUT_PATH)
 
-    # TODO compare general parser generated netcdfs vs original netcdfs
+
+def run_script_on(ftype, raw_folder):
+    """Run standard conversion script to the test files"""
+    # redirect input and outputs to
+    # tests file folder and temporary directory respectively.
+    config = cioos_utils.read_config(
+        os.path.join(MODULE_PATH, "..", f"config_{ftype}.json")
+    )
+    config.update(
+        {
+            "raw_folder": raw_folder,
+            "nc_folder": OUTPUT_PATH,
+            "geojson_file": None,
+        }
+    )
+    opt = "all"
+    flist = ios_data_transform_script.convert_files(config=config, opt=opt, ftype=ftype)
+    assert len(flist) > 0, "No tests files detected"
+    return flist
+
+
+class TestIosScriptConversions(unittest.TestCase):
+    def test_bot_script_conversion(self):
+        run_script_on("bot", os.path.join(TEST_FILE_FOLDER, "bot"))
+
+    def test_ctd_profiles_script_conversion(self):
+        run_script_on("ctd", os.path.join(TEST_FILE_FOLDER, "ctd_profile"))
+
+    def test_cur_script_conversion(self):
+        run_script_on("cur", os.path.join(TEST_FILE_FOLDER, "current_meter"))
+
+    def test_drf_script_conversion(self):
+        run_script_on("drf", os.path.join(TEST_FILE_FOLDER, "drf"))
+
+    def test_tob_script_conversion(self):
+        run_script_on("tob", os.path.join(TEST_FILE_FOLDER, "tob"))
+
+    def test_ane_script_conversion(self):
+        run_script_on("ane", os.path.join(TEST_FILE_FOLDER, "ane"))
+
+    def test_ubc_script_conversion(self):
+        run_script_on("ubc", os.path.join(TEST_FILE_FOLDER, "ubc"))
+
+    def test_loop_script_conversion(self):
+        run_script_on("loop", os.path.join(TEST_FILE_FOLDER, "loop"))
