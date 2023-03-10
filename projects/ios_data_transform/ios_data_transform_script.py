@@ -56,6 +56,11 @@ def convert_files(config={}, opt="all", ftype=None):
         logger.error("ERROR: Filetype not understood ...")
         return None
     logger.info("Total number of files =%s", len(flist))
+
+    # skip processing file if its older than 24 hours old
+    if opt == "new":
+        flist = [file for file in flist if cioos_utils.file_mod_time(file) > -24.0]
+
     # loop through files in list, read the data and write netcdf file if data read is successful
     for fname in tqdm(
         flist[:], unit="file", desc=f"Convert files {ftype} to netcdf format"
@@ -77,10 +82,6 @@ def standardize_variable_names(ncfile):
 
 
 def convert_files_threads(ftype, fname, config={}):
-    # skip processing file if its older than 24 hours old
-    if cioos_utils.file_mod_time(fname) < -24.0 and opt == "new":
-        # print("Not converting file: ", fname)
-        return 0
     logger.debug("Processing %s %s", ftype, fname)
     # read file based on file type
     if ftype in ("ctd", "bot"):
