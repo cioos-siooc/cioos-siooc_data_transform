@@ -1076,8 +1076,8 @@ class CtdFile(ObsFile):
                 # self.channel_details = self.get_channel_detail()
                 self.data = self.get_data(formatline=None)
             except Exception as e:
-                logger.error(
-                    "Faield to parse data with and without 'FORMAT' description"
+                logger.exception(
+                    "Failed to parse data with and without 'FORMAT' description"
                 )
                 return 0
 
@@ -1117,7 +1117,7 @@ class CurFile(ObsFile):
                 # self.channel_details = self.get_channel_detail()
                 self.data = self.get_data(formatline=None)
             except Exception as e:
-                logger.error(
+                logger.exception(
                     "Could not read file using 'struct' data format description..."
                 )
                 return 0
@@ -1224,7 +1224,7 @@ class BotFile(ObsFile):
         try:
             self.data = self.get_data(formatline=self.file["FORMAT"])
         except Exception as e:
-            logger.error("Could not read file using 'FORMAT' description...")
+            logger.info("Could not read file using 'FORMAT' description...")
             self.data = None
 
         if self.data is None:
@@ -1232,6 +1232,7 @@ class BotFile(ObsFile):
                 # self.channel_details = self.get_channel_detail()
                 self.data = self.get_data(formatline=None)
             except Exception as e:
+                logger.exception("Failed to parse file data")
                 return 0
 
         return 1
