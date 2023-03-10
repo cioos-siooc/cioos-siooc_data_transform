@@ -77,7 +77,7 @@ def standardize_variable_names(ncfile):
     # input: netcdf file with non-standard variable names
     # output: netcdf file with standard variables added
     # NOTE: netcdf files are overwritten
-    logger.info(f"Adding standard variables:{ncfile}")
+    logger.debug(f"Adding standard variables:{ncfile}")
     cioos_utils.add_standard_variables(ncfile)
 
 
