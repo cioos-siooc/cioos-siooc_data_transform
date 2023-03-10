@@ -395,18 +395,18 @@ class ObsFile(object):
                     fmt = fmt + "6s"
                 elif info["Width"][i].strip():
                     fmt = fmt + info["Width"][i].strip() + "s"
-                elif re.match("F\d+\.\d+", info["Format"][i], re.IGNORECASE):
+                elif re.match(r"F\d+\.\d+", info["Format"][i], re.IGNORECASE):
                     fmt = (
                         fmt
-                        + re.match("F(\d+)\.\d+\s*", info["Format"][i], re.IGNORECASE)[
+                        + re.match(r"F(\d+)\.\d+\s*", info["Format"][i], re.IGNORECASE)[
                             1
                         ]
                         + "s"
                     )
-                elif re.match("I\d+", info["Format"][i], re.IGNORECASE):
+                elif re.match(r"I\d+", info["Format"][i], re.IGNORECASE):
                     fmt = (
                         fmt
-                        + re.match("I(\d+)", info["Format"][i], re.IGNORECASE)[1]
+                        + re.match(r"I(\d+)", info["Format"][i], re.IGNORECASE)[1]
                         + "s"
                     )
                 elif info["Format"][i].strip() in ("F", "I", "f", "i"):
@@ -856,7 +856,7 @@ class ObsFile(object):
             pd.DataFrame.from_records(
                 self.data[:, variables.index], columns=variables[col_name]
             )
-            .replace("\.$", "", regex=True)
+            .replace(r"\.$", "", regex=True)
             .astype(dict(variables[[col_name, "dtype"]].values))
             .replace(
                 dict(variables[[col_name, "_FillValues"]].dropna().values), value=np.nan
