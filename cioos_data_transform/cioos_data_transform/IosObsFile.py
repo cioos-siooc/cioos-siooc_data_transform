@@ -806,7 +806,7 @@ class ObsFile(object):
             )
 
         _FillValues = variables.apply(
-            lambda x: pd.Series(x["pad"] or None).astype(x["dtype"]), axis="columns"
+            lambda x: pd.Series(x["pad"]).astype(x["dtype"]).values[0] if x["pad"] else None, axis="columns"
         )
         variables["_FillValues"] = _FillValues if not _FillValues.empty else None
         variables["renamed_name"] = variables.apply(
