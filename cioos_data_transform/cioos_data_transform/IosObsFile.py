@@ -181,7 +181,7 @@ class ObsFile(object):
             return {
                 "rename": "flag:at_sea",
                 "flag_values": [0, 1, 2, 3, 4, 5],
-                "flag_meanings": "not_classified good_at_sea_freely_floating bad_at_sea_but_trapped_in_rocky_intertidal bad_on_land bad:at_sea bad_land_travel",
+                "flag_meanings": "not_classified good:at_sea_freely_floating bad:at_sea_but_trapped_in_rocky_intertidal bad:on_land bad:at_sea bad:land_travel",
                 "units": None,
             }
         elif units.lower() == "igoss_flags":
