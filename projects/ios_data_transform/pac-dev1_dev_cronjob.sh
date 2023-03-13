@@ -3,14 +3,11 @@
 # Load environment variables
 source ./.env
 
-## some definitions$
-DIRECTORY=`dirname $0`$
-
 ## setup python environment
 source ~/anaconda3/etc/profile.d/conda.sh
 conda activate cioos_data_transform310
 python --version
-echo `which python`
+echo $(which python)
 
 python ios_data_transform_script.py all drf -i /data/ios_raw_files_temp/www.waterproperties.ca/osd_data_archive/Drifter_Data/ -o /data/erddap_data/IOS_DRF_Data/
 python ios_data_transform_script.py all tob -i /data/ios_raw_files_temp/www.waterproperties.ca/osd_data_archive/Cruise_Data/ -o /data/erddap_data/IOS_TOB_Data/
