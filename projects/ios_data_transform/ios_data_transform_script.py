@@ -25,15 +25,15 @@ main_logger = logging.getLogger(__name__ if __name__ != "__main__" else None)
 logger = logging.LoggerAdapter(main_logger, {"file": None})
 
 sentry_logging = LoggingIntegration(
-    level=logging.INFO,        # Capture info and above as breadcrumbs
-    event_level=logging.WARNING  # Send errors as events
+    level=logging.INFO,  # Capture info and above as breadcrumbs
+    event_level=logging.WARNING,  # Send errors as events
 )
 sentry_sdk.init(
     dsn="https://23832428efb24e6d9344f4b5570ebfe3@o56764.ingest.sentry.io/4504816194551808",
     integrations=[
         sentry_logging,
     ],
-    traces_sample_rate=1.0
+    traces_sample_rate=1.0,
 )
 
 
