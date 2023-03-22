@@ -1,4 +1,4 @@
-ios_file_extension,ios_name,accepted_units,accepted_instrument_type,apply_func,long_name,standard_name,units,scale,sdn_parameter_urn,sdn_parameter_name,sdn_uom_urn,sdn_uom_name,rename,
+ios_file_extension,ios_name,accepted_units,accepted_instrument_type,apply_func,long_name,standard_name,units,scale,sdn_parameter_urn,sdn_parameter_name,sdn_uom_urn,sdn_uom_name,rename
 ,% light transmittance,%,,,% Light transmittance,,%,,,,,,
 ,adenosine_triphosphate,mg\/m\^3,,,Adenosine Triphosphate,mass_concentration_of_adenosine_triphosphate_in_sea_water,mg/m^3,,SDN:P01::ATPXZZDZ,Concentration of adenosine triphosphate {ATP CAS 56-65-5} per unit volume of the water body [dissolved plus reactive particulate <unknown phase],,,ATPXZZDZ
 ,alkalinity,mmol\/m,,,Alkalinity,sea_water_alkalinity_expressed_as_mole_equivalent,mmol/m,,SDN:P01::ALKYZZXX,Total alkalinity per unit volume of the water body,,,ALKYZZXX
@@ -121,7 +121,7 @@ ios_file_extension,ios_name,accepted_units,accepted_instrument_type,apply_func,l
 ,evapotranspiration,mm\/h,,,Evapotranspiration,,mm/h,,,,,,
 ,event_number,None,,,Event Number,,,,,,,,
 ,event_number,,,,,,,,,,,,
-drf,flag:at_sea,None,,,Flag at Sea,,,,,,,,,
+drf,flag:at_sea,None,,,Flag at Sea,,,,,,,,
 tob,flow rate,L/min,,,Flow Rate,,L/min,,,,,,flow_rate
 tob,flow_rate,L/min,,,Flow Rate,,L/min,,,,,,flow_rate
 tob,flow_rate_fl,L/min,,,Flow Rate FL,,L/min,,,,,,flow_rate_fl
@@ -132,7 +132,7 @@ tob,flow_rate_fl,L/min,,,Flow Rate FL,,L/min,,,,,,flow_rate_fl
 ,fluorescence:calibrated:seatech,mg\/m\^3,,,Fluorescence Calibrated Seatech,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPS01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer and calibration against sample data,,,CPHLPS01
 ,fluorescence:calibrated:wetlabs,mg\/m\^3,,,,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPS01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer and calibration against sample data,,,CPHLPS01
 ,fluorescence:ctd,mg\/m\^3,,,Fluorescence CTD,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
-tob,fluorescence:range,Volts|volts,
+tob,fluorescence:range,Volts|volts,,,,,,,,,,,
 ,fluorescence:uru,mg\/m\^3,,,Sea Water Fluorescence,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
 ,fluorescence:uru:ctd,mg\/m\^3,,,Fluorescence URU CTD,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
 ,fluorescence:uru:rbr,mg\/m\^3,,,Fluorescence URU RBR,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
@@ -447,9 +447,9 @@ ane,temperature:wind_chill_index,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)
 ,turbidity:wetlabs:ntu,,,,,sea_water_turbidity,,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
 ane,uv:dose,None,,,UV Dose,,MEDs,,,,,,
 ane,uv:high,None,,,UV High,,,,,,,,
-ane,uv:index,None,,,UV Index,,,,,,,,,
+ane,uv:index,None,,,UV Index,,,,,,,,
 ,vitamin b12,m-microg\/l,,,Vitamin B12,,m-microg/l,,,,,,
 ,voltage,None,,,Voltage,,,,,,,,
 ane,wind:sampling_period,s,,,Wind Sampling Period,,s,,,,,,
-,velocity:probe,m/s,,,Velocity,,m/s
+,velocity:probe,m/s,,,Velocity,,m/s,,,,,,
 ane,wind_tx,None,,,Wind TX,,,,,,,, 
