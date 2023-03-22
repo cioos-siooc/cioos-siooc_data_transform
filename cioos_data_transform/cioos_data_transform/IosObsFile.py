@@ -18,6 +18,7 @@ from shapely.geometry import Point
 import pandas as pd
 from io import StringIO
 import logging
+import xarray as xr
 
 VERSION = pkg_resources.require("cioos_data_transform")[0].version
 logger = logging.getLogger(__name__)
@@ -86,6 +87,7 @@ class ObsFile(object):
         self.recovery = None
         self.obs_time = None
         self.vocabulary_attributes = None
+        self.history = None
         # try opening and reading the file. if error. soft-exit.
         try:
             with open(self.filename, "r", encoding="ASCII", errors="ignore") as fid:
@@ -284,6 +286,13 @@ class ObsFile(object):
         # deprecated: calculated length of string from 'struct' format specification
         # assumes on 's' data fromat
         return np.asarray(fmt[0:-1].split("s"), dtype="int").sum()
+    
+    def add_to_history(self, input):
+        if not hasattr(self,'history'):
+            self.history = {}
+        if "ios_transform_history" not in self.history:
+            self.history["ios_transform_history"] = "IOS Transform History:\n"
+        self.history['ios_transform_history'] += f"{datetime.now().isoformat()} - {input}\n"
 
     def get_data(self, formatline=None):
         # reads data using the information in FORMAT
@@ -602,6 +611,7 @@ class ObsFile(object):
             "sdn_uom_urn",
             "sdn_uom_name",
             "rename",
+            "apply_func",
         ]
 
         def match_term(reference, value):
@@ -719,18 +729,7 @@ class ObsFile(object):
 
         self.channels["Name"] = rename_channels
 
-    def to_xarray(
-        self,
-        rename_variables=True,
-        append_sub_variables=True,
-        replace_date_time_variables=True,
-    ):
-        """Convert ios class to xarray dataset
-
-        Returns:
-            xarray dataset
-        """
-
+    def get_global_attributes(self):
         def _format_attributes(section, prefix=""):
             def _format_attribute_name(name):
                 if name == "$REMARKS":
@@ -756,7 +755,52 @@ class ObsFile(object):
                 }
             else:
                 return {}
+            
+        # Generate global attributes
+        return {
+            **_format_attributes("administration"),
+            **{
+                    key: value
+                    for key, value in _format_attributes("file").items()
+                    if key not in ["format", "data_type", "file_type"]
+                },
+            **_format_attributes("instrument", prefix="instrument_"),
+            **_format_attributes("location"),
+            **_format_attributes("deployment", "deployment_"),
+            **_format_attributes("recovery", "recovery_"),
+            "comments": str(self.comments) if self.comments else None,  # TODO missing file_remarks
+            "remarks": str(self.remarks) if self.remarks else None,
+            "history": str(self.history) if hasattr(self, "history") else None,
+            "geographical_area": self.geo_code if hasattr(self, "geo_code") else None,
+            "headers": json.dumps(
+                self.get_complete_header(), ensure_ascii=False, indent=False
+            ),
+            "start_time": self.start_dateobj.isoformat(),
+            "end_time": self.end_dateobj.isoformat() if self.end_dateobj else None,
+            "source": self.filename,
+            "ios_header_version": self.ios_header_version,
+            "cioos_data_transform_version": VERSION,
+            "product_version": f"ios_header={self.ios_header_version}; cioos_transform={VERSION}",
+            "date_created": self.date_created.isoformat()
+        }
+    
+    def get_geospatial_attributes(self):
 
+        return {}
+
+    def to_xarray(
+        self,
+        rename_variables=True,
+        append_sub_variables=True,
+        replace_date_time_variables=True,
+    ):
+        """Convert ios class to xarray dataset
+
+        Returns:
+            xarray dataset
+        """
+
+       
         def update_variable_index(varname, id):
             """Replace variable index (1,01,X,XX) by the given index or append
             0 padded index if no index exist in original variable name"""
@@ -826,7 +870,7 @@ class ObsFile(object):
             )
 
         # Detect and rename duplicated variable names with different units
-        col_name = "renamed_name" if rename_variables else "ios_name"
+        col_name = "ios_name"
         duplicated_name = variables.duplicated(subset=[col_name])
         if duplicated_name.any():
             variables["var_index"] = variables.groupby(col_name).cumcount()
@@ -863,13 +907,16 @@ class ObsFile(object):
             )
             .to_xarray()
         )
+        ds.attrs = self.get_global_attributes()
+        ds.attrs.update(self.get_geospatial_attributes())
 
         # Add variable attributes
+        if append_sub_variables is True:
+            ds_sub = xr.Dataset()
+            ds_sub.attrs = ds.attrs
+
         for id, row in variables.iterrows():
             var = ds[row[col_name]]
-            vocab_attrs = row["matching_vocabularies"][-1]
-            vocab_attrs.pop("rename", None)
-            # Combine attributes and ignore empty values
             var.attrs = _drop_empty_attrs(
                 {
                     "original_ios_variable": str(
@@ -878,89 +925,59 @@ class ObsFile(object):
                     "original_ios_name": row["ios_name"],
                     "long_name": row["ios_name"],
                     "units": row["units"],
-                    **vocab_attrs,
                 }
             )
+            if not append_sub_variables:
+                var.attrs['sub_variables'] = json.dumps(row['matching_vocabularies'])
+                continue
+            elif not row['matching_vocabularies']:
+                ds_sub.assign({var.name:var})
+                continue
+            
+            # Generate vocabulary variables
+            for new_var_attrs in row["matching_vocabularies"]:
 
-            if append_sub_variables:
-                for new_var_attrs in row["matching_vocabularies"][:-1]:
-                    if "rename" not in new_var_attrs:
+                new_var = new_var_attrs.pop("rename",row[col_name])
+
+                # if variable already exist from a different source variable
+                #  append variable index
+                if new_var in ds_sub:
+                    if (
+                        ds_sub[new_var].attrs["original_ios_name"]
+                        == var.attrs["original_ios_name"]
+                    ):
+                        logger.error("Duplicated vocabulary output for %s, will be ignored", row)
                         continue
-                    new_var = new_var_attrs.pop("rename")
+                    else:
+                        new_index = (
+                            len([var for var in ds if var.startswith(new_var[:-1])])
+                            + 1
+                        )
+                        logging.warning(
+                            "Duplicated variable from sub variables: %s, rename +%s",
+                            new_var,
+                            new_index,
+                        )
+                        new_var = update_variable_index(new_var, new_index)
+                
+                if "apply_func" in new_var_attrs:
+                    new_data = xr.apply_ufunc(eval(new_var_attrs['apply_func']),var)
+                    self.add_to_history(f"Generate new variable from {row[col_name]} -> apply {new_var_attrs['apply_func']}) -> {new_var}")
+                    
+                else: 
+                    new_data = var
+                    self.add_to_history(f"Generate new variable from {row[col_name]} -> {new_var}")
 
-                    # if variable already exist from a different source variable
-                    #  append variable index
-                    if new_var in ds:
-                        if (
-                            ds[new_var].attrs["original_ios_name"]
-                            == var.attrs["original_ios_name"]
-                        ):
-                            logger.error("Duplicated vocabulary output for %s", row)
-                            continue
-                        else:
-                            new_index = (
-                                len([var for var in ds if var.startswith(new_var[:-1])])
-                                + 1
-                            )
-                            logging.warning(
-                                "Duplicated variable from sub variables: %s, rename +%s",
-                                new_var,
-                                new_index,
-                            )
-                            new_var = update_variable_index(new_var, new_index)
-
-                    ds[new_var] = (var.dims, var.data, _drop_empty_attrs(new_var_attrs))
-
+                ds_sub[new_var] = (var.dims, new_data.data, _drop_empty_attrs(new_var_attrs))
+        
+        if append_sub_variables:
+            ds = ds_sub
         # Replace date/time variables by a single time column
         if self.obs_time and replace_date_time_variables:
             ds = ds.drop([var for var in ds if var in ["Date", "Time"]])
             ds["time"] = (ds.dims, pd.Series(self.obs_time))
             ds["time"].encoding["units"] = "seconds since 1970-01-01T00:00:00Z"
 
-        # Generate global attributes
-        ds.attrs.update(_format_attributes("administration"))
-        ds.attrs.update(
-            {
-                key: value
-                for key, value in _format_attributes("file").items()
-                if key not in ["format", "data_type", "file_type"]
-            }
-        )
-        ds.attrs.update(_format_attributes("instrument", prefix="instrument_"))
-        ds.attrs.update(_format_attributes("location"))
-        if self.deployment:
-            ds.attrs.update(_format_attributes("deployment", "deployment_"))
-        if self.recovery:
-            ds.attrs.update(_format_attributes("recovery", "recovery_"))
-        if self.comments:
-            ds.attrs["comments"] = str(self.comments)
-        if self.remarks:
-            ds.attrs["remarks"] = str(self.remarks)
-        if self.history:
-            ds.attrs["history"] = str(self.history)
-        if hasattr(self, "geo_code"):
-            ds.attrs["geographical_area"] = self.geo_code
-        ds.attrs["comments"] = ds.attrs.pop("file_remarks", None)
-        ds.attrs["header"] = json.dumps(
-            self.get_complete_header(), ensure_ascii=False, indent=False
-        )
-        ds.attrs["start_time"] = self.start_dateobj.isoformat()
-        ds.attrs["end_time"] = (
-            self.end_dateobj.isoformat() if self.end_dateobj else None
-        )
-        ds.attrs["source"] = self.filename
-        ds.attrs["ios_header_version"] = self.ios_header_version
-        ds.attrs["cioos_data_transform_version"] = VERSION
-        ds.attrs[
-            "product_version"
-        ] = f"ios_header={self.ios_header_version}; cioos_transform={VERSION}"
-        ds.attrs["date_created"] = self.date_created.isoformat()
-
-        # Geospatial attributes
-        ds.attrs["start_time"] = self.start_dateobj.isoformat()
-        ds.attrs["end_time"] = (
-            self.end_dateobj.isoformat() if self.end_dateobj else None
-        )
         ds.attrs["time_coverage_start"] = ds.attrs["start_time"]
         ds.attrs["time_coverage_end"] = (
             ds.attrs.get("end_time") or ds.attrs["start_time"]
