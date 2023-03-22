@@ -11,7 +11,7 @@ ios_file_extension,ios_name,accepted_units,accepted_instrument_type,apply_func,l
 ,alkalinity:total:potentiometric,umol\/kg,,,Alkalinity Total Potentiometric,sea_water_alkalinity_expressed_as_mole_equivalent,umol/kg,,SDN:P01::ALKYPOTK,Total alkalinity per unit mass of the water body by potentiometry,,,ALKYPOTK
 ,altimeter,metres,,,Altimeter,altimeter_range,metres,,SDN:P01::ADEPWI01,Depth (spatial coordinate) relative to water surface by barometric altimeter,,,ADEPWI01
 ,aluminum:dissolved,pmol\/L,,,Aluminum Dissolved,,pmol/L,,SDN:P01::ALXXFIP5,"Concentration of aluminium {Al CAS 7429-90-5} per unit volume of the water body [dissolved plus reactive particulate <0.2um phase] by filtration, in-line preconcentration and flow-injection fluorometry",,,ALXXFIP5
-,ammonia,microg-at\/l,,,Ammonia,,microg-at/l,,SDN:P01::AMNH3G01,Concentration of ammonia {NH3 CAS 7664-41-7} per unit volume of the water body [dissolved plus reactive particulate phase],,,AMNH3G01
+,ammonia,microg-at\/l,,,Ammonia,,umol/l,,SDN:P01::AMNH3G01,Concentration of ammonia {NH3 CAS 7664-41-7} per unit volume of the water body [dissolved plus reactive particulate phase],,,AMNH3G01
 ,ammonium,umol\/l|umol\/L,,,Mole Concentration of Amonium in Sea Water,mole_concentration_of_ammonium_in_sea_water,umol/L,,SDN:P01::AMONZZXX,Concentration of ammonium {NH4+ CAS 14798-03-9} per unit volume of the water body [unknown phase],,,AMONZZXX
 ,amplitude:beam1,,,,signal_intensity_from_multibeam_acoustic_doppler_velocity_sensor_in_sea_water,count,,,,,,,ISCMBMA1
 ,amplitude:beam2,,,,signal_intensity_from_multibeam_acoustic_doppler_velocity_sensor_in_sea_water,count,,,,,,,ISCMBMA2
@@ -179,7 +179,7 @@ tob,fluorescence:range,Volts|volts,,,,,,,,,,,
 ,hplc:zea,mg\/m\^3,,,HPLC Zea,,mg/m^3,,SDN:P01::ZEAXMHP1,"Concentration of zeaxanthin {CAS 144-68-3} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,ZEAXMHP1
 ,humidity:relative,%,,,Humidity Relative,,%,,,,,,
 ,humidity:relative:inside,%,,,Humidity Relative Inside,,%,,,,,,
-,hydrogen-sulphide,microg-at\/l,,,Hydrogen-sulphide,,microg-at/l,,SDN:P01::H2SXZZXX,Concentration of hydrogen sulphide {H2S CAS 7783-06-4} per unit volume of the water body [dissolved plus reactive particulate phase],,,H2SXZZXX
+,hydrogen-sulphide,microg-at\/l,,,Hydrogen-sulphide,,umol/l,,SDN:P01::H2SXZZXX,Concentration of hydrogen sulphide {H2S CAS 7783-06-4} per unit volume of the water body [dissolved plus reactive particulate phase],,,H2SXZZXX
 ,hydrogen_sulfide,umol\/L,,,Hydrogen Sulfide,mole_concentration_of_hydrogen_sulfide_in_sea_water,umol/L,,SDN:P01::H2SXZZXX,Concentration of hydrogen sulphide {H2S CAS 7783-06-4} per unit volume of the water body [dissolved plus reactive particulate phase],,,H2SXZZXX
 ,ins:location,,,,INS LOCATION,,,,,,,,
 ,instr_depth,,,,Instrument Depth,instrument_depth,,,,,,,
@@ -208,15 +208,13 @@ ane,iss_reception,None,,,ISS Reception,,,,,,,,
 ,methane,nmol\/L,,,Methane,,nmol/L,,SDN:P01::CH4CGCXX,Concentration of methane {CH4 CAS 74-82-8} per unit volume of the water body [dissolved plus reactive particulate phase] by gas chromatography,,,CH4CGCXX
 ,methylene_chloride,pmol\/L,,,Methylene Chloride,,pmol/L,,,,,,
 ,nanophytoplankton,\/mL,,,Nanophytoplankton,,/mL,,SDN:P01::PU00A01B,Abundance of nanophytoplankton per unit volume of the water body by flow cytometry,,,PU00A01B
-,nitrate,microg-at/l,,,Nitrate,,microg-at/l,,,,,,
-,nitrate,umol\/L,,,Nitrate,mole_concentration_of_nitrate_in_sea_water,umol/L,,SDN:P01::NTRAZZXX,Concentration of nitrate {NO3- CAS 14797-55-8} per unit volume of the water body [unknown phase],,,NTRAZZXX
-,nitrate_plus_nitrite,ug-at\/L,,,Nitrate plus Nitrite,,ug-at/L,,,,,,
-,nitrate_plus_nitrite,umol\/l|umol\/L,,,,mole_concentration_of_nitrate_and_nitrite_in_sea_water,umol/L,,SDN:P01::NTRZAAZX,Concentration of nitrate+nitrite {NO3+NO2} per unit volume of the water body [unknown phase] by colorimetric autoanalysis,,,NTRZAAZ
+,nitrate,umol\/L|microg-at/l,,,Nitrate,mole_concentration_of_nitrate_in_sea_water,umol/L,,SDN:P01::NTRAZZXX,Concentration of nitrate {NO3- CAS 14797-55-8} per unit volume of the water body [unknown phase],,,NTRAZZXX
+,nitrate_plus_nitrite,umol\/l|umol\/L|ug-at\/L,,,,mole_concentration_of_nitrate_and_nitrite_in_sea_water,umol/L,,SDN:P01::NTRZAAZX,Concentration of nitrate+nitrite {NO3+NO2} per unit volume of the water body [unknown phase] by colorimetric autoanalysis,,,NTRZAAZ
 ,nitrate_plus_nitrite2,umol\/L,,,Nitrate plus Nitrite2,mole_concentration_of_nitrate_and_nitrite_in_sea_water,umol/L,,SDN:P01::NTRZAAZX,Concentration of nitrate+nitrite {NO3+NO2} per unit volume of the water body [unknown phase] by colorimetric autoanalysis,,,NTRZAAZX
 ,nitrate_plus_nitrite:isus,umol\/L,,,Nitrate plus nitrite ISUS,mole_concentration_of_nitrate_and_nitrite_in_sea_water,umol/L,,SDN:P01::NTRZAAZX,Concentration of nitrate+nitrite {NO3+NO2} per unit volume of the water body [unknown phase] by colorimetric autoanalysis,,,NTRZAAZX
 ,nitrate_plus_nitrite:isus,volts|Volts,,,Nitrate plus nitrite ISUS,,volts,,,,,,
 ,nitrate_plus_nitrite:isus:voltage,Volts,,,Nitrate plus nitrite ISUS Voltage,,Volts,,,,,,
-,nitrite,microg-at\/l,,,Nitrite,,microg-at/l,,,,,,
+,nitrite,microg-at\/l,,,Nitrite,,umol/l,,,,,,
 ,nitrite,umol\/L|mmol\/m,,,Nitrite,mole_concentration_of_nitrite_in_sea_water,umol/L,,SDN:P01::NTRIZZXX,Concentration of nitrite {NO2- CAS 14797-65-0} per unit volume of the water body [unknown phase],,,NTRIZZXX
 ,nitrogen:dissolved:organic,umol\/L,,,Nitrogen Dissolved Organic,mole_concentration_of_dissolved_organic_nitrogen_in_sea_water,umol/L,,SDN:P01::MDMAP009,Concentration of organic nitrogen {organic_N} {DON} per unit volume of the water body [dissolved plus reactive particulate <unknown phase],,,MDMAP009
 ,nitrogen:particulate:organic,mg\/m\^3,,,Nitrogen Particulate Organic,,mg/m^3,,SDN:P01::NTOTCNPZ,Concentration of total nitrogen {total_N} {PON} per unit volume of the water body [particulate >unknown phase] by filtration and elemental analysis,,,NTOTCNPZ
@@ -272,9 +270,7 @@ ane,iss_reception,None,,,ISS Reception,,,,,,,,
 ,phaeo-pigment:extracted3,mg\/m\^3,,,Phaeo-Pigment Extracted3,mass_concentration_of_phaeopigments_in_sea_water,mg/m^3,,SDN:P01::PHAEFLPZ,"Concentration of phaeopigments {pheopigments} per unit volume of the water body [particulate >unknown phase] by filtration, acetone extraction and fluorometry",,,PHAEFLPZ
 ,phaeo-pigment:extracted:0.3um,mg\/m\^3,,,Phaeo-Pigment Extracted 0.3um,mass_concentration_of_phaeopigments_in_sea_water,mg/m^3,,,,,,
 ,phaeo-pigment:extracted:bottle,mg\/m\^3,,,Phaeo-Pigment Extracted Bottle,,mg/m^3,,,,,,
-,phosphate,microg-at\/l,,,Phosphate,mass_concentration_of_phosphate_in_sea_water,microg-at/l,,SDN:P01::PHOSAAZX,Concentration of phosphate {PO43- CAS 14265-44-2} per unit volume of the water body [unknown phase] by colorimetric autoanalysis,,,PHOSAAZX
-,phosphate,ug-at\/L,,,Phosphate,mass_concentration_of_phosphate_in_sea_water,ug-at/L,,SDN:P01::PHOSAAZX,Concentration of phosphate {PO43- CAS 14265-44-2} per unit volume of the water body [unknown phase] by colorimetric autoanalysis,,,PHOSAAZX
-,phosphate,umol\/L|mmol\/m,,,,mole_concentration_of_phosphate_in_sea_water,umol/L,,SDN:P01::PHOSAAZX,Concentration of phosphate {PO43- CAS 14265-44-2} per unit volume of the water body [unknown phase] by colorimetric autoanalysis,,,PHOSAAZX
+,phosphate,microg-at\/l|ug-at\/L|umol\/L|mmol\/m,,,Phosphate,mass_concentration_of_phosphate_in_sea_water,umol/l,,SDN:P01::PHOSAAZX,Concentration of phosphate {PO43- CAS 14265-44-2} per unit volume of the water body [unknown phase] by colorimetric autoanalysis,,,PHOSAAZX
 ,phosphate(inorg),mmol\/m,,,Phosphate(inorg),mole_concentration_of_phosphate_in_sea_water,umol/L,,,,,,
 ,phosphate2,umol\/L,,,Phosphate2,mole_concentration_of_phosphate_in_sea_water,umol/L,,SDN:P01::PHOSAAZX,Concentration of phosphate {PO43- CAS 14265-44-2} per unit volume of the water body [unknown phase] by colorimetric autoanalysis,,,PHOSAAZX
 ,phytoplankton:volume,mm\^3\/m\^3,,,Phytoplankton Volume,,mm^3/m^3,,,,,,
@@ -324,12 +320,7 @@ ane,iss_reception,None,,,ISS Reception,,,,,,,,
 ,sigma-t,kg\/m\^3,,,Sigma-theta,sea_water_sigma_t,kg/m^3,,SDN:P01::SIGTPR01,Sigma-theta of the water body by CTD and computation from salinity and potential temperature using UNESCO algorithm,,,SIGTEQST
 ,sigma-t:ctd,Kg\/m\^3,,,Sigma-t CTD,,Kg/m^3,,,,,,
 tob,sigma-t,None,,,Sigma-t,,,,,,,,
-,silicate,microg-at/l,,,Silicate,mass_concentration_of_silicate_in_sea_water,microg-at/l,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
-,silicate,microg-at\/l,,,,mass_concentration_of_silicate_in_sea_water,microg-at/l,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
-,silicate,mmol\/m,,,,mole_concentration_of_silicate_in_sea_water,mmol/m,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
-,silicate,ug-at\/L,,,Silicate,mass_concentration_of_silicate_in_sea_water,ug-at/L,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
-,silicate,umol\/L,,,,mole_concentration_of_silicate_in_sea_water,umol/L,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
-,silicate,umol\/l|umol\/L|mmol\/m,,,Mole Concentration of Silicate in Sea Water,mole_concentration_of_silicate_in_sea_water,umol/L,,,,,,SLCAAAZ
+,silicate,microg-at/l|ug-at\/L|umol\/L|umol\/l|umol\/L|mmol\/m,,,Silicate,mass_concentration_of_silicate_in_sea_water,umol/l,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
 ,silicate2,umol\/L,,,Silicate2,mole_concentration_of_silicate_in_sea_water,umol/L,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
 ,silicate:acidified,umol\/L,,,Silicate Acidified,mole_concentration_of_silicate_in_sea_water,umol/L,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
 ,silicate:corrected,umol\/L,,,Silicate Corrected,mole_concentration_of_silicate_in_sea_water,umol/L,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
