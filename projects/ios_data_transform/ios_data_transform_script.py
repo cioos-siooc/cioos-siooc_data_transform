@@ -1,6 +1,7 @@
 import logging
 import logging.config
 import os
+import re
 import sys
 import glob
 import argparse
@@ -28,12 +29,27 @@ sentry_logging = LoggingIntegration(
     level=logging.INFO,  # Capture info and above as breadcrumbs
     event_level=logging.WARNING,  # Send errors as events
 )
+
+
+def before_send_to_sentry(event, hint):
+    """Split different issues encountered in specific sentry fingerprints"""
+    regex_event = "vocabulary|duplicated variables"
+    if "logentry" in event and re.search(regex_event, event["logentry"]["message"]):
+        event["fingerprint"] = [
+            "{{default}}",
+            event["logentry"]["message"] % tuple(event["logentry"]["params"]),
+        ]
+
+    return event
+
+
 sentry_sdk.init(
     dsn="https://23832428efb24e6d9344f4b5570ebfe3@o56764.ingest.sentry.io/4504816194551808",
     integrations=[
         sentry_logging,
     ],
     traces_sample_rate=1.0,
+    before_send=before_send_to_sentry,
 )
 
 
