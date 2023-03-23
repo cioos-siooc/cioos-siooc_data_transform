@@ -1,24 +1,26 @@
+import argparse
+import glob
 import logging
 import logging.config
 import os
 import re
+import subprocess
 import sys
-import glob
-import argparse
-from tqdm import tqdm
 from multiprocessing import Pool
 from time import time
-import sentry_sdk
-from sentry_sdk.integrations.logging import LoggingIntegration
+
 import cioos_data_transform.IosObsFile as ios
-from ios_data_transform.write_ctd_ncfile import write_ctd_ncfile
-from ios_data_transform.write_cur_ncfile import write_cur_ncfile
-from ios_data_transform.write_mctd_ncfile import write_mctd_ncfile
-from ios_data_transform.write_ios_ncfiles import write_ios_ncfile
 
 # .cioos_data_transform as iod
 import cioos_data_transform.utils as cioos_utils
-import subprocess
+import sentry_sdk
+from sentry_sdk.integrations.logging import LoggingIntegration
+from tqdm import tqdm
+
+from ios_data_transform.write_ctd_ncfile import write_ctd_ncfile
+from ios_data_transform.write_cur_ncfile import write_cur_ncfile
+from ios_data_transform.write_ios_ncfiles import write_ios_ncfile
+from ios_data_transform.write_mctd_ncfile import write_mctd_ncfile
 
 log_config_path = os.path.join(os.path.dirname(__file__), "log_config.ini")
 logging.config.fileConfig(log_config_path, disable_existing_loggers=False)
