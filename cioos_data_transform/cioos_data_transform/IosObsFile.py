@@ -734,11 +734,11 @@ class ObsFile(object):
             def _format_attribute_name(name):
                 if name == "$REMARKS":
                     return f"{section}_remarks"
-                return f"{prefix}{name}".replace(" ", "_").lower()
+                return f"{prefix}{name}".replace(" ", "_").replace('(','').replace(')','').lower()
 
             def _format_attribute_value(value):
                 if isinstance(value, str):
-                    return value.strip()
+                    return value.replace('! custom item','').strip()
                 elif isinstance(value, (float, int)):
                     return value
                 elif isinstance(value, list):
