@@ -252,8 +252,12 @@ class ObsFile(object):
         try:
             date_obj = datetime.strptime(date_string[4:], "%Y/%m/%d %H:%M:%S.%f")
         except Exception as e:
-            logger.warning(e)
-            date_obj = datetime.strptime(date_string[4:], "%Y/%m/%d")
+            if re.match(r'\d{4}\/\d{2}\/\d{2}',date_string[:4]):
+                logger.warning("No time available is available will assume midnight.")
+                date_obj = datetime.strptime(date_string[4:], "%Y/%m/%d")
+            else:
+                logger.warning("Use pandas pd.to_datetime to parse date string: %s",date_string[4:])
+                date_obj = pd.to_datetime(date_string[4:]).to_pydatetime()
             logger.info(date_obj)
         # make datetime object, aware of its timezone
         # for GMT, UTC
