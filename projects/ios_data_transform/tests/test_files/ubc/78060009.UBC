@@ -1,0 +1,84 @@
+*1993/06/28 11:33:50.34
+*IOS HEADER VERSION 0.4  1992/11/17
+
+*FILE
+    START TIME          : PST 1978/10/19 23:17:44
+    NUMBER OF RECORDS   : 1
+    FILE TYPE           : ASCII
+    FORMAT              : (f5.0,f7.2,f9.5,f8.3,f7.2,f7.2)
+    DATA TYPE           : REAL*4
+    NUMBER OF CHANNELS  : 6
+
+    $TABLE: CHANNELS
+    ! No Name                 Units            Minimum        Maximum
+    ! -- -------------------- ---------------- -------------- --------------
+       1 DEPTH                metres           1              1
+       2 TEMPERATURE          'DEG C (ITS 68)' 99.99          -99.99
+       3 CONDUCTIVITY_RATIO   n/a              0.46562        0.46562
+       4 SALINITY             ppt              15.095         15.095
+       5 SIGMA-T              n/a              99.99          -99.99
+       6 OXYGEN               ml/l             6.73           6.73
+    $END
+
+    $TABLE: CHANNEL DETAIL
+    ! No  Pad             Start  Width  Format    Type
+    ! --  --------------  -----  -----  --------  ----------
+       1  n/a             ' '    ' '    ' '       ' '
+       2  -9.99           ' '    ' '    ' '       ' '
+       3  -0.99999        ' '    ' '    ' '       ' '
+       4  -9.999          ' '    ' '    ' '       ' '
+       5  -9.99           ' '    ' '    ' '       ' '
+       6  -9.99           ' '    ' '    ' '       ' '
+    $END
+    $REMARKS
+         Time not available from UBC records.
+    $END
+
+*ADMINISTRATION
+    CRUISE              : 78-16
+    AGENCY              : UBC
+    SCIENTIST           : de Mora
+    PLATFORM            : Vector
+
+*LOCATION
+    GEOGRAPHIC AREA     : Geo/Ind Arm
+    STATION             : FR 51
+    EVENT NUMBER        : 9    
+    LATITUDE            :  49   6.00800 N  ! (deg min)
+    LONGITUDE           : 123  19.25300 W  ! (deg min)
+    WIND                :                                       ! custom item
+    SEA                 :                                       ! custom item
+    AIRDRY              :                                       ! custom item
+    AIRWET              :                                       ! custom item
+    SECCHI              :                                       ! custom item
+    CLOUD               :                                       ! custom item
+    BAROMETER           :                                       ! custom item
+    WANGLE              :                                       ! custom item
+
+*HISTORY
+
+    $TABLE: PROGRAMS
+    !   Name Vers   Date       Time     Recs In Recs Out
+    !   ---- ------ ---------- -------- ------- -------
+        UBC  1.0    1993/06/28 11:33:50       1       1
+    $END
+
+*COMMENTS
+  This file converted from UBC's print image file of data reports.
+  Temp:  Reversing thermometers if tabulated to hundredth of degree Celcius
+  Bucket thermometer (surface) if tabulated to tenths of degree Celcius.
+  Salinity: Guildline Autosal Model 8400 salinometer
+  Salinities reported in parts per thousand were estimated from measured
+  conductivity ratios using International Oceanographic Tables published jointly
+  by N.I.O and UNESCO 1966, Rev. 1968.
+  Conductivity ratio reported is the ratio of conductivity of the sample to that
+  of standard sea water at 20 degrees Celcius.
+  Sigma-t values computed using UNESCO 1973 formula.
+  Oxygen: The dissolved oxygen content (ml/l) was measured on shipboard by
+  Winkler's method using 50ml samples but modified by using reagents recommended
+  by Carritt, D.E. and Carpenter, J.H., J. Mar. Res. 24;286-318,1966.
+  Meteorological: Cloud amounts expressed in eights and wind speed in knots.
+
+  NOTE: Position estimated based on average of FR50 and FR52.
+*END OF HEADER
+   1.  -9.99  0.46562  15.095  -9.99   6.73
