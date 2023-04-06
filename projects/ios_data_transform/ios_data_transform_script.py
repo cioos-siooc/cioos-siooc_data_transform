@@ -56,7 +56,7 @@ sentry_sdk.init(
 
 
 MODULE_PATH = os.path.dirname(__file__)
-HANDLED_DATA_TYPES = ("tob", "drf", "ane", "ubc", "loop")
+HANDLED_DATA_TYPES = ("tob", "drf", "ane", "ubc", "loop","ctd","mctd","bot","che")
 TRACJECTORY_DATA_TYPES = ("tob", "drf", "loop")
 
 
@@ -131,11 +131,7 @@ def unpack_file_convert_threads(inputs):
 def convert_files_threads(ftype, fname, config={}):
     logger.debug("Processing %s %s", ftype, fname)
     # read file based on file type
-    if ftype in ("ctd", "bot"):
-        fdata = ios.CtdFile(filename=fname, debug=False)
-    elif ftype == "mctd":
-        fdata = ios.MCtdFile(filename=fname, debug=False)
-    elif ftype == "cur":
+    if ftype == "cur":
         fdata = ios.CurFile(filename=fname, debug=False)
     elif ftype in HANDLED_DATA_TYPES:
         fdata = ios.GenFile(filename=fname, debug=False)
@@ -157,13 +153,7 @@ def convert_files_threads(ftype, fname, config={}):
             os.makedirs(out_path + yy)
         ncFileName = out_path + yy + "/" + fname.split("/")[-1] + ".nc"
         try:
-            if ftype in ("ctd", "bot"):
-                write_ctd_ncfile(ncFileName, fdata, config=config)
-                standardize_variable_names(ncFileName)
-            elif ftype == "mctd":
-                write_mctd_ncfile(ncFileName, fdata, config=config)
-                standardize_variable_names(ncFileName)
-            elif ftype == "cur":
+            if ftype == "cur":
                 write_cur_ncfile(ncFileName, fdata, config=config)
             elif ftype in HANDLED_DATA_TYPES:
                 write_ios_ncfile(ncFileName, fdata, config=config)
