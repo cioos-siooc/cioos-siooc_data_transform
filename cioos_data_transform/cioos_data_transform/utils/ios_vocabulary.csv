@@ -319,7 +319,7 @@ ane,iss_reception,None,,,ISS Reception,,,,,,,,
 ,scan_number,None,,,Record Number,,,,,,,,record_number
 ,sigma-t,kg\/m\^3,,,Sigma-theta,sea_water_sigma_t,kg/m^3,,SDN:P01::SIGTPR01,Sigma-theta of the water body by CTD and computation from salinity and potential temperature using UNESCO algorithm,,,SIGTEQST
 ,sigma-t:ctd,Kg\/m\^3,,,Sigma-t CTD,,Kg/m^3,,,,,,
-tob,sigma-t,None,,,Sigma-t,,,,,,,,
+ubc,sigma-t,None,,,Sigma-t,sea_water_sigma_t,kg/m^3,,SDN:P01::SIGTPR01,Sigma-theta of the water body by CTD and computation from salinity and potential temperature using UNESCO algorithm,,,SIGTEQST
 ,silicate,microg-at/l|ug-at\/L|umol\/L|umol\/l|umol\/L|mmol\/m,,,Silicate,mass_concentration_of_silicate_in_sea_water,umol/l,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
 ,silicate2,umol\/L,,,Silicate2,mole_concentration_of_silicate_in_sea_water,umol/L,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
 ,silicate:acidified,umol\/L,,,Silicate Acidified,mole_concentration_of_silicate_in_sea_water,umol/L,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
