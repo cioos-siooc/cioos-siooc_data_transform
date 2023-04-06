@@ -439,7 +439,7 @@ ane,temperature:wind_chill_index,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)
 ane,uv:dose,None,,,UV Dose,,MEDs,,,,,,
 ane,uv:high,None,,,UV High,,,,,,,,
 ane,uv:index,None,,,UV Index,,,,,,,,
-,vitamin b12,m-microg\/l,,,Vitamin B12,,m-microg/l,,,,,,
+ubc,vitamin b12,m-microg\/l,,,Vitamin B12,,m-microg/l,,,,,,Vitamin_B12
 ,voltage,None,,,Voltage,,,,,,,,
 ane,wind:sampling_period,s,,,Wind Sampling Period,,s,,,,,,
 ,velocity:probe,m/s,,,Velocity,,m/s,,,,,,
