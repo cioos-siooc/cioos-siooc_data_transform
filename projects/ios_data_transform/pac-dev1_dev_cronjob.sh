@@ -14,7 +14,7 @@ python ios_data_transform_script.py all tob -i /data/ios_raw_files/cruise_data/ 
 python ios_data_transform_script.py all ubc -i /data/ios_raw_files/ubc/ -o /data/erddap_data/IOS_UBC_Data/
 python ios_data_transform_script.py all ane -i /data/ios_raw_files/weather_data/ -o /data/erddap_data/IOS_ANE_Data/
 
-python ios_data_transform_script.py all ctd -i /data/ios_raw_files_temp/www.waterproperties.ca/osd_data_archive/Cruise_Data/ -o /data/erddap_data/IOS_CTD_profiles_updated/
-python ios_data_transform_script.py all mctd -i /data/ios_raw_files_temp/www.waterproperties.ca/osd_data_archive/Mooring/ -o /data/erddap_data/IOS_CTD_moorings_updated/
-python ios_data_transform_script.py all bot -i /data/ios_raw_files_temp/www.waterproperties.ca/osd_data_archive/Cruise_Data/ -o /data/erddap_data/IOS_BOT_profiles_updated/
+python ios_data_transform_script.py all ctd -i /data/ios_raw_files/cruise_data/ -o /data/erddap_data/IOS_CTD_profiles_updated/
+python ios_data_transform_script.py all mctd -i /data/ios_raw_files/mooring_data/ -o /data/erddap_data/IOS_CTD_moorings_updated/
+python ios_data_transform_script.py all bot -i /data/ios_raw_files/cruise_Data/ -o /data/erddap_data/IOS_BOT_profiles_updated/
 # python ios_data_transform_script.py all cur -i /data/ios_raw_files_temp/www.waterproperties.ca/osd_data_archive/Mooring_Data/ -o /data/erddap_data/IOS_CUR_moorings_new/
