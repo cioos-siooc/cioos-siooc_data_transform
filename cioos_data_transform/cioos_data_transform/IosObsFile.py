@@ -636,7 +636,7 @@ class ObsFile(object):
         # Filter vocabulary to handle only file extension and global terms
         vocab = (
             vocab.query(
-                f"ios_file_extension == '{self.get_file_extension()}' or ios_file_extension.isna()"
+                f"ios_file_extension == '{self.get_file_extension().lower()}' or ios_file_extension.isna()"
             )
             .sort_values("ios_file_extension")
             .set_index("ios_file_extension")
