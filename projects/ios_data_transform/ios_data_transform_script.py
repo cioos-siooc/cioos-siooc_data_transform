@@ -56,7 +56,7 @@ sentry_sdk.init(
 
 
 MODULE_PATH = os.path.dirname(__file__)
-HANDLED_DATA_TYPES = ("tob", "drf", "ane", "ubc", "loop","ctd","mctd","bot","che")
+HANDLED_DATA_TYPES = ("tob", "drf", "ane", "ubc", "loop", "ctd", "mctd", "bot", "che")
 TRACJECTORY_DATA_TYPES = ("tob", "drf", "loop")
 
 

@@ -252,11 +252,14 @@ class ObsFile(object):
         try:
             date_obj = datetime.strptime(date_string[4:], "%Y/%m/%d %H:%M:%S.%f")
         except Exception as e:
-            if re.match(r'\d{4}\/\d{2}\/\d{2}',date_string[:4]):
+            if re.match(r"\d{4}\/\d{2}\/\d{2}", date_string[:4]):
                 logger.warning("No time available is available will assume midnight.")
                 date_obj = datetime.strptime(date_string[4:], "%Y/%m/%d")
             else:
-                logger.warning("Use pandas pd.to_datetime to parse date string: %s",date_string[4:])
+                logger.warning(
+                    "Use pandas pd.to_datetime to parse date string: %s",
+                    date_string[4:],
+                )
                 date_obj = pd.to_datetime(date_string[4:]).to_pydatetime()
             logger.info(date_obj)
         # make datetime object, aware of its timezone
@@ -290,13 +293,15 @@ class ObsFile(object):
         # deprecated: calculated length of string from 'struct' format specification
         # assumes on 's' data fromat
         return np.asarray(fmt[0:-1].split("s"), dtype="int").sum()
-    
+
     def add_to_history(self, input):
-        if not hasattr(self,'history'):
+        if not hasattr(self, "history"):
             self.history = {}
         if "ios_transform_history" not in self.history:
             self.history["ios_transform_history"] = "IOS Transform History:\n"
-        self.history['ios_transform_history'] += f"{datetime.now().isoformat()} - {input}\n"
+        self.history[
+            "ios_transform_history"
+        ] += f"{datetime.now().isoformat()} - {input}\n"
 
     def get_data(self, formatline=None):
         # reads data using the information in FORMAT
@@ -669,7 +674,7 @@ class ObsFile(object):
             if matched_vocab.empty:
                 logger.warning(
                     "Missing vocabulary for file_type=%s; variable name=%s,units=%s",
-                    self.filename.rsplit(".",1)[1],
+                    self.filename.rsplit(".", 1)[1],
                     name,
                     units,
                 )
@@ -759,20 +764,22 @@ class ObsFile(object):
                 }
             else:
                 return {}
-            
+
         # Generate global attributes
         return {
             **_format_attributes("administration"),
             **{
-                    key: value
-                    for key, value in _format_attributes("file").items()
-                    if key not in ["format", "data_type", "file_type"]
-                },
+                key: value
+                for key, value in _format_attributes("file").items()
+                if key not in ["format", "data_type", "file_type"]
+            },
             **_format_attributes("instrument", prefix="instrument_"),
             **_format_attributes("location"),
             **_format_attributes("deployment", "deployment_"),
             **_format_attributes("recovery", "recovery_"),
-            "comments": str(self.comments) if self.comments else None,  # TODO missing file_remarks
+            "comments": str(self.comments)
+            if self.comments
+            else None,  # TODO missing file_remarks
             "remarks": str(self.remarks) if self.remarks else None,
             "history": str(self.history) if hasattr(self, "history") else None,
             "geographical_area": self.geo_code if hasattr(self, "geo_code") else None,
@@ -785,9 +792,9 @@ class ObsFile(object):
             "ios_header_version": self.ios_header_version,
             "cioos_data_transform_version": VERSION,
             "product_version": f"ios_header={self.ios_header_version}; cioos_transform={VERSION}",
-            "date_created": self.date_created.isoformat()
+            "date_created": self.date_created.isoformat(),
         }
-    
+
     def get_geospatial_attributes(self):
 
         return {}
@@ -804,7 +811,6 @@ class ObsFile(object):
             xarray dataset
         """
 
-       
         def update_variable_index(varname, id):
             """Replace variable index (1,01,X,XX) by the given index or append
             0 padded index if no index exist in original variable name"""
@@ -854,7 +860,10 @@ class ObsFile(object):
             )
 
         _FillValues = variables.apply(
-            lambda x: pd.Series(x["pad"]).astype(x["dtype"]).values[0] if x["pad"] else None, axis="columns"
+            lambda x: pd.Series(x["pad"]).astype(x["dtype"]).values[0]
+            if x["pad"]
+            else None,
+            axis="columns",
         )
         variables["_FillValues"] = _FillValues if not _FillValues.empty else None
         variables["renamed_name"] = variables.apply(
@@ -932,16 +941,16 @@ class ObsFile(object):
                 }
             )
             if not append_sub_variables:
-                var.attrs['sub_variables'] = json.dumps(row['matching_vocabularies'])
+                var.attrs["sub_variables"] = json.dumps(row["matching_vocabularies"])
                 continue
-            elif not row['matching_vocabularies']:
-                ds_sub.assign({var.name:var})
+            elif not row["matching_vocabularies"]:
+                ds_sub.assign({var.name: var})
                 continue
-            
+
             # Generate vocabulary variables
             for new_var_attrs in row["matching_vocabularies"]:
 
-                new_var = new_var_attrs.pop("rename",row[col_name])
+                new_var = new_var_attrs.pop("rename", row[col_name])
 
                 # if variable already exist from a different source variable
                 #  append variable index
@@ -950,12 +959,13 @@ class ObsFile(object):
                         ds_sub[new_var].attrs["original_ios_name"]
                         == var.attrs["original_ios_name"]
                     ):
-                        logger.error("Duplicated vocabulary output for %s, will be ignored", row)
+                        logger.error(
+                            "Duplicated vocabulary output for %s, will be ignored", row
+                        )
                         continue
                     else:
                         new_index = (
-                            len([var for var in ds if var.startswith(new_var[:-1])])
-                            + 1
+                            len([var for var in ds if var.startswith(new_var[:-1])]) + 1
                         )
                         logging.warning(
                             "Duplicated variable from sub variables: %s, rename +%s",
@@ -963,17 +973,25 @@ class ObsFile(object):
                             new_index,
                         )
                         new_var = update_variable_index(new_var, new_index)
-                
-                if "apply_func" in new_var_attrs:
-                    new_data = xr.apply_ufunc(eval(new_var_attrs['apply_func']),var)
-                    self.add_to_history(f"Generate new variable from {row[col_name]} -> apply {new_var_attrs['apply_func']}) -> {new_var}")
-                    
-                else: 
-                    new_data = var
-                    self.add_to_history(f"Generate new variable from {row[col_name]} -> {new_var}")
 
-                ds_sub[new_var] = (var.dims, new_data.data, _drop_empty_attrs(new_var_attrs))
-        
+                if "apply_func" in new_var_attrs:
+                    new_data = xr.apply_ufunc(eval(new_var_attrs["apply_func"]), var)
+                    self.add_to_history(
+                        f"Generate new variable from {row[col_name]} -> apply {new_var_attrs['apply_func']}) -> {new_var}"
+                    )
+
+                else:
+                    new_data = var
+                    self.add_to_history(
+                        f"Generate new variable from {row[col_name]} -> {new_var}"
+                    )
+
+                ds_sub[new_var] = (
+                    var.dims,
+                    new_data.data,
+                    _drop_empty_attrs(new_var_attrs),
+                )
+
         if append_sub_variables:
             ds = ds_sub
         # Replace date/time variables by a single time column

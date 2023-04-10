@@ -64,7 +64,7 @@ def _convert_odf_time(time_string, time_zone=timezone.utc):
             logger.warning("Unknown time format: %s", time_string)
             time = pd.to_datetime(time_string).to_pydatetime() + delta_time
         except:
-            logger.error("Failed to parse time: %s",time_string)
+            logger.error("Failed to parse time: %s", time_string)
             return time_string
     return time.replace(tzinfo=time_zone)
 
@@ -611,12 +611,21 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
                                 input_args.append(ds[item])
                             else:
                                 input_args.append(item)
-                    if [ arg for arg in input_args if isinstance(arg,str) and arg == 'latitude']:
-                        logger.warning("latitude is missing from data. %s will be ignored", row["apply_function"])
+                    if [
+                        arg
+                        for arg in input_args
+                        if isinstance(arg, str) and arg == "latitude"
+                    ]:
+                        logger.warning(
+                            "latitude is missing from data. %s will be ignored",
+                            row["apply_function"],
+                        )
                         continue
                     else:
                         ds[new_variable] = xr.apply_ufunc(
-                            eval(row["apply_function"]), *tuple(input_args), keep_attrs=True
+                            eval(row["apply_function"]),
+                            *tuple(input_args),
+                            keep_attrs=True,
                         )
                         ds.attrs["history"] += history_input(
                             f"Add Parameter: {new_variable} = {row['apply_function']}"
