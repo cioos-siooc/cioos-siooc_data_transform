@@ -692,23 +692,28 @@ class ObsFile(object):
                 ]
             ]
 
-    def rename_duplicated_channels(self):
-        old_channel_names = [chan.strip() for chan in self.channels["Name"]]
-        new_channel_names = old_channel_names.copy()
+    def fix_variable_names(self):
+        # get variable name list
+        variables = [item.strip() for item in self.channels["Name"]]
 
-        for id, chan in enumerate(old_channel_names):
-            preceding_channels = old_channel_names[:id]
-            if chan in preceding_channels:
-                new_channel_names[
-                    id
-                ] = f"{chan}{len([c for c in preceding_channels if c==chan]) + 1:02g}"
-                logger.info(
-                    "Duplicated channel exists, rename channel %s to %s",
-                    chan,
-                    new_channel_names[id],
+        # Rename duplicated Quality_Flag:Phos flags in UBC files
+        if (
+            variables.count("Quality_Flag:Phos") == 2
+            and "Phosphate(inorg)" in variables
+            and "Phosphate" in variables
+        ):
+            ids = [
+                id for id, item in enumerate(variables) if "Quality_Flag:Phos" in item
+            ]
+            if variables.index("Phosphate(inorg)") != ids[1] - 1:
+                logger.error(
+                    "Phosphate(inorg) isn't preceding the Quality_Flag:Phos variable."
                 )
 
-        self.channels["Name"] = new_channel_names
+            logger.info(
+                "Rename duplicated flag 'Quality_Flag:Phos' -> 'Quality_Flag:Phosphate_inorg'"
+            )
+            self.channels["Name"][ids[-1]] = "Quality_Flag:Phosphate(inorg)"
 
     def rename_date_time_variables(self):
         rename_channels = self.channels["Name"]
@@ -832,6 +837,7 @@ class ObsFile(object):
 
         # Fix time variable(s)
         self.rename_date_time_variables()
+        self.fix_variable_names()
 
         # Retrieve the different variable attributes
         variables = (
