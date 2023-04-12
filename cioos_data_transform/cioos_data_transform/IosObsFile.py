@@ -251,7 +251,7 @@ class ObsFile(object):
         if '!' in date_string:
             date_string, warn_msg = date_string.split('!',1)
             logger.warning("Date string has warning: %s",warn_msg)
-            
+
         logger.debug("Raw date string: %s", date_string)
         # get the naive (timezone unaware) datetime obj
         try:
@@ -891,7 +891,7 @@ class ObsFile(object):
         duplicates = variables.duplicated(subset=["ios_name", "units"], keep=False)
         if duplicates.any():
             logger.warning(
-                "Duplicated variables (Name,Units) pair was detected, only the first one will be considerd:\n%s",
+                "Duplicated variables (Name,Units) pair detected, only the first one will be considered:\n%s",
                 variables.loc[duplicates][["ios_name", "units"]],
             )
             variables.drop_duplicates(
