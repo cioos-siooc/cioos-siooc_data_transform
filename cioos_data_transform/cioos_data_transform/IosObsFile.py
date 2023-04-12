@@ -995,12 +995,12 @@ class ObsFile(object):
                         continue
                     else:
                         new_index = (
-                            len([var for var in ds if var.startswith(new_var[:-1])]) + 1
+                            len([var for var in ds_sub if var.startswith(new_var[:-1])]) + 1
                         )
                         logging.warning(
                             "Duplicated variable from sub variables: %s, rename +%s",
                             new_var,
-                            new_index,
+                            update_variable_index(new_var, new_index),
                         )
                         new_var = update_variable_index(new_var, new_index)
 
@@ -1019,7 +1019,7 @@ class ObsFile(object):
                 ds_sub[new_var] = (
                     var.dims,
                     new_data.data,
-                    _drop_empty_attrs(new_var_attrs),
+                    _drop_empty_attrs({**var.attrs,**new_var_attrs}),
                 )
 
         if append_sub_variables:
