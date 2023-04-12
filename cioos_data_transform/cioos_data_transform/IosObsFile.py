@@ -716,7 +716,7 @@ class ObsFile(object):
                 )
 
             logger.info(
-                "Rename duplicated flag 'Quality_Flag:Phos' -> 'Quality_Flag:Phosphate_inorg'"
+                "Rename duplicated flag 'Quality_Flag:Phos' -> 'Quality_Flag:Phosphate(inorg)'"
             )
             self.channels["Name"][ids[-1]] = "Quality_Flag:Phosphate(inorg)"
 
