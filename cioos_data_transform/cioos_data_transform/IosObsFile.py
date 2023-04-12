@@ -247,10 +247,10 @@ class ObsFile(object):
             date_string = self.file["END TIME"].strip().upper()
         else:
             raise Exception("Invalid option for get_date function !")
-        
-        if '!' in date_string:
-            date_string, warn_msg = date_string.split('!',1)
-            logger.warning("Date string has warning: %s",warn_msg)
+
+        if "!" in date_string:
+            date_string, warn_msg = date_string.split("!", 1)
+            logger.warning("Date string has warning: %s", warn_msg)
 
         logger.debug("Raw date string: %s", date_string)
         # get the naive (timezone unaware) datetime obj
@@ -839,19 +839,32 @@ class ObsFile(object):
             if isinstance(attrs, dict):
                 return {key: value for key, value in attrs.items() if value}
             return attrs
-        
+
         def _flag_bad_values(dataset):
             bad_values = [-9.99, -99.9]
-            var_with_bad_values = [var for var,values in (dataset.isin(bad_values)).any().items() if values.item(0)]
+            var_with_bad_values = [
+                var
+                for var, values in (dataset.isin(bad_values)).any().items()
+                if values.item(0)
+            ]
             if not var_with_bad_values:
                 return dataset
-            
+
             for var in var_with_bad_values:
-                bad_values = list(filter(lambda x: x==x,np.unique(dataset[var].where(dataset[var].isin(bad_values)).values)))
-                logger.warning("Suspicious values = %s were detected and will replaced by NaN",bad_values)
+                bad_values = list(
+                    filter(
+                        lambda x: x == x,
+                        np.unique(
+                            dataset[var].where(dataset[var].isin(bad_values)).values
+                        ),
+                    )
+                )
+                logger.warning(
+                    "Suspicious values = %s were detected and will replaced by NaN",
+                    bad_values,
+                )
 
-            return dataset.where( ~dataset.isin(bad_values))
-
+            return dataset.where(~dataset.isin(bad_values))
 
         # Fix time variable(s)
         self.rename_date_time_variables()
@@ -995,7 +1008,8 @@ class ObsFile(object):
                         continue
                     else:
                         new_index = (
-                            len([var for var in ds_sub if var.startswith(new_var[:-1])]) + 1
+                            len([var for var in ds_sub if var.startswith(new_var[:-1])])
+                            + 1
                         )
                         logging.warning(
                             "Duplicated variable from sub variables: %s, rename +%s",
@@ -1019,7 +1033,7 @@ class ObsFile(object):
                 ds_sub[new_var] = (
                     var.dims,
                     new_data.data,
-                    _drop_empty_attrs({**var.attrs,**new_var_attrs}),
+                    _drop_empty_attrs({**var.attrs, **new_var_attrs}),
                 )
 
         if append_sub_variables:
