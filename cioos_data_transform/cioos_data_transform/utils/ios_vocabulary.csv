@@ -419,6 +419,7 @@ ane,temperature:temperature_humidity_wind_index,deg c \(ITS\-90\)|deg C \(ITS9|d
 ,temperature:upcast,deg C (ITS90),,,,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS901,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS901
 ane,temperature:wind_chill_index,deg C,,,Temperature Wind Chill Index,,degree_celsius,,,,,,
 ane,temperature:wind_chill_index,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Wind Chill Index,,degree_celsius (ITS-90),,,,,,
+ctd,thin flag,None,,,Thin Flag,,,,,
 ,total_suspended_solids,mg\/L,,,,mass_concentration_of_suspended_matter_in_sea_water,mg/L,,SDN:P01::RBYJLY26,Concentration of solids (total) per unit volume of the water body,,,RBYJLY26
 ,total_suspended_solids,mg\/m3|ug\/L,,,Total Suspended Solids,mass_concentration_of_suspended_matter_in_sea_water,ug/L,,SDN:P01::RBYJLY26,Concentration of solids (total) per unit volume of the water body,,,RBYJLY26
 ,total_suspended_solids,ppmV,,,,,ppmV,,SDN:P01::RBYJLY26,Concentration of solids (total) per unit volume of the water body,,,RBYJLY26
