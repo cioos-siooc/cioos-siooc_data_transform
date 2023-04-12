@@ -247,6 +247,11 @@ class ObsFile(object):
             date_string = self.file["END TIME"].strip().upper()
         else:
             raise Exception("Invalid option for get_date function !")
+        
+        if '!' in date_string:
+            date_string, warn_msg = date_string.split('!',1)
+            logger.warning("Date string has warning: %s",warn_msg)
+            
         logger.debug("Raw date string: %s", date_string)
         # get the naive (timezone unaware) datetime obj
         try:
