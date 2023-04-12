@@ -839,6 +839,19 @@ class ObsFile(object):
             if isinstance(attrs, dict):
                 return {key: value for key, value in attrs.items() if value}
             return attrs
+        
+        def _flag_bad_values(dataset):
+            bad_values = [-9.99, -99.9]
+            var_with_bad_values = [var for var,values in (dataset.isin(bad_values)).any().items() if values.item(0)]
+            if not var_with_bad_values:
+                return dataset
+            
+            for var in var_with_bad_values:
+                bad_values = list(filter(lambda x: x==x,np.unique(dataset[var].where(dataset[var].isin(bad_values)).values)))
+                logger.warning("Suspicious values = %s were detected and will replaced by NaN",bad_values)
+
+            return dataset.where( ~dataset.isin(bad_values))
+
 
         # Fix time variable(s)
         self.rename_date_time_variables()
@@ -936,6 +949,7 @@ class ObsFile(object):
             )
             .to_xarray()
         )
+        ds = _flag_bad_values(ds)
         ds.attrs = self.get_global_attributes()
         ds.attrs.update(self.get_geospatial_attributes())
 
