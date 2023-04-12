@@ -908,7 +908,7 @@ class ObsFile(object):
                 lambda x: update_variable_index(x[col_name], x["var_index"] + 1),
                 axis="columns",
             )
-            logger.warning(
+            logger.info(
                 "Duplicated variable names, will rename the variables according to: %s",
                 list(
                     zip(
