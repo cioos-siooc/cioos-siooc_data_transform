@@ -926,7 +926,7 @@ class ObsFile(object):
                 list(
                     zip(
                         variables.loc[
-                            to_replace, set(["ios_name", "units"] + [col_name])
+                            to_replace, list(set(["ios_name", "units"] + [col_name]))
                         ]
                         .reset_index()
                         .values.tolist(),
