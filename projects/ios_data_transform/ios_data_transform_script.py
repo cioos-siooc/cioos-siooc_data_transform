@@ -22,37 +22,40 @@ from ios_data_transform.write_cur_ncfile import write_cur_ncfile
 from ios_data_transform.write_ios_ncfiles import write_ios_ncfile
 from ios_data_transform.write_mctd_ncfile import write_mctd_ncfile
 
-log_config_path = os.path.join(os.path.dirname(__file__), "log_config.ini")
-logging.config.fileConfig(log_config_path, disable_existing_loggers=False)
-main_logger = logging.getLogger(__name__ if __name__ != "__main__" else None)
-logger = logging.LoggerAdapter(main_logger, {"file": None})
+if __name__ == "__main__":
+    log_config_path = os.path.join(os.path.dirname(__file__), "log_config.ini")
+    logging.config.fileConfig(log_config_path, disable_existing_loggers=False)
+    main_logger = logging.getLogger()
+    logger = logging.LoggerAdapter(main_logger, {"file": None})
 
-sentry_logging = LoggingIntegration(
-    level=logging.INFO,  # Capture info and above as breadcrumbs
-    event_level=logging.WARNING,  # Send errors as events
-)
-
-
-def before_send_to_sentry(event, hint):
-    """Split different issues encountered in specific sentry fingerprints"""
-    regex_event = "vocabulary|duplicated variables"
-    if "logentry" in event and re.search(regex_event, event["logentry"]["message"]):
-        event["fingerprint"] = [
-            "{{default}}",
-            event["logentry"]["message"] % tuple(event["logentry"]["params"]),
-        ]
-
-    return event
+    sentry_logging = LoggingIntegration(
+        level=logging.INFO,  # Capture info and above as breadcrumbs
+        event_level=logging.WARNING,  # Send errors as events
+    )
 
 
-sentry_sdk.init(
-    dsn="https://23832428efb24e6d9344f4b5570ebfe3@o56764.ingest.sentry.io/4504816194551808",
-    integrations=[
-        sentry_logging,
-    ],
-    traces_sample_rate=1.0,
-    before_send=before_send_to_sentry,
-)
+    def before_send_to_sentry(event, hint):
+        """Split different issues encountered in specific sentry fingerprints"""
+        regex_event = "vocabulary|duplicated variables"
+        if "logentry" in event and re.search(regex_event, event["logentry"]["message"]):
+            event["fingerprint"] = [
+                "{{default}}",
+                event["logentry"]["message"] % tuple(event["logentry"]["params"]),
+            ]
+
+        return event
+
+
+    sentry_sdk.init(
+        dsn="https://23832428efb24e6d9344f4b5570ebfe3@o56764.ingest.sentry.io/4504816194551808",
+        integrations=[
+            sentry_logging,
+        ],
+        traces_sample_rate=1.0,
+        before_send=before_send_to_sentry,
+    )
+else:
+    logger = logging.getLogger(__name__)
 
 
 MODULE_PATH = os.path.dirname(__file__)
