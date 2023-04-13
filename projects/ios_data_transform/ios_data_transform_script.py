@@ -17,10 +17,7 @@ import sentry_sdk
 from sentry_sdk.integrations.logging import LoggingIntegration
 from tqdm import tqdm
 
-from ios_data_transform.write_ctd_ncfile import write_ctd_ncfile
 from ios_data_transform.write_cur_ncfile import write_cur_ncfile
-from ios_data_transform.write_ios_ncfiles import write_ios_ncfile
-from ios_data_transform.write_mctd_ncfile import write_mctd_ncfile
 
 if __name__ == "__main__":
     log_config_path = os.path.join(os.path.dirname(__file__), "log_config.ini")
@@ -149,7 +146,11 @@ def convert_files_threads(ftype, fname, config={}):
             if ftype == "cur":
                 write_cur_ncfile(ncFileName, fdata, config=config)
             elif ftype in HANDLED_DATA_TYPES:
-                write_ios_ncfile(ncFileName, fdata, config=config)
+                fdata.add_ios_vocabulary()
+
+                ds = fdata.to_xarray()
+                ds.attrs.update(config.get("global_attributes"))
+                ds.to_netcdf(ncFileName)
             else:
                 logger.error("Error: Unable to import data from file: %s", fname)
                 return 0
