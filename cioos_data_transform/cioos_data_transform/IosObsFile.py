@@ -196,6 +196,21 @@ class ObsFile(object):
                 "flag_values": [0, 2, 6],
                 "flag_meanings": "not_quality_control good interpolated_or_replaced_by_dual_sensor_or_upcast_value",
             }
+        elif name.lower().startswith('flag') and self.filename.endswith('che'):
+            return {
+                "flag_values": [0,1,2,3,4,5,6,7,8,9],
+                "flag_meanings": ' '.join([
+                "sample_drawn_from_water_bottle_but_not_analyzed",
+                "acceptable_measurement",
+                "questionable_measurement",
+                "bad_measurement",
+                "not_reported",
+                "mean_of_replicate_measurement",
+                "manual_chromatographic_peak_measurement",
+                "irregular_digital_chromatographic_peak_integration",
+                "sample_not_drawn_for_this_measurement_from_this_bottle"
+                ])
+            }
 
         logger.warning("Unknown flag name=%s, units=%s", name, units)
         return {}
