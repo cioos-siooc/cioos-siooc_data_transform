@@ -30,6 +30,7 @@ ios_dtypes_to_python = {
     "I": "int32",
     "D": str,
     "T": str,
+    "C": str,
     "E": "float32",
 }
 
@@ -212,6 +213,11 @@ class ObsFile(object):
                 ])
             }
 
+        elif name.lower() == "sample_method":
+            return {
+                "flag_values": ["UN","US","USM"],
+                "flag_meanings": "no_stop stop_for_30s up_stop_mix"
+            }
         logger.warning("Unknown flag name=%s, units=%s", name, units)
         return {}
 
@@ -675,7 +681,7 @@ class ObsFile(object):
             name = re.sub(r"^\'|[\s\']+$", "", name.lower())
             units = re.sub(r"^\'|[\s\']+$", "", units)
 
-            if re.match(r"\'*(flag|quality_flag)", name, re.IGNORECASE):
+            if re.match(r"\'*(flag|quality_flag|sample_method$)", name, re.IGNORECASE):
                 self.vocabulary_attributes += [[self.get_flag_convention(name, units)]]
                 continue
             if re.match("(Date|Time)", name, re.IGNORECASE):
@@ -1025,7 +1031,7 @@ class ObsFile(object):
                             + 1
                         )
                         logging.warning(
-                            "Duplicated variable from sub variables: %s, rename +%s",
+                            "Duplicated variable from sub variables: %s, renamed %s",
                             new_var,
                             update_variable_index(new_var, new_index),
                         )
@@ -1373,7 +1379,7 @@ class GenFile(ObsFile):
         if self.data is None:
             try:
                 # self.channel_details = self.get_channel_detail()
-                self.data = self.get_data(formatline=None)
+                self.data = self.get_dvocaata(formatline=None)
             except Exception as e:
                 logger.error("Failed to read file: %s", self.filename)
                 return 0
