@@ -71,17 +71,7 @@ def convert_files(config={}, opt="all", ftype=None):
     in_path = config.get("raw_folder")
     # out_path = config.get("nc_folder")
     # fgeo = config.get("geojson_file")
-    if ftype == "ctd":
-        flist = glob.glob(in_path + "**/*.[Cc][Tt][Dd]", recursive=True)
-    elif ftype == "mctd":
-        flist = []
-        flist.extend(glob.glob(in_path + "**/*.[Cc][Tt][Dd]", recursive=True))
-        flist.extend(glob.glob(in_path + "**/*.mctd", recursive=True))
-    elif ftype == "bot":
-        flist = []
-        flist.extend(glob.glob(in_path + "**/*.[Bb][Oo][Tt]", recursive=True))
-        flist.extend(glob.glob(in_path + "**/*.[Cc][Hh][Ee]", recursive=True))
-    elif ftype == "cur":
+    if ftype == "cur":
         flist = glob.glob(in_path + "**/*.[Cc][Uu][Rr]", recursive=True)
     elif ftype in HANDLED_DATA_TYPES:
         flist = []
