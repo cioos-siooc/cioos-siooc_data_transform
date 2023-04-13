@@ -199,3 +199,9 @@ class TestIosScriptConversions(unittest.TestCase):
 
     def test_loop_script_conversion(self):
         run_script_on("loop", os.path.join(TEST_FILE_FOLDER, "loop"))
+
+    def test_bot_script_conversion(self):
+        run_script_on("bot", os.path.join(TEST_FILE_FOLDER, "bot"))
+    
+    def test_che_script_conversion(self):
+        run_script_on("bot", os.path.join(TEST_FILE_FOLDER, "che"))
