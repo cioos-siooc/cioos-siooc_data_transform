@@ -537,9 +537,7 @@ class ObsFile(object):
         logger.debug(sections_list)
         return sections_list
 
-    def assign_geo_code(self, geojson_file):
-        # read geojson file
-        polygons_dict = read_geojson(geojson_file)
+    def assign_geo_code(self, polygons_dict):
         geo_code = find_geographic_area(
             polygons_dict, Point(self.location["LONGITUDE"], self.location["LATITUDE"])
         )

@@ -133,7 +133,7 @@ def convert_files_threads(ftype, fname, config={}):
         logger.debug("Imported data successfully!")
         if ftype not in TRACJECTORY_DATA_TYPES:
             fdata.assign_geo_code(
-                config.get("geojson_file")
+                config.get("geopgraphical_areas")
                 or os.path.join(MODULE_PATH, "samples", "ios_polygons.geojson")
             )
         out_path = config.get("nc_folder")

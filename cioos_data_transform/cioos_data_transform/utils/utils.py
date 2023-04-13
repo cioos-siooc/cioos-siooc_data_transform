@@ -27,7 +27,10 @@ def read_config(config_file):
     # read json file with information on dataset etc.
     with open(config_file) as fid:
         config = json.load(fid)
-        return config
+    if config.get("geojson_file"):
+        config["geographical_areas"] = read_geojson(config["geojson_file"])
+
+    return config
 
 
 def import_env_variables(filename="./.env"):
@@ -67,6 +70,9 @@ def read_geojson(filename):
     # read shapefile in geojson format into Polygon object
     # input geojson file
     # output: Polygon object
+    if filename is None:
+        return {}
+
     if not os.path.exists(filename):
         logger.error("Geojson file not found: %s", filename)
         return {}
