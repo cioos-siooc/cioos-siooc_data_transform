@@ -122,7 +122,7 @@ ios_file_extension,ios_name,accepted_units,accepted_instrument_type,apply_func,l
 ,event_number,,,,,,,,,,,,
 drf,flag:at_sea,None,,,Flag at Sea,,,,,,,,
 tob,flow_rate,L/min,,,Flow Rate,,L/min,,,,,,flow_rate
-tob,flow_rate,None,,,Flow Rate,,L/min,,,,,,flow_rate_no_units
+tob,flow_rate,None,,,Flow Rate,,L/min,,,,,,flow_rate
 tob,flow_rate_fl,L/min,,,Flow Rate FL,,L/min,,,,,,flow_rate_fl
 ,fluorescence,mg\/m\^3|ug\/L,,,,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
 ,fluorescence,volts,,,Sea Water Fluorescence,,Volts,,,,,,
