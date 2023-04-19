@@ -78,7 +78,7 @@ ios_file_extension,ios_name,accepted_units,accepted_instrument_type,apply_func,l
 ,conductance:specific,mS\/cm,,,Conductance Specific,,mS/cm,,,,,,
 ,conductivity,Ratio,,,Conductivity,,Ratio,,,,,,
 ,conductivity,counts|count,,,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,count,,,,,,CNDCZZ01
-,conductivity,ms\/cm|mS\/cm,,lambda x: x/10,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,S/cm,,SDN:P01::CNDCZZ01,Electrical conductivity of the water body,,,CNDCST01
+,conductivity,ms\/cm|mS\/cm,,lambda x: x/10,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,mS/cm,,SDN:P01::CNDCZZ01,Electrical conductivity of the water body,,,CNDCST01
 ,conductivity,s\/m|S\/m,,,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCZZ01,Electrical conductivity of the water body,,,CNDCST01
 ,conductivity:primary,S\/m,,,Conductivity Primary,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCST01,Electrical conductivity of the water body by CTD,,,CNDCST01
 ,conductivity:primary,mS\/cm,,lambda x: x/10,Conductivity Primary,sea_water_electrical_conductivity,mS/cm,,SDN:P01::CNDCST01,Electrical conductivity of the water body by CTD,,,CNDCST01
