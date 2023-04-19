@@ -795,7 +795,7 @@ class ObsFile(object):
             else None,  # TODO missing file_remarks
             "remarks": str(self.remarks) if self.remarks else None,
             "history": str(self.history) if hasattr(self, "history") else None,
-            "geographical_area": self.geo_code if hasattr(self, "geo_code") else None,
+            "geographic_area": self.geo_code if hasattr(self, "geo_code") else None,
             "headers": json.dumps(
                 self.get_complete_header(), ensure_ascii=False, indent=False
             ),
