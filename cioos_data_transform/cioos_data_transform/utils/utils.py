@@ -8,6 +8,7 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 logger = logging.LoggerAdapter(logger, extra={"file": None})
 
+
 # general utility functions common to multiple classes
 def fix_path(path):
     # converts path from posix to nt if system is nt

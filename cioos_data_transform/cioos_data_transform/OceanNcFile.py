@@ -76,7 +76,6 @@ class OceanNcFile(object):
         conv_to_BODC=True,
         attributes={},
     ):
-
         varnames = list(map(lambda var: var.name, self.varlist))
 
         nc_var = OceanNcVar(
