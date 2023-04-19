@@ -332,11 +332,10 @@ tob,direction:ship,degrees,,,Platform Speed Direction,platform_course,degrees,,S
 ane,speed:gust,m\/s,,,Speed Gust,,,,,,,,
 ane,speed:gust:1,m\/s,,,Speed Gust 1,,m/s,,,,,,
 ane,speed:gust:2,m\/s,,,Speed Gust 2,,m/s,,,,,,
-,speed:sound,m,,,,speed_of_sound_in_sea_water,m,,SDN:P01::SVELXXXX,Sound velocity in the water body,,,SVELXXXX
 ,speed:sound,m/s,,,,speed_of_sound_in_sea_water,m/s,,SDN:P01::SVELXXXX,Sound velocity in the water body,,,SVELXXXX
-,speed:sound,,,,speed_of_sound_in_sea_water,m/s,,,,,,,SVELCV01
-,speed:sound:1,,,,speed_of_sound_in_sea_water,m/s,,,,,,,SVELCV01
-,speed:sound:2,,,,speed_of_sound_in_sea_water,m/s,,,,,,,SVELCV02
+,speed:sound,,,,speed_of_sound_in_sea_water,m/s,,,SDN:P01::SVELXXXX,Sound velocity in the water body,,,SVELXXXX
+,speed:sound:1,,,,speed_of_sound_in_sea_water,m/s,,,SDN:P01::SVELXXXX,Sound velocity in the water body,,,SVELXXXX
+,speed:sound:2,,,,speed_of_sound_in_sea_water,m/s,,,SDN:P01::SVELXXXX,Sound velocity in the water body,,,SVELXXX2
 ,speed:up,,,,upward_sea_water_velocity,cm/s,,,,,,,LRZASP01
 ane,speed:wind,m\/s,,,Speed Wind,,m/s,,,,,,
 ane,speed:wind:1,m\/s,,,Speed Wind 1,,m/s,,,,,,
