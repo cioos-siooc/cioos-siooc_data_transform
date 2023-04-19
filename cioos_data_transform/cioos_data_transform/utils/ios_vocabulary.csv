@@ -225,9 +225,9 @@ ane,iss_reception,None,,,ISS Reception,,,,,,,,
 ,nitrogen:total:dissolved,uM,,,Nitrogen Total Dissolved,mole_concentration_of_dissolved_nitrogen_in_sea_water,uM,,,,,,
 ,ntu,,,,Turbidity,sea_water_turbidity,NTU,,SDN:P01::TURBXXXX,Turbidity of water in the water body,,,TURBXXXX
 ,number_of_bin_records,None,,,,,,,,,,,
-,oxygen,mg\/l,,lambda x: x*22.319/31.998,Oxygen,mass_concentration_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
+,oxygen,mg\/l,,lambda x: x*22.319/31.998,Oxygen,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen,ml\/l|mL\/L,,,Oxygen concentration,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
-,oxygen,umol\/L|mmol\/m,,,Oxygen concentration,mole_concentration_of_dissolved_molecular_oxygen_in_sea_water,umol/L,,SDN:P01::DOXMZZ01,,,,DOXY01
+,oxygen,umol\/L,,lambda x: x*0.022391,Oxygen concentration,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen,umol\/kg,,,Oxygen concentration,moles_of_oxygen_per_unit_mass_in_sea_water,umol/kg,,,,,,DOXMZZ01
 ,oxygen:dissolved,L\/L,,,,volume_fraction_of_oxygen_in_sea_water,L/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen:dissolved,mL\/L,,,Oxygen Dissolved,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
