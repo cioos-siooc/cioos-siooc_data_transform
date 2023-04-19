@@ -838,7 +838,7 @@ class ObsFile(object):
             return attrs
 
         def _flag_bad_values(dataset):
-            bad_values = [-9.99, -99.9]
+            bad_values = [-9.99, -99.9, -99.0]
             var_with_bad_values = [
                 var
                 for var, values in (dataset.isin(bad_values)).any().items()
