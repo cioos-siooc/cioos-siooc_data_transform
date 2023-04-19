@@ -17,42 +17,42 @@ import sentry_sdk
 from sentry_sdk.integrations.logging import LoggingIntegration
 from tqdm import tqdm
 
-from ios_data_transform.write_ctd_ncfile import write_ctd_ncfile
 from ios_data_transform.write_cur_ncfile import write_cur_ncfile
-from ios_data_transform.write_ios_ncfiles import write_ios_ncfile
-from ios_data_transform.write_mctd_ncfile import write_mctd_ncfile
 
-log_config_path = os.path.join(os.path.dirname(__file__), "log_config.ini")
-logging.config.fileConfig(log_config_path, disable_existing_loggers=False)
-main_logger = logging.getLogger(__name__ if __name__ != "__main__" else None)
-logger = logging.LoggerAdapter(main_logger, {"file": None})
+if __name__ == "__main__":
+    log_config_path = os.path.join(os.path.dirname(__file__), "log_config.ini")
+    logging.config.fileConfig(log_config_path, disable_existing_loggers=False)
+    main_logger = logging.getLogger()
+    logger = logging.LoggerAdapter(main_logger, {"file": None})
 
-sentry_logging = LoggingIntegration(
-    level=logging.INFO,  # Capture info and above as breadcrumbs
-    event_level=logging.WARNING,  # Send errors as events
-)
-
-
-def before_send_to_sentry(event, hint):
-    """Split different issues encountered in specific sentry fingerprints"""
-    regex_event = "vocabulary|duplicated variables"
-    if "logentry" in event and re.search(regex_event, event["logentry"]["message"]):
-        event["fingerprint"] = [
-            "{{default}}",
-            event["logentry"]["message"] % tuple(event["logentry"]["params"]),
-        ]
-
-    return event
+    sentry_logging = LoggingIntegration(
+        level=logging.INFO,  # Capture info and above as breadcrumbs
+        event_level=logging.WARNING,  # Send errors as events
+    )
 
 
-sentry_sdk.init(
-    dsn="https://23832428efb24e6d9344f4b5570ebfe3@o56764.ingest.sentry.io/4504816194551808",
-    integrations=[
-        sentry_logging,
-    ],
-    traces_sample_rate=1.0,
-    before_send=before_send_to_sentry,
-)
+    def before_send_to_sentry(event, hint):
+        """Split different issues encountered in specific sentry fingerprints"""
+        regex_event = "vocabulary|duplicated variables"
+        if "logentry" in event and re.search(regex_event, event["logentry"]["message"]):
+            event["fingerprint"] = [
+                "{{default}}",
+                event["logentry"]["message"] % tuple(event["logentry"]["params"]),
+            ]
+
+        return event
+
+
+    sentry_sdk.init(
+        dsn="https://23832428efb24e6d9344f4b5570ebfe3@o56764.ingest.sentry.io/4504816194551808",
+        integrations=[
+            sentry_logging,
+        ],
+        traces_sample_rate=1.0,
+        before_send=before_send_to_sentry,
+    )
+else:
+    logger = logging.getLogger(__name__)
 
 
 MODULE_PATH = os.path.dirname(__file__)
@@ -71,17 +71,7 @@ def convert_files(config={}, opt="all", ftype=None):
     in_path = config.get("raw_folder")
     # out_path = config.get("nc_folder")
     # fgeo = config.get("geojson_file")
-    if ftype == "ctd":
-        flist = glob.glob(in_path + "**/*.[Cc][Tt][Dd]", recursive=True)
-    elif ftype == "mctd":
-        flist = []
-        flist.extend(glob.glob(in_path + "**/*.[Cc][Tt][Dd]", recursive=True))
-        flist.extend(glob.glob(in_path + "**/*.mctd", recursive=True))
-    elif ftype == "bot":
-        flist = []
-        flist.extend(glob.glob(in_path + "**/*.[Bb][Oo][Tt]", recursive=True))
-        flist.extend(glob.glob(in_path + "**/*.[Cc][Hh][Ee]", recursive=True))
-    elif ftype == "cur":
+    if ftype == "cur":
         flist = glob.glob(in_path + "**/*.[Cc][Uu][Rr]", recursive=True)
     elif ftype in HANDLED_DATA_TYPES:
         flist = []
@@ -143,7 +133,7 @@ def convert_files_threads(ftype, fname, config={}):
         logger.debug("Imported data successfully!")
         if ftype not in TRACJECTORY_DATA_TYPES:
             fdata.assign_geo_code(
-                config.get("geojson_file")
+                config.get("geopgraphical_areas")
                 or os.path.join(MODULE_PATH, "samples", "ios_polygons.geojson")
             )
         out_path = config.get("nc_folder")
@@ -156,7 +146,11 @@ def convert_files_threads(ftype, fname, config={}):
             if ftype == "cur":
                 write_cur_ncfile(ncFileName, fdata, config=config)
             elif ftype in HANDLED_DATA_TYPES:
-                write_ios_ncfile(ncFileName, fdata, config=config)
+                fdata.add_ios_vocabulary()
+
+                ds = fdata.to_xarray()
+                ds.attrs.update(config.get("global_attributes"))
+                ds.to_netcdf(ncFileName)
             else:
                 logger.error("Error: Unable to import data from file: %s", fname)
                 return 0

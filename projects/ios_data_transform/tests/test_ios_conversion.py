@@ -1,6 +1,7 @@
 # script runs automated tests on data conversions
 import os
 import unittest
+import pytest
 from glob import glob
 
 import cioos_data_transform.IosObsFile as ios
@@ -13,9 +14,8 @@ from ios_data_transform.write_cur_ncfile import write_cur_ncfile
 from ios_data_transform.write_mctd_ncfile import write_mctd_ncfile
 
 MODULE_PATH = os.path.dirname(__file__)
-GEOJSON_AREAS_PATH = fix_path(
-    "./projects/ios_data_transform/tests/test_files/ios_polygons.geojson"
-)
+GEOJSON_AREAS_PATH = fix_path(f"{MODULE_PATH}/test_files/ios_polygons.geojson")
+GEOGRAPHICAL_AREAS = ios.read_geojson(GEOJSON_AREAS_PATH)
 OUTPUT_PATH = fix_path("./projects/ios_data_transform/tests/temp/")
 TEST_FILE_FOLDER = os.path.join(MODULE_PATH, "test_files")
 
@@ -23,7 +23,7 @@ TEST_FILE_FOLDER = os.path.join(MODULE_PATH, "test_files")
 def convert_mctd_files(f, out_path):
     fdata = ios.MCtdFile(filename=f, debug=False)
     if fdata.import_data():
-        fdata.assign_geo_code(GEOJSON_AREAS_PATH)
+        fdata.assign_geo_code(GEOGRAPHICAL_AREAS)
         write_mctd_ncfile(fix_path(out_path + f.split(os.path.sep)[-1] + ".nc"), fdata)
         cioos_utils.add_standard_variables(
             fix_path(out_path + f.split(os.path.sep)[-1] + ".nc")
@@ -37,7 +37,7 @@ def convert_bot_files(f, out_path):
     print(fdata.filename)
     if fdata.import_data():
         # print(fdata.data)
-        fdata.assign_geo_code(GEOJSON_AREAS_PATH)
+        fdata.assign_geo_code(GEOGRAPHICAL_AREAS)
         write_ctd_ncfile(fix_path(out_path + f.split(os.path.sep)[-1] + ".nc"), fdata)
         cioos_utils.add_standard_variables(
             fix_path(out_path + f.split(os.path.sep)[-1] + ".nc")
@@ -52,7 +52,7 @@ def convert_ctd_files(f, out_path):
     print(fdata.filename)
     if fdata.import_data():
         # print(fdata.data)
-        fdata.assign_geo_code(GEOJSON_AREAS_PATH)
+        fdata.assign_geo_code(GEOGRAPHICAL_AREAS)
         write_ctd_ncfile(fix_path(out_path + f.split(os.path.sep)[-1] + ".nc"), fdata)
         cioos_utils.add_standard_variables(
             fix_path(out_path + f.split(os.path.sep)[-1] + ".nc")
@@ -65,7 +65,7 @@ def convert_cur_files(f, out_path):
     print(f)
     fdata = ios.CurFile(filename=f, debug=False)
     if fdata.import_data():
-        fdata.assign_geo_code(GEOJSON_AREAS_PATH)
+        fdata.assign_geo_code(GEOGRAPHICAL_AREAS)
         write_cur_ncfile(fix_path(out_path + f.split(os.path.sep)[-1] + ".nc"), fdata)
         # iod.utils.add_standard_variables(fix_path(out_path + f.split(os.path.sep)[-1] + '.nc')) #Ignore for now
     else:
@@ -77,7 +77,7 @@ def convert_any_files(f, out_path):
     fdata = ios.GenFile(filename=f, debug=False)
 
     if fdata.import_data():
-        fdata.assign_geo_code(GEOJSON_AREAS_PATH)
+        fdata.assign_geo_code(GEOGRAPHICAL_AREAS)
         fdata.add_ios_vocabulary()
         ds = fdata.to_xarray()
 
@@ -119,6 +119,16 @@ class TestIOSConversion(unittest.TestCase):
         for fn in files:
             convert_bot_files(f=fn, out_path=OUTPUT_PATH)
 
+    def test_che_files(self):
+        """Test to parse che files with the original method conversion"""
+        files = glob(
+            fix_path("./projects/ios_data_transform/tests/test_files/che/*.*"),
+            recursive=True,
+        )
+        assert len(files) > 0, "No files found for conversion tests"
+        for fn in files:
+            convert_any_files(f=fn, out_path=OUTPUT_PATH)
+
     def test_drf_files(self):
         """Test to parse drf files to xarray and netCDF"""
         files = glob(
@@ -129,17 +139,20 @@ class TestIOSConversion(unittest.TestCase):
         for fn in files:
             convert_any_files(f=fn, out_path=OUTPUT_PATH)
 
-    def test_all_ios_files(self):
-        """Test to convert all the file types by using the general parser"""
-        files = glob(
-            fix_path("./projects/ios_data_transform/tests/test_files/**/*.*"),
-            recursive=True,
-        )
-        assert len(files) > 0, "No files found for conversion tests"
-        for fn in files:
-            if fn.endswith(("geojson")):
-                continue
-            convert_any_files(f=fn, out_path=OUTPUT_PATH)
+
+@pytest.mark.parametrize(
+    "file",
+    glob(
+        fix_path("./projects/ios_data_transform/tests/test_files/**/*.*"),
+        recursive=True,
+    ),
+)
+def test_all_ios_files(file):
+    """Test to convert all the file types by using the general parser"""
+    assert file, "No files found for conversion tests"
+    if file.endswith(("geojson")):
+        return
+    convert_any_files(f=file, out_path=OUTPUT_PATH)
 
 
 def run_script_on(ftype, raw_folder):
@@ -153,7 +166,7 @@ def run_script_on(ftype, raw_folder):
         {
             "raw_folder": raw_folder,
             "nc_folder": OUTPUT_PATH,
-            "geojson_file": None,
+            "geojson_file": os.path.join(MODULE_PATH, "..", f"ios_polygons.json"),
         }
     )
     opt = "all"
@@ -186,3 +199,9 @@ class TestIosScriptConversions(unittest.TestCase):
 
     def test_loop_script_conversion(self):
         run_script_on("loop", os.path.join(TEST_FILE_FOLDER, "loop"))
+
+    def test_bot_script_conversion(self):
+        run_script_on("bot", os.path.join(TEST_FILE_FOLDER, "bot"))
+    
+    def test_che_script_conversion(self):
+        run_script_on("bot", os.path.join(TEST_FILE_FOLDER, "che"))

@@ -66,7 +66,7 @@ def run_batch_conversion(
                 continue
 
             fdata.assign_geo_code(
-                config.get("geojson_file")
+                config.get("geographical_areas")
                 or os.path.join(MODULE_PATH, "samples", "ios_polygons.geojson")
             )
             write_ios_ncfile(output_path, fdata, config)

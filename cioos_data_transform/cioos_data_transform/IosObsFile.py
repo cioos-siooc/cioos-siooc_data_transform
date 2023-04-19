@@ -30,6 +30,7 @@ ios_dtypes_to_python = {
     "I": "int32",
     "D": str,
     "T": str,
+    "C": str,
     "E": "float32",
 }
 
@@ -196,7 +197,27 @@ class ObsFile(object):
                 "flag_values": [0, 2, 6],
                 "flag_meanings": "not_quality_control good interpolated_or_replaced_by_dual_sensor_or_upcast_value",
             }
+        elif name.lower().startswith('flag') and self.filename.endswith('che'):
+            return {
+                "flag_values": [0,1,2,3,4,5,6,7,8,9],
+                "flag_meanings": ' '.join([
+                "sample_drawn_from_water_bottle_but_not_analyzed",
+                "acceptable_measurement",
+                "questionable_measurement",
+                "bad_measurement",
+                "not_reported",
+                "mean_of_replicate_measurement",
+                "manual_chromatographic_peak_measurement",
+                "irregular_digital_chromatographic_peak_integration",
+                "sample_not_drawn_for_this_measurement_from_this_bottle"
+                ])
+            }
 
+        elif name.lower() == "sample_method":
+            return {
+                "flag_values": ["UN","US","USM"],
+                "flag_meanings": "no_stop stop_for_30s up_stop_mix"
+            }
         logger.warning("Unknown flag name=%s, units=%s", name, units)
         return {}
 
@@ -537,9 +558,7 @@ class ObsFile(object):
         logger.debug(sections_list)
         return sections_list
 
-    def assign_geo_code(self, geojson_file):
-        # read geojson file
-        polygons_dict = read_geojson(geojson_file)
+    def assign_geo_code(self, polygons_dict):
         geo_code = find_geographic_area(
             polygons_dict, Point(self.location["LONGITUDE"], self.location["LATITUDE"])
         )
@@ -660,7 +679,7 @@ class ObsFile(object):
             name = re.sub(r"^\'|[\s\']+$", "", name.lower())
             units = re.sub(r"^\'|[\s\']+$", "", units)
 
-            if re.match(r"\'*(flag|quality_flag)", name, re.IGNORECASE):
+            if re.match(r"\'*(flag|quality_flag|sample_method$)", name, re.IGNORECASE):
                 self.vocabulary_attributes += [[self.get_flag_convention(name, units)]]
                 continue
             if re.match("(Date|Time)", name, re.IGNORECASE):
@@ -1008,7 +1027,7 @@ class ObsFile(object):
                             + 1
                         )
                         logging.warning(
-                            "Duplicated variable from sub variables: %s, rename +%s",
+                            "Duplicated variable from sub variables: %s, renamed %s",
                             new_var,
                             update_variable_index(new_var, new_index),
                         )
@@ -1356,7 +1375,7 @@ class GenFile(ObsFile):
         if self.data is None:
             try:
                 # self.channel_details = self.get_channel_detail()
-                self.data = self.get_data(formatline=None)
+                self.data = self.get_dvocaata(formatline=None)
             except Exception as e:
                 logger.error("Failed to read file: %s", self.filename)
                 return 0

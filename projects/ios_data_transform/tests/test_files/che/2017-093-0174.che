@@ -1,0 +1,888 @@
+*2022/05/25 12:14:28.71
+*IOS HEADER VERSION 2.0      2016/04/28 2016/06/13 IVF16
+
+*FILE
+    START TIME          : UTC 2017/07/19 00:17:16.000
+    TIME INCREMENT      : 0 0 0 0.416667E-01 0  ! (day hr min sec ms)
+    NUMBER OF RECORDS   : 11
+    DATA DESCRIPTION    : Bottle:Rosette:Up:Stop + CTD:Up
+    FILE TYPE           : ASCII
+    CRC                 : 385FD0FA
+    NUMBER OF CHANNELS  : 45
+
+    $TABLE: CHANNELS
+    ! No Name                        Units           Minimum        Maximum
+    !--- --------------------------- --------------- -------------- --------------
+       1 Bottle_Number               n/a             1              11
+       2 Bottle:Position             n/a             1              24
+       3 Pressure                    decibar         5.2            45.5
+       4 Depth                       metres          5.1            45
+       5 Temperature:Primary         'deg C (ITS90)' 3.6499         6.8228
+       6 Conductivity:Primary        S/m             3.033556       3.286894
+       7 Transmissivity              %/metre         5.2            45.1
+       8 Fluorescence:URU:Seapoint   mg/m^3          1.321          7.082
+       9 PAR                         uE/m^2/sec      0              190.3
+      10 PAR:Reference               uE/m^2/sec      822.1          865.6
+      11 Salinity:T0:C0              PSS-78          32.5147        32.7359
+      12 Oxygen:Dissolved:SBE        mL/L            6.77           9.84
+      13 Oxygen:Dissolved:SBE        umol/kg         294.9          428.3
+      14 Sample_Number               n/a             526            535
+      15 Number_of_bin_records       n/a             48             241
+      16 Salinity:Bottle             PSS-78          32.5297        32.7423
+      17 Flag:Salinity:Bottle        ' '
+      18 Nitrate_plus_Nitrite        umol/L          0              10.48
+      19 Flag:Nitrate_plus_Nitrite   ' '
+      20 Silicate                    umol/L          4.65           27.94
+      21 Flag:Silicate               ' '
+      22 Phosphate                   umol/L          0.28           1.609
+      23 Flag:Phosphate              ' '
+      24 Chlorophyll:Extracted2      mg/m^3          3.63           18.12
+      25 Nitrate_plus_Nitrite2       umol/L          1.08           13.2
+      26 Silicate2                   umol/L          4.53           25.4
+      27 Phosphate2                  umol/L          0.29           1.61
+      28 Ammonium                    umol/L          0.27           2.72
+      29 Oxygen:Isotope:18           /mille          -1.13          -0.94
+      30 Chlorophyll:Extracted3      mg/m^3          2.61           18.22
+      31 Phaeo-Pigment:Extracted3    mg/m^3          0.4            3.36
+      32 SPM                         mg/L            8.293          12.763
+      33 CDOM_a250                   m^-1            1.137          2.128
+      34 CDOM_a254                   m^-1            1.0679         2.0052
+      35 CDOM_a350                   m^-1            0.1237         0.4622
+      36 CDOM_a365                   m^-1            0.776E-01      0.3931
+      37 CDOM_a375                   m^-1            0.546E-01      0.3701
+      38 CDOM_a412                   m^-1            0.315E-01      0.278
+      39 CDOM_a440                   m^-1            0.85E-02       0.2165
+      40 CDOM_a443                   m^-1            0.85E-02       0.2089
+      41 CDOM_a250:a365              m^-1            5.4134         14.6523
+      42 CDOM_S290-350               m^-1            -0.229E-01     -0.144E-01
+      43 CDOM_S275-295               m^-1            -0.294E-01     -0.208E-01
+      44 CDOM_S350-400               m^-1            -0.279E-01     -0.88E-02
+      45 CDOM_S275-295:S350-400      m^-1            0              2.3763
+    $END
+
+    $TABLE: CHANNEL DETAIL
+    ! No  Pad   Start  Width  Format  Type  Decimal_Places
+    !---  ----  -----  -----  ------  ----  --------------
+       1  -99   ' '        3  I       I       0
+       2  -99   ' '        3  I       I     ' '
+       3  -99   ' '        7  F       ' '     1
+       4  -99   ' '        7  F       ' '     1
+       5  -99   ' '        9  F       ' '     4
+       6  -99   ' '       10  F       ' '     6
+       7  -99   ' '        6  F       ' '     1
+       8  -99   ' '        8  F       ' '     3
+       9  -99   ' '        7  F       ' '     1
+      10  -99   ' '        7  F       ' '     1
+      11  -99   ' '        9  F       ' '     4
+      12  -99   ' '        7  F       ' '     2
+      13  -99   ' '        6  F       ' '     1
+      14  -99   ' '        5  I       I       0
+      15  -99   ' '        5  I       I       0
+      16  -99   ' '        9  F       R4      4
+      17  -99   ' '        3  NQ      C     ' '
+      18  -99   ' '        7  F       R4      2
+      19  -99   ' '        3  NQ      C     ' '
+      20  -99   ' '        7  F       R4      2
+      21  -99   ' '        3  NQ      C     ' '
+      22  -99   ' '        8  F       R4      3
+      23  -99   ' '        3  NQ      C     ' '
+      24  -99   ' '        7  F       R4      2
+      25  -99   ' '        7  F       R4      2
+      26  -99   ' '        7  F       R4      2
+      27  -99   ' '        7  F       R4      2
+      28  -99   ' '        7  F       R4      2
+      29  -99   ' '        7  F       R4      2
+      30  -99   ' '        7  F       R4      2
+      31  -99   ' '        7  F       R4      2
+      32  -99   ' '        8  F       R4      3
+      33  -99   ' '        8  F       R4      4
+      34  -99   ' '        8  F       R4      4
+      35  -99   ' '        8  F       R4      4
+      36  -99   ' '        8  F       R4      4
+      37  -99   ' '        8  F       R4      4
+      38  -99   ' '        8  F       R4      4
+      39  -99   ' '        8  F       R4      4
+      40  -99   ' '        8  F       R4      4
+      41  -99   ' '        8  F       R4      4
+      42  -99   ' '        8  F       R4      4
+      43  -99   ' '        8  F       R4      4
+      44  -99   ' '        8  F       R4      4
+      45  -99   ' '        8  F       R4      4
+    $END
+    $REMARKS
+        Quality flags have the following significance:
+        ----------------------------------------------------------------------------------
+        0 = Acceptable measurement with no header comment
+        1 = Sample for this measurement was collected but not analyzed. Sample lost.
+        2 = Acceptable measurement with header comment
+        3 = Questionable measurement (Probably Good)
+        4 = Poor measurement (Probably Bad)
+        5 = Measurement not reported (Bad)
+        6 = Mean of replicate measurements
+        7 = Manual chromatographic peak measurement
+        8 = Irregular digital chromatographic peak integration
+        9 = Sample was planned for this measurement from this bottle but was not collected
+        ----------------------------------------------------------------------------------
+    $END
+
+*ADMINISTRATION
+    MISSION             : 2017-093
+    AGENCY              : IOS, Ocean Science Division, Sidney, B.C.
+    COUNTRY             : Canada
+    PROJECT             : C3O / DBO
+    SCIENTIST           : Vagle S.
+    PLATFORM            : Sir Wilfrid Laurier
+
+*LOCATION
+    GEOGRAPHIC AREA     : North Pacific/ Bering Sea / Chukchi Sea
+    STATION             : UTN-6
+    EVENT NUMBER        : 174
+    LATITUDE            :  67  44.43000 N  ! (deg min)
+    LONGITUDE           : 168  26.02000 W  ! (deg min)
+    WATER DEPTH         : 50
+    ALTIMETER (M)       : 3.98                                  ! custom item
+    $REMARKS
+        Altimeter value is distance from bottom and is calculated as the
+        median of the deepest 2 metres of data.
+    $END
+
+*INSTRUMENT
+    TYPE                : Sea-Bird CTD
+    MODEL               : SBE-911plus
+    SERIAL NUMBER       : 0941
+
+    $TABLE: SENSORS
+    !   Name                                 Abs Depth       Serial No
+    !   -----------------------------------  --------------  ----------
+        Temperature                          ' '             5048
+        Conductivity                         ' '             3579
+        'Pressure:Digiquartz with TC'        ' '             131733
+        Temperature:2                        ' '             5073
+        Conductivity:2                       ' '             3581
+        Fluorometer:Seapoint                 ' '             2745
+        'Transmissometer:WET Labs C-Star'    ' '             1050
+        'Oxygen:SBE 43'                      ' '             1117
+        Altimeter                            ' '             41098
+        PAR/Irradiance:Biospherical/Licor    ' '             70123
+        Unavailable                          ' '             ' '
+        'SPAR/Surface Irradiance'            ' '             20281
+    $END
+    $REMARKS
+        Software Version Seasave V 7.26.6.26
+    $END
+
+*HISTORY
+
+    $TABLE: PROGRAMS
+    !   Name     Vers   Date       Time     Recs In   Recs Out
+    !   -------- ------ ---------- -------- --------- ---------
+        SBE_IOS  4.3    2021/06/22 16:30:24      1746      1746
+        CLEAN    5.2.4  2021/06/22 16:34:27      1746      1746
+        CTDEDIT  5.3.0  2021/06/22 17:00:00      1746      1746
+        ADDSAMP  3.6    2021/06/25 09:21:05      1746      1746
+        BINAVE   4.2.1  2021/06/25 09:21:28      1746        11
+        MERGE    3.6    2021/07/14 11:47:48        11        11
+        CALIB    12.0.1 2021/07/14 11:50:02        11        11
+        SORT     3.6    2021/07/14 11:50:10        11        11
+        REMOVECH 8.2    2021/07/14 11:50:17        11        11
+        CHGUNITS 3.2    2021/07/14 11:50:25        11        11
+        CHGUNITS 3.2    2021/07/14 11:50:35        11        11
+        REORDER  1.3.1  2021/07/14 11:50:49 ?         ?
+        HDREDIT2 3.2    2021/07/14 12:10:21 ?         ?
+        CLEAN    5.3    2022/05/25 12:14:28        11        11
+    $END
+    $REMARKS
+        -CLEAN functions: 2021/06/22 16:34:06 20
+         Reset #RECS, MIN & MAX values in header.
+         Set event to last  4 characters of file name
+        -CTDEDIT  v5.3.0   2021/06/22 17:00:00
+              3 changes in channel Salinity:T1:C1
+        -The following ADDSAMP parameters were used:
+         Sample Number Lookup File: D:\Telework\2017-093\Processing\hydro\addsamp.csv
+         Bottle Channel Name: Bottle_Number
+        -The following BINAVE parameters were used:
+         Bin channel = Bottle_Number
+         Averaging interval =    1.00
+         Minimum bin value =       0.000
+         Average value was used
+         Interpolated values were NOT used for empty bins
+         Channel 'NUMBER_OF_BIN_RECORDS' was added to file.
+        -The following MERGE parameters were used: 2021/07/14 11:47:48
+         Merge Channel: Bottle_Number
+         Merge Scheme Used: 4: Add Secondary to Matching Primary
+         Overlap Scheme Used: Keep Primary
+         Primary Channels to Include: ALL
+         Secondary Channels to Include:
+           Salinity:Bottle,
+           Flag:Salinity:Bottle,
+           Chlorophyll:Extracted,
+           Flag:Chlorophyll:Extracted,
+           Phaeo-Pigment:Extracted,
+           Oxygen:Dissolved,
+           Flag:Oxygen:Dissolved,
+           Temperature:Draw,
+           Nitrate_plus_Nitrite,
+           Flag:Nitrate_plus_Nitrite,
+           Silicate,
+           Flag:Silicate,
+           Phosphate,
+           Flag:Phosphate,
+           Carbon:Dissolved:Inorganic,
+           Flag:Carbon:Dissolved:Inorganic,
+           Alkalinity:Total,
+           Flag:Alkalinity:Total,
+           Chlorophyll:Extracted2,
+           Nitrate_plus_Nitrite2,
+           Silicate2,
+           Flag:Ammonium,
+           Phosphate2,
+           Ammonium,
+           Oxygen:Isotope:18,
+           Chlorophyll:Extracted3,
+           Phaeo-Pigment:Extracted3,
+           SPM,
+           CDOM_a250,
+           CDOM_a254,
+           CDOM_a350,
+           CDOM_a365,
+           CDOM_a375,
+           CDOM_a412,
+           CDOM_a440,
+           CDOM_a443,
+           CDOM_a250:a365,
+           CDOM_S290-350,
+           CDOM_S275-295,
+           CDOM_S350-400,
+           CDOM_S275-295:S350-400,
+           HPLC:Chl-c3,
+           HPLC:Chlide-a,
+           HPLC:MgDVP,
+           HPLC:Chl-c2,
+           HPLC:Chl-c1,
+           HPLC:Me-chlide,
+           HPLC:Peri,
+           HPLC:But-fuco,
+           HPLC:Fuco,
+           HPLC:Neo,
+           HPLC:Pras,
+           HPLC:Viola,
+           HPLC:Hex-fuco,
+           HPLC:Diadino,
+           HPLC:Allo,
+           HPLC:Diato,
+           HPLC:Zea,
+           HPLC:Chl-b,
+           HPLC:DVChl-a,
+           HPLC:Chl-a,
+           HPLC:B-Car,
+           HPLC:TChl-a,
+           Flag:HPLC
+         Primary file  : D:\Telework\2017-093\Processing\hydro\2017-093-0174.samavg
+         Secondary file: D:\Telework\2017-093\Processing\hydro\2017-093-0174.mrgcln1s
+         10 secondary records matched to primary records.
+
+        Comments from secondary file:
+        D:\Telework\2017-093\Processing\hydro\2017-093-0174.mrgcln1s
+        ------------------------------------------------------------
+        -CLEAN functions: 2021/07/14 11:46:28 20
+        Reduce header to sections: FIL HIS COM
+        Remarks removed from kept sections.
+        Remove remark heading: "Comments from secondary"
+        -SORT parameters: 2021/07/14 11:46:38
+        Sorted in ascending order of channel Bottle_Number
+        -CALIB parameters: 2021/07/14 11:50:02
+         Calibration type = Correct
+         Mode: ONLY - calibration specs from Cal File only.
+         Calibration file = D:\Telework\2017-093\Processing\doc\2017-093-recal.ccf
+         Calibrations applied:
+         Ch Name                          Units    Fmla Coefficents
+         -- ----------------------------- --------- --- -----------------------------
+         20 Oxygen:Dissolved:SBE          mL/L       10  0.2710000E-01  0.1020300E+01
+        -SORT parameters: 2021/07/14 11:50:10
+         Sorted in ascending order of channel Pressure
+        -REMOVECH 2021/07/14 11:50:17
+         The following CHANNEL(S) were removed:
+          Scan_Number
+          Temperature:Secondary [deg C (ITS90)]
+          Conductivity:Secondary [S/m]
+          Oxygen:Voltage:SBE [volts]
+          Status:Pump
+          Altimeter [metres]
+          Descent_Rate [m/s]
+          Salinity:T1:C1 [PSS-78]
+          Flag
+        -CHANGE units:
+         Temperature reference channel: Temperature:Primary [deg C (ITS90)]
+         Salinity    reference channel: Salinity:T0:C0 [PSS-78]
+         'Oxygen:Dissolved:SBE [mL/L]' changed from mL/L    to umol/kg
+        -CHANGE units:
+         Temperature reference channel: Temperature:Draw
+         Salinity    reference channel: Salinity:T0:C0 [PSS-78]
+        - No units changed
+        -HEADER EDITS: 2021/07/14 12:10:21
+         Applied edit header: D:\Telework\2017-093\Processing\doc\HYDRO\2017-093-bot-hdr
+         Channel  3: Pressure [decibar]
+           Format: F10.3 ==> F7.1
+         Channel  4: Depth [metres]
+           Name:   Depth:Salt_Water ==> Depth
+           Format: F10.3 ==> F7.1
+         Channel  6: Conductivity:Primary [S/m]
+           Format: F11.6 ==> F10.6
+         Channel  7: Transmissivity [%/metre]
+           Name:   Transmissivity:1 ==> Transmissivity
+         Channel  9: PAR [uE/m^2/sec]
+           Format: F11.3 ==> F7.1
+         Channel 10: PAR:Reference [uE/m^2/sec]
+           Format: F11.3 ==> F7.1
+         Channel 12: Oxygen:Dissolved:SBE [mL/L]
+           Format: F8.3 ==> F7.2
+         Channel 15: Number_of_bin_records [n/a]
+           Pad:    ' ' ==> -99
+         Channel 45: CDOM_S275-295:S350-400 [m^-1]
+           Pad:    0 ==> -99
+        -CLEAN functions: 2022/05/25 12:12:48 20
+         Reset #RECS, MIN & MAX values in header.
+         Change Pad Value to -99 in All Channels.
+         Change character data from " " to "0" in channels Flag*
+         Insert Pad Values in Channel: Temperature:Primary [deg C (ITS90)]
+           where channel Temperature:Primary [deg C (ITS90)] is in the range -10000 to -
+                0 data records in pad range.
+    $END
+
+*COMMENTS
+    SBE HEADER
+      Sea-Bird SBE 9 Data File:
+      FileName = C:\2017-93\Raw\2017-93-174.hdr
+      Software Version Seasave V 7.26.6.26
+      Temperature SN = 5048
+      Conductivity SN = 3579
+      Number of Bytes Per Scan = 44
+      Number of Voltage Words = 5
+      Number of Scans Averaged by the Deck Unit = 1
+      System UpLoad Time = Jul 19 2017 00:17:16
+      NMEA Latitude = 67 44.43 N
+      NMEA Longitude = 168 26.02 W
+      NMEA UTC (Time) = Jul 19 2017  00:18:03
+      Store Lat/Lon Data = Append to Every Scan
+      SBE 11plus V 5.2
+      number of scans to average = 1
+      pressure baud rate = 9600
+      NMEA baud rate = 4800
+      surface PAR voltage added to scan
+      A/D offset = 3
+      GPIB address = 1
+      advance primary conductivity  0.073 seconds
+      advance secondary conductivity  0.073 seconds
+      autorun on power up is disabled
+      S>
+       Cruise:  2017-93 Canada's Three Oceans (C3O)
+       Ship:  CCGS Sir Wilfrid Laurier
+       Scientist:  Svein Vagle
+       Station:   UTN-6
+       Depth:   50
+      System UTC = Jul 19 2017 00:17:16
+    # nquan = 21
+    # nvalues = 1746
+    # units = specified
+    # name 0 = scan: Scan Count
+    # name 1 = bpos: Bottle Position in Carousel
+    # name 2 = nbf: Bottles Fired
+    # name 3 = prDM: Pressure, Digiquartz [db]
+    # name 4 = depSM: Depth [salt water, m]
+    # name 5 = t090C: Temperature [ITS-90, deg C]
+    # name 6 = t190C: Temperature, 2 [ITS-90, deg C]
+    # name 7 = c0S/m: Conductivity [S/m]
+    # name 8 = c1S/m: Conductivity, 2 [S/m]
+    # name 9 = CStarTr0: Beam Transmission, WET Labs C-Star [%]
+    # name 10 = flSP: Fluorescence, Seapoint
+    # name 11 = sbeox0V: Oxygen raw, SBE 43 [V]
+    # name 12 = par: PAR/Irradiance, Biospherical/Licor
+    # name 13 = spar: SPAR/Surface Irradiance
+    # name 14 = pumps: Pump Status
+    # name 15 = altM: Altimeter [m]
+    # name 16 = dz/dtM: Descent Rate [m/s]
+    # name 17 = sal00: Salinity, Practical [PSU]
+    # name 18 = sal11: Salinity, Practical, 2 [PSU]
+    # name 19 = sbeox0ML/L: Oxygen, SBE 43 [ml/l]
+    # name 20 = flag:  0.000e+00
+    # interval = seconds: 0.0416667
+    # start_time = Jul 19 2017 00:17:16 [System UTC, header]
+    # bad_flag = -9.990e-29
+    # <Sensors count="15" >
+    #   <sensor Channel="1" >
+    #     <!-- Frequency 0, Temperature -->
+    #     <TemperatureSensor SensorID="55" >
+    #       <SerialNumber>5048</SerialNumber>
+    #       <CalibrationDate>3-Mar-17</CalibrationDate>
+    #       <UseG_J>1</UseG_J>
+    #       <A>0.00000000e+000</A>
+    #       <B>0.00000000e+000</B>
+    #       <C>0.00000000e+000</C>
+    #       <D>0.00000000e+000</D>
+    #       <F0_Old>0.000</F0_Old>
+    #       <G>4.33959201e-003</G>
+    #       <H>6.38172565e-004</H>
+    #       <I>2.14017823e-005</I>
+    #       <J>1.90767934e-006</J>
+    #       <F0>1000.000</F0>
+    #       <Slope>1.00000000</Slope>
+    #       <Offset>0.0000</Offset>
+    #     </TemperatureSensor>
+    #   </sensor>
+    #   <sensor Channel="2" >
+    #     <!-- Frequency 1, Conductivity -->
+    #     <ConductivitySensor SensorID="3" >
+    #       <SerialNumber>3579</SerialNumber>
+    #       <CalibrationDate>29-Dec-16</CalibrationDate>
+    #       <UseG_J>1</UseG_J>
+    #       <!-- Cell const and series R are applicable only for wide range sensors.
+     -->
+    #       <SeriesR>0.0000</SeriesR>
+    #       <CellConst>2000.0000</CellConst>
+    #       <ConductivityType>0</ConductivityType>
+    #       <Coefficients equation="0" >
+    #         <A>0.00000000e+000</A>
+    #         <B>0.00000000e+000</B>
+    #         <C>0.00000000e+000</C>
+    #         <D>0.00000000e+000</D>
+    #         <M>0.0</M>
+    #         <CPcor>-9.57000000e-008</CPcor>
+    #       </Coefficients>
+    #       <Coefficients equation="1" >
+    #         <G>-9.41216156e+000</G>
+    #         <H>1.16781547e+000</H>
+    #         <I>-1.61059823e-003</I>
+    #         <J>1.64680583e-004</J>
+    #         <CPcor>-9.57000000e-008</CPcor>
+    #         <CTcor>3.2500e-006</CTcor>
+    #         <!-- WBOTC not applicable unless ConductivityType = 1. -->
+    #         <WBOTC>0.00000000e+000</WBOTC>
+    #       </Coefficients>
+    #       <Slope>1.00000000</Slope>
+    #       <Offset>0.00000</Offset>
+    #     </ConductivitySensor>
+    #   </sensor>
+    #   <sensor Channel="3" >
+    #     <!-- Frequency 2, Pressure, Digiquartz with TC -->
+    #     <PressureSensor SensorID="45" >
+    #       <SerialNumber>131733</SerialNumber>
+    #       <CalibrationDate>06-Apr-2015</CalibrationDate>
+    #       <C1>-4.347790e+004</C1>
+    #       <C2>-5.184406e-001</C2>
+    #       <C3>1.193610e-002</C3>
+    #       <D1>3.554700e-002</D1>
+    #       <D2>0.000000e+000</D2>
+    #       <T1>3.025762e+001</T1>
+    #       <T2>-5.058120e-004</T2>
+    #       <T3>3.918840e-006</T3>
+    #       <T4>2.607810e-009</T4>
+    #       <Slope>1.00000000</Slope>
+    #       <Offset>0.00000</Offset>
+    #       <T5>0.000000e+000</T5>
+    #       <AD590M>1.280000e-002</AD590M>
+    #       <AD590B>-9.105200e+000</AD590B>
+    #     </PressureSensor>
+    #   </sensor>
+    #   <sensor Channel="4" >
+    #     <!-- Frequency 3, Temperature, 2 -->
+    #     <TemperatureSensor SensorID="55" >
+    #       <SerialNumber>5073</SerialNumber>
+    #       <CalibrationDate>31-Dec-16</CalibrationDate>
+    #       <UseG_J>1</UseG_J>
+    #       <A>0.00000000e+000</A>
+    #       <B>0.00000000e+000</B>
+    #       <C>0.00000000e+000</C>
+    #       <D>0.00000000e+000</D>
+    #       <F0_Old>0.000</F0_Old>
+    #       <G>4.38581408e-003</G>
+    #       <H>6.42314792e-004</H>
+    #       <I>2.21503620e-005</I>
+    #       <J>2.00095043e-006</J>
+    #       <F0>1000.000</F0>
+    #       <Slope>1.00000000</Slope>
+    #       <Offset>0.0000</Offset>
+    #     </TemperatureSensor>
+    #   </sensor>
+    #   <sensor Channel="5" >
+    #     <!-- Frequency 4, Conductivity, 2 -->
+    #     <ConductivitySensor SensorID="3" >
+    #       <SerialNumber>3581</SerialNumber>
+    #       <CalibrationDate>29-Dec-16</CalibrationDate>
+    #       <UseG_J>1</UseG_J>
+    #       <!-- Cell const and series R are applicable only for wide range sensors.
+     -->
+    #       <SeriesR>0.0000</SeriesR>
+    #       <CellConst>2000.0000</CellConst>
+    #       <ConductivityType>0</ConductivityType>
+    #       <Coefficients equation="0" >
+    #         <A>0.00000000e+000</A>
+    #         <B>0.00000000e+000</B>
+    #         <C>0.00000000e+000</C>
+    #         <D>0.00000000e+000</D>
+    #         <M>0.0</M>
+    #         <CPcor>-9.57000000e-008</CPcor>
+    #       </Coefficients>
+    #       <Coefficients equation="1" >
+    #         <G>-9.28478069e+000</G>
+    #         <H>1.14339330e+000</H>
+    #         <I>-1.67527428e-003</I>
+    #         <J>1.69792036e-004</J>
+    #         <CPcor>-9.57000000e-008</CPcor>
+    #         <CTcor>3.2500e-006</CTcor>
+    #         <!-- WBOTC not applicable unless ConductivityType = 1. -->
+    #         <WBOTC>0.00000000e+000</WBOTC>
+    #       </Coefficients>
+    #       <Slope>1.00000000</Slope>
+    #       <Offset>0.00000</Offset>
+    #     </ConductivitySensor>
+    #   </sensor>
+    #   <sensor Channel="6" >
+    #     <!-- A/D voltage 0, Fluorometer, Seapoint -->
+    #     <FluoroSeapointSensor SensorID="11" >
+    #       <SerialNumber>2745</SerialNumber>
+    #       <CalibrationDate>new2003</CalibrationDate>
+    #       <!-- The following is an array index, not the actual gain setting. -->
+    #       <GainSetting>2</GainSetting>
+    #       <Offset>0.000</Offset>
+    #     </FluoroSeapointSensor>
+    #   </sensor>
+    #   <sensor Channel="7" >
+    #     <!-- A/D voltage 1, Transmissometer, WET Labs C-Star -->
+    #     <WET_LabsCStar SensorID="71" >
+    #       <SerialNumber>1050</SerialNumber>
+    #       <CalibrationDate>12 Apr 2016 (factory)</CalibrationDate>
+    #       <M>20.5750</M>
+    #       <B>-1.1930</B>
+    #       <PathLength>0.250</PathLength>
+    #     </WET_LabsCStar>
+    #   </sensor>
+    #   <sensor Channel="8" >
+    #     <!-- A/D voltage 2, Oxygen, SBE 43 -->
+    #     <OxygenSensor SensorID="38" >
+    #       <SerialNumber>1117</SerialNumber>
+    #       <CalibrationDate>21-Dec-16</CalibrationDate>
+    #       <Use2007Equation>1</Use2007Equation>
+    #       <CalibrationCoefficients equation="0" >
+    #         <!-- Coefficients for Owens-Millard equation. -->
+    #         <Boc>0.0000</Boc>
+    #         <Soc>0.0000e+000</Soc>
+    #         <offset>0.0000</offset>
+    #         <Pcor>0.00e+000</Pcor>
+    #         <Tcor>0.0000</Tcor>
+    #         <Tau>0.0</Tau>
+    #       </CalibrationCoefficients>
+    #       <CalibrationCoefficients equation="1" >
+    #         <!-- Coefficients for Sea-Bird equation - SBE calibration in 2007 and
+    later. -->
+    #         <Soc>4.4456e-001</Soc>
+    #         <offset>-0.5283</offset>
+    #         <A>-3.4969e-003</A>
+    #         <B> 1.6938e-004</B>
+    #         <C>-2.4792e-006</C>
+    #         <D0> 2.5826e+000</D0>
+    #         <D1> 1.92634e-004</D1>
+    #         <D2>-4.64803e-002</D2>
+    #         <E> 3.6000e-002</E>
+    #         <Tau20> 1.5900</Tau20>
+    #         <H1>-3.3000e-002</H1>
+    #         <H2> 5.0000e+003</H2>
+    #         <H3> 1.4500e+003</H3>
+    #       </CalibrationCoefficients>
+    #     </OxygenSensor>
+    #   </sensor>
+    #   <sensor Channel="9" >
+    #     <!-- A/D voltage 3, Altimeter -->
+    #     <AltimeterSensor SensorID="0" >
+    #       <SerialNumber>41098</SerialNumber>
+    #       <CalibrationDate>12 Feb 2007</CalibrationDate>
+    #       <ScaleFactor>15.000</ScaleFactor>
+    #       <Offset>0.000</Offset>
+    #     </AltimeterSensor>
+    #   </sensor>
+    #   <sensor Channel="10" >
+    #     <!-- A/D voltage 4, PAR/Irradiance, Biospherical/Licor -->
+    #     <PAR_BiosphericalLicorChelseaSensor SensorID="42" >
+    #       <SerialNumber>70123</SerialNumber>
+    #       <CalibrationDate>4 Apr 2016 (factory)</CalibrationDate>
+    #       <M>1.00000000</M>
+    #       <B>0.00000000</B>
+    #       <CalibrationConstant>11560693641.61850000</CalibrationConstant>
+    #       <Multiplier>1.00000000</Multiplier>
+    #       <Offset>-0.08776394</Offset>
+    #     </PAR_BiosphericalLicorChelseaSensor>
+    #   </sensor>
+    #   <sensor Channel="11" >
+    #     <!-- A/D voltage 5, Free -->
+    #   </sensor>
+    #   <sensor Channel="12" >
+    #     <!-- A/D voltage 6, Free -->
+    #   </sensor>
+    #   <sensor Channel="13" >
+    #     <!-- A/D voltage 7, Free -->
+    #   </sensor>
+    #   <sensor Channel="14" >
+    #     <!-- SPAR voltage, Unavailable -->
+    #   </sensor>
+    #   <sensor Channel="15" >
+    #     <!-- SPAR voltage, SPAR/Surface Irradiance -->
+    #     <SPAR_Sensor SensorID="51" >
+    #       <SerialNumber>20281</SerialNumber>
+    #       <CalibrationDate>04 Apr 2016 (factory)</CalibrationDate>
+    #       <ConversionFactor>1641.09195402</ConversionFactor>
+    #       <RatioMultiplier>1.00000000</RatioMultiplier>
+    #     </SPAR_Sensor>
+    #   </sensor>
+    # </Sensors>
+    # datcnv_date = Jun 21 2021 16:36:41, 7.23.2
+    # datcnv_in = D:\Telework\2017-093\Unprocessed\CTD\Raw\2017-093-0174.hex D:\Tele
+    work\2017-093\Processing\doc\2017-093-ctd.XMLCON
+    # datcnv_ox_hysteresis_correction = no
+    # datcnv_ox_tau_correction = yes
+    # datcnv_bottle_scan_range_source = BL file
+    # datcnv_scans_per_bottle = 241
+     END*
+    Remarks from CTDEDIT:
+    CTDEDIT was used to clean Salinity:Secondary lightly around 15db.
+
+    Comments from secondary file:
+    D:\Telework\2017-093\Processing\hydro\2017-093-0174.mrgcln1s
+    ------------------------------------------------------------
+    Sample_Number  526: SiO4: duplicate rejected by Chauvenet
+    Sample_Number  530: NUTS: no duplicates
+    Sample_Number  532: NO3: duplicate removed by Chauvenet criterion
+
+     Analysis methods:
+     -----------------
+     Salinity samples were collected in 200 mL type ll glass bottles with
+     disposable nylon inserts and screw caps supplied by Ocean Scientific
+     International Limited. They were analyzed in a temperature-controlled lab
+     at IOS on a Guildline 8400B Salinometer (S/N 68572) standardized with IAPSO
+     standard seawater 5 months after collection.
+     Precision Statement for replicate Samples Collected from a Single Niskin Bottle:
+     Salinity values during this survey ranged from 31.78176 to 34.39151 with a
+     pooled standard deviation of 0.001472 after ther removal of 1 outlier) sample
+     using Chauvenet's criteria.
+     For more detail see file "SWL2017-093Salinity*.xlsx".
+
+     Oxygen samples were analyzed at sea using an automated Winkler titration system
+     (Metrohm Dosimat model 665 and a UV light source and detector with a 365nm filter
+     controlled by LV02_876 software designed and constructed by Scripps Institution
+     of Oceanography) with modifications based on Carpenter (1965) and adhering to
+     WOCE protocols (Culberson 1991).
+     For details including a duplicate analysis, see document QF2017-93OXY*.xlsx.
+
+     There are two sets of nutrient samples. The following comments refer to channels
+     Nitrate_plus_Nitrite, Silicate and Phosphate; these data were analyzed at the
+     Institute of Ocean Sciences.
+     Nutrient (nitrate + nitrite, silicate and phosphate) samples were collected,
+     unfiltered, in 16mL polystyrene tubes, quick frozen in aluminum blocks and stored
+     in -20�C freezer until analysis back at IOS, 5-6 months later.
+     Samples were thawed for 2 hours at 25�C and analyzed on a Seal Analytical Nutrient
+     Auto Analyser III (AAIII), following the methods given by Seal Analytical, with the
+     exception of omitting Brij-23 from the ammonium chloride reagent for nitrate + nitrite
+     analysis and changing the sample and reagent flow rates for silicate.
+     Samples collected in the North Pacific and Arctic portion of the cruise were analysed
+     on 2 different standard curve ranges. A salt correction was applied to the nitrate and
+     silicate data.
+     The detection limits, calculated as the average of 10 blank samples plus 3 times its
+     standard deviation were 0.02 uM/0.03 uM nitrate + nitrite, 0.09 uM/0.26 uM silicate
+     and 0.008 uM/0.014 uM phospahte for Arctic / North Pacific samples sets.
+     For silicate values above 50 �M, the value reported is the value measured on the sample
+     thawed a second time, as we noticed the value was higher, due to enhanced dissolution
+     of polymerized silicate in the frozen sample, and no Sp value could be calculated for
+     those samples as we only had one replicate for each of those samples that were thawed
+     a second time.
+     Full details including precision study are in files �2017-93_QF-NUTS*.xlsx
+
+     There are two sets of nutrient samples. The following comments refer to channels
+     Nitrate_plus_Nitrite2, Silicate2 and Phosphate2 and Ammonium:
+     Nutrient samples (nitrate+nitrite, orthophosphate,silicate and ammonium) were
+     analyzed at Chesapeake Biological  Laboratory of the University of Maryland
+     Center for Environmental Science
+     (CBL-UMCES, http://www.umces.edu/nutrient-analytical-services-laboratory ).
+     They were filtered from the Niskin bottles using 0.45 �M nylon syringe filters
+     and frozen at -20�C until analysis at UMCES.
+     Samples were thawed for 2 weeks at 8 degrees C before analysis using a
+     Technicon Bran & Luebbe AutoAnalyzer II, following these methods:
+       Nitrate+Nitrite:  Technicon Ind. Method No.158-71, 1977 and USEPA 1979 Method 353.2.
+       Silicate:  Technicon Ind. Method No.811-86T, 1986.
+       Phosphate:  Technicon Ind. Method No.155-71W, 1973, 1971 USEPA 1979 Method 365.1
+         and Froelich, 1978.
+       NH4: References Standard Methods 4500-NH3 G-1997 (for further details, see
+         CBL-UMCES_Ammonium Method 2017-3_3.pdf)
+     The detection limit for NH4 is 0.14, flagged in yellow.
+     The detection limit for silicate is 1.91, flagged in yellow.
+     Data provided by Lee Cooper (UMCES)
+
+     Oxygen isotopic analysis water samples were collected in 10 or 20
+     mL glass scintillation vials, sealed with Polyseal caps and wrapped with
+     Parafilm as a precaution to prevent evaporation and isotopic
+     fractionation. Samples were returned to the Chesapeake Biological
+     Laboratory of the University of Maryland Center for Environmental Science.
+     Water samples were analyzed by equilibration with carbon dioxide using
+     a Thermo Fisher Gas Bench II peripheral linked to a continuous flow
+     Delta V Plus isotope ratio mass spectrometer.
+     The oxygen isotope composition is referenced to Vienna-Standard
+     Mean Ocean Water (V-SMOW):
+           (V-SMOW):  d18O =  ((Rsample-Rstandard) / Rstandard) *1000 per mille,
+     where R=18O/16O and V-SMOW is Vienna Standard Mean Ocean Water, as
+     distributed by the International Atomic Energy Agency.
+     Analytical precision was better than  �0.1 per mille and was assessed by
+     analysis of in-house water standards during sample analysis and
+     calibration to international water isotope standards (V-SMOW, V-SLAP,
+     GISP). Data corrections were made based upon analysis of the in-house
+     standards relative to international standards, which were normalized
+     as per recommendations of Paul et al. [2007].
+     Data provided by Lee Cooper (UMCES)
+
+     DIC/Alkalinity samples were collected in 500 mL glass reagent bottles, preserved
+     with 100 microliters of HgCl2, glass stoppers sealed with grease and tape.
+     Total inorganic carbon and alkalinity were both analyzed from the same bottle
+     about 6 months after collection.
+     Total Inorganic Carbon method used: Coulometric titration
+     Alkalinity method used: Potentiometric titration
+     Reference:  Dickson, A.G., Sabine, C.L. and Christian, J.R. (Eds.) 2007.
+     For more information including replicate analyses see document
+     "2017-93 DIC and Alk data v2019-05-29.xlsx".
+
+     There are three sets of extracted chlorohpyll samples.
+     The following comments refer to Chlorophyll:Extracted
+     These samples were collected between Victoria and Dutch Harbor.
+     Samples were filtered onto 25mm GF/F filters and stored in glass scintillation
+     vials at -20C pior to analysis which was done at the Institute of Ocean Sciences
+     on August 8 & 9, 2016.
+     Samples were extracted in 90% HPLC grade acetone at -20C for 24 hours and
+     analyzed on a Turner 10AU fluorometer calibrated with commercially pure
+     chlorophyll a standard (Sigma).
+     Fluorescence readings taken before and after acidification were used to
+     calculate chlorophyll and phaeopigment concentrations (Holm-Hansen et al 1965).
+     Chlorophyll samples were analyzed at IOS in Room 2423 within 5 weeks of the cruise.
+     The average of two samples is reported. Variability is assessed as the
+     CV% (std dev / mean*100).
+     Flags and comments apply to chlorophyll values only.
+
+     There are 3 sets of extracted chlorohpyll samples.
+     The following comments refer to Chlorophyll:Extracted2
+     These samples were collected between Dutch Harbour and Barrow.
+     Chlorophyll samples were filtered onto 25mm GF/F filters and stored
+     in glass scintillation vials. Filters were frozen at -20�C initially  to
+     fracture cell membranes, then 10 mL of 90% acetone was added and
+     samples stored in the dark for 24 hours at 2�C. Chlorophyll
+     concentration in acetone was then analyzed shipboard on a Turner 10AU
+     fluorometer without acidification (Welschmeyer, 1994). The fluorometer
+     was calibrated with a pure chlorophyll-a standard obtained from Turner
+     Designs, (Turner Designs Part No.10-850) before and after all
+     sampling, with use of a secondary solid standard (Part No.10-AU-904)
+     during sampling to identify any possible instrument drift.
+     Data provided by Lee Cooper (UMCES).
+
+     There are 3 sets of extracted chlorohpyll samples.
+     The following comments refer to Chlorophyll:Extracted3
+     These samples were collected between Dutch Harbour and Barrow.
+     The following comments refer to Chlorophyll:Extracted3
+     These samples were provided by K. Frey, Clark University (July 25, 2016).
+
+     Suspended Particulate Material: To measure SPM, 0.7 �m GF/F glass fiber
+     filters were rinsed with 500 mL of Milli-Q (18 O) water, dried, combusted
+     (4-6 hours at 450 �C), and pre-weighed. SPM samples were filtered using
+     1000 mL of seawater.  Samples were then dried at 55 �C for at least an
+     hour before being sealed and shipped to Clark University to be re-weighed.
+     Data provided by K. Frey, Clark University (July 25, 2016).
+
+     Water samples for chromophoric dissolved organic carbon (CDOM) analysis
+     were filtered using pre-rinsed (10% HCl and then Milli-Q (18 O-ohms) water)
+     0.2 �m Whatman nuclepore polycarbonate track-etched membranes immediately
+     after rosette sampling.  CDOM samples were stored in the dark at 4�C in
+     acid washed (10% HCl), pre-combusted (450�C for 6 hours) foil-covered
+     Qorpack clear glass bottles and analyzed shipboard within 24 hours.
+     Data provided by K. Frey, Clark University (July 25, 2016).
+
+     For more detail on rosette sampling see file 2017-093_SWL_Chem and Logs*.xlsx.
+
+     References:
+     1. Barwell-Clarke, J. and Whitney, F. 1996. Institute of Ocean Sciences
+     Nutrient Methods and Analysis. Canadian Technical Report of Hydrography
+     and Ocean Sciences, No. 182, 43 pp.
+     2. Dickson, A. 2001. Reference materials for oceanic measurements.
+     Oceanography. 14(4):21-22.
+     3. Dickson, A.G., Afghan, J.D., Anderson, G.C. 2003. Reference for oceanic CO2
+     analysis: a method for the certification of total alkalinity. Mar. Chem.
+     80(2-3):185-197.
+     4. Dickson, A.G., Sabine, C.L. and Christian, J.R. (Eds.) 2007. Guide to best
+     practices for ocean CO2 measurements. PICES Special Publication 3, 191 pp.
+     5. Froelich, P.N. and M.E.Q. Pilson. 1978. Systematic absorbance error with
+     Technicon AutoAnalyzer II colorimeter. Water Res. 12:599-603.
+     6. Johnson, K.M., Wills, K.D., Butler, D.B., Johnson, W.K. and Wong, C.S. 1993.
+     Coulometric total carbon dioxide analysis for marine studies: maximizing
+     the performance of an automated gas extraction system and coulometric
+     detector. Mar. Chem. 44:167-187.
+     7. Paul, D., G. Skrzypek, and I. Forizs. 2007. Normalization of measured
+     stable isotopic compositions to isotope reference scales - a review.
+     Rapid Communications in Mass Spectrometry 21 (18): 3006-3014.
+     8. Welschmeyer, N.A. 1994. Fluorometric analysis of chlorophyll a
+     in the presence of chlorophyll b and pheopigments. Limnology and
+     Oceanography  39 1985-1992.
+     9. Carpenter, J.H. 1965. The Chesapeake Bay Institute Technique for the
+     Winkler Dissolved Oxygen Method. Limmnol. & Oceanogr., 10: 141-143.
+     10. Culberson, C.H. 1991. Dissolved oxygen. WOCE Hydrographic
+     Programme Operations and Methods (July 1991). 15pp.
+       * For PDF versions of these papers see folder
+    \\Cruise_Data\DOCUMENTS\Analysis Reference Papers
+
+     Data Processing Notes:
+     ----------------------
+     Transmissivity, Fluorescence: SeaPoint, PAR and PAR:Reference are nominal and unedited
+     except that some records were removed in editing temperature and salinity.
+
+     Channel Oxygen:Dissolved:SBE was recalibrated based on bottles samples taken in the Pacific
+     Ocean section of the cruise.
+
+     The bottle comparison indicated that the primary salinity was very close to bottles and
+     a post-cruise calibration showed it to be low by about 0.001psu. No recalibration was
+     applied.
+
+     CTD data were examined using a graphical editor. There are many unstable features in the
+     T-S plots. Where these appeared to be due to corruption by shed wakes or ship effects the
+     records were removed. Many small unstable features did not appear to be due to such effects
+     or instrumental error and were left unedited.
+
+     For further processing details see the processing report 2017-093_Processing_Report.doc.
+
+     ---------------------------------------------------------------------------------------
+     This research cruise is part of the Distributed Biological Observatory (DBO) programme,
+     which is an international effort to make repeat oceanographic observations at chosen
+     stations in the Bering and Chukchi Seas and in Barrow Canyon. It is also a continuation
+     of the Canada Three Oceans project �C3O� which was part of Canada�s contribution to the
+     International Polar Year (IPY) research effort. Collaborators include University of
+     Maryland, Center for Environmental Science (UMCES), Clark University and NOAA in the US
+     and the University of Victoria and the University of British Columbia in Canada.
+     Principle investigator Lee Cooper (UMCES) has provided nutrients, O18 and Chl-a data to
+     be included in the chemistry data set.
+     ---------------------------------------------------------------------------------------
+
+*CALIBRATION
+
+    $TABLE: CORRECTED CHANNELS
+    !   Name                   Units  Fmla Pad    Coefficients
+    !   ---------------------- ------ ---- ------ ------------
+        Oxygen:Dissolved:SBE   mL/L     10 -99    () (0.271E-01 1.0203)
+    $END
+!1- 2- --3--- --4--- ---5---- ----6---- --7-- ---8--- --9--- --10-- ---11--- --12-- --13- -14- -15- ---16--- 17 --18-- 19 --20-- 21 ---22-- 23 --24-- --25-- --26-- --27-- --28-- --29-- --30-- --31-- ---32-- ---33-- ---34-- ---35-- ---36-- ---37-- ---38-- ---39-- ---40-- ---41-- ---42-- ---43-- ---44-- ---45--
+!Bo Bo Pressu Depth  Temperat Conductiv Trans Fluores  PAR   PAR:   Salinity Oxygen Oxyge Samp Numb Salinity Fl Nitrat Fl Silica Fl Phospha Fl Chloro Nitrat Silica Phosph Ammoni Oxygen Chloro Phaeo-   SPM   CDOM_   CDOM_   CDOM_   CDOM_   CDOM_   CDOM_   CDOM_   CDOM_   CDOM_   CDOM_   CDOM_   CDOM_   CDOM_  
+!tt tt re            ure:     ity:      missi cence:         Refere :T0:C0   :      n:    le_  er_o :Bottle  ag e_     ag te     ag te      ag phyll: e_     te2    ate2   um     :      phyll: Pigmen         a250    a254    a350    a365    a375    a412    a440    a443    a250:   S290-   S275-   S350-   S275-  
+!~u ~i               Primary  Primary   vity  URU:           nce             Dissol Disso Numb ~bin          ~o plus_  ~t        ~i         ~p Extrac plus_                       Isotop Extrac t:                                                                             a365    350     295     400     295:   
+!mb ti                                        Seapoin                        ved:   lved: er   _rec          tt Nitrit ri        ca         ha ted2   Nitrit                      e:18   ted3   Extrac                                                                                                         S350-  
+!er on                                        t                              SBE    SBE        ords          le e      te        te         te        e2                                        ted3                                                                                                           400    
+!-- -- ------ ------ -------- --------- ----- ------- ------ ------ -------- ------ ----- ---- ---- -------- -- ------ -- ------ -- ------- -- ------ ------ ------ ------ ------ ------ ------ ------ ------- ------- ------- ------- ------- ------- ------- ------- ------- ------- ------- ------- ------- -------
+*END OF HEADER
+ 10  9    5.2    5.1   6.7923  3.284412  45.1   1.423  190.3  823.5  32.5165   9.62 418.9  534   54  32.5297 0    0.00 0    4.65 6    0.280 6    3.63   1.08   4.53   0.29   0.27  -1.08 -99.00 -99.00   8.293  1.1370  1.0679  0.1237  0.0776  0.0546  0.0315  0.0085  0.0085 14.6523 -0.0229 -0.0294 -0.0279  1.0534
+ 11 10    5.3    5.3   6.8228  3.286894  45.1   1.321  181.4  822.1  32.5147   9.59 417.6  535  241 -99.0000 0  -99.00 0  -99.00 0  -99.000 0  -99.00 -99.00 -99.00 -99.00 -99.00 -99.00   2.61   0.40 -99.000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000  0.0000
+  9  8   15.4   15.2   5.3378  3.165373  34.7   3.805   21.3  830.9  32.5773   9.83 428.0  533  241 -99.0000 0  -99.00 0  -99.00 0  -99.000 0  -99.00 -99.00 -99.00 -99.00 -99.00 -99.00 -99.00 -99.00 -99.000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000  0.0000
+  8  7   15.4   15.3   5.3300  3.164782  35.9   3.734   21.5  831.6  32.5782   9.84 428.3  532   84  32.6505 0    3.74 6   11.28 6    0.897 6   15.08   6.53  10.09   0.80   0.61  -1.05  16.82   2.08   9.760  1.8752  1.7600  0.2938  0.2324  0.2016  0.1556  0.1095  0.1095  8.0703 -0.0174 -0.0244 -0.0116  2.1006
+  6  5   25.3   25.0   3.6499  3.033556  20.4   7.082    0.2  837.5  32.7051   7.07 307.8  530   48  32.7322 0    9.74 0   19.93 0    1.445 0   18.12  10.40  19.06   1.31   1.34  -1.02  18.22   1.80  10.280  1.5868  1.4640  0.1743  0.1282  0.1052  0.0591  0.0131  0.0131 12.3753 -0.0227 -0.0278 -0.0191  1.4582
+  7  6   25.3   25.0   3.6536  3.033888  21.1   6.578    0.2  837.6  32.7053   7.06 307.4  531  241 -99.0000 0  -99.00 0  -99.00 0  -99.000 0  -99.00 -99.00 -99.00 -99.00 -99.00 -99.00 -99.00 -99.00 -99.000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000  0.0000
+  5  4   34.6   34.3   3.6569  3.036616  11.8   3.584    0.0  846.9  32.7296   6.93 301.5  529  241 -99.0000 0  -99.00 0  -99.00 0  -99.000 0  -99.00 -99.00 -99.00 -99.00 -99.00 -99.00 -99.00 -99.00 -99.000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000  0.0000
+  4  3   34.6   34.3   3.6568  3.036608  11.6   3.471    0.0  848.3  32.7297   6.92 301.3  528   51  32.7313 0   10.48 6   26.55 6    1.596 6    9.04  11.10  24.62   1.59   2.37  -0.94  10.35   2.26  12.403  2.1280  2.0052  0.4622  0.3931  0.3701  0.2780  0.2165  0.2089  5.4134 -0.0146 -0.0208 -0.0088  2.3763
+  3  2   45.4   45.0   3.6818  3.039717   5.3   3.281    0.0  861.3  32.7359   6.77 294.9  527  241 -99.0000 0  -99.00 0  -99.00 0  -99.000 0  -99.00 -99.00 -99.00 -99.00 -99.00 -99.00 -99.00 -99.00 -99.000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000  0.0000
+  2  1   45.5   45.0   3.6825  3.039779   5.2   3.143    0.0  864.1  32.7359   6.78 295.1  526   63  32.7423 0   10.47 6   27.94 6    1.609 6    8.16  13.20  25.40   1.61   2.72  -1.13   5.85   3.36  12.763  2.1056  1.9674  0.4244  0.3323  0.2939  0.2171  0.1557  0.1557  6.3369 -0.0144 -0.0211 -0.0123  1.7125
+  1 24   45.5   45.0   3.6827  3.039793   5.4   3.221    0.0  865.6  32.7359   6.79 295.5  -99  241 -99.0000 0  -99.00 0  -99.00 0  -99.000 0  -99.00 -99.00 -99.00 -99.00 -99.00 -99.00 -99.00 -99.00 -99.000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000-99.0000  0.0000
