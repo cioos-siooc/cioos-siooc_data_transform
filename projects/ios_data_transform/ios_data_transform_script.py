@@ -53,6 +53,7 @@ if __name__ == "__main__":
     )
 else:
     logger = logging.getLogger(__name__)
+    logger = logging.LoggerAdapter(logger,extra={"file":None})
 
 
 MODULE_PATH = os.path.dirname(__file__)
