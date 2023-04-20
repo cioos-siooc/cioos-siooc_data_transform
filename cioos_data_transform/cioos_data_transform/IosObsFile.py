@@ -308,7 +308,8 @@ class ObsFile(object):
         elif "ADT" in date_string.upper():
             date_obj = timezone("UTC").localize(date_obj + timedelta(hours=3))
         else:
-            raise Exception("Problem finding the timezone information->", self.filename)
+            logger.warning("Problem finding the timezone from->'%s' will default to UTC ", date_string)
+            date_obj = timezone("UTC").localize(date_obj)
 
         logger.debug("Date obj with timezone info: %s", date_obj)
         # convert all datetime to utc before writing to netcdf file
