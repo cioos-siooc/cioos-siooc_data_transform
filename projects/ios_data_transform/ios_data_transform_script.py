@@ -192,15 +192,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--geojson_file",
         dest="geojson_file",
+        default= os.path.join(MODULE_PATH,'ios_polygons.geojson'),
         help="Geojson File used to defined the geographical areas",
     )
     args = parser.parse_args()
-    opt, ftype = args.opt, args.ftype
-
-    config = cioos_utils.read_config(f"config_{ftype}.json")
-    config["raw_folder"] = args.raw_folder or config.get("raw_folder")
-    config["nc_folder"] = args.nc_folder or config.get("nc_folder")
-    config["geojson_file"] = args.geojson_file or config.get("geojson_file")
+    inputs = {key:value for key,value in args.__dict__.items() if value}
+    opt, ftype = inputs.pop('opt'), inputs.pop('ftype')
+    config = cioos_utils.read_config(f"config_{ftype}.json",**inputs)
 
     logger.debug("Inputs from config file: %s", config)
     start = time()

@@ -23,12 +23,16 @@ def is_in(keywords, string):
     return any([string.upper().find(z.upper()) >= 0 for z in keywords])
 
 
-def read_config(config_file):
+def read_config(config_file, **kwargs):
     # read json file with information on dataset etc.
     with open(config_file) as fid:
         config = json.load(fid)
+    # Add kwargs inputs
+    if kwargs:
+        config.update(kwargs)
+
     if config.get("geojson_file"):
-        config["geographical_areas"] = read_geojson(config["geojson_file"])
+        config["geographic_area"] = read_geojson(config["geojson_file"])
 
     return config
 
