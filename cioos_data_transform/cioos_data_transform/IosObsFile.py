@@ -1026,7 +1026,7 @@ class ObsFile(object):
                             len([var for var in ds_sub if var.startswith(new_var[:-1])])
                             + 1
                         )
-                        logging.warning(
+                        logger.warning(
                             "Duplicated variable from sub variables: %s, renamed %s",
                             new_var,
                             update_variable_index(new_var, new_index),
