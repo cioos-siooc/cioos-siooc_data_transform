@@ -52,7 +52,6 @@ def write_ios_ncfile(output_path, fdata, config):
 def run_batch_conversion(
     input_path=None, output_path=None, config_input=None, recursive=None
 ):
-
     config = read_config(config_input)
     input_path = input_path or os.path.join(config["raw_folder"], config["files"])
     output_path = output_path or config.get("nc_folder")
@@ -77,7 +76,6 @@ def run_batch_conversion(
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser(
         prog="Convert IOS files to NetCDF",
         description="Run conversion of netcdf files",

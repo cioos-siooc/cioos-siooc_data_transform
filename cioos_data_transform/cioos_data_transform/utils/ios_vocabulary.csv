@@ -77,7 +77,7 @@ ios_file_extension,ios_name,accepted_units,accepted_instrument_type,apply_func,l
 ,conductance:specific,mS\/cm,,,Conductance Specific,,mS/cm,,,,,,
 ,conductivity,Ratio,,,Conductivity,,Ratio,,,,,,
 ,conductivity,counts|count,,,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,count,,,,,,CNDCZZ01
-,conductivity,ms\/cm|mS\/cm,,lambda x: x/10,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,S/cm,,SDN:P01::CNDCZZ01,Electrical conductivity of the water body,,,CNDCST01
+,conductivity,ms\/cm|mS\/cm,,lambda x: x/10,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,mS/cm,,SDN:P01::CNDCZZ01,Electrical conductivity of the water body,,,CNDCST01
 ,conductivity,s\/m|S\/m,,,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCZZ01,Electrical conductivity of the water body,,,CNDCST01
 ,conductivity:primary,S\/m,,,Conductivity Primary,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCST01,Electrical conductivity of the water body by CTD,,,CNDCST01
 ,conductivity:primary,mS\/cm,,lambda x: x/10,Conductivity Primary,sea_water_electrical_conductivity,mS/cm,,SDN:P01::CNDCST01,Electrical conductivity of the water body by CTD,,,CNDCST01
@@ -224,9 +224,9 @@ ane,iss_reception,None,,,ISS Reception,,,,,,,,
 ,nitrogen:total:dissolved,uM,,,Nitrogen Total Dissolved,mole_concentration_of_dissolved_nitrogen_in_sea_water,uM,,,,,,
 ,ntu,,,,Turbidity,sea_water_turbidity,NTU,,SDN:P01::TURBXXXX,Turbidity of water in the water body,,,TURBXXXX
 ,number_of_bin_records,None,,,,,,,,,,,
-,oxygen,mg\/l,,lambda x: x*22.319/31.998,Oxygen,mass_concentration_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
+,oxygen,mg\/l,,lambda x: x*22.319/31.998,Oxygen,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen,ml\/l|mL\/L,,,Oxygen concentration,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
-,oxygen,umol\/L|mmol\/m,,,Oxygen concentration,mole_concentration_of_dissolved_molecular_oxygen_in_sea_water,umol/L,,SDN:P01::DOXMZZ01,,,,DOXY01
+,oxygen,umol\/L,,lambda x: x*0.022391,Oxygen concentration,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen,umol\/kg,,,Oxygen concentration,moles_of_oxygen_per_unit_mass_in_sea_water,umol/kg,,,,,,DOXMZZ01
 ,oxygen:dissolved,L\/L,,,,volume_fraction_of_oxygen_in_sea_water,L/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen:dissolved,mL\/L,,,Oxygen Dissolved,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
@@ -332,11 +332,10 @@ tob,direction:ship,degrees,,,Platform Speed Direction,platform_course,degrees,,S
 ane,speed:gust,m\/s,,,Speed Gust,,,,,,,,
 ane,speed:gust:1,m\/s,,,Speed Gust 1,,m/s,,,,,,
 ane,speed:gust:2,m\/s,,,Speed Gust 2,,m/s,,,,,,
-,speed:sound,m,,,,speed_of_sound_in_sea_water,m,,SDN:P01::SVELXXXX,Sound velocity in the water body,,,SVELXXXX
 ,speed:sound,m/s,,,,speed_of_sound_in_sea_water,m/s,,SDN:P01::SVELXXXX,Sound velocity in the water body,,,SVELXXXX
-,speed:sound,,,,speed_of_sound_in_sea_water,m/s,,,,,,,SVELCV01
-,speed:sound:1,,,,speed_of_sound_in_sea_water,m/s,,,,,,,SVELCV01
-,speed:sound:2,,,,speed_of_sound_in_sea_water,m/s,,,,,,,SVELCV02
+,speed:sound,,,,speed_of_sound_in_sea_water,m/s,,,SDN:P01::SVELXXXX,Sound velocity in the water body,,,SVELXXXX
+,speed:sound:1,,,,speed_of_sound_in_sea_water,m/s,,,SDN:P01::SVELXXXX,Sound velocity in the water body,,,SVELXXXX
+,speed:sound:2,,,,speed_of_sound_in_sea_water,m/s,,,SDN:P01::SVELXXXX,Sound velocity in the water body,,,SVELXXX2
 ,speed:up,,,,upward_sea_water_velocity,cm/s,,,,,,,LRZASP01
 ane,speed:wind,m\/s,,,Speed Wind,,m/s,,,,,,
 ane,speed:wind:1,m\/s,,,Speed Wind 1,,m/s,,,,,,

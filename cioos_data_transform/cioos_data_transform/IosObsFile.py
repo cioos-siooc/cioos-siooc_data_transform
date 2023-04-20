@@ -632,7 +632,6 @@ class ObsFile(object):
             return 0
 
     def add_ios_vocabulary(self, vocab=None):
-
         vocabulary_attributes = [
             "ios_name",
             "long_name",
@@ -676,7 +675,6 @@ class ObsFile(object):
         for id, (name, units) in enumerate(
             zip(self.channels["Name"], self.channels["Units"])
         ):
-
             # Drop trailing spaces and commas
             name = re.sub(r"^\'|[\s\']+$", "", name.lower())
             units = re.sub(r"^\'|[\s\']+$", "", units)
@@ -816,7 +814,7 @@ class ObsFile(object):
             else None,  # TODO missing file_remarks
             "remarks": str(self.remarks) if self.remarks else None,
             "history": str(self.history) if hasattr(self, "history") else None,
-            "geographical_area": self.geo_code if hasattr(self, "geo_code") else None,
+            "geographic_area": self.geo_code if hasattr(self, "geo_code") else None,
             "headers": json.dumps(
                 self.get_complete_header(), ensure_ascii=False, indent=False
             ),
@@ -830,7 +828,6 @@ class ObsFile(object):
         }
 
     def get_geospatial_attributes(self):
-
         return {}
 
     def to_xarray(
@@ -860,7 +857,7 @@ class ObsFile(object):
             return attrs
 
         def _flag_bad_values(dataset):
-            bad_values = [-9.99, -99.9]
+            bad_values = [-9.99, -99.9, -99.0]
             var_with_bad_values = [
                 var
                 for var, values in (dataset.isin(bad_values)).any().items()
@@ -1011,7 +1008,6 @@ class ObsFile(object):
 
             # Generate vocabulary variables
             for new_var_attrs in row["matching_vocabularies"]:
-
                 new_var = new_var_attrs.pop("rename", row[col_name])
 
                 # if variable already exist from a different source variable
