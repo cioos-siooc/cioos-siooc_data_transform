@@ -753,7 +753,7 @@ class ObsFile(object):
                 "Date",
             ):
                 continue
-            elif re.match(r"Date[\s\t]*($|YYYY/MM/DD)", chan.strip()):
+            elif re.match(r"Date[\s\t]*($|YYYY/MM{1,2}/D{1,2})", chan.strip()):
                 logger.warning("Rename variable '%s' -> 'Date'", chan)
                 rename_channels[id] = "Date"
             elif re.match(r"Time[\s\t]*($|HH:MM:SS)", chan.strip()):
