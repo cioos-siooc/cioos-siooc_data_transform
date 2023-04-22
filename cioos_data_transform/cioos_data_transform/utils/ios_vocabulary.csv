@@ -377,11 +377,10 @@ ane,temperature:air:low,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(
 ,temperature:cur,deg C \(IPTS68\),,,Sea Water Temperature,sea_water_temperature,degrees_celsius (IPTS-68),,,,,,TEMPP681
 ,temperature:cur,deg c|degc,,,Sea Water Temperature,sea_water_temperature,degrees_celsius,,,,,,TEMPPR01
 ,temperature:cur:high_res,deg C \(IPTS68\),,,Sea Water Temperature (High Resolution),sea_water_temperature,degrees_celsius (IPTS-68),,,,,,TEMPP682
-,temperature:cur:high_res,deg c|degc,,,Sea Water Temperature (High Resolution),sea_water_temperature,degrees_celsius,,,,,,TEMPPR02
+,temperature:cur:high_res,deg c|degc,,,Seao Water Temperature (High Resolution),sea_water_temperature,degrees_celsius,,,,,,TEMPPR02
 ,temperature:cur:low_res,deg C \(IPTS68\),,,Sea Water Temperature (Low Resolution),sea_water_temperature,degrees_celsius (IPTS-68),,,,,,TEMPP683
 ,temperature:cur:low_res,deg c|degc,,,Sea Water Temperature (Low Resolution),sea_water_temperature,degrees_celsius,,,,,,TEMPPR03
 ,temperature:draw,deg C (ITS90),,,,sea_water_temperature,degrees_celsius (ITS-90),,,,,,
-,temperature:draw,deg C \(ITS90\),,,Temperature Draw,,degrees_celsius (ITS-90),,,,,,
 ane,temperature:heat_index,deg C,,,Temperature Heat Index,,degrees_celsius,,,,,,
 ane,temperature:heat_index,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Heat Index,,degrees_celsius (ITS-90),,,,,,
 ane,temperature:heat_index:inside,deg C,,,Temperature Heat Index Inside,,degrees_celsius,,,,,,
