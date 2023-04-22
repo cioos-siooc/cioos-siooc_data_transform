@@ -233,7 +233,7 @@ ane,iss_reception,None,,,ISS Reception,,,,,,,,
 che,oxygen:dissolved,mL\/L,,,Oxygen Dissolved,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYWITX,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by Winkler titration,,,DOXYWITX
 ,oxygen:dissolved:ysi,mL\/L,,,Oxygen Dissolved,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen:dissolved,mg\/L,,,Oxygen Dissolved,mass_concentration_of_oxygen_in_sea_water,mg/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
-,oxygen:dissolved,umol\/L,,,Oxygen Dissolved,mole_concentration_of_dissolved_molecular_oxygen_in_sea_water,umol/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01_mg
+,oxygen:dissolved,umol\/L,,lambda x: x*0.022391,Oxygen Dissolved,volume_fraction_of_oxygen_in_sea_water,,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen:dissolved,umol\/kg,,,Oxygen Dissolved,moles_of_oxygen_per_unit_mass_in_sea_water,umol/kg,,SDN:P01::DOXMZZ01,,,,DOXMZZ01
 ,oxygen:dissolved2,mL\/L,,,Oxygen Dissolved2,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ02,,,,DOXYZZ02
 ,oxygen:dissolved:bottle:mass [ml/l],umol\/kg,,,Oxygen Dissolved Bottle Mass,moles_of_oxygen_per_unit_mass_in_sea_water,umol/kg,,,,,,
@@ -320,7 +320,7 @@ che,oxygen:dissolved,mL\/L,,,Oxygen Dissolved,volume_fraction_of_oxygen_in_sea_w
 ,sigma-t,kg\/m\^3,,,Sigma-theta,sea_water_sigma_t,kg/m^3,,SDN:P01::SIGTPR01,Sigma-theta of the water body by CTD and computation from salinity and potential temperature using UNESCO algorithm,,,SIGTEQST
 ,sigma-t:ctd,Kg\/m\^3,,,Sigma-t CTD,,Kg/m^3,,,,,,
 ubc,sigma-t,None,,,Sigma-t,sea_water_sigma_t,kg/m^3,,SDN:P01::SIGTPR01,Sigma-theta of the water body by CTD and computation from salinity and potential temperature using UNESCO algorithm,,,SIGTEQST
-,silicate,microg-at/l|ug-at\/L|umol\/L|umol\/l|umol\/L|mmol\/m,,,Silicate,mole_concentration_of_silicate_in_sea_water,umol/l,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
+,silicate,microg-at/l|ug-at\/L|umol\/L|umol\/l|umol\/L|mmol\/m,,,Silicate,mole_concentration_of_silicate_in_sea_water,umol/L,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
 ,silicate2,umol\/L,,,Silicate2,mole_concentration_of_silicate_in_sea_water,umol/L,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZX2
 ,silicate:acidified,umol\/L,,,Silicate Acidified,mole_concentration_of_silicate_in_sea_water,umol/L,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
 ,silicate:corrected,umol\/L,,,Silicate Corrected,mole_concentration_of_silicate_in_sea_water,umol/L,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
