@@ -177,7 +177,7 @@ tob,fluorescence:range,Volts|volts,,,,,,,,,,,
 ,hplc:zea,mg\/m\^3,,,HPLC Zea,,mg/m^3,,SDN:P01::ZEAXMHP1,"Concentration of zeaxanthin {CAS 144-68-3} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,ZEAXMHP1
 ,humidity:relative,%,,,Humidity Relative,,%,,,,,,
 ,humidity:relative:inside,%,,,Humidity Relative Inside,,%,,,,,,
-,hydrogen-sulphide,microg-at\/l,,,Hydrogen-sulphide,,umol/l,,SDN:P01::H2SXZZXX,Concentration of hydrogen sulphide {H2S CAS 7783-06-4} per unit volume of the water body [dissolved plus reactive particulate phase],,,H2SXZZXX
+,hydrogen-sulphide,microg-at\/l,,,Hydrogen-sulphide,,umol/L,,SDN:P01::H2SXZZXX,Concentration of hydrogen sulphide {H2S CAS 7783-06-4} per unit volume of the water body [dissolved plus reactive particulate phase],,,H2SXZZXX
 ,hydrogen_sulfide,umol\/L,,,Hydrogen Sulfide,mole_concentration_of_hydrogen_sulfide_in_sea_water,umol/L,,SDN:P01::H2SXZZXX,Concentration of hydrogen sulphide {H2S CAS 7783-06-4} per unit volume of the water body [dissolved plus reactive particulate phase],,,H2SXZZXX
 ,ins:location,,,,INS LOCATION,,,,,,,,
 ,instr_depth,,,,Instrument Depth,instrument_depth,,,,,,,
@@ -212,8 +212,7 @@ ane,iss_reception,None,,,ISS Reception,,,,,,,,
 ,nitrate_plus_nitrite:isus,umol\/L,,,Nitrate plus nitrite ISUS,mole_concentration_of_nitrate_and_nitrite_in_sea_water,umol/L,,SDN:P01::NTRZAAZX,Concentration of nitrate+nitrite {NO3+NO2} per unit volume of the water body [unknown phase] by colorimetric autoanalysis,,,NTRZAAZX
 ,nitrate_plus_nitrite:isus,volts|Volts,,,Nitrate plus nitrite ISUS,,volts,,,,,,
 ,nitrate_plus_nitrite:isus:voltage,Volts,,,Nitrate plus nitrite ISUS Voltage,,Volts,,,,,,
-,nitrite,microg-at\/l,,,Nitrite,,umol/l,,,,,,
-,nitrite,umol\/L|mmol\/m,,,Nitrite,mole_concentration_of_nitrite_in_sea_water,umol/L,,SDN:P01::NTRIZZXX,Concentration of nitrite {NO2- CAS 14797-65-0} per unit volume of the water body [unknown phase],,,NTRIZZXX
+,nitrite,umol\/L|mmol\/m|microg-at\/l,,,Nitrite,mole_concentration_of_nitrite_in_sea_water,umol/L,,SDN:P01::NTRIZZXX,Concentration of nitrite {NO2- CAS 14797-65-0} per unit volume of the water body [unknown phase],,,NTRIZZXX
 ,nitrogen:dissolved:organic,umol\/L,,,Nitrogen Dissolved Organic,mole_concentration_of_dissolved_organic_nitrogen_in_sea_water,umol/L,,SDN:P01::MDMAP009,Concentration of organic nitrogen {organic_N} {DON} per unit volume of the water body [dissolved plus reactive particulate <unknown phase],,,MDMAP009
 ,nitrogen:particulate:organic,mg\/m\^3,,,Nitrogen Particulate Organic,,mg/m^3,,SDN:P01::NTOTCNPZ,Concentration of total nitrogen {total_N} {PON} per unit volume of the water body [particulate >unknown phase] by filtration and elemental analysis,,,NTOTCNPZ
 ,nitrogen:particulate:organic,mg\/m\^3,,,Nitrogen Particulate Organic,,mg/m^3,,SDN:P01::NTOTZZZZ,Concentration of total nitrogen {total_N} {PON} per unit volume of the water body [particulate >unknown phase],,,NTOTZZZZ
@@ -249,7 +248,7 @@ che,oxygen:dissolved,mL\/L,,,Dissolved Oxygen,volume_fraction_of_oxygen_in_sea_w
 ,oxygen:dissolved:saturation:upcast,mL\/L,,,Dissolved Oxygen Saturation Upcast,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen:dissolved:sbe,mL\/L,,,Dissolved Oxygen SBE,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen:dissolved:sbe,umol\/kg,,,Dissolved Oxygen SBE,moles_of_oxygen_per_unit_mass_in_sea_water,umol/kg,,SDN:P01::DOXMZZ01,,,,DOXMZZ01
-,oxygen:dissolved:sbe,umol\/l,,,Dissolved Oxygen SBE,mole_concentration_of_dissolved_molecular_oxygen_in_sea_water,umol/l,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
+,oxygen:dissolved:sbe,umol\/l,,,Dissolved Oxygen SBE,mole_concentration_of_dissolved_molecular_oxygen_in_sea_water,umol/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen:dissolved:volume:ctd,mL\/L,,,Dissolved Oxygen Volume CTD,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen:dissolved:volume:sbe,mL\/L,,,Dissolved Oxygen Volume SBE,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen:dissolved:weiss,mL\/L,,,Dissolved Oxygen Weiss,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
@@ -269,7 +268,7 @@ che,oxygen:dissolved,mL\/L,,,Dissolved Oxygen,volume_fraction_of_oxygen_in_sea_w
 ,phaeo-pigment:extracted3,mg\/m\^3,,,Phaeo-Pigment Extracted3,mass_concentration_of_phaeopigments_in_sea_water,mg/m^3,,SDN:P01::PHAEFLPZ,"Concentration of phaeopigments {pheopigments} per unit volume of the water body [particulate >unknown phase] by filtration, acetone extraction and fluorometry",,,PHAEFLPZ
 ,phaeo-pigment:extracted:0.3um,mg\/m\^3,,,Phaeo-Pigment Extracted 0.3um,mass_concentration_of_phaeopigments_in_sea_water,mg/m^3,,,,,,
 ,phaeo-pigment:extracted:bottle,mg\/m\^3,,,Phaeo-Pigment Extracted Bottle,,mg/m^3,,,,,,
-,phosphate,microg-at\/l|ug-at\/L|umol\/L|mmol\/m,,,Phosphate,mass_concentration_of_phosphate_in_sea_water,umol/l,,SDN:P01::PHOSAAZX,Concentration of phosphate {PO43- CAS 14265-44-2} per unit volume of the water body [unknown phase] by colorimetric autoanalysis,,,PHOSAAZX
+,phosphate,microg-at\/l|ug-at\/L|umol\/L|mmol\/m,,,Phosphate,mass_concentration_of_phosphate_in_sea_water,umol/L,,SDN:P01::PHOSAAZX,Concentration of phosphate {PO43- CAS 14265-44-2} per unit volume of the water body [unknown phase] by colorimetric autoanalysis,,,PHOSAAZX
 ,phosphate(inorg),mmol\/m,,,Phosphate(inorg),mole_concentration_of_phosphate_in_sea_water,umol/L,,,,,,
 ,phosphate2,umol\/L,,,Phosphate2,mole_concentration_of_phosphate_in_sea_water,umol/L,,SDN:P01::PHOSAAZX,Concentration of phosphate {PO43- CAS 14265-44-2} per unit volume of the water body [unknown phase] by colorimetric autoanalysis,,,PHOSAAZ2
 ,phytoplankton:volume,mm\^3\/m\^3,,,Phytoplankton Volume,,mm^3/m^3,,,,,,
