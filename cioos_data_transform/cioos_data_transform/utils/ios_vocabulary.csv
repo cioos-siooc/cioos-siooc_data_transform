@@ -407,7 +407,8 @@ tob,temperature:lab,deg C \(ITS90\),,,Temperature Lab,,degrees_celsius (ITS-90),
 ,temperature:second,deg c \(ITS\-90\)|deg C \(ITS90\)|deg C \(ITS9|deg C|deg C \(ITS-90\),,,Temperature Second,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPPR02,Temperature of the water body by second sensor,,,TEMPPR02
 ,temperature:second,deg c \(ITS\-90\)|deg C \(ITS90\)|deg C \(ITS9|deg C|deg C \(ITS-90\),,,Temperature Second,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPP902,Temperature (ITS-90) of the water body,,,TEMPP902
 ,temperature:second,deg c \(ITS\-90\)|deg C \(ITS90\)|deg C \(ITS9|deg C|deg C \(ITS-90\),,,Temperature Second,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS902,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS902
-,temperature:secondary,deg C (IPTS68),,"lambda x: gsw.t90_from_t68(x)",Secondary Temperature,sea_water_temperature,degrees_celsius (IPTS-68),,SDN:P01::TEMPP902,Temperature (ITS-90) of the water body,,,TEMPP902
+,temperature:secondary,deg C (IPTS68),,"lambda x: gsw.t90_from_t68(x)",Secondary Temperature,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPP902,Temperature (ITS-90) of the water body,,,TEMPP902
+,temperature:secondary,deg C (IPTS68),,"lambda x: gsw.t90_from_t68(x)",Secondary Temperature,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS902,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS902
 ,temperature:secondary,deg C (IPTS68),,,Secondary Temperature,sea_water_temperature,degrees_celsius (IPTS-68),,SDN:P01::TEMPP682,,,,TEMPP682
 ,temperature:secondary,deg C (IPTS68),,,Secondary Temperature,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPPR02,Temperature of the water body by second sensor,,,TEMPPR02
 ,temperature:secondary,deg C (ITS90),,,Secondary Temperature,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPP902,Temperature (ITS-90) of the water body,,,TEMPP902
