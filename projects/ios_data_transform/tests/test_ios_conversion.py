@@ -139,6 +139,26 @@ class TestIOSConversion(unittest.TestCase):
         for fn in files:
             convert_any_files(f=fn, out_path=OUTPUT_PATH)
 
+    def test_ctd_moorings_files(self):
+        """Test to parse drf files to xarray and netCDF"""
+        files = glob(
+            fix_path("./projects/ios_data_transform/tests/test_files/ctd_mooring/*.*"),
+            recursive=True,
+        )
+        assert len(files) > 0, "No files found for conversion tests"
+        for fn in files:
+            convert_any_files(f=fn, out_path=OUTPUT_PATH)
+
+    def test_ctd_profile_files(self):
+        """Test to parse drf files to xarray and netCDF"""
+        files = glob(
+            fix_path("./projects/ios_data_transform/tests/test_files/ctd_profile/*.*"),
+            recursive=True,
+        )
+        assert len(files) > 0, "No files found for conversion tests"
+        for fn in files:
+            convert_any_files(f=fn, out_path=OUTPUT_PATH)
+
 
 @pytest.mark.parametrize(
     "file",
@@ -202,6 +222,12 @@ class TestIosScriptConversions(unittest.TestCase):
 
     def test_bot_script_conversion(self):
         run_script_on("bot", os.path.join(TEST_FILE_FOLDER, "bot"))
-    
+
+    def test_ctd_profiles_script_conversion(self):
+        run_script_on("ctd", os.path.join(TEST_FILE_FOLDER, "ctd_profile"))
+
+    def test_ctd_mooring_script_conversion(self):
+        run_script_on("mctd", os.path.join(TEST_FILE_FOLDER, "ctd_mooring"))
+
     def test_che_script_conversion(self):
         run_script_on("bot", os.path.join(TEST_FILE_FOLDER, "che"))
