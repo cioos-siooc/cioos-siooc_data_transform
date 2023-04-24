@@ -30,7 +30,6 @@ if __name__ == "__main__":
         event_level=logging.WARNING,  # Send errors as events
     )
 
-
     def before_send_to_sentry(event, hint):
         """Split different issues encountered in specific sentry fingerprints"""
         regex_event = "vocabulary|duplicated variables"
@@ -42,7 +41,6 @@ if __name__ == "__main__":
 
         return event
 
-
     sentry_sdk.init(
         dsn="https://23832428efb24e6d9344f4b5570ebfe3@o56764.ingest.sentry.io/4504816194551808",
         integrations=[
@@ -53,7 +51,7 @@ if __name__ == "__main__":
     )
 else:
     logger = logging.getLogger(__name__)
-    logger = logging.LoggerAdapter(logger,extra={"file":None})
+    logger = logging.LoggerAdapter(logger, extra={"file": None})
 
 
 MODULE_PATH = os.path.dirname(__file__)
@@ -133,9 +131,7 @@ def convert_files_threads(ftype, fname, config={}):
     if fdata.import_data():
         logger.debug("Imported data successfully!")
         if ftype not in TRACJECTORY_DATA_TYPES:
-            fdata.assign_geo_code(
-                config.get("geographic_area",{})
-            )
+            fdata.assign_geo_code(config.get("geographic_area", {}))
         out_path = config.get("nc_folder")
         # now try to write the file...
         yy = fdata.start_date[:4]
@@ -191,13 +187,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--geojson_file",
         dest="geojson_file",
-        default= os.path.join(MODULE_PATH,'ios_polygons.geojson'),
+        default=os.path.join(MODULE_PATH, "ios_polygons.geojson"),
         help="Geojson File used to defined the geographical areas",
     )
     args = parser.parse_args()
-    inputs = {key:value for key,value in args.__dict__.items() if value}
-    opt, ftype = inputs.pop('opt'), inputs.pop('ftype')
-    config = cioos_utils.read_config(f"config_{ftype}.json",**inputs)
+    inputs = {key: value for key, value in args.__dict__.items() if value}
+    opt, ftype = inputs.pop("opt"), inputs.pop("ftype")
+    config = cioos_utils.read_config(f"config_{ftype}.json", **inputs)
 
     logger.debug("Inputs from config file: %s", config)
     start = time()
