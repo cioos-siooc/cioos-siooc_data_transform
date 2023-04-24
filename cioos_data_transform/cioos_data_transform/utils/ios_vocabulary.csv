@@ -91,7 +91,7 @@ ios_file_extension,ios_name,accepted_units,accepted_instrument_type,apply_func,l
 ,degree_days:heating,deg C \(ITS\-90\) \(ITS90\) da|deg c \(ITS\-90\) day|deg C \(ITS-90\) day|deg C \(ITS-90\)day|deg C \(ITS9|deg C \(ITS90\) day,,,Degree Days Heating,,deg C (ITS-90) day,,,,,,
 ,degree_days:heating,deg C day,,,Heating Degree Days,,deg C day,,,,,,
 ,degree_days:heating,,,,Degree Days Heating,,,,,,,,
-,density,kg\/m\^3,,,Density,sea_water_density,kg/m^3,,SDN:P01::POTDENS0,Density (potential) of the water body by computation from salinity and potential temperature using UNESCO algorithm with 0 decibar reference pressure,,,POTDENS0
+,density,kg\/m\^3,,,Density,sea_water_density,kg/m^3,,SDN:P01::DENSWB01,Density of the water body by gravimetry,,,DENSWB01
 ,density:air:inside,kg\/m\^3,,,Air Density Inside,,kg/m^3,,,,,,
 ,depth,m|metres|metre|meter|meters|Metres|Metre|Meter|Meters,,,Depth,depth,m,,SDN:P01::ADEPZZ01,Depth (spatial coordinate) relative to water surface in the water body,,,depth
 ,depth:corrected,metres,,,Depth Corrected,depth,m,,SDN:P01::ADEPZZ01,Depth (spatial coordinate) relative to water surface in the water body,,,depth
@@ -290,7 +290,7 @@ ane,pressure,kpascal|kilopascal|Kpascal,,,Pressure,air_pressure,kilopascal,,,,,,
 ,radiation:solar,W\/m\^2,,,Solar Radiation,,W/m^2,,,,,,
 ,radiation:solar:high,W\/m\^2,,,High Solar Radiation,,W/m^2,,,,,,
 ,record #,None,,,Record #,,,,,,,,record_number
-,record_number,None,,,,,,,,,,,record_number
+,record_number,None/|/a,,,,,,,,,,,record_number
 ,recordnumber,None,,,RecordNumber,,,,,,,,record_number
 ,reference,None,,,,,,,,,,,
 ,roll,,,,platform_roll,degrees,,,,,,,ROLLEI01
