@@ -19,6 +19,7 @@ import pandas as pd
 from io import StringIO
 import logging
 import xarray as xr
+import gsw
 
 VERSION = pkg_resources.require("cioos_data_transform")[0].version
 logger = logging.getLogger(__name__)
@@ -1035,7 +1036,8 @@ class ObsFile(object):
                         new_var = update_variable_index(new_var, new_index)
 
                 if "apply_func" in new_var_attrs:
-                    new_data = xr.apply_ufunc(eval(new_var_attrs["apply_func"]), var)
+                    ufunc = eval(new_var_attrs["apply_func"],{"ds":ds,"gsw":gsw})
+                    new_data = xr.apply_ufunc(ufunc, var)
                     self.add_to_history(
                         f"Generate new variable from {row[col_name]} -> apply {new_var_attrs['apply_func']}) -> {new_var}"
                     )
