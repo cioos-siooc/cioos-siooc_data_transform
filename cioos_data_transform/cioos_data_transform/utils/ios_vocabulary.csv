@@ -74,7 +74,7 @@ ios_file_extension,ios_name,accepted_units,accepted_instrument_type,apply_func,l
 ,chlorophyll:extracted:>5.0um,mg\/m\^3,,,Chlorophyll Extracted >5.0um,mass_concentration_of_chlorophyll_in_sea_water,mg/m^3,,SDN:P01::SCHLFLPA,"Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >5um phase] by filtration, acetone extraction and fluorometry",,,SCHLFLPA
 ,chlorophyll_plus_phaeo-pigment:extracted,mg\/m\^3,,,Chlorophyll plus Phaeo-Pigment Extracted,,mg/m^3,,,,,,
 ,conductance:specific,S\/m,,,Specific Conductance,,S/m,,,,,,
-,conductance:specific,mS\/cm,,lambda x: x/10,,Specific Conductance,,mS/cm,,,,,,
+,conductance:specific,mS\/cm,,lambda x: x/10,,Specific Conductance,,mS/cm,,,,,
 ,conductivity,Ratio,,,Conductivity,,Ratio,,,,,,
 ,conductivity,counts|count,,,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,count,,,,,,CNDCZZ01
 ,conductivity,ms\/cm|mS\/cm,,lambda x: x/10,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCZZ01,Electrical conductivity of the water body,,,CNDCST01
@@ -232,7 +232,7 @@ ane,iss_reception,None,,,ISS Reception,,,,,,,,
 che,oxygen:dissolved,mL\/L,,,Dissolved Oxygen,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYWITX,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by Winkler titration,,,DOXYWITX
 ,oxygen:dissolved:ysi,mL\/L,,,Dissolved Oxygen,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
 ,oxygen:dissolved,mg\/L,,,Dissolved Oxygen,mass_concentration_of_oxygen_in_sea_water,mg/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
-,oxygen:dissolved,umol\/L,,lambda x: x*0.022391,Dissolved Oxygen,volume_fraction_of_oxygen_in_sea_water,,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,,DOXYZZ01
+,oxygen:dissolved,umol\/L,,lambda x: x*0.022391,Dissolved Oxygen,volume_fraction_of_oxygen_in_sea_water,,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,,DOXYZZ01
 ,oxygen:dissolved,umol\/kg,,,Dissolved Oxygen,moles_of_oxygen_per_unit_mass_in_sea_water,umol/kg,,SDN:P01::DOXMZZ01,,,,DOXMZZ01
 ,oxygen:dissolved2,mL\/L,,,Dissolved Oxygen 2,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ02,,,,DOXYZZ02
 ,oxygen:dissolved:bottle:mass [ml/l],umol\/kg,,,Dissolved Oxygen Bottle Mass,moles_of_oxygen_per_unit_mass_in_sea_water,umol/kg,,,,,,
