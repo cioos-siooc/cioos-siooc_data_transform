@@ -298,11 +298,14 @@ ane,pressure,kpascal|kilopascal|Kpascal,,,Pressure,air_pressure,kilopascal,,,,,,
 ,run_wind,km,,,Run Wind,,km,,,,,,
 ,salinity,PSS\-78|PPS78,,,Sea Water Practical Salinity,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,Practical salinity of the water body by CTD and computation using UNESCO 1983 algorithm,,,PSALST01
 ,salinity,ppt|PPT,,,Sea Water Practical Salinity,sea_water_salinity,PPT,,SDN:P01::SSALST01,Salinity of the water body by CTD,,,SSALST01
+,salinity,ppt|PPT,,lambda x: gsw.SP_from_SK(x),Sea Water Practical Salinity,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,Practical salinity of the water body by CTD and computation using UNESCO 1983 algorithm,,,PSALST01
 ,salinity: practical,PSS-78|PSU,,,Sea Water Practical Salinity,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,Practical salinity of the water body by CTD and computation using UNESCO 1983 algorithm,,,PSALBST01
 ,salinity: pre-1978,PPT,,,Salinity  Pre-1978,sea_water_salinity,PPT,,SDN:P01::SSALST01,Salinity of the water body by CTD,,,SSALST01
+,salinity: pre-1978,PPT,,lambda x: gsw.SP_from_SK(x),Sea Water Practical Salinity,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,Practical salinity of the water body by CTD and computation using UNESCO 1983 algorithm,,,PSALST01
 ,salinity:bottle,PPT|ppt,,,Salinity Bottle,sea_water_salinity,PPT,,SDN:P01::SSALBSTX,Salinity of the water body by bench salinometer,,,SSALBSTX
+,salinity:bottle,PPT,,lambda x: gsw.SP_from_SK(x),Salinity Bottle,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALBSTX,Practical salinity of the water body by bench salinometer and computation using UNESCO 1983 algorithm,,,PSALBSTX
 ,salinity:bottle,PSS-78,,,Salinity Bottle,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALBSTX,Practical salinity of the water body by bench salinometer and computation using UNESCO 1983 algorithm,,,PSALBSTX
-,salinity:bottle,,,,Salinity Bottle,sea_water_salinity,,,SDN:P01::SSALBSTX,Salinity of the water body by bench salinometer,,,SSALBSTX
+,salinity:bottle,,,,Salinity Bottle,sea_water_salinity,,,SDN:P01::SSALBSTX,Salinity of the water body by bench salinometer,,,SSALBSTX_no_unit
 ,salinity:ctd,PSS-78,,,Salinity CTD,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,Practical salinity of the water body by CTD and computation using UNESCO 1983 algorithm,,,PSALST01
 ,salinity:cur,PSS-78,,,Sea Water Practical Salinity,sea_water_practical_salinity,PSS-78,,,,,,PSLTZZ01
 ,salinity:cur,ppt,,,Sea Water Practical Salinity,sea_water_practical_salinity,PPT,,,,,,ODSDM021
