@@ -310,7 +310,6 @@ ane,pressure,kpascal|kilopascal|Kpascal,,,Pressure,air_pressure,kilopascal,,,,,,
 ,salinity:cur,PSS-78,,,Sea Water Practical Salinity,sea_water_practical_salinity,PSS-78,,,,,,PSLTZZ01
 ,salinity:cur,ppt,,,Sea Water Practical Salinity,sea_water_practical_salinity,PPT,,,,,,ODSDM021
 ,salinity:t0:c0,none|PSS-78,,,Salinity T0 C0,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,Practical salinity of the water body by CTD and computation using UNESCO 1983 algorithm,,,PSALST01
-,salinity:t0:c0,,,,,sea       _water_practical_salinity,,,SDN:P01::PSALST01,Practical salinity of the water body by CTD and computation using UNESCO 1983 algorithm,,,PSALST01
 ,salinity:t1:c1,PSS-78,,,Salinity T1 C1,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST02,Practical salinity of the water body by CTD (second sensor) and computation using UNESCO 1983 algorithm,,,PSALST02
 ,salinity:upcast,PSS-78,,,Salinity Upcast,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,Practical salinity of the water body by CTD and computation using UNESCO 1983 algorithm,,,PSALST01
 ,sample_method,None,,,Sample Method,,,,,,,,
