@@ -290,7 +290,7 @@ ane,pressure,kpascal|kilopascal|Kpascal,,,Pressure,air_pressure,kilopascal,,,,,,
 ,radiation:solar,W\/m\^2,,,Solar Radiation,,W/m^2,,,,,,
 ,radiation:solar:high,W\/m\^2,,,High Solar Radiation,,W/m^2,,,,,,
 ,record #,None,,,Record #,,,,,,,,record_number
-,record_number,None/|/a,,,,,,,,,,,record_number
+,record_number,None|/a,,,,,,,,,,,record_number
 ,recordnumber,None,,,RecordNumber,,,,,,,,record_number
 ,reference,None,,,,,,,,,,,
 ,roll,,,,platform_roll,degrees,,,,,,,ROLLEI01
