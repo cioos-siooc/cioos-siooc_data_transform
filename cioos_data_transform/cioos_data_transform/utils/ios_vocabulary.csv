@@ -74,11 +74,14 @@ ios_file_extension,ios_name,accepted_units,accepted_instrument_type,apply_func,l
 ,chlorophyll:extracted:>5.0um,mg\/m\^3,,,Chlorophyll Extracted >5.0um,mass_concentration_of_chlorophyll_in_sea_water,mg/m^3,,SDN:P01::SCHLFLPA,"Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >5um phase] by filtration, acetone extraction and fluorometry",,,SCHLFLPA
 ,chlorophyll_plus_phaeo-pigment:extracted,mg\/m\^3,,,Chlorophyll plus Phaeo-Pigment Extracted,,mg/m^3,,,,,,
 ,conductance:specific,S\/m,,,Specific Conductance,,S/m,,,,,,
-,conductance:specific,mS\/cm,,lambda x: x/10,,Specific Conductance,,mS/cm,,,,,
+,conductance:specific,mS\/cm,,lambda x: x/10,Specific Conductance,,S/m,,,,,
 ,conductivity,Ratio,,,Conductivity,,Ratio,,,,,,
-,conductivity,counts|count,,,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,count,,,,,,CNDCZZ01
-,conductivity,ms\/cm|mS\/cm,,lambda x: x/10,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCZZ01,Electrical conductivity of the water body,,,CNDCST01
-,conductivity,s\/m|S\/m,,,Conductivity,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCZZ01,Electrical conductivity of the water body,,,CNDCST01
+,conductivity,counts|count,,,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,count,,SDN:P01::CNDCZZ01,Electrical conductivity of the water body,,,CNDCZZ01
+ctd,conductivity,counts|count,,,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,count,,SDN:P01::CNDCST01,Electrical conductivity of the water body,,,CNDCST01
+,conductivity,ms\/cm|mS\/cm,,lambda x: x/10,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCZZ01,Electrical conductivity of the water body,,,CNDCZZ01
+ctd,conductivity,ms\/cm|mS\/cm,,lambda x: x/10,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCST01,Electrical conductivity of the water body,,,CNDCST01
+,conductivity,s\/m|S\/m,,,Conductivity,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCZZ01,Electrical conductivity of the water body,,,CNDCZZ01
+ctd,conductivity,s\/m|S\/m,,,Conductivity,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCST01,Electrical conductivity of the water body by CTD,,,CNDCST01
 ,conductivity:primary,S\/m,,,Conductivity,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCST01,Electrical conductivity of the water body by CTD,,,CNDCST01
 ,conductivity:primary,mS\/cm,,lambda x: x/10,Conductivity ,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCST01,Electrical conductivity of the water body by CTD,,,CNDCST01
 ,conductivity:secondary,S\/m,,,Secondary Conductivity,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCST02,Electrical conductivity of the water body by CTD (sensor 2),,,CNDCST02
@@ -350,9 +353,8 @@ ane,speed:wind_high,m\/s,,,Speed Wind High,,m/s,,,,,,
 ,station_name,None,,,Station Name,,,,,,,,
 ,str_id,None,,,,,,,,,,,
 ,sulphate so4,mol\/m,,,Sulphate SO4,,mol/m,,SDN:P01::SO4XCLP1,Concentration of sulphate {SO4(2-) sulfate CAS 14808-79-8} per unit volume of the water body [dissolved plus reactive particulate <GF/F phase] by filtration and colorimetric autoanalysis,,,SO4XCLP1
-,temperature,DEG C (ITS 68)|deg C (IPTS68)|DEG C (ITS68),,"lambda x: gsw.t90_from_t68(x)",,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS901,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPs901
+,temperature,DEG C (ITS 68)|deg C (IPTS68)|DEG C (ITS68),,"lambda x: gsw.t90_from_t68(x)",,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS901,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS901
 ,temperature,DEG C (ITS 68)|deg C (IPTS68)|DEG C (ITS68),,,,sea_water_temperature,degrees_celsius (IPTS-68),,SDN:P01::TEMPS601,Temperature (IPTS-68) of the water body by CTD or STD,,,TEMPS601
-
 ,temperature,deg C\s*\(ITS[-\s]*90\),,,,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS901,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS901
 ,temperature,deg C|Degrees_C|DEG C|deg C\s*\(ITS[-\s]*90\)|DEG C (ITS 68)|deg C (IPTS68)|DEG C (ITS68),,,,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
 ane,temperature:air,deg C,,,Temperature Air,,degrees_celsius,,,,,,
@@ -401,12 +403,11 @@ tob,temperature:lab,deg C \(ITS90\),,,Temperature Lab,,degrees_celsius (ITS-90),
 ,temperature:reversing,deg C (IPTS68),,,,sea_water_temperature,degrees_celsius (IPTS-68),,SDN:P01::TEMPR601,Temperature (IPTS-68) of the water body by reversing thermometer,,,TEMPR601
 ,temperature:reversing,deg C (IPTS68),,"lambda x: gsw.t90_from_t68(x)",,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPR901,Temperature (ITS-90) of the water body by reversing thermometer,,,TEMPR901
 ,temperature:second,deg c \(ITS\-90\)|deg C \(ITS90\)|deg C \(ITS9|deg C|deg C \(ITS-90\),,,Temperature Second,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPPR02,Temperature of the water body by second sensor,,,TEMPPR02
-
 ,temperature:second,deg c \(ITS\-90\)|deg C \(ITS90\)|deg C \(ITS9|deg C|deg C \(ITS-90\),,,Temperature Second,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS902,Temperature (ITS-90) of the water body by CTD or STD (second sensor),,,TEMPS902
 ,temperature:secondary,deg C (IPTS68),,"lambda x: gsw.t90_from_t68(x)",Secondary Temperature,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS902,Temperature (ITS-90) of the water body by CTD or STD (second sensor),,,TEMPS902
 ,temperature:secondary,deg C (IPTS68),,"lambda x: gsw.t90_from_t68(x)",Secondary Temperature,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPPR02,Temperature of the water body by second sensor,,,TEMPPR02
 ,temperature:secondary,deg C (IPTS68),,,Secondary Temperature,sea_water_temperature,degrees_celsius (IPTS-68),,SDN:P01::TEMPS602,Temperature (IPTS-68) of the water body by CTD or STD (second sensor),,,TEMPS602
-,temperature:secondary,deg C (ITS90),,,Secondary Temperature,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS902,Temperature (ITS-90) of the water body  by CTD or STD (second sensor),,,TEMPS902
+,temperature:secondary,deg C (ITS90),,,Secondary Temperature,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS902,Temperature (ITS-90) of the water body by CTD or STD (second sensor),,,TEMPS902
 ,temperature:smoothed,deg C (IPTS68),,,,sea_water_temperature,degrees_celsius (IPTS-68),,,,,,
 ane,temperature:temperature_humidity_sun_index,deg C,,,Temperature Temperature Humidity Sun Index,,degrees_celsius,,,,,,
 ane,temperature:temperature_humidity_sun_index,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Temperature Humidity Sun Index,,degrees_celsius (ITS-90),,,,,,
@@ -421,21 +422,21 @@ ctd,thin flag,None,,,Thin Flag,,,,,,,,
 ,total_suspended_solids,mg\/L,,,,mass_concentration_of_suspended_matter_in_sea_water,mg/L,,SDN:P01::RBYJLY26,Concentration of solids (total) per unit volume of the water body,,,RBYJLY26
 ,total_suspended_solids,mg\/m3|ug\/L,,,Total Suspended Solids,mass_concentration_of_suspended_matter_in_sea_water,ug/L,,SDN:P01::RBYJLY26,Concentration of solids (total) per unit volume of the water body,,,RBYJLY26
 ,total_suspended_solids,ppmV,,,,,ppmV,,SDN:P01::RBYJLY26,Concentration of solids (total) per unit volume of the water body,,,RBYJLY26
-,transmissivity,%\/5cm,,,Sea Water Transmissivity,,%/5cm,,SDN:P01::ABS650AC,Absorbance of electromagnetic radiation (650nm wavelength) {light absorbance} by the water body by transmissometer and calibration to read zero in clear water,,,ABS650AC
-,transmissivity,%\/metre,,,Sea Water Transmissivity,,%/metre,,SDN:P01::ABS650AC,Absorbance of electromagnetic radiation (650nm wavelength) {light absorbance} by the water body by transmissometer and calibration to read zero in clear water,,,ABS650AC
-,transmissivity2,%\/metre,,,Transmissivity2,,%/metre,,SDN:P01::ABS650AC,Absorbance of electromagnetic radiation (650nm wavelength) {light absorbance} by the water body by transmissometer and calibration to read zero in clear water,,,ABS650AC02
-,transmissivity:ctd,%\/metre,,,Transmissivity CTD,,%/metre,,SDN:P01::ABS650AC,Absorbance of electromagnetic radiation (650nm wavelength) {light absorbance} by the water body by transmissometer and calibration to read zero in clear water,,,ABS650AC
-,transmissivity:green,%\/metre,,,Transmissivity Green,,%/metre,,,,,,
+,transmissivity,%\/5cm,,,Sea Water Transmissivity,,%/5cm,volume_absorption_coefficient_of_radiative_flux_in_sea_water,SDN:P01::ABS650AC,Absorbance of electromagnetic radiation (650nm wavelength) {light absorbance} by the water body by transmissometer and calibration to read zero in clear water,,,ABS650AC
+,transmissivity,%\/metre,,,Sea Water Transmissivity,,%/metre,volume_absorption_coefficient_of_radiative_flux_in_sea_water,SDN:P01::ABS650AC,Absorbance of electromagnetic radiation (650nm wavelength) {light absorbance} by the water body by transmissometer and calibration to read zero in clear water,,,ABS650AC
+,transmissivity2,%\/metre,,,Transmissivity2,,%/metre,volume_absorption_coefficient_of_radiative_flux_in_sea_water,SDN:P01::ABS650AC,Absorbance of electromagnetic radiation (650nm wavelength) {light absorbance} by the water body by transmissometer and calibration to read zero in clear water,,,ABS650AC02
+,transmissivity:ctd,%\/metre,,,Transmissivity CTD,,%/metre,volume_absorption_coefficient_of_radiative_flux_in_sea_water,SDN:P01::ABS650AC,Absorbance of electromagnetic radiation (650nm wavelength) {light absorbance} by the water body by transmissometer and calibration to read zero in clear water,,,ABS650AC
+,transmissivity:green,%\/metre,,,Transmissivity Green,,%/metre,volume_absorption_coefficient_of_radiative_flux_in_sea_water,,,,,
 ,tritium,TU81N,,,Tritium,,TU81N,,SDN:P01::MXTX3H1H,Atomic ratio of tritium/hydrogen {'Concentration of tritium'} in the water body [dissolved plus reactive particulate phase],,,MXTX3H1H
 ,turbidity,NTU,,,Turbidity,sea_water_turbidity,NTU,,SDN:P01::TURBXXXX,Turbidity of water in the water body,,,TURBXXXX
 ,turbidity:seapoint,FTU,,,Turbidity,sea_water_turbidity,FTU,,SDN:P01::TURBSP01,Turbidity of water in the water body by SeaPoint turbidity meter and laboratory calibration against formazin,,,TURBSP01
 ,turbidity:seapoint,FTU,,,Turbidity,sea_water_turbidity,FTU,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
 ,turbidity:wetlabs,FTU,,,,sea_water_turbidity,FTU,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
 ,turbidity:wetlabs,NTU,,,,sea_water_turbidity,NTU,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
-,turbidity:wetlabs:eco-ntu,None,,,Turbidity WETLabs ECO-NTU,sea_water_turbidity,,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
-,turbidity:wetlabs:eco-ntu,,,,,sea_water_turbidity,,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
-,turbidity:wetlabs:ntu,None,,,Turbidity WETLabs NTU,sea_water_turbidity,,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
-,turbidity:wetlabs:ntu,,,,,sea_water_turbidity,,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
+,turbidity:wetlabs:eco-ntu,None,,,Turbidity WETLabs ECO-NTU,sea_water_turbidity,NTU,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
+,turbidity:wetlabs:eco-ntu,,,,,sea_water_turbidity,NTU,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
+,turbidity:wetlabs:ntu,None,,,Turbidity WETLabs NTU,sea_water_turbidity,NTU,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
+,turbidity:wetlabs:ntu,,,,,sea_water_turbidity,NTU,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
 ane,uv:dose,None,,,UV Dose,,MEDs,,,,,,
 ane,uv:high,None,,,UV High,,,,,,,,
 ane,uv:index,None,,,UV Index,,,,,,,,
