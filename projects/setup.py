@@ -1,7 +1,7 @@
 import setuptools
 
 setuptools.setup(
-    name="cioos_data_transform projects",
+    name="cioos_data_transform_projects",
     version="1.0.0",
     description="Data conversion projects that use cioos_data_transform",
     packages=setuptools.find_packages(),
