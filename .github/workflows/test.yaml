@@ -18,6 +18,6 @@ jobs:
           python -m pip install -e projects
           python -m pip install pytest
 
-      - name: Run Unittests
+      - name: Run pytest
         run: |
-          pytest -W "ignore::DeprecationWarning" -k "test_bio_odf_sample_data_conversion"
+          pytest -W "ignore::DeprecationWarning"
