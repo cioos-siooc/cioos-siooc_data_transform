@@ -111,8 +111,8 @@ def read_config(config_file: str = DEFAULT_CONFIG_PATH) -> dict:
     return config
 
 
-def odf_to_netcdf(odf_path, config=None, global_attributes=None):
-    """Convert an ODF file to a netcdf.
+def odf_to_xarray(odf_path, config=None, global_attributes=None):
+    """Convert an ODF file to an xarray object.
     Args:
         odf_path (str): path to ODF file to convert
         config (dictionary, optional): Conversion configuration to apply.
@@ -197,7 +197,16 @@ def odf_to_netcdf(odf_path, config=None, global_attributes=None):
 
     # Log variables available per file
     logger.info(f"Variable List: {list(dataset)}")
+    return dataset
 
+
+def odf_to_netcdf(odf_path, config=None, global_attributes=None):
+    """Parse ODF dataset to an xarray and save to Netcdf"""
+
+    # Parse odf to an xarray dataset
+    dataset = odf_to_xarray(odf_path, config, global_attributes)
+    if dataset is None:
+        return
     # Save dataset to a NetCDF file
     if config["output_path"] is None:
         output_path = odf_path + config["addFileNameSuffix"] + ".nc"
