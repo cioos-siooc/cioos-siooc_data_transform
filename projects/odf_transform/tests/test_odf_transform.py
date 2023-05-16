@@ -12,50 +12,40 @@ import pytest
 logger = logging.getLogger(__name__)
 
 mli_test_odfs = glob(
-            "./projects/odf_transform/sample_data/mli_samples/**/*.ODF", recursive=True
-        )
+    "./projects/odf_transform/sample_data/mli_samples/**/*.ODF", recursive=True
+)
 mli_config = {
-    **odf_transform.process.read_config(
-        "./projects/odf_transform/config.json"
-    ),
+    **odf_transform.process.read_config("./projects/odf_transform/config.json"),
     "organisationVocabulary": ["MLI", "GF3"],
     "addFileNameSuffix": "_test",
-    "output_path": None
+    "output_path": None,
 }
 
 bio_test_odfs = glob(
-            "./projects/odf_transform/sample_data/bio_samples/**/*.ODF", recursive=True
-        )
+    "./projects/odf_transform/sample_data/bio_samples/**/*.ODF", recursive=True
+)
 bio_config = {
-    **odf_transform.process.read_config(
-        "./projects/odf_transform/config.json"
-    ),
+    **odf_transform.process.read_config("./projects/odf_transform/config.json"),
     "organisationVocabulary": ["BIO", "GF3"],
     "addFileNameSuffix": "_test",
-    "output_path": None
+    "output_path": None,
 }
 
-@pytest.mark.parametrize(
-    "file",
-    bio_test_odfs
-)
+
+@pytest.mark.parametrize("file", bio_test_odfs)
 def test_bio_odf_sample_data_conversion(file):
     """Test DFO BIO ODF conversion to xarray dataset"""
     odf_transform.process.odf_to_netcdf(file, config=bio_config)
 
-@pytest.mark.parametrize(
-    "file",
-    mli_test_odfs
-)
+
+@pytest.mark.parametrize("file", mli_test_odfs)
 def test_mli_odf_sample_data_conversion(file):
     """Test DFO MLI ODF conversion to xarray dataset"""
-    
+
     odf_transform.process.odf_to_netcdf(file, config=mli_config)
 
-@pytest.mark.parametrize(
-    "file",
-    bio_test_odfs
-)
+
+@pytest.mark.parametrize("file", bio_test_odfs)
 def test_bio_odf_converted_netcdf_vs_references(file):
     """Test DFO BIO ODF conversion to NetCDF vs reference files"""
 
@@ -66,7 +56,7 @@ def test_bio_odf_converted_netcdf_vs_references(file):
 
     # Run bio odf conversion
     test_bio_odf_sample_data_conversion(file)
-    nc_file = file + '_reference.nc'
+    nc_file = file + "_reference.nc"
     ref = xr.open_dataset(nc_file)
     nc_file_test = nc_file.replace("_reference.nc", "_test.nc")
     if not os.path.isfile(nc_file_test):
@@ -79,9 +69,7 @@ def test_bio_odf_converted_netcdf_vs_references(file):
         r"cioos_data_trasform.odf_transform V \d+\.\d+.\d+",
         "cioos_data_trasform.odf_transform V VERSION",
     )
-    ignore_from_attr(
-        "history", r"\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ", "TIMESTAMP"
-    )
+    ignore_from_attr("history", r"\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ", "TIMESTAMP")
     ref.attrs["date_created"] = "TIMESTAMP"
     test.attrs["date_created"] = "TIMESTAMP"
 
@@ -98,19 +86,20 @@ def test_bio_odf_converted_netcdf_vs_references(file):
             )
 
     if test.attrs.keys() != ref.attrs.keys():
-        logger.error("A new global attribute %s was detected.", set(test.attrs.keys()) - set(ref.attrs.keys()))
+        logger.error(
+            "A new global attribute %s was detected.",
+            set(test.attrs.keys()) - set(ref.attrs.keys()),
+        )
 
     ref_variables = list(ref) + list(ref.coords)
     test_variables = list(test) + list(test.coords)
     if ref_variables.sort() != test_variables.sort():
-        logger.error('A variable mismatch exist between the reference and test files')
+        logger.error("A variable mismatch exist between the reference and test files")
 
     for var in ref_variables:
         # compare variable
         if not ref[var].identical(test[var]):
-            logger.error(
-                "Variable ds[%s] is different from reference file", var
-            )
+            logger.error("Variable ds[%s] is different from reference file", var)
         if (ref[var].values != test[var].values).any():
             logger.error(
                 "Variable ds[%s].values are different from reference file", var
@@ -132,7 +121,7 @@ def test_bio_odf_converted_netcdf_vs_references(file):
                     "Variable ds[%s].attrs[%s] is different from reference file",
                     var,
                     attr,
-                    )
+                )
     raise RuntimeError(
         f"Converted file {nc_file_test} is different than the reference: {nc_file}"
     )
