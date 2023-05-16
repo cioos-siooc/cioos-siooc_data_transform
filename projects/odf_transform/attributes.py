@@ -251,12 +251,16 @@ def _generate_instrument_attributes(odf_header, instrument_manufacturer_header=N
     elif "INSTRUMENT_HEADER" in odf_header:
         attributes["instrument"] = " ".join(
             [
-                str(odf_header["INSTRUMENT_HEADER"].get("INST_TYPE")) or "",
-                str(odf_header["INSTRUMENT_HEADER"].get("MODEL")) or "",
+                str(item).strip()
+                for item in [
+                    odf_header["INSTRUMENT_HEADER"].get("INST_TYPE"),
+                    odf_header["INSTRUMENT_HEADER"].get("MODEL"),
+                ]
+                if item
             ]
-        ).strip()
-        attributes["instrument_serial_number"] = (
-            str(odf_header["INSTRUMENT_HEADER"].get("SERIAL_NUMBER")) or ""
+        )
+        attributes["instrument_serial_number"] = odf_header["INSTRUMENT_HEADER"].get(
+            "SERIAL_NUMBER"
         )
 
     # Attempt to generate an instrument_type attribute
