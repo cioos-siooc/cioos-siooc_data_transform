@@ -198,26 +198,28 @@ class ObsFile(object):
                 "flag_values": [0, 2, 6],
                 "flag_meanings": "not_quality_control good interpolated_or_replaced_by_dual_sensor_or_upcast_value",
             }
-        elif name.lower().startswith('flag') and self.filename.endswith('che'):
+        elif name.lower().startswith("flag") and self.filename.endswith("che"):
             return {
-                "flag_values": [0,1,2,3,4,5,6,7,8,9],
-                "flag_meanings": ' '.join([
-                "sample_drawn_from_water_bottle_but_not_analyzed",
-                "acceptable_measurement",
-                "questionable_measurement",
-                "bad_measurement",
-                "not_reported",
-                "mean_of_replicate_measurement",
-                "manual_chromatographic_peak_measurement",
-                "irregular_digital_chromatographic_peak_integration",
-                "sample_not_drawn_for_this_measurement_from_this_bottle"
-                ])
+                "flag_values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                "flag_meanings": " ".join(
+                    [
+                        "sample_drawn_from_water_bottle_but_not_analyzed",
+                        "acceptable_measurement",
+                        "questionable_measurement",
+                        "bad_measurement",
+                        "not_reported",
+                        "mean_of_replicate_measurement",
+                        "manual_chromatographic_peak_measurement",
+                        "irregular_digital_chromatographic_peak_integration",
+                        "sample_not_drawn_for_this_measurement_from_this_bottle",
+                    ]
+                ),
             }
 
         elif name.lower() == "sample_method":
             return {
-                "flag_values": ["UN","US","USM"],
-                "flag_meanings": "no_stop stop_for_30s up_stop_mix"
+                "flag_values": ["UN", "US", "USM"],
+                "flag_meanings": "no_stop stop_for_30s up_stop_mix",
             }
         logger.warning("Unknown flag name=%s, units=%s", name, units)
         return {}
@@ -309,7 +311,10 @@ class ObsFile(object):
         elif "ADT" in date_string.upper():
             date_obj = timezone("UTC").localize(date_obj + timedelta(hours=3))
         else:
-            logger.warning("Problem finding the timezone from->'%s' will default to UTC ", date_string)
+            logger.warning(
+                "Problem finding the timezone from->'%s' will default to UTC ",
+                date_string,
+            )
             date_obj = timezone("UTC").localize(date_obj)
 
         logger.debug("Date obj with timezone info: %s", date_obj)
@@ -1036,7 +1041,7 @@ class ObsFile(object):
                         new_var = update_variable_index(new_var, new_index)
 
                 if "apply_func" in new_var_attrs:
-                    ufunc = eval(new_var_attrs["apply_func"],{"ds":ds,"gsw":gsw})
+                    ufunc = eval(new_var_attrs["apply_func"], {"ds": ds, "gsw": gsw})
                     new_data = xr.apply_ufunc(ufunc, var)
                     self.add_to_history(
                         f"Generate new variable from {row[col_name]} -> apply {new_var_attrs['apply_func']}) -> {new_var}"
