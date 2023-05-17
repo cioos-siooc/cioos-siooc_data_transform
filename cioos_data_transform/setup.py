@@ -18,11 +18,13 @@ setuptools.setup(
         "fortranformat",
         "netCDF4",
         "pytz",
-        "shapely",
         "gsw==3.4.0",
         "pandas",
         "geopy",
     ],
+    extras_require= {
+        "geo": ["shapely"]
+    },
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",

@@ -1,9 +1,12 @@
 import logging
-from shapely.geometry import Polygon, Point
 import json
 import os
 import geopy.distance
 import pandas as pd
+try: 
+    from shapely.geometry import Point, Polygon
+except ImportError:
+    Point, Polygon = None, None
 
 logger = logging.getLogger(__name__)
 logger = logging.LoggerAdapter(logger, extra={"file": None})
@@ -75,10 +78,13 @@ def read_geojson(filename):
     # read shapefile in geojson format into Polygon object
     # input geojson file
     # output: Polygon object
+
     if filename is None:
         return {}
-
-    if not os.path.exists(filename):
+    elif Polygon is None:
+        logger.error("Install shapely to use read_geojson")
+        return {}
+    elif not os.path.exists(filename):
         logger.error("Geojson file not found: %s", filename)
         return {}
 
@@ -96,7 +102,11 @@ def read_geojson(filename):
 
 
 def get_geo_code(location, polygons_dict):
-    # read geojson file and assign file
+    # read geojson file and assign file 
+    if Point is None:
+        logger.error("Install shapely to use get_geo_code")
+        return "n/a"
+    
     geo_code = find_geographic_area(
         polygons_dict,
         Point(location[0], location[1]),

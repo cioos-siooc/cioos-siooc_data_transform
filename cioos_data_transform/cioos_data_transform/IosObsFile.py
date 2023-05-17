@@ -14,13 +14,17 @@ import pkg_resources
 
 from pytz import timezone
 from .utils.utils import find_geographic_area, read_geojson, read_ios_vocabulary
-from shapely.geometry import Point
 import pandas as pd
 from io import StringIO
 import logging
 import xarray as xr
 import gsw
 
+try:
+    from shapely.geometry import Point
+except ImportError:
+    Point = None
+    
 VERSION = pkg_resources.require("cioos_data_transform")[0].version
 logger = logging.getLogger(__name__)
 logger = logging.LoggerAdapter(logger, {"file": None})
@@ -566,6 +570,10 @@ class ObsFile(object):
         return sections_list
 
     def assign_geo_code(self, polygons_dict):
+        if Point is None:
+            logger.error("Install shapely to use assign_geo_code")
+            return 
+
         geo_code = find_geographic_area(
             polygons_dict, Point(self.location["LONGITUDE"], self.location["LATITUDE"])
         )
