@@ -18,7 +18,7 @@ setuptools.setup(
         "fortranformat",
         "netCDF4",
         "pytz",
-        "gsw==3.4.0",
+        "gsw>=3.4.0",
         "pandas",
         "geopy",
     ],
