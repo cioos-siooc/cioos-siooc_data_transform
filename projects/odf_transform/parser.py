@@ -27,6 +27,21 @@ odf_dtypes = {
     "QQQQ": "int32",
 }
 
+vocabulary_attribute_list = [
+    "long_name",
+    "units",
+    "instrument",
+    "scale",
+    "standard_name",
+    "sdn_parameter_urn",
+    "sdn_parameter_name",
+    "sdn_uom_urn",
+    "sdn_uom_name",
+    "coverage_content_type",
+    "ioos_category",
+    "comments",
+]
+
 # Commonly date place holder used within the ODF file
 FLAG_LONG_NAME_PREFIX = "Quality_Flag: "
 ORIGINAL_PREFIX_VAR_ATTRIBUTE = "original_"
@@ -45,7 +60,7 @@ class GF3Code:
         self.name = f"{self.code}_{self.index:02}" if index else self.code
 
 
-def _convert_odf_time(time_string, time_zone=timezone.utc):
+def _convert_odf_time(time_string):
     """Convert ODF timestamps to a datetime object"""
     if time_string == "17-NOV-1858 00:00:00.00":
         return pd.NaT
@@ -55,33 +70,39 @@ def _convert_odf_time(time_string, time_zone=timezone.utc):
     )
     if delta_time.total_seconds() > 0:
         time_string = re.sub(r":60.0+", ":00.00", time_string)
+
+    # Detect time format
     if re.match(r"\d+-\w\w\w-\d\d\d\d\s*\d+\:\d\d\:\d\d\.\d+", time_string):
-        time = datetime.strptime(time_string, r"%d-%b-%Y %H:%M:%S.%f") + delta_time
+        time_format = r"%d-%b-%Y %H:%M:%S.%f"
     elif re.match(r"\d\d-\w\w\w-\d\d\d\d\s*\d\d\:\d\d\:\d\d", time_string):
-        time = datetime.strptime(time_string, r"%d-%b-%Y %H:%M:%S") + delta_time
+        time_format = r"%d-%b-%Y %H:%M:%S"
     else:
-        try:
-            logger.warning("Unknown time format: %s", time_string)
-            time = pd.to_datetime(time_string).to_pydatetime() + delta_time
-        except:
-            logger.error("Failed to parse time: %s", time_string)
-            return time_string
-    return time.replace(tzinfo=time_zone)
+        logger.warning("Unknown time format: %s", time_string)
+        time_format = "infer"
+
+    # Conver to datetime object
+    time = (
+        pd.to_datetime(time_string, format=time_format, utc=True, errors="coerce")
+        + delta_time
+    )
+    if time is pd.NaT and time_string:
+        logger.warning(
+            "Failed to parse the timestamp=%s, it will be replaced by NaT", time_string
+        )
+
+    # Check if time is valid
+    if time < pd.to_datetime("1990-Jan-01", format="%Y-%b-%d", utc=True):
+        logger.warning(
+            "Time stamp '%s' = %s is before 1900-01-01 which is very suspicious",
+            time_string,
+            time,
+        )
+    return time
 
 
 def history_input(comment, date=datetime.now(timezone.utc)):
     """Genereate a CF standard history line: Timstamp comment"""
     return f"{date.strftime('%Y-%m-%dT%H:%M:%SZ')} {comment}\n"
-
-
-def update_variable_index(varname, index):
-    """Standardize variables trailing number to two digits"""
-    if varname.endswith(("XX", "01")):
-        return f"{varname[:-2]}{index:02}"
-    elif varname.endswith(("X", "1")):
-        return f"{varname[:-1]}{index:01}"
-    else:
-        return varname
 
 
 def read(filename, encoding_format="Windows-1252"):
@@ -125,11 +146,13 @@ def read(filename, encoding_format="Windows-1252"):
 
         # Convert numerical values to float and integers
         if re.match(r"[-+]{0,1}\d+\.\d+$", value):
-            return float(value)
+            return None if value in ("-99.9", "-999.9") else float(value)
         elif re.match(r"[-+]{0,1}\d*\.\d+[ED][+-]\d+$", value):
             return float(value.replace("D", "E"))
         elif re.match(r"[-+]{0,1}\d+$", value):
             return int(value)
+        elif value == "17-NOV-1858 00:00:00.00":
+            return pd.NaT
         elif re.match(r"^\d{1,2}-\w\w\w\-\d\d\d\d\s*\d\d:\d\d:\d\d\.*\d*$", value):
             try:
                 return _convert_odf_time(value)
@@ -141,7 +164,6 @@ def read(filename, encoding_format="Windows-1252"):
                     exc_info=True,
                 )
                 return value
-        # Empty lines
         elif re.match(r"^\s*$", value):
             return None
         # if do not match any conditions return unchanged
@@ -203,50 +225,38 @@ def read(filename, encoding_format="Windows-1252"):
 
         # READ PARAMETER_HEADER
         # Define first the variable name and attributes and the type.
-        metadata["variable_attributes"] = {}
+        variable_attributes = {}
         time_columns = []
         # Variable names and related attributes
         for att in metadata["PARAMETER_HEADER"]:
             # Generate variable name
-            if "CODE" in att:
-                var_name = GF3Code(att["CODE"]).name
-            elif "WMO_CODE" in att:
-                var_name = GF3Code(att["WMO_CODE"]).name
-            else:
+            var_name = GF3Code(att.get("CODE") or att.get("WMO_CODE")).name
+            if var_name is None:
                 raise RuntimeError("Unrecognizable ODF variable attributes")
 
-            attributes = {
+            # Generate variable attributes
+            variable_attributes[var_name] = {
                 "long_name": att.get("NAME"),
-                "units": att.get("UNITS"),
+                "units": (att.get("UNITS") or "").replace("**", "^"),
                 "legacy_gf3_code": var_name,
                 "null_value": att["NULL_VALUE"],
-                "resolution": 10 ** -att["PRINT_DECIMAL_PLACES"],
+                "resolution": 10 ** -att["PRINT_DECIMAL_PLACES"]
+                if att["PRINT_DECIMAL_PLACES"] != -99
+                else None,
             }
-
-            if attributes["units"]:
-                # Standardize units
-                attributes["units"] = attributes["units"].replace("**", "^")
-
-            # Add those variable attributes to the metadata output
-            metadata["variable_attributes"].update({var_name: attributes})
             # Time type column add to time variables to parse by pd.read_csv()
             if var_name.startswith("SYTM") or att["TYPE"] == "SYTM":
-                time_columns.append(var_name)
-
-        # If not time column replace by False
-        if not time_columns:
-            time_columns = False
+                time_columns += [var_name]
 
         # Read Data with Pandas
-        data_raw = pd.read_csv(
+        df = pd.read_csv(
             f,
             delimiter=r"\s+",
             quotechar="'",
             header=None,
-            names=metadata["variable_attributes"].keys(),
+            names=variable_attributes.keys(),
             na_values={
-                key: att.pop("null_value")
-                for key, att in metadata["variable_attributes"].items()
+                key: att.pop("null_value") for key, att in variable_attributes.items()
             },
             date_parser=_convert_odf_time,
             parse_dates=time_columns,
@@ -254,24 +264,17 @@ def read(filename, encoding_format="Windows-1252"):
         )
 
     # Review N variables
-    if len(data_raw.columns) != len(metadata["PARAMETER_HEADER"]):
+    if len(df.columns) != len(metadata["PARAMETER_HEADER"]):
         raise RuntimeError(
-            f"{len(data_raw.columns)}/{len(metadata['PARAMETER_HEADER'])} variables were detected"
+            f"{len(df.columns)}/{len(metadata['PARAMETER_HEADER'])} variables were detected"
         )
 
-    # Make sure that timezone is UTC, GMT or None
-    # (This may not be necessary since we're looking at the units later now)
-    if time_columns:
-        for parm in time_columns:
-            units = metadata["variable_attributes"][parm].get(
-                ORIGINAL_PREFIX_VAR_ATTRIBUTE + "UNITS"
-            )
-            if units not in [None, "none", "(none)", "GMT", "UTC", "seconds"]:
-                logger.warning(
-                    "%s: %s has UNITS (timezone) of %s", filename, parm, units
-                )
+    # Convert to an xarray
+    dataset = df.to_xarray()
+    for variable, attrs in variable_attributes.items():
+        dataset[variable].attrs = attrs
 
-    return metadata, data_raw
+    return metadata, dataset
 
 
 def odf_flag_variables(dataset, flag_convention=None):
@@ -280,71 +283,54 @@ def odf_flag_variables(dataset, flag_convention=None):
     over the years and map them to the CF standards.
     """
 
+    def _add_ancillary(ancillary, variable):
+        dataset[variable].attrs[
+            "ancillary_variables"
+        ] = f"{dataset[variable].attrs.get('ancillary_variables','')} {ancillary}".strip()
+        return dataset[variable]
+
     # Loop through each variables and detect flag variables
-    previous_key = None
-    for var in dataset:
-        related_variables = None
+    variables = list(dataset.variables)
 
-        # Find related variable
-        if var.startswith("QQQQ"):
-            # FLAG QQQQ should apply to previous variable
-            related_variables = [previous_key]
+    # Rename QQQQ flag convention
+    qqqq_flags = {
+        var: f"Q{variables[id-1]}"
+        for id, var in enumerate(variables)
+        if var.startswith("QQQQ")
+    }
+    if qqqq_flags:
+        dataset = dataset.rename(qqqq_flags)
+        dataset.attrs["history"] += history_input(
+            f"Rename QQQQ flags to QXXXX convention: {qqqq_flags}",
+        )
 
-            # Rename variable so that we can link by variable name
-            dataset = dataset.rename({var: f"Q{previous_key}"})
-            dataset.attrs["history"] += history_input(
-                f"Rename Parameter {var} as Q{previous_key}"
-            )
-            var = f"Q{previous_key}"
-
-        elif var.startswith(("QCFF", "FFFF")):
-            # This is a general flag
-            related_variables = [var for var in dataset if not var.startswith("Q")]
-
-        elif var.startswith("Q") and var[1:] in dataset:
-            # Q  Format is usually Q+[PCODE] of the associated variable
-            related_variables = [var[1:]]
-
+    # Add ancillary_variable attribute
+    for variable in dataset.variables:
+        if variable.startswith(("QCFF", "FFFF")):
+            # add QCFF and FFFF as ancillary variables
+            # to all non flag variables
+            for var in dataset.variables:
+                if not var.startswith("Q"):
+                    _add_ancillary(variable, var)
+        elif variable.startswith("Q") and variable[1:] in dataset:
+            dataset[variable[1:]] = _add_ancillary(variable, variable[1:])
+            dataset[variable].attrs[
+                "long_name"
+            ] = f"Quality Flag for Parameter: {dataset[variable[1:]].attrs['long_name']}"
         else:
-            # If the variable isn't a flag variable, go to the next iteration
-            # Set previous key for the next iteration
-            previous_key = var
+            # ignore normal variables
             continue
 
-        # Add flag variable to related variable ancillary_variables attribute
-        for related_variable in related_variables:
-            if "ancillary_variables" in dataset[related_variable].attrs:
-                dataset[related_variable].attrs["ancillary_variables"] += f" {var}"
-            else:
-                dataset[related_variable].attrs["ancillary_variables"] = var
-
-        # Add flag convention attributes if available within config file
-        if flag_convention:
-            # Add configuration attributes
-            if var in flag_convention:
-                dataset[var].attrs.update(flag_convention[var])
-            elif "default" in flag_convention:
-                dataset[var].attrs.update(flag_convention["default"])
-
-            # Change variable type to configuration
-            if "dtype" in dataset[var].attrs:
-                dataset[var] = dataset[var].astype(dataset[var].attrs.pop("dtype"))
-
-            # Match flag_values data type to variable data type
-            if "flag_values" in dataset[var].attrs:
-                dataset[var].attrs["flag_values"] = tuple(
-                    np.array(dataset[var].attrs["flag_values"]).astype(
-                        dataset[var].dtype
-                    )
-                )
-
-        # Drop units variable from flag variables
-        if "units" in dataset[var].attrs:
-            dataset[var].attrs.pop("units")
-
-        # Set previous key for the next iteration
-        previous_key = var
-
+        # Add flag convention attributes
+        dataset[variable].attrs.update(
+            flag_convention.get(variable, flag_convention["default"])
+        )
+        dtype = dataset[variable].attrs.pop("dtype", dataset[variable].dtype)
+        dataset[variable] = dataset[variable].astype(dtype)
+        dataset[variable].attrs["flag_values"] = np.array(
+            dataset[variable].attrs["flag_values"]
+        ).astype(dtype)
+        dataset[variable].attrs.pop("units", None)
     return dataset
 
 
@@ -358,7 +344,7 @@ def fix_flag_variables(dataset):
         # Find related variables to this flag
         related_variables = [
             var
-            for var in dataset
+            for var in dataset.variables
             if flag_var in dataset[var].attrs.get("ancillary_variables", "")
         ]
 
@@ -370,12 +356,16 @@ def fix_flag_variables(dataset):
 
         # If no rename and affects only one variable. Name it Q{related_variable}
         if rename is None:
-            if len(related_variables) > 1:
+            # Ignore the original flag name
+            related_variables_ = [
+                var for var in related_variables if f"Q{var}" != flag_var
+            ]
+            if len(related_variables_) > 1:
                 logger.error(
                     "Multiple variables are affected by %s, I'm not sure how to rename it.",
                     flag_var,
                 )
-            rename = "Q" + related_variables[0]
+            rename = "Q" + related_variables_[0]
 
         # Rename or drop flag variable
         if rename not in dataset:
@@ -422,29 +412,34 @@ def fix_flag_variables(dataset):
     return dataset
 
 
-def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
+def get_vocabulary_attributes(
+    ds,
+    organizations=None,
+    vocabulary=None,
+    add_attributes_existing_variables=True,
+    generate_new_vocabulary_variables=True,
+):
     """
     This method is use to retrieve from an ODF variable code, units and units,
     matching vocabulary terms available.
     """
 
-    def detect_reference_scale(variable_name, attributes):
+    def _add_reference_scale():
+        """Retrieve scale information from  either units or long_name"""
         scales = {
             "IPTS-48": r"IPTS\-48",
             "IPTS-68": r"IPTS\-68|ITS\-68",
             "ITS-90": r"ITS\-90|TE90",
             "PSS-78": r"PSS\-78|practical.*salinity|psal",
         }
+        if var.startswith("TE90"):
+            ds[var].attrs["scale"] = "ITS-90"
+            return
         for scale, scale_search in scales.items():
-            if re.search(scale_search, variable_name, re.IGNORECASE):
-                return scale
-
-            for _, value in attributes.items():
-                if isinstance(value, str) and re.search(
-                    scale_search, value, re.IGNORECASE
-                ):
-                    return scale
-        return None
+            if re.search(
+                scale_search, ds[var].attrs.get("units"), re.IGNORECASE
+            ) or re.search(scale_search, ds[var].attrs.get("long_name"), re.IGNORECASE):
+                ds[var].attrs["scale"] = scale
 
     def _review_term(term, accepted_terms, regexp=False, search_flag=None):
         """
@@ -454,59 +449,68 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
         - unknown if unit exists but the "accepted_units" input is empty.
         - False if not matching units
         """
-        if accepted_terms is None:
-            # No required term
-            return True
+        return bool(
+            accepted_terms is None
+            or any(
+                item in accepted_terms.split("|")
+                for item in ("none", "dimensionless", term)
+            )
+            or (regexp and re.search(accepted_terms, term, search_flag))
+        )
 
-        accepted_units_list = accepted_terms.split("|")
-        if any(unit in ["none", "dimensionless"] for unit in accepted_units_list):
-            # Include unitless data
-            return True
-        elif term in accepted_units_list:
-            # Match exactely one of the listed terms
-            return True
-        elif regexp and re.search(accepted_terms, term, search_flag):
-            # Match expected term
-            return True
-        else:
-            # term do not match expected terms
-            return False
-
-    def _match_term(units, scale, variable_instrument, global_instrument):
+    def _get_matching_vocabularies():
+        """Match variable to vocabulary by:
+        - vocabulary
+        - gf3 code
+        - units
+        - scale
+        - long_name
+        - global instrument_type instrument_model
+        """
         # Among these matching terms find matching ones
-        match_units = matching_terms["accepted_units"].apply(
-            lambda x: _review_term(units, x)
+        match_vocabulary = vocabulary["Vocabulary"].isin(organizations)
+        match_code = (
+            vocabulary["name"] == ds[var].attrs["legacy_gf3_code"].split("_")[0]
         )
-        match_scale = matching_terms["accepted_scale"].apply(
-            lambda x: _review_term(scale, x)
+        match_units = vocabulary["accepted_units"].apply(
+            lambda x: _review_term(ds[var].attrs.get("units"), x)
         )
-        match_instrument = matching_terms["accepted_instruments"].apply(
+        match_scale = vocabulary["accepted_scale"].apply(
+            lambda x: _review_term(ds[var].attrs.get("scale"), x)
+        )
+        match_instrument = vocabulary["accepted_instruments"].apply(
             lambda x: _review_term(
-                variable_instrument, x, regexp=True, search_flag=re.IGNORECASE
+                ds[var].attrs.get("long_name"),
+                x,
+                regexp=True,
+                search_flag=re.IGNORECASE,
             )
         )
-        match_instrument_global = matching_terms["accepted_instruments"].apply(
+        match_instrument_global = vocabulary["accepted_instruments"].apply(
             lambda x: _review_term(
-                global_instrument, x, regexp=True, search_flag=re.IGNORECASE
+                f"{ds.attrs.get('instrument_type')} {ds.attrs.get('instrument_model')}".strip(),
+                x,
+                regexp=True,
+                search_flag=re.IGNORECASE,
             )
         )
-        return match_units & match_scale & (match_instrument | match_instrument_global)
+        return vocabulary.loc[
+            match_vocabulary
+            & match_code
+            & match_units
+            & match_scale
+            & (match_instrument | match_instrument_global)
+        ]
 
-    # Define vocabulary default list of variables to import as attributes
-    vocabulary_attribute_list = [
-        "long_name",
-        "units",
-        "instrument",
-        "scale",
-        "standard_name",
-        "sdn_parameter_urn",
-        "sdn_parameter_name",
-        "sdn_uom_urn",
-        "sdn_uom_name",
-        "coverage_content_type",
-        "ioos_category",
-        "comments",
-    ]
+    def _update_variable_index(varname, index):
+        """Standardize variables trailing number to two digits"""
+        if not varname:
+            return varname
+        elif varname.endswith(("XX", "01")):
+            return f"{varname[:-2]}{index:02}"
+        elif varname.endswith(("X", "1")):
+            return f"{varname[:-1]}{index:01}"
+        return varname
 
     # Generate Standardized Attributes from vocabulary table
     # # The very first item in the expected columns is the main term to use
@@ -514,175 +518,117 @@ def get_vocabulary_attributes(ds, organizations=None, vocabulary=None):
     # vocabulary["instrument"] = vocabulary["accepted_instrument"].str.split("|").str[0]
 
     # Find matching vocabulary
-    new_variable_order = []
+    vocabulary["apply_function"] = vocabulary["apply_function"].fillna("x")
+    new_variables_mapping = {}
+    new_variables = {}
+    new_variables_attributes = {}
+    variable_order = []
     for var in ds:
         # Ignore variables with no attributes and flag variables
         if (
-            ds[var].attrs == {}
+            not ds[var].attrs
             or "flag_values" in ds[var].attrs
             or "legacy_gf3_code" not in ds[var].attrs
             or var.startswith(("QCFF", "FFFF"))
         ):
-            new_variable_order.append(var)
+            variable_order.append(var)
             continue
 
         # Retrieve standardize units and scale
-        scale = detect_reference_scale(var, ds[var].attrs)
-        if scale:
-            # Add scale to to scale attribute
-            ds[var].attrs["scale"] = scale
-
-        # Find matching vocabulary for that GF3 Code
-        gf3 = GF3Code(ds[var].attrs["legacy_gf3_code"])
-        matching_terms = vocabulary.query(
-            f"Vocabulary in {tuple(organizations)} and name == @gf3.code"
-        )
+        _add_reference_scale()
+        matching_terms = _get_matching_vocabularies()
 
         # If nothing matches, move to the next one
         if matching_terms.empty:
             logger.warning(
-                "No matching vocabulary term is available for variable %s: %s",
-                gf3.name,
+                "No matching vocabulary term is available for variable %s: %s and instrument: {'type':%s,'model':%s}",
+                ds[var].attrs["legacy_gf3_code"],
                 ds[var].attrs,
+                ds.attrs.get("instrument_type"),
+                ds.attrs.get("instrument_model"),
             )
-            new_variable_order.append(var)
+            variable_order.append(var)
             continue
 
         # Consider only the first organization that has this term
-        selected_organization = matching_terms.index.values[0][0]
-        matching_terms = matching_terms.loc[matching_terms.index.values[0][0]]
-
-        # Among these matching terms find matching ones
-        match_result = _match_term(
-            ds[var].attrs.get("units", "none"),
-            ds[var].attrs.get("scale"),
-            ds[var].attrs["long_name"],
-            (
-                f"{ds.attrs.get('instrument_type','')} {ds.attrs.get('instrument_model',)}"
-            ).strip(),
+        selected_organization = [
+            organization
+            for organization in organizations
+            if organization in matching_terms["Vocabulary"].tolist()
+        ][0]
+        matching_terms = matching_terms.query(
+            f"Vocabulary == '{selected_organization}'"
         )
+        gf3 = GF3Code(var)
+        if gf3.code == "FLOR":
+            for id, new_var in matching_terms.iterrows():
+                variable_name = new_var["variable_name"]
+                index = 1
+                while variable_name in new_variables:
+                    index += 1
+                    variable_name = _update_variable_index(variable_name, index)
+                matching_terms.loc[id, "variable_name"] = variable_name
+                matching_terms.loc[id, "sdn_parameter_urn"] = _update_variable_index(
+                    matching_terms.loc[id, "sdn_parameter_urn"], index
+                )
+                if index > 1:
+                    matching_terms.loc[id, "long_name"] += f", {index}"
 
-        # Select only the terms that matches all the units/scale/instrument conditions
-        matching_terms_and_units = matching_terms.loc[match_result]
-
-        # No matching term, give a warning if not a flag and move on to the next iteration
-        if len(matching_terms_and_units) == 0:
-            logger.warning(
-                "No Matching unit found for code: %s: %s in vocabulary %s",
-                var,
-                ({att: ds[var].attrs[att] for att in ["long_name", "units"]}),
-                selected_organization,
+        else:
+            matching_terms["variable_name"] = (
+                matching_terms["variable_name"]
+                .fillna(var)
+                .apply(lambda x: _update_variable_index(x, gf3.index))
             )
-            new_variable_order.append(var)
+            matching_terms["sdn_parameter_urn"] = matching_terms[
+                "sdn_parameter_urn"
+            ].apply(lambda x: _update_variable_index(x, gf3.index))
+            if gf3.index > 1:
+                matching_terms["long_name"] += f", {gf3.index}"
+
+        # Add attributes to original variable
+        if add_attributes_existing_variables:
+            ds[var].attrs.update(
+                matching_terms.iloc[-1][vocabulary_attribute_list].dropna().to_dict()
+            )
+
+        variable_order += [var]
+        if not generate_new_vocabulary_variables:
             continue
 
-        # Generate new variables and update original variable attributes from vocabulary
-        for _, row in matching_terms_and_units.iterrows():
-            # Make a copy of original variable
-            if row["variable_name"]:
-                # Apply suffix number of original variable
-                if gf3 and gf3.code not in ("FLOR"):
-                    new_variable = update_variable_index(
-                        row["variable_name"], gf3.index
-                    )
-                else:
-                    # If variable already exist within dataset and is gf3.
-                    # Increment the trailing number until no similar named variable exist.
-                    if row["variable_name"] in ds and gf3:
-                        new_variable = None
-                        trailing_number = 2
-                        while new_variable is None or new_variable in ds:
-                            new_variable = update_variable_index(
-                                row["variable_name"], trailing_number
-                            )
-                            trailing_number += 1
-                    else:
-                        new_variable = row["variable_name"]
-
-                # Generate new variable
-                if row["apply_function"]:
-                    input_args = []
-                    extra_args = re.search(r"lambda (.*):", row["apply_function"])
-                    if extra_args:
-                        for item in extra_args[1].split(","):
-                            if item in var:
-                                input_args.append(ds[var])
-                            elif item in ds:
-                                input_args.append(ds[item])
-                            else:
-                                input_args.append(item)
-                    if [
-                        arg
-                        for arg in input_args
-                        if isinstance(arg, str) and arg == "latitude"
-                    ]:
-                        logger.warning(
-                            "latitude is missing from data. %s will be ignored",
-                            row["apply_function"],
-                        )
-                        continue
-                    else:
-                        ds[new_variable] = xr.apply_ufunc(
-                            eval(row["apply_function"]),
-                            *tuple(input_args),
-                            keep_attrs=True,
-                        )
-                        ds.attrs["history"] += history_input(
-                            f"Add Parameter: {new_variable} = {row['apply_function']}"
-                        )
-                else:
-                    ds[new_variable] = ds[var].copy()
-                    if var != new_variable:
-                        ds.attrs["history"] += history_input(
-                            f"Add Parameter: {new_variable} = {var}"
-                        )
-
-                new_attrs = ds[new_variable].attrs
-                new_variable_order.append(new_variable)
-            else:
-                # Apply vocabulary to original variable
-                new_attrs = ds[var].attrs
-                new_variable_order.append(var)
-
-            # Retrieve all attributes in vocabulary that have something
-            new_attrs.update(row[vocabulary_attribute_list].dropna().to_dict())
-
-            # If original data has units but vocabulary doesn't require one drop the units
-            if "units" in new_attrs and row["units"] is None:
-                new_attrs.pop("units")
-
-            # Update sdn_parameter_urn and long_name terms available
-            if (
-                "sdn_parameter_urn" in new_attrs
-                and "legacy_gf3_code" in new_attrs
-                and gf3.code not in ("FLOR")
-            ):
-                new_attrs["sdn_parameter_urn"] = update_variable_index(
-                    new_attrs["sdn_parameter_urn"], gf3.index
-                )
-                # Add index to long name if bigger than 1
-                if gf3.index > 1:
-                    new_attrs["long_name"] += f", {gf3.index}"
-
-    dropped_variables = [var for var in ds if var not in new_variable_order]
-    if dropped_variables:
-        ds.attrs["history"] += history_input(
-            f"Drop Parameters: {','.join(dropped_variables)}"
+        # Generate vocabulary variables
+        variable_order += matching_terms["variable_name"].tolist()
+        locals = {"gsw": gsw, "x": ds[var], **{item: ds[item] for item in ds.variables}}
+        new_variables_mapping.update(
+            {
+                var: f"with x={var} -> {item['apply_function']} = {item['variable_name']}"
+                if item["apply_function"] != "x"
+                else f"{var} = {item['variable_name']}"
+                for _, item in matching_terms.iterrows()
+            }
         )
-    return ds[new_variable_order]
+        new_variables.update(
+            {
+                item["variable_name"]: eval(item["apply_function"], {}, locals)
+                for _, item in matching_terms.iterrows()
+            }
+        )
+        new_variables_attributes.update(
+            {
+                item["variable_name"]: {
+                    **ds[var].attrs,
+                    **item[vocabulary_attribute_list].to_dict(),
+                }
+                for _, item in matching_terms.iterrows()
+            }
+        )
+    # Include the new variables and their variable attributes
+    if generate_new_vocabulary_variables:
+        ds = ds.assign(new_variables)
+        for variable, attrs in new_variables_attributes.items():
+            ds[variable].attrs = attrs
 
-
-def standardize_odf_units(unit_string):
-    """
-    Units strings were manually written within the ODF files.
-    We're trying to standardize all the different issues found.
-    """
-    if unit_string:
-        unit_string = unit_string.replace("**", "^")
-        unit_string = unit_string.replace("µ", "u")
-        unit_string = re.sub(r" /|/ ", "/", unit_string)
-        unit_string = re.sub(r" \^|\^ ", "^", unit_string)
-
-        if re.match(r"\(none\)|none|dimensionless", unit_string):
-            unit_string = "none"
-    return unit_string
+        ds.attrs["history"] += history_input(
+            f"Generate new vocabulary variables: {'; '.join(new_variables_mapping.keys())}"
+        )
+    return ds[variable_order]

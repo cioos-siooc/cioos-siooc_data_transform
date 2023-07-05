@@ -62,11 +62,13 @@ def standardize_attributes_values(attrs, order):
 
     # Apply conversion and ignore empty attributes
     for attr, value in ordered_attrs.items():
-        if value in [None, "", pd.NaT]:
+        if isinstance(value, np.ndarray):
+            pass
+        elif value in [None, "", pd.NaT]:
             continue
-        if type(value) is pd.Timestamp:
+        elif isinstance(value, pd.Timestamp):
             value = value.to_pydatetime()
-        if type(value) is dt.datetime:
+        elif isinstance(value, dt.datetime):
             # Convert to UTC if timezone aware
             if value.tzinfo:
                 value = value.astimezone(dt.timezone.utc)
@@ -206,11 +208,9 @@ def standardize_variable_attributes(ds):
             ds[var].dtype in [float, int, "float32", "float64", "int64", "int32"]
             and "flag_values" not in ds[var].attrs
         ):
-            ds[var].attrs["actual_range"] = tuple(
-                np.array((ds[var].min().item(0), ds[var].max().item(0))).astype(
-                    ds[var].dtype
-                )
-            )
+            ds[var].attrs["actual_range"] = np.array(
+                (ds[var].min().item(0), ds[var].max().item(0))
+            ).astype(ds[var].dtype)
 
         ds[var].attrs = standardize_attributes_values(ds[var].attrs, attribute_order)
     return ds
