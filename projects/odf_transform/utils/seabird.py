@@ -346,7 +346,7 @@ def add_seabird_instruments(dataset, seabird_header, match_by="long_name"):
                     )
 
             for var in matched_variables:
-                if "instrument" in dataset[var].attrs:
+                if "instrument" in dataset[var].attrs and dataset[var].attrs["instrument"]: 
                     dataset[var].attrs["instrument"] += "," + sensor_variable
                 else:
                     dataset[var].attrs["instrument"] = sensor_variable
