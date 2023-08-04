@@ -1,1 +1,1 @@
-include cioos_data_transform/cioos_data_transform/utils/ios_vocabulary.csv
+include cioos_data_transform/utils/ios_vocabulary.csv
