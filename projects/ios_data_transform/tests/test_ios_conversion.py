@@ -11,11 +11,12 @@ from ios_data_transform.write_mctd_ncfile import write_mctd_ncfile
 
 import cioos_data_transform.IosObsFile as ios
 import cioos_data_transform.utils as cioos_utils
+from cioos_data_transform.utils.utils import read_geojson
 from cioos_data_transform.utils import fix_path
 
 MODULE_PATH = os.path.dirname(__file__)
 GEOJSON_AREAS_PATH = fix_path(f"{MODULE_PATH}/test_files/ios_polygons.geojson")
-GEOGRAPHICAL_AREAS = ios.read_geojson(GEOJSON_AREAS_PATH)
+GEOGRAPHICAL_AREAS = read_geojson(GEOJSON_AREAS_PATH)
 OUTPUT_PATH = fix_path("./projects/ios_data_transform/tests/temp/")
 TEST_FILE_FOLDER = os.path.join(MODULE_PATH, "test_files")
 
