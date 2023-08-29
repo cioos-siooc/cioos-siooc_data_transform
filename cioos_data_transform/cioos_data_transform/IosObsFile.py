@@ -18,7 +18,7 @@ import pkg_resources
 import xarray as xr
 from pytz import timezone
 
-from .utils.utils import find_geographic_area, read_geojson, read_ios_vocabulary
+from cioos_data_transform.utils.utils import find_geographic_area, read_ios_vocabulary
 
 try:
     from shapely.geometry import Point

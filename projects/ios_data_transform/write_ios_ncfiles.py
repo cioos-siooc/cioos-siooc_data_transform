@@ -1,5 +1,4 @@
 import argparse
-import json
 import logging
 import logging.config
 import os
@@ -17,7 +16,9 @@ logger = logging.LoggerAdapter(logger, {"file": None})
 
 
 def parse_ios_file(input_path, output_path, config_input=None, overwrite=False):
-    """Parse IOS file with default configuration associated with the file type."""
+    """Parse IOS file with default configuration
+    associated with the file type
+    """
     ftype = input_path.rsplit(".")[1]
     if isinstance(config_input, str):
         config = read_config(config_input, ftype)
@@ -72,7 +73,7 @@ def run_batch_conversion(
             )
             write_ios_ncfile(output_path, fdata, config)
 
-        except Exception as e:
+        except Exception:
             logger.exception("Failed to read %s", file, extra={"file": file})
 
 
