@@ -4,8 +4,9 @@
 #
 # AIM:  this will be the common entry point for data from different sources that go into CIOOS
 #       ensuring common ncfile metadata standards. File has to conform to CF conventions and CIOOS variable standards
-from netCDF4 import Dataset as ncdata
 import numpy as np
+from netCDF4 import Dataset as ncdata
+
 from .OceanNcVar import OceanNcVar
 
 

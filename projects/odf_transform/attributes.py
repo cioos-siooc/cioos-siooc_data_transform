@@ -5,16 +5,17 @@ attribtutes to the different conventions (CF, ACDD).
 
 import json
 import logging
+import os
 import re
 from datetime import datetime, timezone
 from difflib import get_close_matches
-import os
 
 import pandas as pd
 from odf_transform.utils.seabird import (
     get_seabird_instrument_from_header,
     get_seabird_processing_history,
 )
+
 from cioos_data_transform.utils.utils import get_geo_code, get_nearest_station
 
 no_file_logger = logging.getLogger(__name__)

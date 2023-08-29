@@ -1,7 +1,7 @@
-import hashlib
-import os
-import json
 import glob
+import hashlib
+import json
+import os
 
 
 def get_file_stats(flist):

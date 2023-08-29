@@ -1,9 +1,11 @@
-import logging
 import json
+import logging
 import os
+
 import geopy.distance
 import pandas as pd
-try: 
+
+try:
     from shapely.geometry import Point, Polygon
 except ImportError:
     Point, Polygon = None, None
@@ -60,8 +62,8 @@ def import_env_variables(filename="./.env"):
 def file_mod_time(filename):
     # returns how old the file is based on timestamp
     # returns the time in hours
-    import time
     import os
+    import time
 
     dthrs = (os.path.getmtime(filename) - time.time()) / 3600.0
     return dthrs
@@ -102,11 +104,11 @@ def read_geojson(filename):
 
 
 def get_geo_code(location, polygons_dict):
-    # read geojson file and assign file 
+    # read geojson file and assign file
     if Point is None:
         logger.error("Install shapely to use get_geo_code")
         return "n/a"
-    
+
     geo_code = find_geographic_area(
         polygons_dict,
         Point(location[0], location[1]),

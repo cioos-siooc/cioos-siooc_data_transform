@@ -1,8 +1,9 @@
 # class to describe any variable that goes into a netcdf file
 # will include bodc code generation
 from datetime import datetime
-from pytz import timezone
+
 import numpy as np
+from pytz import timezone
 
 
 class OceanNcVar(object):

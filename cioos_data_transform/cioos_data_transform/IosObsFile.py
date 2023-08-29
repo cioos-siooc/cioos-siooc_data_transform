@@ -3,22 +3,22 @@
     Changelog Version 0.1: July 15 2019 - convert python scripts and functions into a python class
     Author: Pramod Thupaki (pramod.thupaki@hakai.org)
 """
+import json
+import logging
+import re
 import struct
 from datetime import datetime, timedelta
-import re
-import fortranformat as ff
-import numpy as np
-import json
-
-import pkg_resources
-
-from pytz import timezone
-from .utils.utils import find_geographic_area, read_geojson, read_ios_vocabulary
-import pandas as pd
 from io import StringIO
-import logging
-import xarray as xr
+
+import fortranformat as ff
 import gsw
+import numpy as np
+import pandas as pd
+import pkg_resources
+import xarray as xr
+from pytz import timezone
+
+from .utils.utils import find_geographic_area, read_geojson, read_ios_vocabulary
 
 try:
     from shapely.geometry import Point

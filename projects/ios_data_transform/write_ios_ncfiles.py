@@ -5,9 +5,10 @@ import logging.config
 import os
 from glob import glob
 
+from tqdm import tqdm
+
 import cioos_data_transform.IosObsFile as ios
 from cioos_data_transform.utils import read_config
-from tqdm import tqdm
 
 log_config_path = os.path.join(os.path.dirname(__file__), "log_config.ini")
 logger = logging.getLogger(None if __name__ == "__main__" else __name__)

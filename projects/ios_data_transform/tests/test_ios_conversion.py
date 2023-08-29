@@ -1,17 +1,17 @@
 # script runs automated tests on data conversions
 import os
 import unittest
-import pytest
 from glob import glob
 
-import cioos_data_transform.IosObsFile as ios
-import cioos_data_transform.utils as cioos_utils
-from cioos_data_transform.utils import fix_path
-
+import pytest
 from ios_data_transform import ios_data_transform_script
 from ios_data_transform.write_ctd_ncfile import write_ctd_ncfile
 from ios_data_transform.write_cur_ncfile import write_cur_ncfile
 from ios_data_transform.write_mctd_ncfile import write_mctd_ncfile
+
+import cioos_data_transform.IosObsFile as ios
+import cioos_data_transform.utils as cioos_utils
+from cioos_data_transform.utils import fix_path
 
 MODULE_PATH = os.path.dirname(__file__)
 GEOJSON_AREAS_PATH = fix_path(f"{MODULE_PATH}/test_files/ios_polygons.geojson")

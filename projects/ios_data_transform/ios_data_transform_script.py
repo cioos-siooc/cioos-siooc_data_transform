@@ -9,15 +9,15 @@ import sys
 from multiprocessing import Pool
 from time import time
 
+import sentry_sdk
+from ios_data_transform.write_cur_ncfile import write_cur_ncfile
+from sentry_sdk.integrations.logging import LoggingIntegration
+from tqdm import tqdm
+
 import cioos_data_transform.IosObsFile as ios
 
 # .cioos_data_transform as iod
 import cioos_data_transform.utils as cioos_utils
-import sentry_sdk
-from sentry_sdk.integrations.logging import LoggingIntegration
-from tqdm import tqdm
-
-from ios_data_transform.write_cur_ncfile import write_cur_ncfile
 
 if __name__ == "__main__":
     log_config_path = os.path.join(os.path.dirname(__file__), "log_config.ini")

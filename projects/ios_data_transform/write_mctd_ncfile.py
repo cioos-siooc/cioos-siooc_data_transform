@@ -1,6 +1,8 @@
-from datetime import datetime
-from pytz import timezone
 import json
+from datetime import datetime
+
+from pytz import timezone
+
 from cioos_data_transform.OceanNcFile import MCtdNcFile
 
 # from cioos_data_transform.OceanNcVar import OceanNcVar

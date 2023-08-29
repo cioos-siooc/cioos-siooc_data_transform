@@ -1,7 +1,8 @@
-import netCDF4 as nc
-import gsw
-import numpy as np
 import datetime
+
+import gsw
+import netCDF4 as nc
+import numpy as np
 
 
 def _get_time_stamp():

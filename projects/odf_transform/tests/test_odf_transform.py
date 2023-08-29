@@ -6,8 +6,8 @@ import unittest
 from glob import glob
 
 import odf_transform.process
-import xarray as xr
 import pytest
+import xarray as xr
 
 logger = logging.getLogger(__name__)
 
