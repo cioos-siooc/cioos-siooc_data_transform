@@ -24,7 +24,7 @@ try:
     from shapely.geometry import Point
 except ImportError:
     Point = None
-    
+
 VERSION = pkg_resources.require("cioos_data_transform")[0].version
 logger = logging.getLogger(__name__)
 logger = logging.LoggerAdapter(logger, {"file": None})
@@ -572,7 +572,7 @@ class ObsFile(object):
     def assign_geo_code(self, polygons_dict):
         if Point is None:
             logger.error("Install shapely to use assign_geo_code")
-            return 
+            return
 
         geo_code = find_geographic_area(
             polygons_dict, Point(self.location["LONGITUDE"], self.location["LATITUDE"])

@@ -23,9 +23,7 @@ setuptools.setup(
         "pandas",
         "geopy",
     ],
-    extras_require= {
-        "geo": ["shapely"]
-    },
+    extras_require={"geo": ["shapely"]},
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
