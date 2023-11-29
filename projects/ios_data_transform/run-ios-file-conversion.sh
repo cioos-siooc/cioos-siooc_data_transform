@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Load environment variables
-# shellcheck source=./.env
+# shellcheck source=/dev/null
 source .env
 
 ## setup python environment
