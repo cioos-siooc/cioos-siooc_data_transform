@@ -14,6 +14,7 @@ setuptools.setup(
         "tqdm",
         "pytz",
         "sentry_sdk",
+        "NetCDF4",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
