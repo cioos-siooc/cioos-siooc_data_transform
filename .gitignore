@@ -126,3 +126,4 @@ temp_scripts
 projects/ios_data_transform/local
 projects/ios_data_transform/**log.*
 ios_nc_conversion.log*
+projects/ios_data_transform/*-conversion.csv
