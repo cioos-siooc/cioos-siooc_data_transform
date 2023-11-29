@@ -1,12 +1,14 @@
+#!/bin/bash
 
 # Load environment variables
-source ./.env
+# shellcheck source=./.env
+source .env
 
 ## setup python environment
+# shellcheck source=/dev/null
 source ~/anaconda3/etc/profile.d/conda.sh
 conda activate odpy
 python --version
-echo $(which python)
 
 odpy --log-file odpy-ios-drf-conversion.log --log-file-level=WARNING  convert -c odpy-ios-drf-conversion.yaml
 odpy --log-file odpy-ios-tob-conversion.log --log-file-level=WARNING  convert -c odpy-ios-tob-conversion.yaml
