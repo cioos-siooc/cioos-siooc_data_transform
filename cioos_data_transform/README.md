@@ -21,6 +21,8 @@ These instructions will get you a copy of the project up and running on your loc
 - Run command 'pip install -e .' to install the ios_data_transform and dependencies automatically
   - Note: -e flag installs package in 'editable' mode
 
+- [Optional] If you want to generate the `geographic_area` attributes. You'll need to install the optional package `shapely`.
+- 
 ### Prerequisites
 
 - Linux (or Unix-like) environment

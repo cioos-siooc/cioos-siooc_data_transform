@@ -1,0 +1,448 @@
+ios_file_extension,ios_name,accepted_units,accepted_instrument_type,apply_func,long_name,standard_name,units,scale,sdn_parameter_urn,sdn_parameter_name,sdn_uom_urn,sdn_uom_name,rename
+,% light transmittance,%,,,% Light transmittance,,%,,,,,,
+,adenosine_triphosphate,mg\/m\^3,,,Adenosine Triphosphate,mass_concentration_of_adenosine_triphosphate_in_sea_water,mg/m^3,,SDN:P01::ATPXZZDZ,Concentration of adenosine triphosphate {ATP CAS 56-65-5} per unit volume of the water body [dissolved plus reactive particulate <unknown phase],,,ATPXZZDZ
+,alkalinity,mmol\/m,,,Alkalinity,sea_water_alkalinity_expressed_as_mole_equivalent,mmol/m,,SDN:P01::ALKYZZXX,Total alkalinity per unit volume of the water body,,,ALKYZZXX
+,alkalinity:carbonate,mmol\/L,,,,mole_concentration_of_carbonate_expressed_as_carbon_in_sea_water,mmol/L,,SDN:P01:CRBTWCAL,,,,
+,alkalinity:carbonate,umol\/kg,,,,mole_concentration_of_carbonate_expressed_as_carbon_in_sea_water,umol/kg,,SDN:P01:CRBTWCAL,,,,
+,alkalinity:total,mmol\/L,,,,sea_water_alkalinity_expressed_as_mole_equivalent,mmol/L,,SDN:P01::ALKYZZXX,Total alkalinity per unit volume of the water body,,,ALKYZZXX
+,alkalinity:total,umol\/kg,,,Alkalinity Total,sea_water_alkalinity_expressed_as_mole_equivalent,umol/kg,,SDN:P01::MDMAP014,Total alkalinity per unit mass of the water body,,,MDMAP014
+,alkalinity:total:colorimetric,umol\/kg,,,Alkalinity Total Colorimetric,sea_water_alkalinity_expressed_as_mole_equivalent,umol/kg,,SDN:P01::MDMAP014,Total alkalinity per unit mass of the water body,,,MDMAP014
+,alkalinity:total:crm:corrected,umol\/kg,,,Alkalinity Total CRM Corrected,sea_water_alkalinity_expressed_as_mole_equivalent,umol/kg,,SDN:P01::MDMAP014,Total alkalinity per unit mass of the water body,,,MDMAP014
+,alkalinity:total:potentiometric,umol\/kg,,,Alkalinity Total Potentiometric,sea_water_alkalinity_expressed_as_mole_equivalent,umol/kg,,SDN:P01::ALKYPOTK,Total alkalinity per unit mass of the water body by potentiometry,,,ALKYPOTK
+,altimeter,metres,,,Altimeter,height_above_sea_floor,metres,,SDN:P01::AHSFZZ01,Height (spatial coordinate) relative to bed surface in the water body,,,AHSFZZ01
+,aluminum:dissolved,pmol\/L,,,Dissolved Aluminum,,pmol/L,,SDN:P01::ALXXFIP5,"Concentration of aluminium {Al CAS 7429-90-5} per unit volume of the water body [dissolved plus reactive particulate <0.2um phase] by filtration, in-line preconcentration and flow-injection fluorometry",,,ALXXFIP5
+,ammonia,microg-at\/l,,,Ammonia,,umol/L,,SDN:P01::AMNH3G01,Concentration of ammonia {NH3 CAS 7664-41-7} per unit volume of the water body [dissolved plus reactive particulate phase],,,AMNH3G01
+,ammonium,umol\/l|umol\/L,,,Mole Concentration of Amonium in Sea Water,mole_concentration_of_ammonium_in_sea_water,umol/L,,SDN:P01::AMONZZXX,Concentration of ammonium {NH4+ CAS 14798-03-9} per unit volume of the water body [unknown phase],,,AMONZZXX
+,amplitude:beam1,,,,signal_intensity_from_multibeam_acoustic_doppler_velocity_sensor_in_sea_water,count,,,,,,,ISCMBMA1
+,amplitude:beam2,,,,signal_intensity_from_multibeam_acoustic_doppler_velocity_sensor_in_sea_water,count,,,,,,,ISCMBMA2
+,amplitude:beam3,,,,signal_intensity_from_multibeam_acoustic_doppler_velocity_sensor_in_sea_water,count,,,,,,,ISCMBMA3
+,analysis_method,,,,,,,,,,,,
+,archive_interval,min,,,Archive Interval,,min,,,,,,
+,bacteria,10\^6\/mL,,,Bacteria,,10^6/mL,,SDN:P01::TBCCMAPZ,Abundance of bacteria (ITIS: 202421: WoRMS 6) per unit volume of the water body by acridine orange staining and microscopy,,,TBCCMAPZ
+,bacteria,\/mL,,,Bacteria,,/mL,,SDN:P01::TBCCMAPZ,Abundance of bacteria (ITIS: 202421: WoRMS 6) per unit volume of the water body by acridine orange staining and microscopy,,,TBCCMAPZ
+,barium:dissolved,nmol\/L,,,Dissolved Barium,,nmol/L,,SDN:P01::RWS00029,Concentration of barium {Ba CAS 7440-39-3} per unit volume of the water body [dissolved plus reactive particulate phase],,,RWS00029
+,bottle:firing_sequence,None,,,Bottle Firing Sequence,,,,,,,,
+,bottle:position,None,,,Bottle Position,,,,,,,,
+,bottle_comment,None,,,Bottle Comment,,,,,,,,
+,bottle_integrity,None,,,Bottle Integrity,,,,,,,,
+,bottle_number,None,,,Bottle Number,,,,,,,,
+,calcium:total,mmol\/kg,,,Total Calcium,,mmol/kg,,SDN:P01::RWS00023,Concentration of calcium {Ca CAS 7440-70-2} per unit volume of the water body [dissolved plus reactive particulate phase],,,RWS00023
+,carbon:dissolved:inorganic,mg\/L,,,Dissolved Inorganic Carbon,mole_concentration_of_dissolved_inorganic_carbon_in_sea_water,mg/L,,SDN:P01::TCO2CBTX,Concentration of total inorganic carbon {TCO2 CAS 7440-44-0} per unit volume of the water body [dissolved plus reactive particulate phase] by coulometry,,,TCO2CBTX
+,carbon:dissolved:inorganic,umol\/kg,,,Dissolved Inorganic Carbon,mole_concentration_of_dissolved_inorganic_carbon_in_sea_water,umol/kg,,SDN:P01::TCO2KG01,Concentration of total inorganic carbon {TCO2 CAS 7440-44-0} per unit mass of the water body [dissolved plus reactive particulate phase] by coulometry,,,TCO2KG01
+,carbon:dissolved:organic,uM|umol\/L,,,Dissolved Organic Carbon,mole_concentration_of_dissolved_organic_carbon_in_sea_water,umol/L,,SBN:P01::CORGZZZX,,,,
+,carbon:isotope:13,\/mille,,,Carbon Isotope 13,,/mille,,,,,,
+,carbon:isotope:14,\/mille,,,Carbon Isotope 14,,/mille,,,,,,
+,carbon:particulate:organic,mg\/m\^3|mg\/m3,,,,,mg/m^3,,SDN:P01::MDMAP010,Concentration of organic carbon {organic_C CAS 7440-44-0} {POC} per unit volume of the water body [particulate >unknown phase],,,MDMAP010
+,carbon:particulate:organic,umol\/L,,,,,umol/L,,SDN:P01::MDMAP010,Concentration of organic carbon {organic_C CAS 7440-44-0} {POC} per unit volume of the water body [particulate >unknown phase],,,MDMAP010
+,carbon:particulate:total,umol\/L,,,Particulate Total Carbon,mole_concentration_of_particulate_matter_expressed_as_carbon_in_sea_water,umol/L,,SDN:P01::MDMAP011,Concentration of total carbon {total_C CAS 7440-44-0} per unit volume of the water body [particulate >unknown phase],,,MDMAP011
+,carbon:particulate:total,umol\/kg,,,Particulate Total Carbon,mole_concentration_of_particulate_matter_expressed_as_carbon_in_sea_water,umol/kg,,SDN:P01::MDMAP011,Concentration of total carbon {total_C CAS 7440-44-0} per unit volume of the water body [particulate >unknown phase],,,MDMAP011
+,carbon:total:organic,mg/L,,,Total Organic Carbon,,mg/L,,SDN:P01::CORGZZTL,Concentration of organic carbon {organic_C CAS 7440-44-0} {TOC} per unit volume of the water body [dissolved plus reactive particulate phase],,,CORGZZTL
+,carbon:total:organic,uM|umol\/L,,,Total Organic Carbon,,umol/L,,SDN:P01::CORGZZTL,Concentration of organic carbon {organic_C CAS 7440-44-0} {TOC} per unit volume of the water body [dissolved plus reactive particulate phase],,,CORGZZTL
+,carbon:total:organic,umol\/kg,,,Total Organic Carbon,,umol/kg,,SDN:P01::CORGZZTL,Concentration of organic carbon {organic_C CAS 7440-44-0} {TOC} per unit volume of the water body [dissolved plus reactive particulate phase],,,CORGZZTL
+,carbontetrachloride,pmol\/L,,,Carbontetrachloride,,pmol/L,,SDN:P01::CCL4AFX1,Concentration of tetrachloromethane {CCl4 carbon tetrachloride CAS 56-23-5} per unit volume of the water body [dissolved plus reactive particulate <unknown phase],,,CCL4AFX1
+,carbontetrachloride,pmol\/kg,,,Carbontetrachloride,,pmol/kg,,SDN:P01::QCMXMASS,Concentration of tetrachloromethane {CCl4 carbon tetrachloride CAS 56-23-5} per unit mass of the water body [dissolved plus reactive particulate phase],,,QCMXMASS
+,cdom_a250,m\^-1,,,CDOM a250,,m^-1,,SDN:P01::CDOMZZ01,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by fluorometry,,,
+,cdom_a250:a365,m\^-1,,,CDOM a250 a365,,m^-1,,SDN:P01::CDOMZZ01,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by fluorometry,,,
+,cdom_a254,m\^-1,,,CDOM a254,,m^-1,,SDN:P01::CDOMZZ01,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by fluorometry,,,
+,cdom_a350,m\^-1,,,CDOM a350,,m^-1,,SDN:P01::CDOMZZ01,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by fluorometry,,,
+,cdom_a365,m\^-1,,,CDOM a365,,m^-1,,SDN:P01::CDOMZZ01,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by fluorometry,,,
+,cdom_a375,m\^-1,,,CDOM a375,,m^-1,,SDN:P01::CDOMZZ01,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by fluorometry,,,
+,cdom_a412,m\^-1,,,CDOM a412,,m^-1,,SDN:P01::CDOMZZ01,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by fluorometry,,,
+,cdom_a440,m\^-1,,,CDOM a440,,m^-1,,SDN:P01::CDOMZZ01,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by fluorometry,,,
+,cdom_a443,m\^-1,,,CDOM a443,,m^-1,,SDN:P01::CDOMZZ01,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by fluorometry,,,
+,cdom_s275-295,m\^-1,,,CDOM S275-295,,m^-1,,SDN:P01::CDOMZZ01,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by fluorometry,,,
+,cdom_s275-295:s350-400,m\^-1,,,CDOM S275-295 S350-400,,m^-1,,SDN:P01::CDOMZZ01,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by fluorometry,,,
+,cdom_s290-350,m\^-1,,,CDOM S290-350,,m^-1,,SDN:P01::CDOMZZ01,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by fluorometry,,,
+,cdom_s350-400,m\^-1,,,CDOM S350-400,,m^-1,,SDN:P01::CDOMZZ01,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by fluorometry,,,
+,cesium137,mBq\/L,,,Cesium137,,mBq/L,,,,,,
+,cesium137uncert,mBq\/L,,,Cesium137uncert,,mBq/L,,,,,,
+,cesium:isotope:137,mBq\/L,,,Cesium Isotope 137,,mBq/L,,,,,,
+,cesium:isotope:137:uncertainty,mBq\/L,,,Cesium Isotope 137 Uncertainty,,mBq/L,,,,,,
+,chlorofluorocarbon_11,nmol\/m\^3|pmol\/L,,,Chlorofluorocarbon 11,mole_concentration_of_cfc11_in_sea_water,pmol/L,,SDN:P01::FR11GCTX,Concentration of trichlorofluoromethane {CFC-11 CAS 75-69-4} per unit volume of the water body [dissolved plus reactive particulate phase] by gas chromatography,,,FR11GCTX
+,chlorofluorocarbon_11,pmol\/kg,,,Chlorofluorocarbon 11,moles_of_cfc11_per_unit_mass_in_sea_water,pmol/kg,,SDN:P01::FR11GCKG,Concentration of trichlorofluoromethane {CFC-11 CAS 75-69-4} per unit mass of the water body [dissolved plus reactive particulate phase] by gas chromatography,,,FR11GCKG
+,chlorofluorocarbon_113,pmol\/L,,,Chlorofluorocarbon 113,,pmol/L,,SDN:P01::F113GCTX,"Concentration of 1,1,2-trichloro-1,2,2-trifluoroethane {CFC-113 CAS 76-13-1} per unit volume of the water body [dissolved plus reactive particulate phase] by gas chromatography",,,F113GCTX
+,chlorofluorocarbon_113,pmol\/kg,,,Chlorofluorocarbon 113,,pmol/kg,,SDN:P01::F113GCKG,"Concentration of 1,1,2-trichloro-1,2,2-trifluoroethane {CFC-113 CAS 76-13-1} per unit mass of the water body [dissolved plus reactive particulate phase] by gas chromatography",,,F113GCKG
+,chlorofluorocarbon_12,mg\/m\^3,,,,,mg/m^3,,SDN:P01::FR12GCTX,Concentration of dichlorodifluoromethane {CFC-12 CAS 75-71-8} per unit volume of the water body [dissolved plus reactive particulate phase] by gas chromatography,,,FR12GCTX
+,chlorofluorocarbon_12,nmol\/m\^3|pmol\/L,,,Chlorofluorocarbon 12,mole_concentration_of_cfc12_in_sea_water,pmol/L,,SDN:P01::FR12GCTX,Concentration of dichlorodifluoromethane {CFC-12 CAS 75-71-8} per unit volume of the water body [dissolved plus reactive particulate phase] by gas chromatography,,,FR12GCTX
+,chlorofluorocarbon_12,pmol\/kg,,,Chlorofluorocarbon 12,mole_concentration_of_cfc12_in_sea_water,pmol/kg,,SDN:P01::FR12GCKG,Concentration of dichlorodifluoromethane {CFC-12 CAS 75-71-8} per unit mass of the water body [dissolved plus reactive particulate phase] by gas chromatography,,,FR12GCKG
+,chlorophyll:extracted,mg\/m\^3,,,"Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >GF/F phase] by filtration, acetone extraction and fluorometry",mass_concentration_of_chlorophyll_in_sea_water,mg/m^3,,SDN:P01::CPHLFLPZ,"Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by filtration, acetone extraction and fluorometry",,,CPHLFLPZ
+,chlorophyll:extracted2,mg\/m\^3,,,Chlorophyll Extracted2,mass_concentration_of_chlorophyll_in_sea_water,mg/m^3,,SDN:P01::CPHLFLPZ,"Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by filtration, acetone extraction and fluorometry",,,CPHLFLPZ2
+,chlorophyll:extracted3,mg\/m\^3,,,Chlorophyll Extracted3,mass_concentration_of_chlorophyll_in_sea_water,mg/m^3,,SDN:P01::CPHLFLPZ,"Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by filtration, acetone extraction and fluorometry",,,CPHLFLPZ3
+,chlorophyll:extracted:0.3um,mg\/m\^3,,,Chlorophyll Extracted 0.3um,mass_concentration_of_chlorophyll_in_sea_water,mg/m^3,,SDN:P01::CPHLFLPZ,"Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by filtration, acetone extraction and fluorometry",,,CPHLFLPZ
+,chlorophyll:extracted:<5.0um,mg\/m\^3,,,Chlorophyll Extracted <5.0um,mass_concentration_of_chlorophyll_in_sea_water,mg/m^3,,SDN:P01::CPHLFLPZ,"Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by filtration, acetone extraction and fluorometry",,,CPHLFLPZ
+,chlorophyll:extracted:>0.7um,mg\/m\^3,,,Chlorophyll Extracted >0.7um,mass_concentration_of_chlorophyll_in_sea_water,mg/m^3,,SDN:P01::CPHLFLPZ,"Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by filtration, acetone extraction and fluorometry",,,CPHLFLPZ
+,chlorophyll:extracted:>5.0um,mg\/m\^3,,,Chlorophyll Extracted >5.0um,mass_concentration_of_chlorophyll_in_sea_water,mg/m^3,,SDN:P01::SCHLFLPA,"Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >5um phase] by filtration, acetone extraction and fluorometry",,,SCHLFLPA
+,chlorophyll_plus_phaeo-pigment:extracted,mg\/m\^3,,,Chlorophyll plus Phaeo-Pigment Extracted,,mg/m^3,,,,,,
+,conductance:specific,S\/m,,,Specific Conductance,,S/m,,,,,,
+,conductance:specific,mS\/cm,,lambda x: x/10,Specific Conductance,,S/m,,,,,,
+,conductivity,Ratio,,,Conductivity,,Ratio,,,,,,
+,conductivity,counts|count,,,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,count,,SDN:P01::CNDCZZ01,Electrical conductivity of the water body,,,CNDCZZ01
+ctd,conductivity,counts|count,,,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,count,,SDN:P01::CNDCST01,Electrical conductivity of the water body by CTD,,,CNDCST01
+,conductivity,ms\/cm|mS\/cm,,lambda x: x/10,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCZZ01,Electrical conductivity of the water body,,,CNDCZZ01
+ctd,conductivity,ms\/cm|mS\/cm,,lambda x: x/10,Sea Water Electrical Conductivity,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCST01,Electrical conductivity of the water body by CTD,,,CNDCST01
+,conductivity,s\/m|S\/m,,,Conductivity,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCZZ01,Electrical conductivity of the water body,,,CNDCZZ01
+ctd,conductivity,s\/m|S\/m,,,Conductivity,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCST01,Electrical conductivity of the water body by CTD,,,CNDCST01
+,conductivity:primary,S\/m,,,Conductivity,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCST01,Electrical conductivity of the water body by CTD,,,CNDCST01
+,conductivity:primary,mS\/cm,,lambda x: x/10,"Conductivity ",sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCST01,Electrical conductivity of the water body by CTD,,,CNDCST01
+,conductivity:secondary,S\/m,,,Secondary Conductivity,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCST02,Electrical conductivity of the water body by CTD (sensor 2),,,CNDCST02
+,conductivity:upcast,S\/m,,,Upcast Conductivity,sea_water_electrical_conductivity,S/m,,SDN:P01::CNDCST01,Electrical conductivity of the water body by CTD,,,CNDCST01
+,conductivity_gsw,S\/m,,,Conductivity,sea_water_conductivity,S/m,,SDN:P01::CNDCST01,Electrical conductivity of the water body by CTD,,,bodc_code
+,conductivity_ratio,None,,,Conductivity Ratio,,,,,,,,
+,current:oxygen,mA,,,Current Oxygen,,mA,,,,,,
+,degree_days:cooling,deg C \(ITS\-90\) \(ITS90\) da|deg c \(ITS\-90\) day|deg C  \(ITS90\)day|deg C \(ITS-90\) day|deg C \(ITS-90\)day|deg C \(ITS9|deg C \(ITS90\) day,,,Degree Days Cooling,,deg C (ITS-90) day,,,,,,
+,degree_days:cooling,deg C day,,,Cooling Degree Days,,deg C day,,,,,,
+,degree_days:heating,deg C \(ITS\-90\) \(ITS90\) da|deg c \(ITS\-90\) day|deg C \(ITS-90\) day|deg C \(ITS-90\)day|deg C \(ITS9|deg C \(ITS90\) day,,,Degree Days Heating,,deg C (ITS-90) day,,,,,,
+,degree_days:heating,deg C day,,,Heating Degree Days,,deg C day,,,,,,
+,degree_days:heating,,,,Degree Days Heating,,,,,,,,
+,density,kg\/m\^3,,,Density,sea_water_density,kg/m^3,,SDN:P01::DENSWB01,Density of the water body by gravimetry,,,DENSWB01
+,density:air:inside,kg\/m\^3,,,Air Density Inside,,kg/m^3,,,,,,
+,depth,m|metres|metre|meter|meters|Metres|Metre|Meter|Meters,,,Depth,depth,m,,SDN:P01::ADEPZZ01,Depth (spatial coordinate) relative to water surface in the water body,,,depth
+,depth:corrected,metres,,,Depth Corrected,depth,m,,SDN:P01::ADEPZZ01,Depth (spatial coordinate) relative to water surface in the water body,,,depth
+,depth:ctd,metres,,,Depth CTD,depth,m,,SDN:P01::ADEPZZ01,Depth (spatial coordinate) relative to water surface in the water body,,,depth
+,depth:nominal,metres|meters,,,Depth Nominal,depth,m,,SDN:P01::ADEPZZ01,Depth (spatial coordinate) relative to water surface in the water body,,,depth
+,dimethyl_sulphide,nmol\/L,,,Dimethyl Sulphide,mole_concentration_of_dimethyl_sulfide_in_sea_water,nmol/L,,SDN:P01::DMSXGCDZ,"Concentration of dimethyl sulphide {DMS CAS 75-18-3} per unit volume of the water body [dissolved plus reactive particulate <unknown phase] by filtration, purging, cryogenic trapping and gas chromatography",,,DMSXGCDZ
+,dimethyl_sulphide,umol\/L,,,Dimethyl Sulphide,mole_concentration_of_dimethyl_sulfide_in_sea_water,umol/L,,SDN:P01::DMSXGCDZ,"Concentration of dimethyl sulphide {DMS CAS 75-18-3} per unit volume of the water body [dissolved plus reactive particulate <unknown phase] by filtration, purging, cryogenic trapping and gas chromatography",,,DMSXGCDZ
+,dimethylsulfoniopropionate_dissolved,nmol\/L,,,Dimethylsulfoniopropionate Dissolved,,nmol/L,,SDN:P01::DMSPGCD1,Concentration of dimethylsulphoniopropionate {DMSP dimethylsulfoniopropionate CAS 7314-30-9} per unit volume of the water body [dissolved plus reactive particulate <GF/F phase] by filtration and gas chromatography,,,DMSPGCD1
+,dimethylsulfoniopropionate_dissolved,umol\/L,,,Dimethylsulfoniopropionate Dissolved,,umol/L,,SDN:P01::DMSPGCD2,,,,DMSPGCD2
+,dimethylsulfoniopropionate_total,nmol\/L,,,Dimethylsulfoniopropionate Total,,nmol/L,,SDN:P01::DMSPGCTX,Concentration of dimethylsulphoniopropionate {DMSP dimethylsulfoniopropionate CAS 7314-30-9} per unit volume of the water body [dissolved plus reactive particulate phase] by gas chromatography,,,DMSPGCTX
+,dimethylsulfoniopropionate_total,umol\/L,,,Dimethylsulfoniopropionate Total,,umol/L,,SDN:P01::DMSPGCTX,Concentration of dimethylsulphoniopropionate {DMSP dimethylsulfoniopropionate CAS 7314-30-9} per unit volume of the water body [dissolved plus reactive particulate phase] by gas chromatography,,,DMSPGCTX
+,direction:buoy:geog(to),degrees,,,Direction Buoy Geog(to),,degrees,,,,,,
+,direction:geog(to),degrees,,,sea_water_velocity_to_direction,degrees,,,,,,,LCDAEL01
+,direction:geog(to),,,,sea_water_velocity_to_direction,degrees,,,,,,,LCDAEL01
+,direction:wind:geog(from),degrees,,,Wind Direction Geographic From,,degrees,,,,,,
+,direction:wind:geog(from):high,degrees,,,Wind Direction Geographic From,,degrees,,,,,,
+,direction:wind:geog(from):high:flag,,,,Direction Wind Geog(from) High Flag,,,,,,,,
+,direction:wind:geog(from:flag,,,,Direction Wind Geog(from Flag,,,,,,,,
+,dissolved_oxygen,mL\/L,,,Dissolved Oxygen,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,SDN:P06::UMLL,Millilitres per litre,DOXYZZ01
+,energy:solar,Ly,,,Solar Energy,,Ly,,,,,,
+,energy:solar:flag,,,,Energy Solar Flag,,,,,,,,
+,equilibrium_moisture_content_of_wood,%,,,Equilibrium Moisture Content of Wood,,%,,,,,,
+,ethane,nmol\/L,,,Ethane,,nmol/L,,SDN:P01::AX02GCTX,"Concentration of ethane {CAS 74-84-0} per unit volume of the water body [dissolved plus reactive particulate phase] by purging, cryogenic trapping and gas chromatography",,,AX02GCTX
+,ethylene,nmol\/L,,,Ethylene,,nmol/L,,,,,,
+,evapotranspiration,mm\/h,,,Evapotranspiration,,mm/h,,,,,,
+,event_number,None,,,Event Number,,,,,,,,
+,event_number,,,,,,,,,,,,
+drf,flag:at_sea,None,,,Flag at Sea,,,,,,,,
+tob,flow_rate,L/min,,,Flow Rate,,L/min,,,,,,flow_rate
+tob,flow_rate,None,,,Flow Rate,,L/min,,,,,,flow_rate
+tob,flow_rate_fl,L/min,,,Flow Rate FL,,L/min,,,,,,flow_rate_fl
+,fluorescence,mg\/m\^3|ug\/L,,,,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
+,fluorescence,volts,,,Sea Water Fluorescence,,Volts,,,,,,
+,fluorescence:calibrated,mg\/m\^3,,,Sea Water Calibrated Fluorescence,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPS01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer and calibration against sample data,,,CPHLPS01
+,fluorescence:calibrated:seapoint,mg\/m\^3,,,Sea Water Calibrated Fluorescence Seapoint,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPS01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer and calibration against sample data,,,CPHLPS01
+,fluorescence:calibrated:seatech,mg\/m\^3,,,Fluorescence Calibrated Seatech,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPS01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer and calibration against sample data,,,CPHLPS01
+,fluorescence:calibrated:wetlabs,mg\/m\^3,,,,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPS01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer and calibration against sample data,,,CPHLPS01
+,fluorescence:ctd,mg\/m\^3,,,Fluorescence CTD,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
+tob,fluorescence:range,Volts|volts,,,,,,,,,,,
+,fluorescence:uru,mg\/m\^3,,,Sea Water Fluorescence,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
+,fluorescence:uru:ctd,mg\/m\^3,,,Fluorescence URU CTD,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
+,fluorescence:uru:rbr,mg\/m\^3,,,Fluorescence URU RBR,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
+,fluorescence:uru:seapoint,mg\/m\^3,,,Sea Water Fluorescence Seapoint,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
+,fluorescence:uru:seapoint:2,mg\/m\^3,,,Fluorescence URU Seapoint 2,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR02,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR02
+,fluorescence:uru:seatech,mg\/m\^3,,,Fluorescence URU Seatech,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
+,fluorescence:uru:upcast,mg\/m\^3,,,Fluorescence URU Upcast,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
+,fluorescence:uru:wetlabs,mg\/m\^3,,,Sea Water Fluorescence WetLabs,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
+,fluorescence:uru:wetlabs,volts,,,Sea Water Fluorescence WetLabs,,Volts,,,,,,
+,fluorescence:wetlabs,volts,,,Sea Water Fluorescence WetLabs,,Volts,,,,,,
+,fluorescence:uru:wetlabs:eco-afl,mg\/m\^3,,,Fluorescence URU Wetlabs ECO-AFL,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
+,fluorescence:wetlabs:eco-afl,mg\/m\^3,,,Fluorescence Wetlabs ECO-AFL,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
+,fluorescence_cdom:uru:wetlabs,mg\/m\^3,,,Fluorescence CDOM URU Wetlabs,concentration_of_colored_dissolved_organic_matter_in_sea_water_expressed_as_equivalent_mass_fraction_of_quinine_sulfate_dihydrate,mg/m^3,,SDN:P01::CCOMD002,Concentration of coloured dissolved organic matter {CDOM Gelbstoff} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ WET Labs FDOM ECO fluorometer,,,CCOMD002
+,fluorescence_cdom:uru:wetlabs,volts,,,Fluorescence CDOM URU Wetlabs,,volts,,SDN:P01::NVLTWL01,Raw signal (voltage) of instrument output by WET Labs optical backscatter meter,,,NVLTWL01
+,fluorescensce:uru:turner,mg\/m\^3,,,Fluorescensce URU Turner,mass_concentration_of_chlorophyll_a_in_sea_water,mg/m^3,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
+,fluorometry-chlorophyll,,,,Fluorometry-Chlorophyll,mass_concentration_of_chlorophyll_a_in_sea_water,,,SDN:P01::CPHLPR01,Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >unknown phase] by in-situ chlorophyll fluorometer,,,CPHLPR01
+,heading,,,,platform_orientation,degrees,,,,,,,HEADCM01
+,hplc:allo,mg\/m\^3,,,HPLC Allo,,mg/m^3,,SDN:P01::ALLOMHP1,"Concentration of alloxanthin {CAS 28380-31-6} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,ALLOMHP1
+,hplc:b-car,mg\/m\^3,,,HPLC B-Car,,mg/m^3,,SDN:P01::BBCAMHP1,"Concentration of beta,beta-carotene {beta-carotene CAS 7235-40-7} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,BBCAMHP1
+,hplc:but-fuco,mg\/m\^3,,,HPLC But-fuco,,mg/m^3,,SDN:P01::BUTAMHP1,"Concentration of 19'-butanoyloxyfucoxanthin per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,BUTAMHP1
+,hplc:c2mgdg,mg\/m\^3,,,HPLC C2mgdg,,mg/m^3,,,,,,
+,hplc:chl-a,mg\/m\^3,,,HPLC Chl-a,,mg/m^3,,SDN:P01::CPHLMHP1,"Concentration of chlorophyll-a {chl-a CAS 479-61-8} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,CPHLMHP1
+,hplc:chl-b,mg\/m\^3,,,HPLC Chl-b,,mg/m^3,,SDN:P01::CHLBMHP1,"Concentration of chlorophyll-b {chl-b CAS 519-62-0} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,CHLBMHP1
+,hplc:chl-c1,mg\/m\^3,,,HPLC Chl-c1,,mg/m^3,,,,,,
+,hplc:chl-c2,mg\/m\^3,,,HPLC Chl-c2,,mg/m^3,,SDN:P01::COCHWA07,"Concentration of chlorophyll-c2 {chl-c2} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,COCHWA07
+,hplc:chl-c3,mg\/m\^3,,,HPLC Chl-c3,,mg/m^3,,SDN:P01::CLC3MHP1,"Concentration of chlorophyll-c3 {chl-c3} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,CLC3MHP1
+,hplc:chlide-a,mg\/m\^3,,,HPLC Chlide-a,,mg/m^3,,SDN:P01::CIDAMHP1,"Concentration of chlorophyllide-a {CAS 14897-06-4} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,CIDAMHP1
+,hplc:diadino,mg\/m\^3,,,HPLC Diadino,,mg/m^3,,SDN:P01::DIADMHP1,"Concentration of diadinoxanthin {CAS 18457-54-0} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,DIADMHP1
+,hplc:diato,mg\/m\^3,,,HPLC Diato,,mg/m^3,,SDN:P01::DIATMHP1,"Concentration of diatoxanthin {CAS 31063-73-7} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,DIATMHP1
+,hplc:dvchl-a,mg\/m\^3,,,HPLC DVChl-a,,mg/m^3,,SDN:P01::DVCAMHP1,"Concentration of divinyl chlorophyll-a {DVchl-a} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,DVCAMHP1
+,hplc:fuco,mg\/m\^3,,,HPLC Fuco,,mg/m^3,,SDN:P01::FUCXMHP1,"Concentration of fucoxanthin {CAS 3351-86-8} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,FUCXMHP1
+,hplc:hex-fuco,mg\/m\^3,,,HPLC Hex-fuco,,mg/m^3,,SDN:P01::HEXAMHP1,"Concentration of 19'-hexanoyloxyfucoxanthin {CAS 60147-85-5} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,HEXAMHP1
+,hplc:lut,mg\/m\^3,,,HPLC Lut,,mg/m^3,,SDN:P01::LUTNMHP1,"Concentration of lutein {CAS 127-40-2} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,LUTNMHP1
+,hplc:me-chlide,mg\/m\^3,,,HPLC Me-chlide,,mg/m^3,,,,,,
+,hplc:mgdvp,mg\/m\^3,,,HPLC MgDVP,,mg/m^3,,,,,,
+,hplc:neo,mg\/m\^3,,,HPLC Neo,,mg/m^3,,SDN:P01::NEOXMHP1,"Concentration of neoxanthin {CAS 30743-41-0} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,NEOXMHP1
+,hplc:peri,mg\/m\^3,,,HPLC Peri,,mg/m^3,,SDN:P01::PERIMHP1,"Concentration of peridinin {CAS 33281-81-1} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,PERIMHP1
+,hplc:phe,mg\/m\^3,,,HPLC Phe,,mg/m^3,,SDN:P01::COPHWA09,"Concentration of phaeophytin-a {pheophytin-a CAS 603-17-8} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,COPHWA09
+,hplc:phe-a,mg\/m\^3,,,HPLC Phe-a,,mg/m^3,,SDN:P01::COPHWA09,"Concentration of phaeophytin-a {pheophytin-a CAS 603-17-8} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,COPHWA09
+,hplc:pheide-a,mg\/m\^3,,,HPLC Pheide-a,,mg/m^3,,,,,,
+,hplc:pras,mg\/m\^3,,,HPLC Pras,,mg/m^3,,SDN:P01::COPRWA11,"Concentration of prasinoxanthin {CAS 94705-97-2} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,COPRWA11
+,hplc:tchl-a,mg\/m\^3,,,HPLC TChl-a,,mg/m^3,,,,,,
+,hplc:viola,mg\/m\^3,,,HPLC Viola,,mg/m^3,,SDN:P01::VILXMHP1,"Concentration of violaxanthin {CAS 126-29-4} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,VILXMHP1
+,hplc:zea,mg\/m\^3,,,HPLC Zea,,mg/m^3,,SDN:P01::ZEAXMHP1,"Concentration of zeaxanthin {CAS 144-68-3} per unit volume of the water body [particulate >GF/F phase] by filtration, methanol extraction and high performance liquid chromatography (HPLC)",,,ZEAXMHP1
+,humidity:relative,%,,,Humidity Relative,,%,,,,,,
+,humidity:relative:inside,%,,,Humidity Relative Inside,,%,,,,,,
+,hydrogen-sulphide,microg-at\/l,,,Hydrogen-sulphide,,umol/L,,SDN:P01::H2SXZZXX,Concentration of hydrogen sulphide {H2S CAS 7783-06-4} per unit volume of the water body [dissolved plus reactive particulate phase],,,H2SXZZXX
+,hydrogen_sulfide,umol\/L,,,Hydrogen Sulfide,mole_concentration_of_hydrogen_sulfide_in_sea_water,umol/L,,SDN:P01::H2SXZZXX,Concentration of hydrogen sulphide {H2S CAS 7783-06-4} per unit volume of the water body [dissolved plus reactive particulate phase],,,H2SXZZXX
+,ins:location,,,,INS LOCATION,,,,,,,,
+,instr_depth,,,,Instrument Depth,instrument_depth,,,,,,,
+,iodine129,10exp7 at\/L,,,Iodine129,,10exp7 at/L,,,,,,
+,iodine129uncert,10exp7 at\/L,,,Iodine129uncert,,10exp7 at/L,,,,,,
+,iodine:isotope:129,10exp7 at\/L,,,Iodine Isotope 129,,10exp7 at/L,,,,,,
+,iodine:isotope:129:uncertainty,10exp7 at\/L,,,Iodine Isotope 129 Uncertainty,,10exp7 at/L,,,,,,
+,iron:filtered:buffered:0.03,nmol\/L,,,Iron Filtered Buffered 0.03,mole_concentration_of_dissolved_iron_in_sea_water,nmol/L,,SDN:P01::FEXXCLDX ?,,,,FEXXCLDX ?
+,iron:filtered:buffered:0.1,nmol\/L,,,Iron Filtered Buffered 0.1,mole_concentration_of_dissolved_iron_in_sea_water,nmol/L,,SDN:P01::FEXXCLDX ?,,,,FEXXCLDX ?
+,iron:filtered:buffered:0.22,nmol\/L,,,Iron Filtered Buffered 0.22,mole_concentration_of_dissolved_iron_in_sea_water,nmol/L,,SDN:P01::FEXXCLDX ?,,,,FEXXCLDX ?
+,iron:filtered:buffered:0.45,nmol\/L,,,Iron Filtered Buffered 0.45,mole_concentration_of_dissolved_iron_in_sea_water,nmol/L,,SDN:P01::FEXXCLDX ?,,,,FEXXCLDX ?
+,iron:filtered:buffered:200kdalton,nmol\/L,,,Iron Filtered Buffered 200kDalton,mole_concentration_of_dissolved_iron_in_sea_water,nmol/L,,SDN:P01::FEXXCLDX ?,,,,FEXXCLDX ?
+,iron:filtered:strongacid:0.22,nmol\/L,,,Iron Filtered StrongAcid 0.22,mole_concentration_of_dissolved_iron_in_sea_water,nmol/L,,SDN:P01::FEXXCLDX ?,,,,FEXXCLDX ?
+,iron:filtered:strongacid:geo:0.22,nmol\/L,,,Iron Filtered StrongAcid Geo 0.22,mole_concentration_of_dissolved_iron_in_sea_water,nmol/L,,SDN:P01::FEXXCLDX ?,,,,FEXXCLDX ?
+,iron:filtered:strongacid:mv:0.22,nmol\/L,,,Iron Filtered StrongAcid MV 0.22,mole_concentration_of_dissolved_iron_in_sea_water,nmol/L,,SDN:P01::FEXXCLDX ?,,,,FEXXCLDX ?
+,iron:unfiltered:buffered,nmol\/L,,,Iron Unfiltered Buffered,mole_concentration_of_dissolved_iron_in_sea_water,nmol/L,,SDN:P01::FEXXCLDX,Concentration of total iron {total_Fe CAS 7439-89-6} per unit volume of the water body [dissolved plus reactive particulate phase] by acidification and flow-injection chemiluminescence,,,FEXXCLDX
+,iron:unfiltered:geo:strongacid,nmol\/L,,,Iron Unfiltered Geo StrongAcid,mole_concentration_of_dissolved_iron_in_sea_water,nmol/L,,SDN:P01::FEXXCLDX,Concentration of total iron {total_Fe CAS 7439-89-6} per unit volume of the water body [dissolved plus reactive particulate phase] by acidification and flow-injection chemiluminescence,,,FEXXCLDX
+,iron:unfiltered:strongacid,nmol\/L,,,Iron Unfiltered StrongAcid,mole_concentration_of_dissolved_iron_in_sea_water,nmol/L,,SDN:P01::FEXXCLDX,Concentration of total iron {total_Fe CAS 7439-89-6} per unit volume of the water body [dissolved plus reactive particulate phase] by acidification and flow-injection chemiluminescence,,,FEXXCLDX
+,iron:unfiltered:strongacid:mv,nmol\/L,,,Iron Unfiltered StrongAcid MV,mole_concentration_of_dissolved_iron_in_sea_water,nmol/L,,SDN:P01::FEXXCLDX,Concentration of total iron {total_Fe CAS 7439-89-6} per unit volume of the water body [dissolved plus reactive particulate phase] by acidification and flow-injection chemiluminescence,,,FEXXCLDX
+ane,iss_reception,None,,,ISS Reception,,,,,,,,
+,kraft-mill_effluent,ppm,,,Kraft-Mill Effluent,,ppm,,,,,,
+,lat,degrees,,,Latitude,latitude,degrees_north,,SDN:P01::ALATZZ01,Latitude north,,,latitude
+,latitude,degrees,,,Latitude,latitude,degrees_north,,SDN:P01::ALATZZ01,Latitude north,,,latitude
+,lon,degrees,,,Longitude,longitude,degrees_east,,SDN:P01::ALONZZ01,Longitude east,,,longitude
+,longitude,degrees,,,Longitude,longitude,degrees_east,,SDN:P01::ALONZZ01,Longitude east,,,longitude
+,methane,nmol\/L,,,Methane,,nmol/L,,SDN:P01::CH4CGCXX,Concentration of methane {CH4 CAS 74-82-8} per unit volume of the water body [dissolved plus reactive particulate phase] by gas chromatography,,,CH4CGCXX
+,methylene_chloride,pmol\/L,,,Methylene Chloride,,pmol/L,,,,,,
+,nanophytoplankton,\/mL,,,Nanophytoplankton,,/mL,,SDN:P01::PU00A01B,Abundance of nanophytoplankton per unit volume of the water body by flow cytometry,,,PU00A01B
+,nitrate,umol\/L|microg-at/l,,,Nitrate,mole_concentration_of_nitrate_in_sea_water,umol/L,,SDN:P01::NTRAZZXX,Concentration of nitrate {NO3- CAS 14797-55-8} per unit volume of the water body [unknown phase],,,NTRAZZXX
+,nitrate_plus_nitrite,umol\/l|umol\/L|ug-at\/L,,,,mole_concentration_of_nitrate_and_nitrite_in_sea_water,umol/L,,SDN:P01::NTRZAAZX,Concentration of nitrate+nitrite {NO3+NO2} per unit volume of the water body [unknown phase] by colorimetric autoanalysis,,,NTRZAAZX
+,nitrate_plus_nitrite2,umol\/L,,,Nitrate plus Nitrite2,mole_concentration_of_nitrate_and_nitrite_in_sea_water,umol/L,,SDN:P01::NTRZAAZX,Concentration of nitrate+nitrite {NO3+NO2} per unit volume of the water body [unknown phase] by colorimetric autoanalysis,,,NTRZAAZ2
+,nitrate_plus_nitrite:isus,umol\/L,,,Nitrate plus nitrite ISUS,mole_concentration_of_nitrate_and_nitrite_in_sea_water,umol/L,,SDN:P01::NTRZAAZX,Concentration of nitrate+nitrite {NO3+NO2} per unit volume of the water body [unknown phase] by colorimetric autoanalysis,,,NTRZAAZX
+,nitrate_plus_nitrite:isus,volts|Volts,,,Nitrate plus nitrite ISUS,,volts,,,,,,
+,nitrate_plus_nitrite:isus:voltage,Volts,,,Nitrate plus nitrite ISUS Voltage,,Volts,,,,,,
+,nitrite,umol\/L|mmol\/m|microg-at\/l,,,Nitrite,mole_concentration_of_nitrite_in_sea_water,umol/L,,SDN:P01::NTRIZZXX,Concentration of nitrite {NO2- CAS 14797-65-0} per unit volume of the water body [unknown phase],,,NTRIZZXX
+,nitrogen:dissolved:organic,umol\/L,,,Nitrogen Dissolved Organic,mole_concentration_of_dissolved_organic_nitrogen_in_sea_water,umol/L,,SDN:P01::MDMAP009,Concentration of organic nitrogen {organic_N} {DON} per unit volume of the water body [dissolved plus reactive particulate <unknown phase],,,MDMAP009
+,nitrogen:particulate:organic,mg\/m\^3,,,Nitrogen Particulate Organic,,mg/m^3,,SDN:P01::NTOTCNPZ,Concentration of total nitrogen {total_N} {PON} per unit volume of the water body [particulate >unknown phase] by filtration and elemental analysis,,,NTOTCNPZ
+,nitrogen:particulate:organic,mg\/m\^3,,,Nitrogen Particulate Organic,,mg/m^3,,SDN:P01::NTOTZZZZ,Concentration of total nitrogen {total_N} {PON} per unit volume of the water body [particulate >unknown phase],,,NTOTZZZZ
+,nitrogen:particulate:total,umol\/L,,,Nitrogen Particulate Total,,umol/L,,,,,,
+,nitrogen:particulate:total,umol\/kg,,,Nitrogen Particulate Total,,umol/kg,,,,,,
+,nitrogen:total,uM,,,Nitrogen Total,,uM,,SDN:P01::NTOTZZXX,Concentration of total nitrogen {total_N} per unit volume of the water body [dissolved plus reactive particulate phase],,,NTOTZZXX
+,nitrogen:total:dissolved,uM,,,Nitrogen Total Dissolved,mole_concentration_of_dissolved_nitrogen_in_sea_water,uM,,,,,,
+,ntu,,,,Turbidity,sea_water_turbidity,NTU,,SDN:P01::TURBXXXX,Turbidity of water in the water body,,,TURBXXXX
+,number_of_bin_records,None,,,,,,,,,,,
+,oxygen,mg\/l,,lambda x: x*22.319/31.998,Oxygen,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,SDN:P06::UMLL,Millilitres per litre,DOXYZZ01
+,oxygen,ml\/l|mL\/L,,,Oxygen concentration,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,SDN:P06::UMLL,Millilitres per litre,DOXYZZ01
+,oxygen,umol\/L,,lambda x: x*0.022391,Oxygen concentration,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,SDN:P06::UMLL,Millilitres per litre,DOXYZZ01
+,oxygen,umol\/kg,,,Oxygen concentration,moles_of_oxygen_per_unit_mass_in_sea_water,umol/kg,,,,,,
+,oxygen:dissolved,L\/L,,,,volume_fraction_of_oxygen_in_sea_water,L/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,SDN:P06::UMLL,Millilitres per litre,DOXYZZ01
+,oxygen:dissolved,mL\/L,,,Dissolved Oxygen,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,SDN:P06::UMLL,Millilitres per litre,DOXYZZ01
+che,oxygen:dissolved,mL\/L,,,Dissolved Oxygen,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYWITX,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by Winkler titration,,,DOXYWITX
+,oxygen:dissolved:ysi,mL\/L,,,Dissolved Oxygen,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,SDN:P06::UMLL,Millilitres per litre,DOXYZZ01
+,oxygen:dissolved,mg\/L,,,Dissolved Oxygen,mass_concentration_of_oxygen_in_sea_water,mg/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,SDN:P06::UMLL,Millilitres per litre,DOXYZZ01
+,oxygen:dissolved,umol\/L,,lambda x: x*0.022391,Dissolved Oxygen,volume_fraction_of_oxygen_in_sea_water,,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensorSDN:P06::UMLL,Millilitres per litre,DOXYZZ01
+,oxygen:dissolved,umol\/kg,,,Dissolved Oxygen,moles_of_oxygen_per_unit_mass_in_sea_water,umol/kg,,SDN:P01::DOXMZZXX,Concentration of oxygen {O2 CAS 7782-44-7} per unit mass of the water body [dissolved plus reactive particulate phase],SDN:P06::KGUM,Micromoles per kilogram,DOXMZZ01
+,oxygen:dissolved2,mL\/L,,,Dissolved Oxygen 2,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ02,,,,DOXYZZ02
+,oxygen:dissolved:bottle:mass [ml/l],umol\/kg,,,Dissolved Oxygen Bottle Mass,moles_of_oxygen_per_unit_mass_in_sea_water,umol/kg,,,,,,
+,oxygen:dissolved:bottle:volume [ml/l],mL\/L,,,Dissolved Oxygen Bottle Volume,,mL/L,,,,,,
+,oxygen:dissolved:ctd,mL\/L,,,,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,SDN:P06::UMLL,Millilitres per litre,DOXYZZ01
+,oxygen:dissolved:ctd,umol\/kg,,,,moles_of_oxygen_per_unit_mass_in_sea_water,umol/kg,,SDN:P01::DOXMZZXX,Concentration of oxygen {O2 CAS 7782-44-7} per unit mass of the water body [dissolved plus reactive particulate phase],SDN:P06::KGUM,Micromoles per kilogram,DOXMZZ01
+,oxygen:dissolved:g+g,mL\/L,,,Dissolved Oxygen G+G,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,SDN:P06::UMLL,Millilitres per litre,DOXYZZ01
+,oxygen:dissolved:mass:ctd,umol\/kg,,,Dissolved Oxygen Mass CTD,moles_of_oxygen_per_unit_mass_in_sea_water,umol/kg,,SDN:P01::DOXMZZXX,Concentration of oxygen {O2 CAS 7782-44-7} per unit mass of the water body [dissolved plus reactive particulate phase],SDN:P06::KGUM,Micromoles per kilogram,DOXMZZ01
+,oxygen:dissolved:rinko,Volts,,,,,Volts,,,,,,
+,oxygen:dissolved:rinko,mL\/L,,,,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,SDN:P06::UMLL,Millilitres per litre,DOXYZZ01
+,oxygen:dissolved:saturation,%,,,Dissolved Oxygen Saturation,fractional_saturation_of_oxygen_in_sea_water,%,,SDN:P01::OXYSOP01,Saturation of oxygen {O2 CAS 7782-44-7} in the water body [dissolved plus reactive particulate phase] by in-situ oxygen optode and computation from concentration,,,OXYSOP01
+,oxygen:dissolved:saturation:rbr,%,,,Dissolved Oxygen Saturation RBR,fractional_saturation_of_oxygen_in_sea_water,%,,SDN:P01::OXYSOP01,Saturation of oxygen {O2 CAS 7782-44-7} in the water body [dissolved plus reactive particulate phase] by in-situ oxygen optode and computation from concentration,,,OXYSOP01
+,oxygen:dissolved:saturation:rinko,%,,,Dissolved Oxygen Saturation Rinko,fractional_saturation_of_oxygen_in_sea_water,%,,SDN:P01::OXYSOP01,Saturation of oxygen {O2 CAS 7782-44-7} in the water body [dissolved plus reactive particulate phase] by in-situ oxygen optode and computation from concentration,,,OXYSOP01
+,oxygen:dissolved:saturation:upcast,mL\/L,,,Dissolved Oxygen Saturation Upcast,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,SDN:P06::UMLL,Millilitres per litre,DOXYZZ01
+,oxygen:dissolved:sbe,mL\/L,,,Dissolved Oxygen SBE,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,SDN:P06::UMLL,Millilitres per litre,DOXYZZ01
+,oxygen:dissolved:sbe,umol\/kg,,,Dissolved Oxygen SBE,moles_of_oxygen_per_unit_mass_in_sea_water,umol/kg,,SDN:P01::DOXMZZXX,Concentration of oxygen {O2 CAS 7782-44-7} per unit mass of the water body [dissolved plus reactive particulate phase],SDN:P06::KGUM,Micromoles per kilogram,DOXMZZ01
+,oxygen:dissolved:sbe,umol\/l,,,Dissolved Oxygen SBE,mole_concentration_of_dissolved_molecular_oxygen_in_sea_water,umol/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,SDN:P06::UMLL,Millilitres per litre,DOXYZZ01
+,oxygen:dissolved:volume:ctd,mL\/L,,,Dissolved Oxygen Volume CTD,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,SDN:P06::UMLL,Millilitres per litre,DOXYZZ01
+,oxygen:dissolved:volume:sbe,mL\/L,,,Dissolved Oxygen Volume SBE,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,SDN:P06::UMLL,Millilitres per litre,DOXYZZ01
+,oxygen:dissolved:weiss,mL\/L,,,Dissolved Oxygen Weiss,volume_fraction_of_oxygen_in_sea_water,mL/L,,SDN:P01::DOXYZZ01,Concentration of oxygen {O2 CAS 7782-44-7} per unit volume of the water body [dissolved plus reactive particulate phase] by in-situ sensor,SDN:P06::UMLLSDN:P06::UMLL,Millilitres per litre,DOXYZZ01
+,oxygen:isotope:18,\/mille,,,Oxygen Isotope 18,,/mille,,SDN:P01::D18OMXWT,Enrichment of oxygen-18 in water molecules {18O in H2O CAS 14797-71-8} {delta(18)O} in the water body by mass spectrometry,,,D18OMXWT
+,oxygen_temperature:rinko,Volts,,,Oxygen Temperature Rinko,temperature_of_sensor_for_oxygen_in_sea_water,Volts,,SDN:P01::OXYTAAOP,Temperature of oxygen determination by optode,,,OXYTAAOP
+,par,uE\/m\^2\/sec,,,Photoactive Radiation,,uE/m^2/sec,,SDN:P01:: IRRDUV01,Downwelling vector irradiance as photons of electromagnetic radiation (PAR wavelengths) in the water body by cosine-collector radiometer,SDN:P06::UMES,MicroEinsteins per square metre per second,IRRDUV01
+,par1,uE\/m\^2\/sec,,,PAR1,,uE/m^2/sec,,SDN:P01:: IRRDUV01,Downwelling vector irradiance as photons of electromagnetic radiation (PAR wavelengths) in the water body by cosine-collector radiometer,SDN:P06::UMES,MicroEinsteins per square metre per second,IRRDUV01
+,par:1,uE\/m\^2\/sec,,,PAR 1,,uE/m^2/sec,,SDN:P01:: IRRDUV01,Downwelling vector irradiance as photons of electromagnetic radiation (PAR wavelengths) in the water body by cosine-collector radiometer,SDN:P06::UMES,MicroEinsteins per square metre per second,IRRDUV01
+,par:ctd,uE\/m\^2\/sec,,,PAR CTD,,uE/m^2/sec,,SDN:P01:: IRRDUV01,Downwelling vector irradiance as photons of electromagnetic radiation (PAR wavelengths) in the water body by cosine-collector radiometer,SDN:P06::UMES,MicroEinsteins per square metre per second,IRRDUV01
+,par:reference,uE\/m\^2\/sec,,,PAR Reference,,uE/m^2/sec,,SDN:P01::IRRDSV01,Downwelling vector irradiance as photons of electromagnetic radiation (PAR wavelengths) in the atmosphere by cosine-collector radiometer,SDN:P06::UMES,MicroEinsteins per square metre per second,IRRDSV01
+,ph,None,,,,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR01,pH (unspecified scale) of the water body by pH electrode,,,PHXXPR01
+,ph:nbs,None,,,pH NBS,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR01,pH (unspecified scale) of the water body by pH electrode,,,PHXXPR01
+,ph:sbe,None,,,,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR01,pH (unspecified scale) of the water body by pH electrode,,,PHXXPR01
+,ph:sbe:nominal,None,,,pH SBE Nominal,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR01,pH (unspecified scale) of the water body by pH electrode,,,PHXXPR01
+,ph:sws,None,,,pH SWS,sea_water_ph_reported_on_total_scale,,,SDN:P01::PHXXPR01,pH (unspecified scale) of the water body by pH electrode,,,PHXXPR01
+,phaeo-pigment:extracted,mg\/m\^3,,,Phaeo-Pigment Extracted,mass_concentration_of_phaeopigments_in_sea_water,mg/m^3,,SDN:P01::PHAEFLPZ,"Concentration of phaeopigments {pheopigments} per unit volume of the water body [particulate >unknown phase] by filtration, acetone extraction and fluorometry",,,PHAEFLPZ
+,phaeo-pigment:extracted3,mg\/m\^3,,,Phaeo-Pigment Extracted3,mass_concentration_of_phaeopigments_in_sea_water,mg/m^3,,SDN:P01::PHAEFLPZ,"Concentration of phaeopigments {pheopigments} per unit volume of the water body [particulate >unknown phase] by filtration, acetone extraction and fluorometry",,,PHAEFLPZ
+,phaeo-pigment:extracted:0.3um,mg\/m\^3,,,Phaeo-Pigment Extracted 0.3um,mass_concentration_of_phaeopigments_in_sea_water,mg/m^3,,,,,,
+,phaeo-pigment:extracted:bottle,mg\/m\^3,,,Phaeo-Pigment Extracted Bottle,,mg/m^3,,,,,,
+,phosphate,microg-at\/l|ug-at\/L|umol\/L|mmol\/m,,,Phosphate,mass_concentration_of_phosphate_in_sea_water,umol/L,,SDN:P01::PHOSAAZX,Concentration of phosphate {PO43- CAS 14265-44-2} per unit volume of the water body [unknown phase] by colorimetric autoanalysis,,,PHOSAAZX
+,phosphate(inorg),mmol\/m,,,Phosphate(inorg),mole_concentration_of_phosphate_in_sea_water,umol/L,,,,,,
+,phosphate2,umol\/L,,,Phosphate2,mole_concentration_of_phosphate_in_sea_water,umol/L,,SDN:P01::PHOSAAZX,Concentration of phosphate {PO43- CAS 14265-44-2} per unit volume of the water body [unknown phase] by colorimetric autoanalysis,,,PHOSAAZ2
+,phytoplankton:volume,mm\^3\/m\^3,,,Phytoplankton Volume,,mm^3/m^3,,,,,,
+,picophytoplankton,\/mL,,,Picophytoplankton,,/mL,,SDN:P01::PU00A02Z,Abundance of picophytoplankton per unit volume of the water body by flow cytometry,,,PU00A02Z
+,pitch,,,,platform_pitch,,degrees,,,,,,PTCHEI01
+,precipitation,mm,,,Precipitation,thickness_of_rainfall_amount,mm,,,,,,
+,precipitation:rate,mm\/hr,,,Precipitation Rate,rainfall_rate,mm/hr,,,,,,
+,pressure,count|counts,,,Pressure,,counts,,,,,,PRESPR01
+,pressure,dbar|dbars|decibar|decibars|DBars|DBAR,,,Pressure,sea_water_pressure,decibar,,SDN:P01::PRESPR01,Pressure (spatial coordinate) exerted by the water body by profiling pressure sensor and correction to read zero at sea level,,,PRESPR01
+ctd,pressure,dbar|dbars|decibar|decibars|DBars|DBAR,,"lambda x: -1*gsw.z_from_p(x,ds.attrs['latitude'])",Depth,depth,m,,SDN:P01::ADEPZZ01,Depth (spatial coordinate) relative to water surface in the water body,,,depth
+ane,pressure,kpascal|kilopascal|Kpascal,,,Pressure,air_pressure,kilopascal,,,,,,PRESPR01
+,pressure:atmospheric:sealevel,mbar,,,Pressure Atmospheric SeaLevel,air_pressure_at_mean_sea_level,mbar,,,,,,
+,pressure:ctd,decibar,,,Pressure CTD,sea_water_pressure,decibar,,SDN:P01::PRESPR01,Pressure (spatial coordinate) exerted by the water body by profiling pressure sensor and correction to read zero at sea level,,,PRESPR01
+,pressure:reversing,decibar,,,Pressure Reversing,sea_water_pressure,decibar,,SDN:P01::PRESPR01,Pressure (spatial coordinate) exerted by the water body by profiling pressure sensor and correction to read zero at sea level,,,PRESPR01
+,production:primary,mgC\/m\^3\/day,,,Production Primary,net_primary_production_of_biomass_expressed_as_carbon_per_unit_volume_in_sea_water,mgC/m^3/day,,,,,,
+,production:primary,mgC\/m\^3\/hour,,,Production Primary,net_primary_production_of_biomass_expressed_as_carbon_per_unit_volume_in_sea_water,mgC/m^3/hour,,,,,,
+,profile,None,,,,,,,,,,,
+,propane,nmol\/L,,,Propane,,nmol/L,,SDN:P01::AX03GCTX,"Concentration of propane {CAS 74-98-6} per unit volume of the water body [dissolved plus reactive particulate phase] by purging, cryogenic trapping and gas chromatography",,,AX03GCTX
+,radiation:solar,W\/m\^2,,,Solar Radiation,,W/m^2,,,,,,
+,radiation:solar:high,W\/m\^2,,,High Solar Radiation,,W/m^2,,,,,,
+,record #,None,,,Record #,,,,,,,,record_number
+,record_number,None|/a,,,,,,,,,,,record_number
+,recordnumber,None,,,RecordNumber,,,,,,,,record_number
+,reference,None,,,,,,,,,,,
+,roll,,,,platform_roll,degrees,,,,,,,ROLLEI01
+,run:wind,km,,,Run Wind,,km,,,,,,
+,run_wind,km,,,Run Wind,,km,,,,,,
+,salinity,PSS\-78|PPS78,,,Sea Water Practical Salinity,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,Practical salinity of the water body by CTD and computation using UNESCO 1983 algorithm,,,PSALST01
+,salinity,ppt|PPT,,,Sea Water Practical Salinity,sea_water_salinity,PPT,,SDN:P01::SSALST01,Salinity of the water body by CTD,,,SSALST01
+,salinity,ppt|PPT,,lambda x: gsw.SP_from_SK(x),Sea Water Practical Salinity,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,Practical salinity of the water body by CTD and computation using UNESCO 1983 algorithm,,,PSALST01
+,salinity: practical,PSS-78|PSU,,,Sea Water Practical Salinity,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,Practical salinity of the water body by CTD and computation using UNESCO 1983 algorithm,,,PSALBST01
+,salinity: pre-1978,PPT,,,Salinity Pre-1978,sea_water_salinity,PPT,,SDN:P01::SSALST01,Salinity of the water body by CTD,,,SSALST01
+,salinity: pre-1978,PPT,,lambda x: gsw.SP_from_SK(x),Sea Water Practical Salinity,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,Practical salinity of the water body by CTD and computation using UNESCO 1983 algorithm,,,PSALST01
+,salinity:bottle,PPT|ppt,,,Salinity Bottle,sea_water_salinity,PPT,,SDN:P01::SSALBSTX,Salinity of the water body by bench salinometer,,,SSALBSTX
+,salinity:bottle,PPT,,lambda x: gsw.SP_from_SK(x),Salinity Bottle,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALBSTX,Practical salinity of the water body by bench salinometer and computation using UNESCO 1983 algorithm,,,PSALBSTX
+,salinity:bottle,PSS-78,,,Salinity Bottle,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALBSTX,Practical salinity of the water body by bench salinometer and computation using UNESCO 1983 algorithm,,,PSALBSTX
+,salinity:bottle,,,,Salinity Bottle,sea_water_salinity,,,SDN:P01::SSALBSTX,Salinity of the water body by bench salinometer,,,SSALBSTX_no_unit
+,salinity:ctd,PSS-78,,,Salinity CTD,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,Practical salinity of the water body by CTD and computation using UNESCO 1983 algorithm,,,PSALST01
+,salinity:cur,PSS-78,,,Sea Water Practical Salinity,sea_water_practical_salinity,PSS-78,,,,,,PSLTZZ01
+,salinity:cur,ppt,,,Sea Water Practical Salinity,sea_water_practical_salinity,PPT,,,,,,ODSDM021
+,salinity:t0:c0,none|PSS-78,,,Salinity T0 C0,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,Practical salinity of the water body by CTD and computation using UNESCO 1983 algorithm,,,PSALST01
+,salinity:t1:c1,PSS-78,,,Salinity T1 C1,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST02,Practical salinity of the water body by CTD (second sensor) and computation using UNESCO 1983 algorithm,,,PSALST02
+,salinity:upcast,PSS-78,,,Salinity Upcast,sea_water_practical_salinity,PSS-78,,SDN:P01::PSALST01,Practical salinity of the water body by CTD and computation using UNESCO 1983 algorithm,,,PSALST01
+,sample_method,None,,,Sample Method,,,,,,,,
+,sample_number,None,,,Sample Number,,,,,,,,
+,sample_order,None,,,Sample Order,,,,,,,,
+,sampler_id_number,None,,,Sampler ID Number,,,,,,,,
+,sampler_type,None,,,Sampler Type,,,,,,,,
+,scan_number,None,,,Record Number,,,,,,,,record_number
+,sigma-t,kg\/m\^3,,,Sigma-theta,sea_water_sigma_t,kg/m^3,,SDN:P01::SIGTPR01,Sigma-theta of the water body by CTD and computation from salinity and potential temperature using UNESCO algorithm,,,SIGTEQST
+,sigma-t:ctd,Kg\/m\^3,,,Sigma-t CTD,,Kg/m^3,,,,,,
+ubc,sigma-t,None,,,Sigma-t,sea_water_sigma_t,kg/m^3,,SDN:P01::SIGTPR01,Sigma-theta of the water body by CTD and computation from salinity and potential temperature using UNESCO algorithm,,,SIGTEQST
+,silicate,microg-at/l|ug-at\/L|umol\/L|umol\/l|umol\/L|mmol\/m,,,Silicate,mole_concentration_of_silicate_in_sea_water,umol/L,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
+,silicate2,umol\/L,,,Silicate2,mole_concentration_of_silicate_in_sea_water,umol/L,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZX2
+,silicate:acidified,umol\/L,,,Silicate Acidified,mole_concentration_of_silicate_in_sea_water,umol/L,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
+,silicate:corrected,umol\/L,,,Silicate Corrected,mole_concentration_of_silicate_in_sea_water,umol/L,,SDN:P01::SLCAZZXX,Concentration of silicate {SiO44- CAS 17181-37-2} per unit volume of the water body [unknown phase],,,SLCAZZXX
+,sound velocity,m\/s,,,Sound Velocity,speed_of_sound_in_sea_water,m/s,,SDN:P01::SVELCV01,Sound velocity in the water body by computation from temperature and salinity by unspecified algorithm,,,SVELCV01
+,speed,cm\/s,,,sea_water_speed,cm/s,,,,,,,LCSAEL01
+,speed,m\/s,,,,m/s,,,,,,,LCSAEL01
+tob,speed:ship,knots,,,Platform Speed,platform_speed_wrt_ground,knots,,SDN:P01::APSAZZ01,Speed of measurement platform relative to ground surface {speed over ground},,,APSAZZ01
+tob,direction:ship,degrees,,,Platform Speed Direction,platform_course,degrees,,SDN:P01::APDAZZ01,Direction of motion of measurement platform relative to ground surface {course made good},,,APDAZZ01
+ane,speed:gust,m\/s,,,Speed Gust,,,,,,,,
+ane,speed:gust:1,m\/s,,,Speed Gust 1,,m/s,,,,,,
+ane,speed:gust:2,m\/s,,,Speed Gust 2,,m/s,,,,,,
+,speed:sound,m/s,,,,speed_of_sound_in_sea_water,m/s,,SDN:P01::SVELXXXX,Sound velocity in the water body,,,SVELXXXX
+,speed:sound,,,,speed_of_sound_in_sea_water,m/s,,,SDN:P01::SVELXXXX,Sound velocity in the water body,,,SVELXXXX
+,speed:sound:1,,,,speed_of_sound_in_sea_water,m/s,,,SDN:P01::SVELXXXX,Sound velocity in the water body,,,SVELXXXX
+,speed:sound:2,,,,speed_of_sound_in_sea_water,m/s,,,SDN:P01::SVELXXXX,Sound velocity in the water body,,,SVELXXX2
+,speed:up,,,,upward_sea_water_velocity,cm/s,,,,,,,LRZASP01
+ane,speed:wind,m\/s,,,Speed Wind,,m/s,,,,,,
+ane,speed:wind:1,m\/s,,,Speed Wind 1,,m/s,,,,,,
+ane,speed:wind:2,m\/s,,,Speed Wind 2,,m/s,,,,,,
+ane,speed:wind:east,m\/s,,,Speed Wind East,,,,,,,,
+ane,speed:wind:high,m\/s,,,Speed Wind High,,m/s,,,,,,
+ane,speed:wind:north,m\/s,,,Speed Wind North,,,,,,,,
+ane,speed:wind_high,m\/s,,,Speed Wind High,,m/s,,,,,,
+,spm,mg\/L,,,SPM,mass_concentration_of_suspended_matter_in_sea_water,mg/L,,,,,,
+,station,None,,,Station,,,,,,,,
+,station_name,None,,,Station Name,,,,,,,,
+,str_id,None,,,,,,,,,,,
+,sulphate so4,mol\/m,,,Sulphate SO4,,mol/m,,SDN:P01::SO4XCLP1,Concentration of sulphate {SO4(2-) sulfate CAS 14808-79-8} per unit volume of the water body [dissolved plus reactive particulate <GF/F phase] by filtration and colorimetric autoanalysis,,,SO4XCLP1
+,temperature,DEG C (ITS 68)|deg C (IPTS68)|DEG C (ITS68),,lambda x: gsw.t90_from_t68(x),,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS901,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS901
+,temperature,DEG C (ITS 68)|deg C (IPTS68)|DEG C (ITS68),,,,sea_water_temperature,degrees_celsius (IPTS-68),,SDN:P01::TEMPS601,Temperature (IPTS-68) of the water body by CTD or STD,,,TEMPS601
+,temperature,deg C\s*\(ITS[-\s]*90\),,,,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS901,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS901
+,temperature,deg C|Degrees_C|DEG C|deg C\s*\(ITS[-\s]*90\)|DEG C (ITS 68)|deg C (IPTS68)|DEG C (ITS68),,,,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
+ane,temperature:air,deg C,,,Temperature Air,,degrees_celsius,,,,,,
+ane,temperature:air,deg c \(ITS-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Air,,degrees_celsius (ITS-90),,,,,,
+ane,temperature:air:1,deg C,,,Temperature Air 1,,degrees_celsius,,,,,,
+ane,temperature:air:2,deg C,,,Temperature Air 2,,degrees_celsius,,,,,,
+ane,temperature:air:dew_point,deg C,,,Temperature Air Dew Point,,degrees_celsius,,,,,,
+ane,temperature:air:dew_point,deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\)|deg c \(ITS\-90\),,,Temperature Air Dew Point,,degrees_celsius (ITS-90),,,,,,
+ane,temperature:air:dew_point:inside,deg C,,,Temperature Air Dew Point Inside,,degrees_celsius,,,,,,
+ane,temperature:air:dew_point:inside,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Air Dew Point Inside,,degrees_celsius (ITS-90),,,,,,
+ane,temperature:air:high,deg C,,,Temperature Air High,,degrees_celsius,,,,,,
+ane,temperature:air:high,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Air High,,degrees_celsius (ITS-90),,,,,,
+ane,temperature:air:inside,deg C,,,Temperature Air Inside,,degrees_celsius,,,,,,
+ane,temperature:air:inside,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Air Inside,,degrees_celsius (ITS-90),,,,,,
+ane,temperature:air:low,deg C,,,Temperature Air Low,,degrees_celsius,,,,,,
+ane,temperature:air:low,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Air Low,,degrees_celsius (ITS-90),,,,,,
+,temperature:bt,deg C,,,Temperature BT,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
+,temperature:bt,deg C,,,Temperature BT,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPRTNX,Temperature of the water body by reversing thermometer,,,TEMPRTNX
+,temperature:bucket,deg C (IPTS68),,lambda x: gsw.t90_from_t68(x),Bucket Temperature,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
+,temperature:ctd,deg C (ITS90),,,,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
+,temperature:ctd,deg C (ITS90),,,,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS901,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS901
+,temperature:cur,deg C \(IPTS68\),,,Sea Water Temperature,sea_water_temperature,degrees_celsius (IPTS-68),,,,,,TEMPP681
+,temperature:cur,deg c|degc,,,Sea Water Temperature,sea_water_temperature,degrees_celsius,,,,,,TEMPPR01
+,temperature:cur:high_res,deg C \(IPTS68\),,,Sea Water Temperature (High Resolution),sea_water_temperature,degrees_celsius (IPTS-68),,SDN:P01::TEMPP681,Temperature (IPTS-68) of the water body,,,TEMPP681
+,temperature:cur:high_res,deg c|degc,,,Seao Water Temperature (High Resolution),sea_water_temperature,degrees_celsius,,,,,,TEMPPR02
+,temperature:cur:low_res,deg C \(IPTS68\),,,Sea Water Temperature (Low Resolution),sea_water_temperature,degrees_celsius (IPTS-68),,SDN:P01::TEMPP681,Temperature (IPTS-68) of the water body,,,TEMPP681
+,temperature:cur:low_res,deg c|degc,,,Sea Water Temperature (Low Resolution),sea_water_temperature,degrees_celsius,,,,,,TEMPPR03
+,temperature:draw,deg C (ITS90),,,,sea_water_temperature,degrees_celsius (ITS-90),,,,,,
+ane,temperature:heat_index,deg C,,,Temperature Heat Index,,degrees_celsius,,,,,,
+ane,temperature:heat_index,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Heat Index,,degrees_celsius (ITS-90),,,,,,
+ane,temperature:heat_index:inside,deg C,,,Temperature Heat Index Inside,,degrees_celsius,,,,,,
+ane,temperature:heat_index:inside,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Heat Index Inside,,degrees_celsius (ITS-90),,,,,,
+,temperature:high_res,deg C,,,Sea Water Temperature High Res,,degrees_celsius,,,,,,
+tob,temperature:intake,deg C \(ITS90\),,,Temperature Intake,,degrees_celsius (ITS-90),,,,,,
+tob,temperature:lab,deg C \(ITS90\),,,Temperature Lab,,degrees_celsius (ITS-90),,,,,,
+,temperature:low_res,deg C \(IPTS68\),,,Sea Water Temperature Low Res,,degrees_celsius (IPTS-68),,,,,,
+,temperature:oxygen,DEG C,,,Temperature Oxygen,temperature_of_sensor_for_oxygen_in_sea_water,degrees_celsius,,SDN:P01::OXYTAAOP,Temperature of oxygen determination by optode,,,OXYTAAOP
+,temperature:primary,deg C (IPTS68),,lambda x: gsw.t90_from_t68(x),Temperature,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS901,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS901
+,temperature:primary,deg C (IPTS68),,,Temperature,sea_water_temperature,degrees_celsius (IPTS-68),,SDN:P01::TEMPS601,Temperature (IPTS-68) of the water body by CTD or STD,,,TEMPS601
+,temperature:primary,deg C (IPTS68),,lambda x: gsw.t90_from_t68(x),Temperature,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
+,temperature:primary,deg C (ITS90)|DEG C (ITS90),,,Temperature,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
+,temperature:primary,deg C (ITS90)|DEG C (ITS90),,,Temperature,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS901,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS901
+,temperature:reversing,deg C,,,Temperature Reversing,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
+,temperature:reversing,deg C,,,Temperature Reversing,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPRTNX,Temperature of the water body by reversing thermometer,,,TEMPRTNX
+,temperature:reversing,deg C (IPTS68),,,,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPRTNX,Temperature of the water body by reversing thermometer,,,TEMPRTNX
+,temperature:reversing,deg C (IPTS68),,,,sea_water_temperature,degrees_celsius (IPTS-68),,SDN:P01::TEMPR601,Temperature (IPTS-68) of the water body by reversing thermometer,,,TEMPR601
+,temperature:reversing,deg C (IPTS68),,lambda x: gsw.t90_from_t68(x),,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPR901,Temperature (ITS-90) of the water body by reversing thermometer,,,TEMPR901
+,temperature:second,deg c \(ITS\-90\)|deg C \(ITS90\)|deg C \(ITS9|deg C|deg C \(ITS-90\),,,Temperature Second,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPPR02,Temperature of the water body by second sensor,,,TEMPPR02
+,temperature:second,deg c \(ITS\-90\)|deg C \(ITS90\)|deg C \(ITS9|deg C|deg C \(ITS-90\),,,Temperature Second,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS902,Temperature (ITS-90) of the water body by CTD or STD (second sensor),,,TEMPS902
+,temperature:secondary,deg C (IPTS68),,lambda x: gsw.t90_from_t68(x),Secondary Temperature,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS902,Temperature (ITS-90) of the water body by CTD or STD (second sensor),,,TEMPS902
+,temperature:secondary,deg C (IPTS68),,lambda x: gsw.t90_from_t68(x),Secondary Temperature,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPPR02,Temperature of the water body by second sensor,,,TEMPPR02
+,temperature:secondary,deg C (IPTS68),,,Secondary Temperature,sea_water_temperature,degrees_celsius (IPTS-68),,SDN:P01::TEMPS602,Temperature (IPTS-68) of the water body by CTD or STD (second sensor),,,TEMPS602
+,temperature:secondary,deg C (ITS90),,,Secondary Temperature,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS902,Temperature (ITS-90) of the water body by CTD or STD (second sensor),,,TEMPS902
+,temperature:smoothed,deg C (IPTS68),,,,sea_water_temperature,degrees_celsius (IPTS-68),,,,,,
+ane,temperature:temperature_humidity_sun_index,deg C,,,Temperature Temperature Humidity Sun Index,,degrees_celsius,,,,,,
+ane,temperature:temperature_humidity_sun_index,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Temperature Humidity Sun Index,,degrees_celsius (ITS-90),,,,,,
+ane,temperature:temperature_humidity_sun_wind_index,deg C,,,Temperature Temperature Humidity Sun Wind Index,,degrees_celsius,,,,,,
+ane,temperature:temperature_humidity_wind_index,deg C,,,Temperature Temperature Humidity Wind Index,,degrees_celsius,,,,,,
+ane,temperature:temperature_humidity_wind_index,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Temperature Humidity Wind Index,,degrees_celsius (ITS-90),,,,,,
+,temperature:upcast,deg C (ITS90),,,,sea_water_temperature,degrees_celsius,,SDN:P01::TEMPPR01,Temperature of the water body,,,TEMPPR01
+,temperature:upcast,deg C (ITS90),,,,sea_water_temperature,degrees_celsius (ITS-90),,SDN:P01::TEMPS901,Temperature (ITS-90) of the water body by CTD or STD,,,TEMPS901
+ane,temperature:wind_chill_index,deg C,,,Temperature Wind Chill Index,,degrees_celsius,,,,,,
+ane,temperature:wind_chill_index,deg c \(ITS\-90\)|deg C \(ITS9|deg C \(ITS-90\)|deg C \(ITS90\),,,Temperature Wind Chill Index,,degrees_celsius (ITS-90),,,,,,
+tob,time:day_of_year,Days|DAY_OF_YEAR|None,,,day_of_year,,day,,,,,,day_of_year
+ctd,thin flag,None,,,Thin Flag,,,,,,,,
+,total_suspended_solids,mg\/L,,,,mass_concentration_of_suspended_matter_in_sea_water,mg/L,,SDN:P01::RBYJLY26,Concentration of solids (total) per unit volume of the water body,,,RBYJLY26
+,total_suspended_solids,mg\/m3|ug\/L,,,Total Suspended Solids,mass_concentration_of_suspended_matter_in_sea_water,ug/L,,SDN:P01::RBYJLY26,Concentration of solids (total) per unit volume of the water body,,,RBYJLY26
+,total_suspended_solids,ppmV,,,,,ppmV,,SDN:P01::RBYJLY26,Concentration of solids (total) per unit volume of the water body,,,RBYJLY26
+,transmissivity,%\/5cm,,,Sea Water Transmissivity,,%/5cm,volume_absorption_coefficient_of_radiative_flux_in_sea_water,SDN:P01::ABS650AC,Absorbance of electromagnetic radiation (650nm wavelength) {light absorbance} by the water body by transmissometer and calibration to read zero in clear water,,,ABS650AC
+,transmissivity,%\/metre,,,Sea Water Transmissivity,,%/metre,volume_absorption_coefficient_of_radiative_flux_in_sea_water,SDN:P01::ABS650AC,Absorbance of electromagnetic radiation (650nm wavelength) {light absorbance} by the water body by transmissometer and calibration to read zero in clear water,,,ABS650AC
+,transmissivity2,%\/metre,,,Transmissivity2,,%/metre,volume_absorption_coefficient_of_radiative_flux_in_sea_water,SDN:P01::ABS650AC,Absorbance of electromagnetic radiation (650nm wavelength) {light absorbance} by the water body by transmissometer and calibration to read zero in clear water,,,ABS650AC02
+,transmissivity:ctd,%\/metre,,,Transmissivity CTD,,%/metre,volume_absorption_coefficient_of_radiative_flux_in_sea_water,SDN:P01::ABS650AC,Absorbance of electromagnetic radiation (650nm wavelength) {light absorbance} by the water body by transmissometer and calibration to read zero in clear water,,,ABS650AC
+,transmissivity:green,%\/metre,,,Transmissivity Green,,%/metre,volume_absorption_coefficient_of_radiative_flux_in_sea_water,,,,,
+,tritium,TU81N,,,Tritium,,TU81N,,SDN:P01::MXTX3H1H,Atomic ratio of tritium/hydrogen {'Concentration of tritium'} in the water body [dissolved plus reactive particulate phase],,,MXTX3H1H
+,turbidity,NTU,,,Turbidity,sea_water_turbidity,NTU,,SDN:P01::TURBXXXX,Turbidity of water in the water body,,,TURBXXXX
+,turbidity:seapoint,FTU,,,Turbidity,sea_water_turbidity,FTU,,SDN:P01::TURBSP01,Turbidity of water in the water body by SeaPoint turbidity meter and laboratory calibration against formazin,,,TURBSP01
+,turbidity:seapoint,FTU,,,Turbidity,sea_water_turbidity,FTU,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
+,turbidity:wetlabs,FTU,,,,sea_water_turbidity,FTU,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
+,turbidity:wetlabs,NTU,,,,sea_water_turbidity,NTU,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
+,turbidity:wetlabs:eco-ntu,None,,,Turbidity WETLabs ECO-NTU,sea_water_turbidity,NTU,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
+,turbidity:wetlabs:eco-ntu,,,,,sea_water_turbidity,NTU,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
+,turbidity:wetlabs:ntu,None,,,Turbidity WETLabs NTU,sea_water_turbidity,NTU,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
+,turbidity:wetlabs:ntu,,,,,sea_water_turbidity,NTU,,SDN:P01::TURBPR01,Turbidity of water in the water body by in-situ optical backscatter measurement and laboratory calibration against formazin,,,TURBPR01
+ane,uv:dose,None,,,UV Dose,,MEDs,,,,,,
+ane,uv:high,None,,,UV High,,,,,,,,
+ane,uv:index,None,,,UV Index,,,,,,,,
+ubc,vitamin b12,m-microg\/l,,,Vitamin B12,,m-microg/l,,,,,,Vitamin_B12
+,voltage,None,,,Voltage,,,,,,,,
+ane,wind:sampling_period,s,,,Wind Sampling Period,,s,,,,,,
+,velocity:probe,m/s,,,Velocity,,m/s,,,,,,
+ane,wind_tx,None,,,Wind TX,,,,,,,, 

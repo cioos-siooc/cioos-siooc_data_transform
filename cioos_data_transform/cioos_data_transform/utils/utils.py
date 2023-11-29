@@ -1,7 +1,18 @@
-from shapely.geometry import Polygon, Point
 import json
+import logging
 import os
+
 import geopy.distance
+import pandas as pd
+
+try:
+    from shapely.geometry import Point, Polygon
+except ImportError:
+    Point, Polygon = None, None
+
+logger = logging.getLogger(__name__)
+logger = logging.LoggerAdapter(logger, extra={"file": None})
+
 
 # general utility functions common to multiple classes
 def fix_path(path):
@@ -18,11 +29,18 @@ def is_in(keywords, string):
     return any([string.upper().find(z.upper()) >= 0 for z in keywords])
 
 
-def read_config(config_file):
+def read_config(config_file, **kwargs):
     # read json file with information on dataset etc.
     with open(config_file) as fid:
         config = json.load(fid)
-        return config
+    # Add kwargs inputs
+    if kwargs:
+        config.update(kwargs)
+
+    if config.get("geojson_file"):
+        config["geographic_area"] = read_geojson(config["geojson_file"])
+
+    return config
 
 
 def import_env_variables(filename="./.env"):
@@ -44,8 +62,8 @@ def import_env_variables(filename="./.env"):
 def file_mod_time(filename):
     # returns how old the file is based on timestamp
     # returns the time in hours
-    import time
     import os
+    import time
 
     dthrs = (os.path.getmtime(filename) - time.time()) / 3600.0
     return dthrs
@@ -62,6 +80,16 @@ def read_geojson(filename):
     # read shapefile in geojson format into Polygon object
     # input geojson file
     # output: Polygon object
+
+    if filename is None:
+        return {}
+    elif Polygon is None:
+        logger.error("Install shapely to use read_geojson")
+        return {}
+    elif not os.path.exists(filename):
+        logger.error("Geojson file not found: %s", filename)
+        return {}
+
     with open(filename, encoding="utf-8") as f:
         data = json.load(f)
     poly_dict = {}
@@ -77,6 +105,10 @@ def read_geojson(filename):
 
 def get_geo_code(location, polygons_dict):
     # read geojson file and assign file
+    if Point is None:
+        logger.error("Install shapely to use get_geo_code")
+        return "n/a"
+
     geo_code = find_geographic_area(
         polygons_dict,
         Point(location[0], location[1]),
@@ -142,3 +174,9 @@ def get_nearest_station(stations, point, max_distance=None):
         return nearest_station[0]
     else:
         return None
+
+
+def read_ios_vocabulary(path=None):
+    if path is None:
+        path = f"{os.path.dirname(os.path.abspath(__file__))}/ios_vocabulary.csv"
+    return pd.read_csv(path)

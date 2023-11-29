@@ -1,7 +1,11 @@
-import netCDF4 as nc
-import gsw
-import numpy as np
+import logging
 import datetime
+
+import gsw
+import netCDF4 as nc
+import numpy as np
+
+logger = logging.getLogger(__name__)
 
 
 def _get_time_stamp():

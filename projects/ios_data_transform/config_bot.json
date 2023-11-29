@@ -1,7 +1,10 @@
 {
-    "raw_folder": "/home/pramod/data/ios_raw_files/cruise_data/",
-    "nc_folder": "/home/pramod/code/hakai_code/cioos-pacific-erddap/datasets/IOS_BOT_profiles/",
-    "geojson_file": "/home/pramod/code/hakai_code/cioos-siooc_data_transform/projects/ios_data_transform/tests/test_files/ios_polygons.geojson",
+  "raw_folder": "/data/ios_raw_files/cruise_data/",
+  "files": ["**/*.[bBcC][oOhH][eEtT]"],
+  "path_ignore": "HISTORY",
+  "nc_folder": "/data/erddap_data/IOS_BOT_profiles_updated/",
+  "geojson_file": null,
+  "global_attributes": {
     "summary": "This dataset contains observations made by the Institute of Ocean Sciences of Fisheries and Oceans (DFO) using water samples.",
     "title": "Data from Niskin bottle samples",
     "infoUrl": "http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html",
@@ -17,4 +20,5 @@
     "license": "canada open government license",
     "Conventions": "COARDS, CF-1.7, ACDD1.3",
     "processing_level": "3"
+  }
 }

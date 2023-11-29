@@ -1,11 +1,13 @@
-from datetime import datetime
-from pytz import timezone
 import json
+from datetime import datetime
+
+import numpy as np
+from pytz import timezone
+
 from cioos_data_transform.OceanNcFile import CurNcFile
 
 # from cioos_data_transform.OceanNcVar import OceanNcVar
 from cioos_data_transform.utils import is_in
-import numpy as np
 
 
 def add_ne_speed(speed, direction):

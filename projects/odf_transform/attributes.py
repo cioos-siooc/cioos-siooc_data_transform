@@ -5,16 +5,17 @@ attribtutes to the different conventions (CF, ACDD).
 
 import json
 import logging
+import os
 import re
 from datetime import datetime, timezone
 from difflib import get_close_matches
-import os
 
 import pandas as pd
 from odf_transform.utils.seabird import (
     get_seabird_instrument_from_header,
     get_seabird_processing_history,
 )
+
 from cioos_data_transform.utils.utils import get_geo_code, get_nearest_station
 
 no_file_logger = logging.getLogger(__name__)
@@ -251,12 +252,16 @@ def _generate_instrument_attributes(odf_header, instrument_manufacturer_header=N
     elif "INSTRUMENT_HEADER" in odf_header:
         attributes["instrument"] = " ".join(
             [
-                str(odf_header["INSTRUMENT_HEADER"].get("INST_TYPE")) or "",
-                str(odf_header["INSTRUMENT_HEADER"].get("MODEL")) or "",
+                str(item).strip()
+                for item in [
+                    odf_header["INSTRUMENT_HEADER"].get("INST_TYPE"),
+                    odf_header["INSTRUMENT_HEADER"].get("MODEL"),
+                ]
+                if item
             ]
-        ).strip()
-        attributes["instrument_serial_number"] = (
-            str(odf_header["INSTRUMENT_HEADER"].get("SERIAL_NUMBER")) or ""
+        )
+        attributes["instrument_serial_number"] = odf_header["INSTRUMENT_HEADER"].get(
+            "SERIAL_NUMBER"
         )
 
     # Attempt to generate an instrument_type attribute

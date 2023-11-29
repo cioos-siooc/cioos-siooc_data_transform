@@ -1,0 +1,24 @@
+{
+  "raw_folder": "/data/ios_raw_files/weather_data/",
+  "files": ["**/*.[aA][nN][eE]"],
+  "path_ignore": "HISTORY",
+  "nc_folder": "/data/erddap_data/IOS_ANE_data",
+  "geojson_file": null,
+  "global_attributes": {
+    "summary": "This dataset contains observations made by the Institute of Ocean Sciences of Fisheries and Oceans (DFO) using CTDs mounted on moorings. The moorings were deployed by DFO and partner organizations between 1965 to present. Variables present in the dataset include Temperature, Salinity, Oxygen, Conductivity, Depth, and Pressure as a timeseries. For any questions please contact (DFO.PAC.SCI.IOSData-DonneesISO.SCI.PAC.MPO@dfo-mpo.gc.ca).",
+    "title": "IOS Weather Stations Data",
+    "infoUrl": "http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html",
+    "institution": "Institute of Ocean Sciences, 9860 West Saanich Road, Sidney, B.C., Canada",
+    "keywords": "CTD, depth, pressure, temperature, salinity, oxygen, subSurfaceSalinity, subSurfaceTemperature",
+    "keywords_vocabulary": "GCMD Science Keywords",
+    "standard_name_vocabulary": "CF Standard Name Table v29",
+    "publisher_name": "Hakai Insitute",
+    "publisher_email": "info@hakai.org",
+    "publisher_url": "http://www.hakai.org",
+    "comment": "Data converted from IOS Shell format",
+    "acknowledgement": "n/a",
+    "license": "canada open government license",
+    "Conventions": "COARDS, CF-1.7, ACDD-1.3",
+    "processing_level": "2"
+  }
+}

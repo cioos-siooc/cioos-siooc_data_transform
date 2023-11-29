@@ -1,0 +1,1 @@
+rsync -azP --delete --exclude=*.nc cioos@pac-dev1.cioos.org:/data/ios_raw_files/ /data/ios_raw_files

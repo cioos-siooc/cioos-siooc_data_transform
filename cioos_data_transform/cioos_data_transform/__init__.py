@@ -10,11 +10,11 @@ from .OdfCls import NcVar as OdfNcVar
 # from .write_mctd_ncfile import write_mctd_ncfile
 # from .write_cur_ncfile import write_cur_ncfile
 from .utils.utils import (
+    compare_file_list,
+    file_mod_time,
+    find_geographic_area,
     import_env_variables,
     is_in,
-    file_mod_time,
     read_geojson,
-    find_geographic_area,
-    compare_file_list,
 )
 from .utils.utilsNC import add_standard_variables

@@ -9,13 +9,14 @@ from multiprocessing import Pool
 
 import numpy as np
 import pandas as pd
-from cioos_data_transform.utils.utils import read_geojson
 from odf_transform import attributes
 from odf_transform import parser as odf_parser
 from odf_transform._version import __version__
 from odf_transform.utils import seabird
 from odf_transform.utils.standarize_attributes import standardize_dataset
 from tqdm import tqdm
+
+from cioos_data_transform.utils.utils import read_geojson
 
 tqdm.pandas()
 
@@ -111,8 +112,8 @@ def read_config(config_file: str = DEFAULT_CONFIG_PATH) -> dict:
     return config
 
 
-def odf_to_netcdf(odf_path, config=None, global_attributes=None):
-    """Convert an ODF file to a netcdf.
+def odf_to_xarray(odf_path, config=None, global_attributes=None):
+    """Convert an ODF file to an xarray object.
     Args:
         odf_path (str): path to ODF file to convert
         config (dictionary, optional): Conversion configuration to apply.
@@ -122,9 +123,9 @@ def odf_to_netcdf(odf_path, config=None, global_attributes=None):
     # Use default config if no config is given
     if config is None:
         config = read_config(DEFAULT_CONFIG_PATH)
-    
+
     if global_attributes:
-        config['global_attributes'].update(global_attributes)
+        config["global_attributes"].update(global_attributes)
 
     # Parse the ODF file with the CIOOS python parsing tool
     metadata, raw_data = odf_parser.read(odf_path)
@@ -197,14 +198,23 @@ def odf_to_netcdf(odf_path, config=None, global_attributes=None):
 
     # Log variables available per file
     logger.info(f"Variable List: {list(dataset)}")
+    return dataset
 
+
+def odf_to_netcdf(odf_path, config=None, global_attributes=None):
+    """Parse ODF dataset to an xarray and save to Netcdf"""
+
+    # Parse odf to an xarray dataset
+    dataset = odf_to_xarray(odf_path, config, global_attributes)
+    if dataset is None:
+        return
     # Save dataset to a NetCDF file
     if config["output_path"] is None:
         output_path = odf_path + config["addFileNameSuffix"] + ".nc"
     else:
         # Retrieve subfolder path
         output_path = os.path.join(
-            config['output_path'],
+            config["output_path"],
             eval('f"{}"'.format("".join(config["subfolder_path"]))),
             os.path.basename(odf_path) + config["addFileNameSuffix"] + ".nc",
         )
@@ -277,8 +287,9 @@ def run_odf_conversion_from_config(config):
             or outputted_files[os.path.basename(file)]["last_modified"]
             < os.path.getmtime(file)
         ]
+
     def _get_mission_from_bio_filename(file):
-        return os.path.basename(file).split('_')[1]
+        return os.path.basename(file).split("_")[1]
 
     def _generate_input_by_program(files, config):
         """Generate mission specific input to apply for the conversion
@@ -290,44 +301,63 @@ def run_odf_conversion_from_config(config):
         Returns:
             list: list of inputs used for each files [(file_path, file_specific_configuration),...]
         """
-        
+
         logger.info(
             "Generate Mission Specific Configuration for %s files associated with %s missions",
             len(files),
             len(config["program_log"]),
         )
 
-        df_files = pd.DataFrame({"files":files})
-        df_files['mission'] = df_files['files'].apply(_get_mission_from_bio_filename)
-        program_log = config['program_log'].set_index('mission')
+        df_files = pd.DataFrame({"files": files})
+        df_files["mission"] = df_files["files"].apply(_get_mission_from_bio_filename)
+        program_log = config["program_log"].set_index("mission")
 
         # match mission to program_log by exact terms
         logger.info("Match file by mission with extact term")
-        files_matched = pd.merge(df_files,config['program_log'], on='mission', how='left').set_index('mission', drop=False)
+        files_matched = pd.merge(
+            df_files, config["program_log"], on="mission", how="left"
+        ).set_index("mission", drop=False)
 
         # tries to match unmatched missions left using regexp
         logger.info("Match file by mission using regex")
-        for mission in set(files_matched.query('program.isna()').index):
-            matched_mission_expression = [expr for expr in config['program_log']['mission'] if re.match(expr,mission)]
+        for mission in set(files_matched.query("program.isna()").index):
+            matched_mission_expression = [
+                expr
+                for expr in config["program_log"]["mission"]
+                if re.match(expr, mission)
+            ]
             if not matched_mission_expression:
-                logger.warning("No program_log entry available for mission: %s", mission)
+                logger.warning(
+                    "No program_log entry available for mission: %s", mission
+                )
                 continue
-            elif len(matched_mission_expression)>1:
-                logger.warning("Multiple entry in program_log %s match this mission: %s", matched_mission_expression, mission)
-            files_matched.loc[mission, program_log.columns] = program_log.loc[matched_mission_expression[0]].tolist()
+            elif len(matched_mission_expression) > 1:
+                logger.warning(
+                    "Multiple entry in program_log %s match this mission: %s",
+                    matched_mission_expression,
+                    mission,
+                )
+            files_matched.loc[mission, program_log.columns] = program_log.loc[
+                matched_mission_expression[0]
+            ].tolist()
 
         # flag what's left
-        files_unmatched = files_matched.query('program.isna()')
+        files_unmatched = files_matched.query("program.isna()")
         if not files_unmatched.empty:
             logger.warning(
                 "%s odf files aren't matched to any provided missions",
                 len(files_unmatched),
             )
             with open("unmatched_odfs.txt", "w", encoding="UTF-8") as file_handle:
-                file_handle.write("\n".join(files_matched['files']))
+                file_handle.write("\n".join(files_matched["files"]))
 
         # Generate inputs to conversion tool
-        return [(file, config, attrs.dropna().to_dict()) for file, attrs in files_matched.query('program.notna()').set_index('files').iterrows()]
+        return [
+            (file, config, attrs.dropna().to_dict())
+            for file, attrs in files_matched.query("program.notna()")
+            .set_index("files")
+            .iterrows()
+        ]
 
     # Parse config file if file is given
     if isinstance(config, str):

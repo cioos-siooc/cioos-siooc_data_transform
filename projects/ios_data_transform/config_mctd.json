@@ -1,7 +1,10 @@
 {
-    "raw_folder": "/home/pramod/data/ios_raw_files/mooring_data/",
-    "nc_folder": "/home/pramod/code/hakai_code/cioos-pacific-erddap/datasets/IOS_CTD_moorings/",
-    "geojson_file": "/home/pramod/code/hakai_code/cioos-siooc_data_transform/projects/ios_data_transform/tests/test_files/ios_polygons.geojson",
+  "raw_folder": "/data/ios_raw_files/mooring_data/",
+  "nc_folder": "/data/erddap_data/IOS_CTD_moorings_updated/",
+  "files": ["**/*.[cC][tT][dD]"],
+  "path_ignore": "HISTORY",
+  "geojson_file": null,
+  "global_attributes": {
     "summary": "This dataset contains observations made by the Institute of Ocean Sciences of Fisheries and Oceans (DFO) using CTDs mounted on moorings. The moorings were deployed by DFO and partner organizations between 1965 to present. Variables present in the dataset include Temperature, Salinity, Oxygen, Conductivity, Depth, and Pressure as a timeseries. For any questions please contact (DFO.PAC.SCI.IOSData-DonneesISO.SCI.PAC.MPO@dfo-mpo.gc.ca).",
     "title": "Moored CTD data from IOS",
     "infoUrl": "http://www.pac.dfo-mpo.gc.ca/science/oceans/data-donnees/index-eng.html",
@@ -17,4 +20,5 @@
     "license": "canada open government license",
     "Conventions": "COARDS, CF-1.7, ACDD-1.3",
     "processing_level": "2"
+  }
 }
