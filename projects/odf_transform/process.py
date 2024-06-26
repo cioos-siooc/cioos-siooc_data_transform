@@ -277,8 +277,15 @@ def run_odf_conversion_from_config(config):
             or outputted_files[os.path.basename(file)]["last_modified"]
             < os.path.getmtime(file)
         ]
+
     def _get_mission_from_bio_filename(file):
-        return os.path.basename(file).split('_')[1]
+        filename = os.path.basename(file)
+        mission = ''
+        if '_' in filename: 
+            mission = filename.split('_')[1]
+        else: # Captures raw data file name format
+            mission = filename.split('.')[0]
+        return mission
 
     def _generate_input_by_program(files, config):
         """Generate mission specific input to apply for the conversion

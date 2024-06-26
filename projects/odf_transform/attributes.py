@@ -363,6 +363,12 @@ def global_attributes_from_header(dataset, odf_header, config=None):
             for attr, attr_mapping in config["attribute_mapping_corrections"].items()
             if attr in dataset.attrs and dataset.attrs[attr] in attr_mapping
         }
+        
+    # Scrub local paths from ODF if they are expected to exist
+    if 'remove_path_from_file_specification' in config and config['remove_path_from_file_specification']:
+        odf_header["ODF_HEADER"]["FILE_SPECIFICATION"] = _remove_path_from_file_specification(odf_header["ODF_HEADER"]["FILE_SPECIFICATION"])
+    if 'remove_instrument_description' in config and config['remove_instrument_description']:
+        odf_header['INSTRUMENT_HEADER']['DESCRIPTION'] = ''
 
     odf_original_header = odf_header.copy()
     odf_original_header.pop("variable_attributes")
@@ -551,3 +557,10 @@ def _standardize_chief_scientist(name):
     """
     name = re.sub(r"\s+(\~|\/)", ",", name)
     return re.sub(r"(^|\s)(d|D)r\.{0,1}", "", name).strip().title()
+
+def _remove_path_from_file_specification(file):
+    filename = re.search(r".*\\(.*).ODF", file)
+    if filename and filename.group(1) is not None:
+        return filename.group(1)
+    else:  
+        return file
